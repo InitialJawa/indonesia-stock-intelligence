@@ -1,26 +1,8 @@
+# file: config/scoring_weights.json
+
 {
-    "quality": {
-        "roe": 0.25,
-        "net_margin": 0.20,
-        "operating_margin": 0.15,
-        "debt_to_equity": 0.20,
-        "free_cash_flow": 0.20
-    },
-
-    "growth": {
-        "revenue_growth": 0.50,
-        "earnings_growth": 0.50
-    },
-
-    "value": {
-        "pe_ratio": 0.40,
-        "pb_ratio": 0.30,
-        "dividend_yield": 0.30
-    },
-
-    "final": {
-        "quality": 0.50,
-        "growth": 0.30,
-        "value": 0.20
-    }
+    "quality": 0.30,
+    "growth": 0.25,
+    "value": 0.20,
+    "momentum": 0.25
 }

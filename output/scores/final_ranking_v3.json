@@ -1,242 +1,242 @@
 [
     {
         "ticker": "ADRO.JK",
-        "quality_score": 51.29,
-        "growth_score": 14.32,
-        "value_score": 80.7,
-        "momentum": 90.62,
-        "final_score": 57.76
-    },
-    {
-        "ticker": "BMRI.JK",
-        "quality_score": 68.0,
-        "growth_score": 8.92,
-        "value_score": 89.31,
-        "momentum": 53.62,
-        "final_score": 53.9
-    },
-    {
-        "ticker": "PTBA.JK",
-        "quality_score": 43.61,
-        "growth_score": 17.06,
-        "value_score": 87.61,
-        "momentum": 73.19,
-        "final_score": 53.17
-    },
-    {
-        "ticker": "BBRI.JK",
-        "quality_score": 63.21,
-        "growth_score": 8.72,
-        "value_score": 93.9,
-        "momentum": 46.88,
-        "final_score": 51.64
-    },
-    {
-        "ticker": "BBNI.JK",
-        "quality_score": 61.89,
-        "growth_score": 7.86,
-        "value_score": 84.53,
-        "momentum": 55.35,
-        "final_score": 51.28
-    },
-    {
-        "ticker": "TLKM.JK",
-        "quality_score": 62.23,
-        "growth_score": 5.05,
-        "value_score": 70.03,
-        "momentum": 61.78,
-        "final_score": 49.38
+        "quality_score": 51.9,
+        "growth_score": 79.31,
+        "value_score": 59.31,
+        "momentum": 96.67,
+        "final_score": 71.43
     },
     {
         "ticker": "ESSA.JK",
-        "quality_score": 51.97,
-        "growth_score": 19.54,
-        "value_score": 52.77,
-        "momentum": 69.97,
-        "final_score": 48.52
+        "quality_score": 61.9,
+        "growth_score": 91.38,
+        "value_score": 18.62,
+        "momentum": 83.33,
+        "final_score": 65.97
     },
     {
-        "ticker": "BBCA.JK",
-        "quality_score": 74.78,
-        "growth_score": 7.72,
-        "value_score": 72.74,
-        "momentum": 36.59,
-        "final_score": 48.06
+        "ticker": "BBRI.JK",
+        "quality_score": 75.69,
+        "growth_score": 65.52,
+        "value_score": 77.59,
+        "momentum": 41.67,
+        "final_score": 65.02
     },
     {
-        "ticker": "AKRA.JK",
-        "quality_score": 43.86,
-        "growth_score": 8.9,
-        "value_score": 79.5,
-        "momentum": 64.28,
-        "final_score": 47.35
+        "ticker": "BMRI.JK",
+        "quality_score": 80.0,
+        "growth_score": 45.69,
+        "value_score": 83.45,
+        "momentum": 50.0,
+        "final_score": 64.61
     },
     {
         "ticker": "MAPI.JK",
-        "quality_score": 42.52,
-        "growth_score": 10.47,
-        "value_score": 63.02,
-        "momentum": 76.48,
-        "final_score": 47.1
+        "quality_score": 43.97,
+        "growth_score": 77.59,
+        "value_score": 35.17,
+        "momentum": 91.67,
+        "final_score": 62.54
     },
     {
-        "ticker": "SIDO.JK",
-        "quality_score": 63.02,
-        "growth_score": 4.11,
-        "value_score": 82.42,
-        "momentum": 42.69,
-        "final_score": 47.09
+        "ticker": "PTBA.JK",
+        "quality_score": 47.76,
+        "growth_score": 55.17,
+        "value_score": 70.0,
+        "momentum": 81.67,
+        "final_score": 62.54
     },
     {
-        "ticker": "ANTM.JK",
-        "quality_score": 46.04,
-        "growth_score": 12.93,
-        "value_score": 73.3,
-        "momentum": 60.65,
-        "final_score": 46.87
+        "ticker": "BBNI.JK",
+        "quality_score": 66.03,
+        "growth_score": 53.45,
+        "value_score": 77.58,
+        "momentum": 55.0,
+        "final_score": 62.44
     },
     {
-        "ticker": "ASII.JK",
-        "quality_score": 49.29,
-        "growth_score": 6.01,
-        "value_score": 81.39,
-        "momentum": 57.09,
-        "final_score": 46.84
-    },
-    {
-        "ticker": "ITMG.JK",
-        "quality_score": 43.99,
-        "growth_score": 6.0,
-        "value_score": 75.52,
-        "momentum": 65.31,
-        "final_score": 46.13
-    },
-    {
-        "ticker": "BRPT.JK",
-        "quality_score": 41.64,
-        "growth_score": 50.33,
-        "value_score": 26.72,
-        "momentum": 62.5,
-        "final_score": 46.04
+        "ticker": "AKRA.JK",
+        "quality_score": 47.93,
+        "growth_score": 70.69,
+        "value_score": 56.9,
+        "momentum": 68.33,
+        "final_score": 60.51
     },
     {
         "ticker": "CPIN.JK",
-        "quality_score": 48.45,
-        "growth_score": 13.65,
-        "value_score": 70.5,
-        "momentum": 54.71,
-        "final_score": 45.72
+        "quality_score": 61.9,
+        "growth_score": 74.14,
+        "value_score": 37.93,
+        "momentum": 51.67,
+        "final_score": 57.61
     },
     {
-        "ticker": "PGAS.JK",
-        "quality_score": 40.51,
-        "growth_score": 11.6,
-        "value_score": 70.55,
-        "momentum": 66.12,
-        "final_score": 45.69
-    },
-    {
-        "ticker": "UNTR.JK",
-        "quality_score": 44.14,
-        "growth_score": 0.0,
-        "value_score": 84.8,
-        "momentum": 58.26,
-        "final_score": 44.77
-    },
-    {
-        "ticker": "INDF.JK",
-        "quality_score": 45.35,
-        "growth_score": 8.18,
-        "value_score": 74.08,
-        "momentum": 55.85,
-        "final_score": 44.43
-    },
-    {
-        "ticker": "INTP.JK",
-        "quality_score": 43.48,
-        "growth_score": 7.75,
-        "value_score": 84.4,
-        "momentum": 47.89,
-        "final_score": 43.83
-    },
-    {
-        "ticker": "ICBP.JK",
-        "quality_score": 45.91,
-        "growth_score": 7.09,
-        "value_score": 70.17,
-        "momentum": 42.56,
-        "final_score": 40.22
+        "ticker": "ANTM.JK",
+        "quality_score": 48.97,
+        "growth_score": 70.69,
+        "value_score": 46.55,
+        "momentum": 63.33,
+        "final_score": 57.51
     },
     {
         "ticker": "EXCL.JK",
-        "quality_score": 7.32,
-        "growth_score": 7.42,
-        "value_score": 81.9,
-        "momentum": 76.55,
-        "final_score": 39.57
+        "quality_score": 18.62,
+        "growth_score": 62.07,
+        "value_score": 70.69,
+        "momentum": 88.33,
+        "final_score": 57.32
     },
     {
-        "ticker": "AMMN.JK",
-        "quality_score": 42.35,
-        "growth_score": 57.35,
-        "value_score": 35.55,
-        "momentum": 21.3,
-        "final_score": 39.48
+        "ticker": "INDF.JK",
+        "quality_score": 49.83,
+        "growth_score": 51.72,
+        "value_score": 74.83,
+        "momentum": 56.67,
+        "final_score": 57.01
     },
     {
-        "ticker": "MIKA.JK",
-        "quality_score": 56.24,
-        "growth_score": 7.82,
-        "value_score": 62.47,
-        "momentum": 32.48,
-        "final_score": 39.44
+        "ticker": "BRPT.JK",
+        "quality_score": 41.72,
+        "growth_score": 96.55,
+        "value_score": 8.1,
+        "momentum": 55.0,
+        "final_score": 52.02
+    },
+    {
+        "ticker": "ASII.JK",
+        "quality_score": 52.41,
+        "growth_score": 12.07,
+        "value_score": 77.59,
+        "momentum": 56.67,
+        "final_score": 48.43
+    },
+    {
+        "ticker": "INTP.JK",
+        "quality_score": 45.35,
+        "growth_score": 31.04,
+        "value_score": 80.35,
+        "momentum": 43.33,
+        "final_score": 48.27
+    },
+    {
+        "ticker": "ITMG.JK",
+        "quality_score": 43.45,
+        "growth_score": 22.41,
+        "value_score": 51.38,
+        "momentum": 73.33,
+        "final_score": 47.25
+    },
+    {
+        "ticker": "BBCA.JK",
+        "quality_score": 82.07,
+        "growth_score": 36.21,
+        "value_score": 36.55,
+        "momentum": 25.0,
+        "final_score": 47.23
+    },
+    {
+        "ticker": "PGAS.JK",
+        "quality_score": 34.48,
+        "growth_score": 43.1,
+        "value_score": 36.55,
+        "momentum": 75.0,
+        "final_score": 47.18
+    },
+    {
+        "ticker": "ICBP.JK",
+        "quality_score": 58.45,
+        "growth_score": 36.21,
+        "value_score": 53.1,
+        "momentum": 35.0,
+        "final_score": 45.96
+    },
+    {
+        "ticker": "TLKM.JK",
+        "quality_score": 61.21,
+        "growth_score": 14.66,
+        "value_score": 35.17,
+        "momentum": 66.67,
+        "final_score": 45.73
+    },
+    {
+        "ticker": "UNTR.JK",
+        "quality_score": 48.8,
+        "growth_score": 1.73,
+        "value_score": 82.07,
+        "momentum": 56.67,
+        "final_score": 45.65
     },
     {
         "ticker": "MDKA.JK",
-        "quality_score": 27.79,
-        "growth_score": 7.38,
-        "value_score": 40.0,
-        "momentum": 77.72,
-        "final_score": 37.61
+        "quality_score": 11.9,
+        "growth_score": 36.2,
+        "value_score": 40.17,
+        "momentum": 90.0,
+        "final_score": 43.15
+    },
+    {
+        "ticker": "MIKA.JK",
+        "quality_score": 71.38,
+        "growth_score": 46.55,
+        "value_score": 26.55,
+        "momentum": 16.67,
+        "final_score": 42.53
+    },
+    {
+        "ticker": "SIDO.JK",
+        "quality_score": 79.65,
+        "growth_score": 1.73,
+        "value_score": 49.31,
+        "momentum": 33.33,
+        "final_score": 42.52
     },
     {
         "ticker": "KLBF.JK",
-        "quality_score": 47.46,
-        "growth_score": 7.06,
-        "value_score": 67.74,
-        "momentum": 28.84,
-        "final_score": 36.76
-    },
-    {
-        "ticker": "GOTO.JK",
-        "quality_score": 31.04,
-        "growth_score": 7.41,
-        "value_score": 70.0,
-        "momentum": 44.34,
-        "final_score": 36.25
-    },
-    {
-        "ticker": "HEAL.JK",
-        "quality_score": 37.17,
-        "growth_score": 5.65,
-        "value_score": 44.52,
-        "momentum": 34.32,
-        "final_score": 30.05
-    },
-    {
-        "ticker": "SMGR.JK",
-        "quality_score": 35.11,
-        "growth_score": 15.59,
-        "value_score": 33.56,
-        "momentum": 30.85,
-        "final_score": 28.85
+        "quality_score": 60.17,
+        "growth_score": 39.66,
+        "value_score": 47.93,
+        "momentum": 13.33,
+        "final_score": 40.88
     },
     {
         "ticker": "TPIA.JK",
-        "quality_score": 48.12,
-        "growth_score": 7.75,
-        "value_score": 51.5,
-        "momentum": 0.0,
-        "final_score": 26.67
+        "quality_score": 50.0,
+        "growth_score": 65.52,
+        "value_score": 43.1,
+        "momentum": 3.33,
+        "final_score": 40.83
+    },
+    {
+        "ticker": "GOTO.JK",
+        "quality_score": 15.0,
+        "growth_score": 56.89,
+        "value_score": 58.79,
+        "momentum": 35.0,
+        "final_score": 39.23
+    },
+    {
+        "ticker": "SMGR.JK",
+        "quality_score": 29.83,
+        "growth_score": 72.41,
+        "value_score": 38.28,
+        "momentum": 16.67,
+        "final_score": 38.88
+    },
+    {
+        "ticker": "AMMN.JK",
+        "quality_score": 41.38,
+        "growth_score": 67.24,
+        "value_score": 6.38,
+        "momentum": 6.67,
+        "final_score": 32.17
+    },
+    {
+        "ticker": "HEAL.JK",
+        "quality_score": 18.28,
+        "growth_score": 22.41,
+        "value_score": 20.0,
+        "momentum": 20.0,
+        "final_score": 20.09
     }
 ]

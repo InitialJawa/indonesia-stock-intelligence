@@ -1,4 +1,5 @@
 import json
+from datetime import date
 
 # =========================
 # Load Config
@@ -21,29 +22,31 @@ with open("output/scores/quality_ranking.json") as f:
     quality_data = json.load(f)
 
 # =========================
-# Build Score Dictionaries
+# Build Dictionaries
 # =========================
 
-value_scores = {}
-growth_scores = {}
-quality_scores = {}
+value_scores = {
+    stock["ticker"]: stock["value_score"]
+    for stock in value_data
+}
 
-for stock in value_data:
-    value_scores[stock["ticker"]] = stock["value_score"]
+growth_scores = {
+    stock["ticker"]: stock["growth_score"]
+    for stock in growth_data
+}
 
-for stock in growth_data:
-    growth_scores[stock["ticker"]] = stock["growth_score"]
-
-for stock in quality_data:
-    quality_scores[stock["ticker"]] = stock["quality_score"]
+quality_scores = {
+    stock["ticker"]: stock["quality_score"]
+    for stock in quality_data
+}
 
 # =========================
-# Final Scoring
+# Final Ranking
 # =========================
 
 final_ranking = []
 
-for ticker in value_scores:
+for ticker in value_scores.keys():
 
     value = value_scores.get(ticker, 0)
     growth = growth_scores.get(ticker, 0)
@@ -64,20 +67,38 @@ for ticker in value_scores:
     })
 
 # =========================
-# Sort Ranking
+# Sort
 # =========================
 
-final_ranking = sorted(
-    final_ranking,
+final_ranking.sort(
     key=lambda x: x["final_score"],
     reverse=True
 )
 
 # =========================
-# Save Output
+# Save Final Ranking
 # =========================
 
-with open("output/scores/final_ranking.json", "w") as f:
+with open(
+    "output/scores/final_ranking.json",
+    "w"
+) as f:
+    json.dump(
+        final_ranking,
+        f,
+        indent=4
+    )
+
+# =========================
+# Save History Snapshot
+# =========================
+
+today = str(date.today())
+
+with open(
+    f"output/history/{today}.json",
+    "w"
+) as f:
     json.dump(
         final_ranking,
         f,
@@ -90,7 +111,10 @@ with open("output/scores/final_ranking.json", "w") as f:
 
 print("\n=== FINAL RANKING ===\n")
 
-for i, stock in enumerate(final_ranking, start=1):
+for i, stock in enumerate(
+    final_ranking,
+    start=1
+):
 
     print(
         f"{i}. {stock['ticker']} | "
@@ -99,3 +123,11 @@ for i, stock in enumerate(final_ranking, start=1):
         f"Growth={stock['growth']} | "
         f"Quality={stock['quality']}"
     )
+
+print(
+    f"\nSaved: output/scores/final_ranking.json"
+)
+
+print(
+    f"Saved: output/history/{today}.json"
+)

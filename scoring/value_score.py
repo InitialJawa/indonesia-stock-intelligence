@@ -1,5 +1,4 @@
 import json
-from datetime import date
 from utils import min_max_normalize
 
 with open("output/raw/fundamentals.json") as f:
@@ -60,10 +59,6 @@ ranking = sorted(
 with open("output/scores/value_ranking.json", "w") as f:
     json.dump(ranking, f, indent=4)
 
-today = str(date.today())
-
-with open(f"output/history/{today}.json", "w") as f:
-    json.dump(ranking, f, indent=4)
 
 print("\n=== VALUE RANKING ===\n")
 

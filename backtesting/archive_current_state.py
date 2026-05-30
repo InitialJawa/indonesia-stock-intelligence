@@ -20,7 +20,7 @@ def archive_current_ranking():
     )
 
     source = Path(
-        "output/scores/final_ranking.json"
+        "output/scores/final_ranking_v3.json"
     )
 
     destination = (

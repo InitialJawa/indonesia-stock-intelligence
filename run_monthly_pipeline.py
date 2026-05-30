@@ -1,27 +1,54 @@
 import subprocess
 
-
 PIPELINE = [
 
-    "python collectors/fundamentals.py",
+# =========================
+# Data Collection
+# =========================
 
-    "python collectors/growth.py",
+"python collectors/fundamentals.py",
 
-    "python collectors/prices.py",
+"python collectors/growth.py",
 
-    "python scoring/quality_score.py",
+"python collectors/prices.py",
 
-    "python scoring/growth_score.py",
+# =========================
+# Factor Scores
+# =========================
 
-    "python scoring/value_score.py",
+"python scoring/quality_score.py",
 
-    "python scoring/final_score.py",
+"python scoring/growth_score.py",
 
-    "python backtesting/archive_current_state.py",
+"python scoring/value_score.py",
 
-    "python backtesting/rebalance.py"
+"python scoring/momentum_score.py",
+
+# =========================
+# Final Ranking V3
+# =========================
+
+"python scoring/final_score_v3.py",
+
+# =========================
+# Archives
+# =========================
+
+"python backtesting/archive_current_state.py",
+
+"python backtesting/archive_fundamentals.py",
+
+"python backtesting/archive_growth.py",
+
+"python backtesting/archive_factors.py",
+
+# =========================
+# Portfolio Construction
+# =========================
+
+"python backtesting/rebalance.py"
+
 ]
-
 
 def run():
 
@@ -41,7 +68,6 @@ def run():
             raise Exception(
                 f"Failed: {command}"
             )
-
 
 if __name__ == "__main__":
     run()

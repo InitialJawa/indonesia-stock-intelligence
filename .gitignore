@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+
+*.bak
+
+project_files.txt
+
+.env
+.env.*
+
+.vscode/
+
+output/history/
+
+logs/

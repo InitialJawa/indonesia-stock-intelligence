@@ -1,25 +1,47 @@
 import json
+from utils import min_max_normalize
 
-with open("output/growth.json") as f:
+with open("output/raw/growth.json") as f:
     data = json.load(f)
 
-ranking = []
+tickers = list(data.keys())
+
+revenue_values = []
+earnings_values = []
 
 for ticker, info in data.items():
 
-    revenue_growth = info.get("revenue_growth") or 0
-    earnings_growth = info.get("earnings_growth") or 0
+    revenue_values.append(
+        info.get("revenue_growth") or 0
+    )
 
-    score = (
-        revenue_growth * 50 +
-        earnings_growth * 50
+    earnings_values.append(
+        info.get("earnings_growth") or 0
+    )
+
+revenue_scores = min_max_normalize(
+    revenue_values
+)
+
+earnings_scores = min_max_normalize(
+    earnings_values
+)
+
+ranking = []
+
+for i, ticker in enumerate(tickers):
+
+    growth_score = (
+        revenue_scores[i] * 0.50 +
+        earnings_scores[i] * 0.50
     )
 
     ranking.append({
         "ticker": ticker,
-        "growth_score": round(score, 2),
-        "revenue_growth": revenue_growth,
-        "earnings_growth": earnings_growth
+        "growth_score": round(growth_score, 2),
+
+        "revenue_growth": revenue_values[i],
+        "earnings_growth": earnings_values[i]
     })
 
 ranking = sorted(
@@ -28,7 +50,7 @@ ranking = sorted(
     reverse=True
 )
 
-with open("output/growth_ranking.json", "w") as f:
+with open("output/scores/growth_ranking.json", "w") as f:
     json.dump(ranking, f, indent=4)
 
 print("\n=== GROWTH RANKING ===\n")
@@ -37,7 +59,5 @@ for i, stock in enumerate(ranking, start=1):
 
     print(
         f"{i}. {stock['ticker']} | "
-        f"Growth Score={stock['growth_score']} | "
-        f"Revenue={stock['revenue_growth']:.2%} | "
-        f"Earnings={stock['earnings_growth']:.2%}"
+        f"Growth={stock['growth_score']}"
     )

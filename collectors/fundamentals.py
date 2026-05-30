@@ -85,7 +85,7 @@ for ticker in tickers:
 
 os.makedirs("output", exist_ok=True)
 
-with open("output/fundamentals.json", "w") as f:
+with open("output/raw/fundamentals.json", "w") as f:
     json.dump(result, f, indent=4)
 
 print("\nDone!")

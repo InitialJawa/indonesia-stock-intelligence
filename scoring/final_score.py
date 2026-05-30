@@ -1,20 +1,35 @@
 import json
 
-with open("output/ranking.json") as f:
+# =========================
+# Load Config
+# =========================
+
+with open("config/scoring_weights.json") as f:
+    weights = json.load(f)
+
+# =========================
+# Load Rankings
+# =========================
+
+with open("output/scores/value_ranking.json") as f:
     value_data = json.load(f)
 
-with open("output/growth_ranking.json") as f:
+with open("output/scores/growth_ranking.json") as f:
     growth_data = json.load(f)
 
-with open("output/quality_ranking.json") as f:
+with open("output/scores/quality_ranking.json") as f:
     quality_data = json.load(f)
+
+# =========================
+# Build Score Dictionaries
+# =========================
 
 value_scores = {}
 growth_scores = {}
 quality_scores = {}
 
 for stock in value_data:
-    value_scores[stock["ticker"]] = stock["score"]
+    value_scores[stock["ticker"]] = stock["value_score"]
 
 for stock in growth_data:
     growth_scores[stock["ticker"]] = stock["growth_score"]
@@ -22,63 +37,35 @@ for stock in growth_data:
 for stock in quality_data:
     quality_scores[stock["ticker"]] = stock["quality_score"]
 
-
-def normalize(score, min_score, max_score):
-
-    if max_score == min_score:
-        return 50
-
-    return (
-        (score - min_score)
-        /
-        (max_score - min_score)
-    ) * 100
-
-
-value_min = min(value_scores.values())
-value_max = max(value_scores.values())
-
-growth_min = min(growth_scores.values())
-growth_max = max(growth_scores.values())
-
-quality_min = min(quality_scores.values())
-quality_max = max(quality_scores.values())
+# =========================
+# Final Scoring
+# =========================
 
 final_ranking = []
 
 for ticker in value_scores:
 
-    value_norm = normalize(
-        value_scores[ticker],
-        value_min,
-        value_max
-    )
-
-    growth_norm = normalize(
-        growth_scores[ticker],
-        growth_min,
-        growth_max
-    )
-
-    quality_norm = normalize(
-        quality_scores[ticker],
-        quality_min,
-        quality_max
-    )
+    value = value_scores.get(ticker, 0)
+    growth = growth_scores.get(ticker, 0)
+    quality = quality_scores.get(ticker, 0)
 
     final_score = (
-        value_norm * 0.20 +
-        growth_norm * 0.30 +
-        quality_norm * 0.50
+        quality * weights["final"]["quality"]
+        + growth * weights["final"]["growth"]
+        + value * weights["final"]["value"]
     )
 
     final_ranking.append({
         "ticker": ticker,
-        "value": round(value_norm, 2),
-        "growth": round(growth_norm, 2),
-        "quality": round(quality_norm, 2),
+        "value": round(value, 2),
+        "growth": round(growth, 2),
+        "quality": round(quality, 2),
         "final_score": round(final_score, 2)
     })
+
+# =========================
+# Sort Ranking
+# =========================
 
 final_ranking = sorted(
     final_ranking,
@@ -86,8 +73,20 @@ final_ranking = sorted(
     reverse=True
 )
 
-with open("output/final_ranking.json", "w") as f:
-    json.dump(final_ranking, f, indent=4)
+# =========================
+# Save Output
+# =========================
+
+with open("output/scores/final_ranking.json", "w") as f:
+    json.dump(
+        final_ranking,
+        f,
+        indent=4
+    )
+
+# =========================
+# Display Result
+# =========================
 
 print("\n=== FINAL RANKING ===\n")
 
@@ -95,5 +94,8 @@ for i, stock in enumerate(final_ranking, start=1):
 
     print(
         f"{i}. {stock['ticker']} | "
-        f"Final={stock['final_score']}"
+        f"Final={stock['final_score']} | "
+        f"Value={stock['value']} | "
+        f"Growth={stock['growth']} | "
+        f"Quality={stock['quality']}"
     )

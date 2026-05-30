@@ -23,7 +23,7 @@ for ticker in tickers:
         }
 
 # simpan hasil
-with open("output/prices.json", "w") as f:
+with open("output/raw/prices.json", "w") as f:
     json.dump(result, f, indent=4)
 
 print("Done!")

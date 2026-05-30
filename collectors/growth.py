@@ -25,7 +25,7 @@ for ticker in tickers:
 
         print(f"Error {ticker}: {e}")
 
-with open("output/growth.json", "w") as f:
+with open("output/raw/growth.json", "w") as f:
     json.dump(result, f, indent=4)
 
 print("Growth data saved!")

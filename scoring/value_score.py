@@ -1,74 +1,75 @@
 import json
 from datetime import date
+from utils import min_max_normalize
 
-# Baca data fundamental
-with open("output/fundamentals.json") as f:
+with open("output/raw/fundamentals.json") as f:
     data = json.load(f)
+
+tickers = list(data.keys())
+
+pe_values = []
+pb_values = []
+dividend_values = []
+
+for ticker, info in data.items():
+
+    pe = info.get("pe_ratio") or 0
+    pb = info.get("pb_ratio") or 0
+    dividend = info.get("dividend_yield") or 0
+
+    pe_values.append(pe)
+    pb_values.append(pb)
+    dividend_values.append(dividend)
+
+# murah = lebih baik
+pe_scores = min_max_normalize(pe_values)
+pb_scores = min_max_normalize(pb_values)
+
+# mahal -> score rendah
+pe_scores = [100 - s for s in pe_scores]
+pb_scores = [100 - s for s in pb_scores]
+
+# dividend tinggi = bagus
+dividend_scores = min_max_normalize(dividend_values)
 
 ranking = []
 
-# Hitung score setiap saham
-for ticker, info in data.items():
+for i, ticker in enumerate(tickers):
 
-    score = 0
-
-    roe = info.get("roe")
-    pe = info.get("pe_ratio")
-    pb = info.get("pb_ratio")
-
-    # ROE
-    if roe:
-        score += roe * 100
-
-    # PE
-    if pe:
-        if pe < 10:
-            score += 20
-        elif pe < 15:
-            score += 10
-
-    # PB
-    if pb:
-        if pb < 1.5:
-            score += 20
-        elif pb < 3:
-            score += 10
+    value_score = (
+        pe_scores[i] * 0.40 +
+        pb_scores[i] * 0.30 +
+        dividend_scores[i] * 0.30
+    )
 
     ranking.append({
         "ticker": ticker,
-        "score": round(score, 2),
-        "roe": roe,
-        "pe": pe,
-        "pb": pb
+        "value_score": round(value_score, 2),
+
+        "pe_ratio": pe_values[i],
+        "pb_ratio": pb_values[i],
+        "dividend_yield": dividend_values[i]
     })
 
-# Urutkan dari score tertinggi
 ranking = sorted(
     ranking,
-    key=lambda x: x["score"],
+    key=lambda x: x["value_score"],
     reverse=True
 )
 
-# Simpan ranking terbaru
-with open("output/ranking.json", "w") as f:
+with open("output/scores/value_ranking.json", "w") as f:
     json.dump(ranking, f, indent=4)
 
-# Simpan snapshot harian
 today = str(date.today())
 
 with open(f"output/history/{today}.json", "w") as f:
     json.dump(ranking, f, indent=4)
 
-# Tampilkan hasil di terminal
 print("\n=== VALUE RANKING ===\n")
 
 for i, stock in enumerate(ranking, start=1):
 
     print(
         f"{i}. {stock['ticker']} | "
-        f"Score={stock['score']} | "
-        f"ROE={stock['roe']:.2%} | "
-        f"PE={stock['pe']:.2f} | "
-        f"PB={stock['pb']:.2f}"
+        f"Value={stock['value_score']}"
     )
-

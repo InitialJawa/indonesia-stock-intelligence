@@ -1,7 +1,7 @@
 import json
 from utils import min_max_normalize
 
-with open("output/fundamentals.json") as f:
+with open("output/raw/fundamentals.json") as f:
     data = json.load(f)
 
 tickers = list(data.keys())
@@ -71,7 +71,7 @@ ranking = sorted(
     reverse=True
 )
 
-with open("output/quality_ranking.json", "w") as f:
+with open("output/scores/quality_ranking.json", "w") as f:
     json.dump(ranking, f, indent=4)
 
 print("\n=== QUALITY RANKING ===\n")

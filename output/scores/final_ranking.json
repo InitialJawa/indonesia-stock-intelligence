@@ -1,0 +1,72 @@
+[
+    {
+        "ticker": "BBRI.JK",
+        "value": 90.07,
+        "growth": 97.13,
+        "quality": 60.33,
+        "final_score": 77.32
+    },
+    {
+        "ticker": "BMRI.JK",
+        "value": 86.24,
+        "growth": 66.21,
+        "quality": 69.34,
+        "final_score": 71.78
+    },
+    {
+        "ticker": "BBCA.JK",
+        "value": 45.46,
+        "growth": 52.94,
+        "quality": 80.34,
+        "final_score": 65.14
+    },
+    {
+        "ticker": "MIKA.JK",
+        "value": 28.46,
+        "growth": 63.62,
+        "quality": 51.07,
+        "final_score": 50.31
+    },
+    {
+        "ticker": "KLBF.JK",
+        "value": 58.39,
+        "growth": 61.68,
+        "quality": 35.42,
+        "final_score": 47.89
+    },
+    {
+        "ticker": "INDF.JK",
+        "value": 76.15,
+        "growth": 69.99,
+        "quality": 18.86,
+        "final_score": 45.66
+    },
+    {
+        "ticker": "ICBP.JK",
+        "value": 60.23,
+        "growth": 56.45,
+        "quality": 21.08,
+        "final_score": 39.52
+    },
+    {
+        "ticker": "TLKM.JK",
+        "value": 46.7,
+        "growth": 16.21,
+        "quality": 42.79,
+        "final_score": 35.6
+    },
+    {
+        "ticker": "ASII.JK",
+        "value": 82.91,
+        "growth": 12.56,
+        "quality": 27.75,
+        "final_score": 34.23
+    },
+    {
+        "ticker": "HEAL.JK",
+        "value": 6.04,
+        "growth": 32.77,
+        "quality": 5.56,
+        "final_score": 13.82
+    }
+]

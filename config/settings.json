@@ -1,0 +1,7 @@
+{
+    "top_n": 5,
+    "risk_free_rate": 0.05,
+    "universe": "IDX30",
+    "benchmark": "^JKSE",
+    "rebalance_frequency": "monthly"
+}

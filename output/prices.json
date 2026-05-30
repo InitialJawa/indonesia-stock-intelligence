@@ -1,0 +1,42 @@
+{
+    "BBCA.JK": {
+        "close": 5700.0,
+        "volume": 1014028000
+    },
+    "BBRI.JK": {
+        "close": 2950.0,
+        "volume": 1073661600
+    },
+    "BMRI.JK": {
+        "close": 4080.0,
+        "volume": 442625300
+    },
+    "TLKM.JK": {
+        "close": 3030.0,
+        "volume": 835364400
+    },
+    "ASII.JK": {
+        "close": 5000.0,
+        "volume": 481573900
+    },
+    "ICBP.JK": {
+        "close": 7100.0,
+        "volume": 5777900
+    },
+    "INDF.JK": {
+        "close": 6925.0,
+        "volume": 37316900
+    },
+    "KLBF.JK": {
+        "close": 770.0,
+        "volume": 152452300
+    },
+    "MIKA.JK": {
+        "close": 1620.0,
+        "volume": 95917700
+    },
+    "HEAL.JK": {
+        "close": 945.0,
+        "volume": 51695400
+    }
+}

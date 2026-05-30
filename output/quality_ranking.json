@@ -1,0 +1,62 @@
+[
+    {
+        "ticker": "BBCA.JK",
+        "quality_score": 92.97,
+        "roe": 0.22972,
+        "market_cap": 700394544037888
+    },
+    {
+        "ticker": "BMRI.JK",
+        "quality_score": 91.04,
+        "roe": 0.21040002,
+        "market_cap": 380799987744768
+    },
+    {
+        "ticker": "BBRI.JK",
+        "quality_score": 88.14,
+        "roe": 0.18135999,
+        "market_cap": 444196020289536
+    },
+    {
+        "ticker": "TLKM.JK",
+        "quality_score": 74.21,
+        "roe": 0.14214,
+        "market_cap": 299092664123392
+    },
+    {
+        "ticker": "ASII.JK",
+        "quality_score": 73.25,
+        "roe": 0.13245,
+        "market_cap": 200319086624768
+    },
+    {
+        "ticker": "ICBP.JK",
+        "quality_score": 64.63,
+        "roe": 0.14631,
+        "market_cap": 82799545548800
+    },
+    {
+        "ticker": "INDF.JK",
+        "quality_score": 63.32,
+        "roe": 0.13319,
+        "market_cap": 60804451794944
+    },
+    {
+        "ticker": "MIKA.JK",
+        "quality_score": 57.98,
+        "roe": 0.17981,
+        "market_cap": 22528774897664
+    },
+    {
+        "ticker": "KLBF.JK",
+        "quality_score": 54.43,
+        "roe": 0.1443,
+        "market_cap": 34841621954560
+    },
+    {
+        "ticker": "HEAL.JK",
+        "quality_score": 47.83,
+        "roe": 0.07834,
+        "market_cap": 14476487163904
+    }
+]

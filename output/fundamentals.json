@@ -4,79 +4,129 @@
         "pe_ratio": 12.106537,
         "pb_ratio": 2.702845,
         "roe": 0.22972,
+        "net_margin": 0.53462005,
+        "operating_margin": 0.67586,
         "revenue": 108629243985920,
-        "net_income": 58075281096704
+        "net_income": 58075281096704,
+        "debt_to_equity": null,
+        "dividend_yield": 5.89,
+        "free_cash_flow": null
     },
     "BBRI.JK": {
         "market_cap": 444196020289536,
         "pe_ratio": 7.5815983,
         "pb_ratio": 1.3133987,
         "roe": 0.18135999,
+        "net_margin": 0.40230998,
+        "operating_margin": 0.42025003,
         "revenue": 145467623079936,
-        "net_income": 58523543142400
+        "net_income": 58523543142400,
+        "debt_to_equity": null,
+        "dividend_yield": 14.17,
+        "free_cash_flow": null
     },
     "BMRI.JK": {
         "market_cap": 380799987744768,
         "pe_ratio": 6.761348,
         "pb_ratio": 1.2474817,
         "roe": 0.21040002,
+        "net_margin": 0.40245,
+        "operating_margin": 0.58581,
         "revenue": 145312534495232,
-        "net_income": 58480819961856
+        "net_income": 58480819961856,
+        "debt_to_equity": null,
+        "dividend_yield": 11.69,
+        "free_cash_flow": null
     },
     "TLKM.JK": {
         "market_cap": 299092664123392,
         "pe_ratio": 18.416094,
         "pb_ratio": 2.1886785,
         "roe": 0.14214,
+        "net_margin": 0.11276,
+        "operating_margin": 0.24590999,
         "revenue": 147291994324992,
-        "net_income": 16609000292352
+        "net_income": 16609000292352,
+        "debt_to_equity": 44.115,
+        "dividend_yield": 7.01,
+        "free_cash_flow": 32677625331712
     },
     "ASII.JK": {
         "market_cap": 200319086624768,
         "pe_ratio": 6.3694267,
         "pb_ratio": 0.86060655,
         "roe": 0.13245,
+        "net_margin": 0.099429995,
+        "operating_margin": 0.0857,
         "revenue": 318698988503040,
-        "net_income": 31686999932928
+        "net_income": 31686999932928,
+        "debt_to_equity": 39.859,
+        "dividend_yield": 7.8,
+        "free_cash_flow": 15747374907392
     },
     "ICBP.JK": {
         "market_cap": 82799545548800,
         "pe_ratio": 9.057971,
         "pb_ratio": 1.5166079,
         "roe": 0.14631,
+        "net_margin": 0.11969,
+        "operating_margin": 0.20801,
         "revenue": 76380859531264,
-        "net_income": 9142118907904
+        "net_income": 9142118907904,
+        "debt_to_equity": 62.219,
+        "dividend_yield": 3.52,
+        "free_cash_flow": 6226821251072
     },
     "INDF.JK": {
         "market_cap": 60804451794944,
         "pe_ratio": 5.567929,
         "pb_ratio": 0.7864415,
         "roe": 0.13319,
+        "net_margin": 0.086780004,
+        "operating_margin": 0.18856001,
         "revenue": 125828893507584,
-        "net_income": 10918816645120
+        "net_income": 10918816645120,
+        "debt_to_equity": 61.085,
+        "dividend_yield": 4.04,
+        "free_cash_flow": 8638832312320
     },
     "KLBF.JK": {
         "market_cap": 34841621954560,
         "pe_ratio": 9.66123,
         "pb_ratio": 1.4339722,
         "roe": 0.1443,
+        "net_margin": 0.09988,
+        "operating_margin": 0.13664,
         "revenue": 36214715449344,
-        "net_income": 3617152040960
+        "net_income": 3617152040960,
+        "debt_to_equity": 1.187,
+        "dividend_yield": 2.6,
+        "free_cash_flow": 2396069298176
     },
     "MIKA.JK": {
         "market_cap": 22528774897664,
         "pe_ratio": 16.340528,
         "pb_ratio": 2.9726624,
         "roe": 0.17981,
+        "net_margin": 0.25302,
+        "operating_margin": 0.30093,
         "revenue": 5452682231808,
-        "net_income": 1379643949056
+        "net_income": 1379643949056,
+        "debt_to_equity": 0.111,
+        "dividend_yield": 2.65,
+        "free_cash_flow": 511055921152
     },
     "HEAL.JK": {
         "market_cap": 14476487163904,
         "pe_ratio": 35.459663,
         "pb_ratio": 2.532161,
         "roe": 0.07834,
+        "net_margin": 0.056209996,
+        "operating_margin": 0.1254,
         "revenue": 7224272879616,
-        "net_income": 406079995904
+        "net_income": 406079995904,
+        "debt_to_equity": 48.057,
+        "dividend_yield": 1.43,
+        "free_cash_flow": -570719993856
     }
 }

@@ -1,40 +1,68 @@
 import json
+from utils import min_max_normalize
 
 with open("output/fundamentals.json") as f:
     data = json.load(f)
 
-ranking = []
+tickers = list(data.keys())
+
+roe_values = []
+net_margin_values = []
+op_margin_values = []
+debt_values = []
+fcf_values = []
 
 for ticker, info in data.items():
 
-    score = 0
+    roe_values.append(info.get("roe") or 0)
+    net_margin_values.append(info.get("net_margin") or 0)
+    op_margin_values.append(info.get("operating_margin") or 0)
 
-    roe = info.get("roe") or 0
-    market_cap = info.get("market_cap") or 0
-    net_income = info.get("net_income") or 0
+    debt = info.get("debt_to_equity")
 
-    # ROE (0-30)
-    score += min(roe * 100, 30)
+    if debt is None:
+        debt = 0
 
-    # Profitability (0-30)
-    if net_income > 0:
-        score += 30
+    debt_values.append(debt)
 
-    # Company Size (0-40)
-    if market_cap > 300_000_000_000_000:
-        score += 40
-    elif market_cap > 100_000_000_000_000:
-        score += 30
-    elif market_cap > 50_000_000_000_000:
-        score += 20
-    else:
-        score += 10
+    fcf = info.get("free_cash_flow")
+
+    if fcf is None:
+        fcf = 0
+
+    fcf_values.append(fcf)
+
+roe_scores = min_max_normalize(roe_values)
+
+net_margin_scores = min_max_normalize(net_margin_values)
+
+op_margin_scores = min_max_normalize(op_margin_values)
+
+debt_scores = min_max_normalize(debt_values)
+
+fcf_scores = min_max_normalize(fcf_values)
+
+ranking = []
+
+for i, ticker in enumerate(tickers):
+
+    quality_score = (
+        roe_scores[i] * 0.25 +
+        net_margin_scores[i] * 0.20 +
+        op_margin_scores[i] * 0.15 +
+        (100 - debt_scores[i]) * 0.20 +
+        fcf_scores[i] * 0.20
+    )
 
     ranking.append({
         "ticker": ticker,
-        "quality_score": round(score, 2),
-        "roe": roe,
-        "market_cap": market_cap
+        "quality_score": round(quality_score, 2),
+
+        "roe": roe_values[i],
+        "net_margin": net_margin_values[i],
+        "operating_margin": op_margin_values[i],
+        "debt_to_equity": debt_values[i],
+        "free_cash_flow": fcf_values[i]
     })
 
 ranking = sorted(
@@ -52,6 +80,5 @@ for i, stock in enumerate(ranking, start=1):
 
     print(
         f"{i}. {stock['ticker']} | "
-        f"Quality={stock['quality_score']} | "
-        f"ROE={stock['roe']:.2%}"
+        f"Quality={stock['quality_score']}"
     )

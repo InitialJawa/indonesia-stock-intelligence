@@ -1,9 +1,11 @@
-import yfinance as yf
 import json
 
-# baca daftar saham
-with open("tickers.json") as f:
-    tickers = json.load(f)
+import yfinance as yf
+
+from utils.config_loader import load_universe
+
+
+tickers = load_universe()
 
 result = {}
 
@@ -11,19 +13,38 @@ for ticker in tickers:
 
     print(f"Fetching {ticker}")
 
-    stock = yf.Ticker(ticker)
+    try:
 
-    hist = stock.history(period="5d")
+        stock = yf.Ticker(ticker)
 
-    if not hist.empty:
+        hist = stock.history(period="5d")
 
-        result[ticker] = {
-            "close": float(hist["Close"].iloc[-1]),
-            "volume": int(hist["Volume"].iloc[-1])
-        }
+        if not hist.empty:
 
-# simpan hasil
-with open("output/raw/prices.json", "w") as f:
-    json.dump(result, f, indent=4)
+            result[ticker] = {
+                "close": float(hist["Close"].iloc[-1]),
+                "volume": int(hist["Volume"].iloc[-1])
+            }
+
+            print(f"✓ {ticker}")
+
+        else:
+
+            print(f"✗ {ticker} -> no data")
+
+    except Exception as e:
+
+        print(f"✗ {ticker} -> {e}")
+
+with open(
+    "output/raw/prices.json",
+    "w"
+) as f:
+
+    json.dump(
+        result,
+        f,
+        indent=4
+    )
 
 print("Done!")

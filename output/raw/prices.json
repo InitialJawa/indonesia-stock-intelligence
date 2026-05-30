@@ -11,6 +11,10 @@
         "close": 4080.0,
         "volume": 442625300
     },
+    "BBNI.JK": {
+        "close": 3700.0,
+        "volume": 160150400
+    },
     "TLKM.JK": {
         "close": 3030.0,
         "volume": 835364400
@@ -31,6 +35,70 @@
         "close": 770.0,
         "volume": 152452300
     },
+    "CPIN.JK": {
+        "close": 4270.0,
+        "volume": 67380000
+    },
+    "ADRO.JK": {
+        "close": 2300.0,
+        "volume": 71264700
+    },
+    "PTBA.JK": {
+        "close": 2780.0,
+        "volume": 29747600
+    },
+    "MDKA.JK": {
+        "close": 2590.0,
+        "volume": 108962300
+    },
+    "AMMN.JK": {
+        "close": 3300.0,
+        "volume": 1202021400
+    },
+    "ANTM.JK": {
+        "close": 2900.0,
+        "volume": 401178500
+    },
+    "TPIA.JK": {
+        "close": 1785.0,
+        "volume": 2266463100
+    },
+    "BRPT.JK": {
+        "close": 1940.0,
+        "volume": 1094454700
+    },
+    "PGAS.JK": {
+        "close": 1825.0,
+        "volume": 74831100
+    },
+    "UNTR.JK": {
+        "close": 22925.0,
+        "volume": 28939600
+    },
+    "SMGR.JK": {
+        "close": 1690.0,
+        "volume": 32598900
+    },
+    "INTP.JK": {
+        "close": 4900.0,
+        "volume": 7912500
+    },
+    "GOTO.JK": {
+        "close": 50.0,
+        "volume": 2653923000
+    },
+    "ESSA.JK": {
+        "close": 670.0,
+        "volume": 74733200
+    },
+    "EXCL.JK": {
+        "close": 2830.0,
+        "volume": 18199600
+    },
+    "MAPI.JK": {
+        "close": 1495.0,
+        "volume": 85845800
+    },
     "MIKA.JK": {
         "close": 1620.0,
         "volume": 95917700
@@ -38,5 +106,17 @@
     "HEAL.JK": {
         "close": 945.0,
         "volume": 51695400
+    },
+    "SIDO.JK": {
+        "close": 384.0,
+        "volume": 179167700
+    },
+    "AKRA.JK": {
+        "close": 1235.0,
+        "volume": 105639600
+    },
+    "ITMG.JK": {
+        "close": 22100.0,
+        "volume": 2677500
     }
 }

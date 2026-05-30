@@ -11,6 +11,10 @@
         "revenue_growth": 0.015,
         "earnings_growth": 0.167
     },
+    "BBNI.JK": {
+        "revenue_growth": 0.078,
+        "earnings_growth": 0.052
+    },
     "TLKM.JK": {
         "revenue_growth": 0.015,
         "earnings_growth": -0.251
@@ -31,6 +35,70 @@
         "revenue_growth": 0.101,
         "earnings_growth": -0.035
     },
+    "CPIN.JK": {
+        "revenue_growth": 0.127,
+        "earnings_growth": 0.677
+    },
+    "ADRO.JK": {
+        "revenue_growth": 0.234,
+        "earnings_growth": 0.748
+    },
+    "PTBA.JK": {
+        "revenue_growth": -0.003,
+        "earnings_growth": 1.047
+    },
+    "MDKA.JK": {
+        "revenue_growth": 0.063,
+        "earnings_growth": null
+    },
+    "AMMN.JK": {
+        "revenue_growth": 379.373,
+        "earnings_growth": null
+    },
+    "ANTM.JK": {
+        "revenue_growth": 0.121,
+        "earnings_growth": 0.599
+    },
+    "TPIA.JK": {
+        "revenue_growth": 2.864,
+        "earnings_growth": null
+    },
+    "BRPT.JK": {
+        "revenue_growth": 2.322,
+        "earnings_growth": 4.61
+    },
+    "PGAS.JK": {
+        "revenue_growth": -0.038,
+        "earnings_growth": 0.458
+    },
+    "UNTR.JK": {
+        "revenue_growth": -0.167,
+        "earnings_growth": -0.794
+    },
+    "SMGR.JK": {
+        "revenue_growth": 0.083,
+        "earnings_growth": 0.887
+    },
+    "INTP.JK": {
+        "revenue_growth": -0.033,
+        "earnings_growth": 0.041
+    },
+    "GOTO.JK": {
+        "revenue_growth": 0.263,
+        "earnings_growth": null
+    },
+    "ESSA.JK": {
+        "revenue_growth": 0.368,
+        "earnings_growth": 1.31
+    },
+    "EXCL.JK": {
+        "revenue_growth": 0.374,
+        "earnings_growth": null
+    },
+    "MAPI.JK": {
+        "revenue_growth": 0.32,
+        "earnings_growth": 0.33
+    },
     "MIKA.JK": {
         "revenue_growth": 0.066,
         "earnings_growth": 0.048
@@ -38,5 +106,17 @@
     "HEAL.JK": {
         "revenue_growth": 0.054,
         "earnings_growth": -0.187
+    },
+    "SIDO.JK": {
+        "revenue_growth": -0.188,
+        "earnings_growth": -0.35
+    },
+    "AKRA.JK": {
+        "revenue_growth": 0.262,
+        "earnings_growth": 0.161
+    },
+    "ITMG.JK": {
+        "revenue_growth": 0.031,
+        "earnings_growth": -0.149
     }
 }

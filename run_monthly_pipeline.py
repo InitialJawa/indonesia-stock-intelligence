@@ -1,62 +1,62 @@
 import subprocess
 
+
 PIPELINE = [
 
-# =========================
-# Data Collection
-# =========================
+    # =========================
+    # Data Collection
+    # =========================
 
-"python collectors/fundamentals.py",
+    "python -m collectors.fundamentals",
 
-"python collectors/growth.py",
+    "python -m collectors.growth",
 
-"python collectors/prices.py",
+    "python -m collectors.prices",
 
-# =========================
-# Factor Scores
-# =========================
+    # =========================
+    # Factor Scores
+    # =========================
 
-"python scoring/quality_score.py",
+    "python scoring/quality_score.py",
 
-"python scoring/growth_score.py",
+    "python scoring/growth_score.py",
 
-"python scoring/value_score.py",
+    "python scoring/value_score.py",
 
-"python scoring/momentum_score.py",
+    "python scoring/momentum_score.py",
 
-# =========================
-# Final Ranking V3
-# =========================
+    # =========================
+    # Final Ranking
+    # =========================
 
-"python scoring/final_score_v3.py",
+    "python scoring/final_score_v3.py",
 
-# =========================
-# Archives
-# =========================
+    # =========================
+    # Archives
+    # =========================
 
-"python backtesting/archive_current_state.py",
+    "python backtesting/archive_current_state.py",
 
-"python backtesting/archive_fundamentals.py",
+    "python backtesting/archive_fundamentals.py",
 
-"python backtesting/archive_growth.py",
+    "python backtesting/archive_growth.py",
 
-"python backtesting/archive_factors.py",
+    "python backtesting/archive_factors.py",
 
-# =========================
-# Portfolio Construction
-# =========================
+    # =========================
+    # Portfolio
+    # =========================
 
-"python backtesting/rebalance.py"
+    "python backtesting/rebalance.py"
 
 ]
+
 
 def run():
 
     for command in PIPELINE:
 
-        print(
-            f"\nRunning: {command}"
-        )
+        print(f"\nRunning: {command}")
 
         result = subprocess.run(
             command,
@@ -68,6 +68,7 @@ def run():
             raise Exception(
                 f"Failed: {command}"
             )
+
 
 if __name__ == "__main__":
     run()

@@ -1,8 +1,11 @@
 import json
+
 import yfinance as yf
 
-with open("tickers.json") as f:
-    tickers = json.load(f)
+from utils.config_loader import load_universe
+
+
+tickers = load_universe()
 
 result = {}
 
@@ -21,11 +24,21 @@ for ticker in tickers:
             "earnings_growth": info.get("earningsGrowth")
         }
 
+        print(f"✓ {ticker}")
+
     except Exception as e:
 
-        print(f"Error {ticker}: {e}")
+        print(f"✗ {ticker}: {e}")
 
-with open("output/raw/growth.json", "w") as f:
-    json.dump(result, f, indent=4)
+with open(
+    "output/raw/growth.json",
+    "w"
+) as f:
+
+    json.dump(
+        result,
+        f,
+        indent=4
+    )
 
 print("Growth data saved!")

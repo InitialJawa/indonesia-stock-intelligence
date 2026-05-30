@@ -1,0 +1,27 @@
+[
+    {
+        "ticker": "BBRI.JK",
+        "weight": 20.0,
+        "final_score": 77.32
+    },
+    {
+        "ticker": "BMRI.JK",
+        "weight": 20.0,
+        "final_score": 71.78
+    },
+    {
+        "ticker": "BBCA.JK",
+        "weight": 20.0,
+        "final_score": 65.14
+    },
+    {
+        "ticker": "MIKA.JK",
+        "weight": 20.0,
+        "final_score": 50.31
+    },
+    {
+        "ticker": "KLBF.JK",
+        "weight": 20.0,
+        "final_score": 47.89
+    }
+]

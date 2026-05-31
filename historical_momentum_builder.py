@@ -46,8 +46,31 @@ def generate_month_list():
             months.append(f"{year}-{month:02d}")
     return months
 
+def load_universe_for_month(month_key):
+    univ_dir = Path("database/historical_universe")
+    univ_files = sorted(list(univ_dir.glob("*.json")))
+    
+    selected_file = None
+    for file in univ_files:
+        file_month = file.stem
+        if file_month <= month_key:
+            selected_file = file
+        else:
+            break
+            
+    if selected_file is None and univ_files:
+        selected_file = univ_files[0]
+        
+    if selected_file:
+        with open(selected_file, "r", encoding="utf-8") as f:
+            return set(json.load(f))
+    return set()
+
 def calculate_momentum_for_month(month_key, ticker_data, metadata=None):
     month_momentum = []
+    
+    # Load universe for this month
+    active_universe = load_universe_for_month(month_key)
     
     year, month = map(int, month_key.split("-"))
     # Hitung base month (12 bulan lalu)
@@ -56,6 +79,10 @@ def calculate_momentum_for_month(month_key, ticker_data, metadata=None):
     base_month_key = f"{base_year}-{base_month:02d}"
     
     for ticker, history in ticker_data.items():
+        # Check if the ticker is active in this month's universe
+        if ticker not in active_universe:
+            continue
+            
         if metadata and ticker in metadata:
             listing_month = metadata[ticker][:7]
             if month_key < listing_month:

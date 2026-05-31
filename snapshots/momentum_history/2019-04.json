@@ -1,142 +1,142 @@
 [
     {
-        "ticker": "MDKA.JK",
-        "return_12m": 0.767,
+        "ticker": "SMGR.JK",
+        "return_12m": 0.4205,
         "rank": 1
     },
     {
-        "ticker": "BRPT.JK",
-        "return_12m": 0.6609,
+        "ticker": "JSMR.JK",
+        "return_12m": 0.3959,
         "rank": 2
-    },
-    {
-        "ticker": "CPIN.JK",
-        "return_12m": 0.4556,
-        "rank": 3
-    },
-    {
-        "ticker": "SMGR.JK",
-        "return_12m": 0.4205,
-        "rank": 4
-    },
-    {
-        "ticker": "EXCL.JK",
-        "return_12m": 0.3774,
-        "rank": 5
     },
     {
         "ticker": "BBRI.JK",
         "return_12m": 0.3571,
-        "rank": 6
-    },
-    {
-        "ticker": "SIDO.JK",
-        "return_12m": 0.3481,
-        "rank": 7
+        "rank": 3
     },
     {
         "ticker": "BBCA.JK",
         "return_12m": 0.3171,
-        "rank": 8
+        "rank": 4
     },
     {
         "ticker": "INTP.JK",
         "return_12m": 0.2915,
-        "rank": 9
+        "rank": 5
+    },
+    {
+        "ticker": "GGRM.JK",
+        "return_12m": 0.2663,
+        "rank": 6
+    },
+    {
+        "ticker": "PWON.JK",
+        "return_12m": 0.2257,
+        "rank": 7
     },
     {
         "ticker": "PTBA.JK",
         "return_12m": 0.2222,
-        "rank": 10
-    },
-    {
-        "ticker": "MAPI.JK",
-        "return_12m": 0.2119,
-        "rank": 11
-    },
-    {
-        "ticker": "ESSA.JK",
-        "return_12m": 0.2067,
-        "rank": 12
+        "rank": 8
     },
     {
         "ticker": "BBNI.JK",
         "return_12m": 0.1925,
-        "rank": 13
+        "rank": 9
     },
     {
         "ticker": "PGAS.JK",
         "return_12m": 0.1882,
-        "rank": 14
+        "rank": 10
     },
     {
         "ticker": "ICBP.JK",
         "return_12m": 0.1494,
-        "rank": 15
-    },
-    {
-        "ticker": "MIKA.JK",
-        "return_12m": 0.1221,
-        "rank": 16
+        "rank": 11
     },
     {
         "ticker": "ASII.JK",
         "return_12m": 0.0951,
-        "rank": 17
+        "rank": 12
+    },
+    {
+        "ticker": "WSBP.JK",
+        "return_12m": 0.0891,
+        "rank": 13
     },
     {
         "ticker": "BMRI.JK",
         "return_12m": 0.0842,
-        "rank": 18
-    },
-    {
-        "ticker": "HEAL.JK",
-        "return_12m": 0.0651,
-        "rank": 19
+        "rank": 14
     },
     {
         "ticker": "KLBF.JK",
         "return_12m": 0.0475,
-        "rank": 20
+        "rank": 15
     },
     {
         "ticker": "INDF.JK",
         "return_12m": 0.0429,
-        "rank": 21
+        "rank": 16
     },
     {
         "ticker": "TLKM.JK",
         "return_12m": 0.0352,
-        "rank": 22
+        "rank": 17
     },
     {
         "ticker": "ANTM.JK",
         "return_12m": 0.0237,
-        "rank": 23
+        "rank": 18
     },
     {
-        "ticker": "AKRA.JK",
-        "return_12m": -0.0477,
-        "rank": 24
+        "ticker": "HMSP.JK",
+        "return_12m": 0.0195,
+        "rank": 19
     },
     {
-        "ticker": "ITMG.JK",
-        "return_12m": -0.0595,
-        "rank": 25
+        "ticker": "SRIL.JK",
+        "return_12m": 0.0067,
+        "rank": 20
     },
     {
-        "ticker": "TPIA.JK",
-        "return_12m": -0.1472,
-        "rank": 26
+        "ticker": "WSKT.JK",
+        "return_12m": -0.0407,
+        "rank": 21
+    },
+    {
+        "ticker": "BSDE.JK",
+        "return_12m": -0.1509,
+        "rank": 22
     },
     {
         "ticker": "UNTR.JK",
         "return_12m": -0.1689,
-        "rank": 27
+        "rank": 23
+    },
+    {
+        "ticker": "BBTN.JK",
+        "return_12m": -0.1865,
+        "rank": 24
     },
     {
         "ticker": "ADRO.JK",
         "return_12m": -0.2418,
+        "rank": 25
+    },
+    {
+        "ticker": "MEDC.JK",
+        "return_12m": -0.2667,
+        "rank": 26
+    },
+    {
+        "ticker": "MNCN.JK",
+        "return_12m": -0.2787,
+        "rank": 27
+    },
+    {
+        "ticker": "LPPF.JK",
+        "return_12m": -0.5866,
         "rank": 28
     }
 ]

@@ -6,19 +6,19 @@ Laporan kinerja portofolio momentum historis dibandingkan dengan tolok ukur IHSG
 
 | Parameter | Portofolio Momentum | Benchmark (IHSG) | Selisih (Excess) |
 | :--- | :---: | :---: | :---: |
-| **CAGR** | 19.07% | -0.87% | +19.94% |
-| **Annualized Return** | 21.46% | 0.37% | +21.10% |
-| **Volatility (Annualized)** | 28.05% | 15.53% | +12.53% |
-| **Sharpe Ratio** | 0.77 | 0.02 | +0.74 |
-| **Max Drawdown** | 36.99% | 29.83% | +7.16% |
-| **Best Month** | 24.05% | 9.44% | - |
-| **Worst Month** | -20.72% | -16.76% | - |
-| **Win Rate (Monthly)** | 62.50% | 56.82% | - |
+| **CAGR** | 0.82% | -0.87% | +1.69% |
+| **Annualized Return** | 4.94% | 0.37% | +4.57% |
+| **Volatility (Annualized)** | 28.56% | 15.53% | +13.03% |
+| **Sharpe Ratio** | 0.17 | 0.02 | +0.15 |
+| **Max Drawdown** | 39.66% | 29.83% | +9.83% |
+| **Best Month** | 25.21% | 9.44% | - |
+| **Worst Month** | -22.82% | -16.76% | - |
+| **Win Rate (Monthly)** | 55.68% | 56.82% | - |
 
 ## 2. Parameter Alpha & Beta vs IHSG
 
-- **Beta vs IHSG**: `1.151`
-- **Annualized CAPM Alpha**: `+21.04%` (Bulanan: `+1.753%`)
+- **Beta vs IHSG**: `1.285`
+- **Annualized CAPM Alpha**: `+4.47%` (Bulanan: `+0.372%`)
 
 ## 3. Validasi Data & Integritas
 

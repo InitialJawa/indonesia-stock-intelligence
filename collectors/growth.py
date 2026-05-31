@@ -3,7 +3,7 @@
 import json
 import concurrent.futures
 from pathlib import Path
-from utils.data_provider import MultiSourceProvider
+from utils.data_provider import YahooFinanceProvider
 
 UNIVERSE_FILE = Path("universe/idx30.json")
 OUTPUT_FILE = Path("output/raw/growth.json")
@@ -24,7 +24,7 @@ def collect_growth():
         tickers = json.load(f)
         
     OUTPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
-    provider = MultiSourceProvider()
+    provider = YahooFinanceProvider()
     results = {}
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:

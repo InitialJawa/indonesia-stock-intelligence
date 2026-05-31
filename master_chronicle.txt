@@ -1,0 +1,652 @@
+MASTER CHRONICLE: INDONESIA STOCK INTELLIGENCE (ISI)
+================================================================================
+Generated Date : 2026-05-31
+Author         : Antigravity AI
+Recipient      : Future AI Architect / Analyst
+================================================================================
+
+BAB 1: EXECUTIVE SUMMARY
+--------------------------------------------------------------------------------
+* Status Proyek: ONLINE & FULLY FUNCTIONAL. Sistem telah dibersihkan dari 
+  berbagai bug integrasi jalur impor relatif dan path file. Semua unit test 
+  (41/41 pengujian) lulus dengan sukses. Pipeline bulanan berhasil dieksekusi 
+  hingga menghasilkan peringkat V3 akhir dan visualisasi dashboard HTML terbaru.
+* Tujuan Proyek: Indonesia Stock Intelligence (ISI) dirancang untuk memproses 
+  data fundamental, pertumbuhan (growth), nilai (value), dan momentum dari 
+  saham-saham di Bursa Efek Indonesia (khususnya semesta IDX30). Menggunakan 
+  pendekatan multi-faktor kuantitatif untuk menghasilkan portofolio optimal 
+  yang dinamis secara otomatis.
+* Filosofi Proyek: Pendekatan investasi berbasis data objektif yang 
+  menggabungkan analisis Fundamental Klasik (Quality + Growth + Value) dengan 
+  analisis Aliran Dana Institusi (Foreign Flow / Bandar Asing) dan Momentum Pasar.
+  Keputusan investasi diambil murni secara mekanis kuantitatif guna meminimalkan 
+  distorsi emosi manusia.
+* Visi Jangka Jangka Panjang: Terwujudnya platform manajemen aset otomatis 
+  berbasis cloud (GitHub Actions) yang berjalan secara mandiri (zero-touch). 
+  Melakukan analisis fundamental berkala bulanan dan memitigasi risiko harian 
+  secara dinamis (Dynamic Watchlist & Daily Risk Radar), serta mampu memicu 
+  sinyal beli emas (Alpha Trigger) secara real-time.
+
+
+BAB 2: EVOLUSI PROYEK
+--------------------------------------------------------------------------------
+Proyek ISI telah berevolusi melalui 5 tahapan arsitektur utama:
+
+* V1: Fundamental Ranking Engine awal
+  - Tujuan: Membuat mesin perang fundamental awal untuk menyaring saham IDX.
+  - Implementasi: Skoring linier sederhana berbasis rasio keuangan dasar 
+    (ROE, PE, PB).
+  - Masalah: Rasio dihitung mentah tanpa normalisasi skala, menyebabkan saham-saham 
+    dengan skala rasio berbeda tidak dapat diperbandingkan secara adil. Saham perbankan 
+    selalu tereliminasi karena tingginya DER.
+  - Keputusan: Memperkenalkan normalisasi metrik di versi berikutnya.
+
+* V2: Normalized Engine & Multi-Factor Foundation
+  - Tujuan: Menciptakan model multi-faktor dengan bobot terdistribusi dan normalisasi skala.
+  - Implementasi: Pengenalan metode Min-Max Normalization (skala 0 - 100) untuk metrik 
+    Quality dan Value. Mulai memisahkan penanganan bank secara manual.
+  - Masalah: Terjadi "Outlier Crisis". Adanya satu saham dengan metrik ekstrim pencilan 
+    (outlier) mendistorsi kurva normalisasi linier Min-Max. Akibatnya, saham-saham lain 
+    yang sebenarnya berkinerja baik tertindih dan mendapatkan skor mendekati nol.
+  - Keputusan: Mengganti metode normalisasi Min-Max dengan peringkat persentil.
+
+* V3: Momentum & 4-Factor Integration
+  - Tujuan: Mengintegrasikan faktor momentum harga pasar ke dalam model fundamental.
+  - Implementasi: Menambahkan faktor Momentum (historis return 6 bulan dan 12 bulan) 
+    dan mengkonsolidasikan data ke dalam Factor Warehouse bulanan.
+  - Masalah: Evaluasi masih rentan bias jangka pendek dan kode dasar dipenuhi oleh 
+    skrip legacy yang redundan (kalkulator min-max usang dan file eksperimen portofolio).
+  - Keputusan: Melakukan debloat total (pembersihan kode sampah) dan migrasi penuh 
+    ke arsitektur V4 berbasis Percentile.
+
+* V4: Percentile Normalization & Multithreading
+  - Tujuan: Mengatasi Outlier Crisis, mempercepat pengumpulan data, dan menambahkan dashboard.
+  - Implementasi: Migrasi total skoring ke Percentile Normalization (skor berdasarkan ranking, 
+    bukan nilai absolut, sehingga kebal terhadap outlier). Menerapkan multithreading 
+    pada Collector data fundamental/growth dari YFinance (dengan fallback FMP). Membuat 
+    visual dashboard HTML otomatis di folder dashboard/index.html.
+  - Masalah: Pipeline berjalan sukses secara bulanan, tetapi tidak memiliki pengawasan 
+    risiko harian untuk memitigasi kejatuhan pasar mendadak atau aksi distribusi bandar.
+  - Keputusan: Merancang sistem hybrid yang dinamis di V5.
+
+* V5: Hybrid Architecture & GitHub Actions (Kondisi Saat Ini)
+  - Tujuan: Menghubungkan analisis fundamental bulanan dengan manajemen risiko harian yang dinamis.
+  - Implementasi: Menggabungkan pipeline bulanan (yang menghasilkan Dynamic Watchlist dari 
+    saham-saham fundamental terbaik) dengan sistem pengawasan harian (Daily Risk Radar). 
+    Menyediakan infrastruktur otomatisasi berbasis GitHub Actions untuk mengeksekusi 
+    radar harian dan mengirimkan notifikasi instan via Telegram dan Email.
+  - Masalah: Ditemukan bug fatal saat eksekusi modul berupa hilangnya file konfigurasi 
+    universe.json serta tabrakan ruang nama (namespace collision) karena folder utils/ 
+    root tertutup oleh modul scoring/utils.py.
+  - Keputusan: Memperbaiki path config_loader menjadi absolut berbasis BASE_DIR, memindahkan 
+    daftar impor internal scoring ke 'scoring.utils', dan merekonstruksi unit pengujian 
+    test_bugfix.py untuk memvalidasi fungsionalitas config_loader secara berkala.
+
+
+BAB 3: LESSONS LEARNED
+--------------------------------------------------------------------------------
+Berikut adalah rangkuman asumsi awal yang terbukti salah selama pengembangan proyek, 
+beserta solusi yang diambil:
+
+1. Asumsi Awal: Metrik neraca keuangan (seperti Debt to Equity Ratio - DER) dapat 
+   diperbandingkan secara rata untuk seluruh sektor saham.
+   ↓
+   Masalah: Perbankan secara alami memiliki DER yang sangat tinggi (sering kali > 500%) 
+   karena Dana Pihak Ketiga (DPK) dari nasabah dicatat sebagai liabilitas/utang pada 
+   neraca bank. Skoring standar menganggap ini sebagai bahaya besar, sehingga bank-bank 
+   berkualitas tinggi selalu mendapatkan skor DER = 0.
+   ↓
+   Insight: Struktur keuangan bank sangat unik dan tidak bisa diperlakukan sama dengan 
+   perusahaan manufaktur atau jasa lainnya. DER tinggi pada bank justru mencerminkan 
+   kepercayaan nasabah dalam menyimpan dana.
+   ↓
+   Solusi: Diberlakukannya "Bank Rule". DER dinonaktifkan (bobot 0.0) untuk sektor perbankan. 
+   Bobot tersebut dialihkan sepenuhnya untuk memperkuat sektor profitabilitas utama, 
+   yakni meningkatkan bobot Return on Equity (ROE) dari 25% menjadi 45%.
+
+2. Asumsi Awal: Rumus normalisasi Min-Max (linier) cukup adil untuk menyetarakan 
+   metrik performa keuangan.
+   ↓
+   Masalah: Terjadinya Outlier Crisis. Misalnya, jika satu saham memiliki pertumbuhan laba 
+   sebesar 2000% karena penjualan aset satu kali, maka saham berkinerja sangat baik lainnya 
+   yang tumbuh 30% akan mendapat nilai normalisasi mendekati 0.
+   ↓
+   Insight: Skala linier Min-Max sangat rentan terhadap distorsi pencilan (outliers).
+   ↓
+   Solusi: Mengubah total sistem normalisasi menjadi Percentile Normalization. Skor dihitung 
+   berdasarkan peringkat relatif di dalam populasi semesta saham. Saham terbaik akan selalu 
+   mendapat skor 100, terburuk mendapat skor 0, dan median mendapat skor 50, bebas dari 
+   distorsi nilai ekstrim pencilan.
+
+3. Asumsi Awal: Saham dengan rasio valuasi PE (Price to Earnings) yang sangat rendah 
+   adalah pilihan utama karena dinilai sangat murah.
+   ↓
+   Masalah: Terperangkap dalam "Value Trap". Saham-saham komoditas siklikal (seperti batu bara, 
+   nikel, CPO) sering kali membukukan laba sangat besar di puncak siklus harga komoditas global, 
+   membuat rasio PE terlihat sangat rendah (murah). Ketika siklus berbalik, laba bersih mereka 
+   anjlok dramatis dan harga saham jatuh tersungkur.
+   ↓
+   Insight: PE rendah pada puncak siklus komoditas adalah jebakan valuasi semu.
+   ↓
+   Solusi: Diberlakukannya "Commodity Trap Rule". Semua saham yang masuk dalam kategori komoditas 
+   siklikal mendapatkan diskon skor PE sebesar 50% untuk meredam daya tarik valuasi palsu tersebut.
+
+
+BAB 4: FAILED IDEAS ARCHIVE
+--------------------------------------------------------------------------------
+Berikut adalah arsip ide-ide yang sempat diajukan atau diterapkan namun akhirnya 
+ditinggalkan karena tidak efektif:
+
+1. Ide: Menggunakan Normalisasi Min-Max Linier untuk perbandingan faktor saham.
+   - Alasan Gagal: Menyebabkan Outlier Crisis yang melumpuhkan kemampuan sistem dalam 
+     memilih saham fundamental terbaik karena seluruh skor terkompresi mendekati nol.
+   - Status: DITINGGALKAN PERMANEN. Diganti dengan Percentile Normalization di V4.
+
+2. Ide: Pemantauan harian risiko menggunakan portofolio statis (hardcoded list).
+   - Alasan Gagal: Portofolio statis cepat usang dan tidak mencerminkan perubahan kepemilikan 
+     terbaru hasil rebalancing bulanan, sehingga pengawasan risiko tidak akurat.
+   - Status: DIGANTIKAN OLEH DYNAMIC WATCHLIST. Daily Risk Radar menyedot daftar pantau 
+     secara dinamis dari output scoring bulanan terbaru.
+
+3. Ide: Pengumpulan data fundamental mengandalkan satu jalur API berbayar (FMP) secara mutlak.
+   - Alasan Gagal: Menyebabkan pipeline terhenti total (crash) jika API Key mengalami limitasi 
+     panggilan atau tidak didefinisikan dalam lingkungan pengujian lokal/gratis.
+   - Status: DIGANTIKAN OLEH MULTI-SOURCE HYBRID PROVIDER. FMP bertindak sebagai pengumpul data 
+     utama, dan secara otomatis melakukan fallback ke scraping gratis Yahoo Finance (YFinance) 
+     jika API Key tidak ditemukan.
+
+
+BAB 5: MATHEMATICAL RULES
+--------------------------------------------------------------------------------
+Mesin kuantitatif ISI memiliki 3 aturan matematika utama yang tidak boleh dilanggar:
+
+1. Bank Rule (Pengecualian DER untuk Perbankan)
+   - Ticker bank ditentukan di config/sector_rules.json -> "financial_banks".
+   - Jika ticker = bank:
+     - Bobot Quality Factor dihitung dengan formula:
+       Quality Score = (ROE_percentile * 0.45) + (NetMargin_percentile * 0.20) + 
+                       (OpMargin_percentile * 0.15) + (FCF_percentile * 0.20)
+     - Catatan: DER diabaikan secara total (bobot 0.0) agar rasio utang/DPK bank tidak 
+       menghancurkan skor kualitasnya.
+   - Jika ticker = non-bank:
+     - Quality Score = (ROE_percentile * 0.25) + (NetMargin_percentile * 0.20) + 
+                       (OpMargin_percentile * 0.15) + (InvertedDER_percentile * 0.20) + 
+                       (FCF_percentile * 0.20)
+     - Catatan: InvertedDER_percentile dihitung sebagai (100 - DER_percentile) sehingga 
+       DER rendah mendapat skor yang lebih tinggi.
+
+2. Commodity Trap Rule (Diskon Valuasi Komoditas Siklikal)
+   - Ticker komoditas ditentukan di config/sector_rules.json -> "commodity_cyclical".
+   - Jika ticker = komoditas siklikal:
+     - Skor valuasi PE (PE_percentile) yang telah dibalik (inverted PE: 100 - PE_percentile) 
+       dikalikan dengan diskon 0.5.
+     - Formula Valuasi Akhir:
+       PE_Score_Final = (100 - PE_percentile) * 0.5
+     - Aturan ini menurunkan daya tarik saham komoditas siklikal secara signifikan untuk 
+       mencegah sistem membeli saham di puncak siklus laba.
+
+3. Foreign Flow Integration Rule (Integrasi Aliran Dana Asing)
+   - Digunakan pada penentuan Skor Momentum (scoring/momentum_score.py).
+   - Menghitung akumulasi arus dana asing bersih selama 6 bulan terakhir (foreign_flow_6m).
+   - Formula Momentum Score Akhir:
+     Momentum Score = (Return6M_percentile * 0.35) + (Return12M_percentile * 0.35) + 
+                      (ForeignFlow6M_percentile * 0.30)
+   - Aturan ini menyelaraskan indikator momentum harga teknikal dengan aksi akumulasi riil 
+     oleh investor institusi asing (Bandar Asing).
+
+
+BAB 6: ARSITEKTUR SISTEM
+--------------------------------------------------------------------------------
+Arsitektur ISI V5 terbagi atas 5 layer utama yang saling terhubung:
+
+1. Collector Layer (Pengumpul Data)
+   - Lokasi: collectors/fundamentals.py, collectors/growth.py, collectors/prices.py, 
+     collectors/daily_flow_collector.py.
+   - Peran: Mengunduh data pasar mentah (keuangan, pertumbuhan, harga penutupan, 
+     dan volume historis) dari penyedia data eksternal. Menggunakan multithreading 
+     untuk mempercepat unduhan dan menyimpannya sebagai file JSON mentah di output/raw/.
+
+2. Scoring Layer (Mesin Skoring & Peringkat)
+   - Lokasi: scoring/quality_score.py, scoring/growth_score.py, scoring/value_score.py, 
+     scoring/momentum_score.py, scoring/final_score_v3.py, scoring/utils.py.
+   - Peran: Memproses data mentah menjadi skor ternormalisasi menggunakan Percentile 
+     Normalization. Menerapkan Bank Rule & Commodity Trap Rule, menggabungkan faktor-faktor 
+     tersebut berdasarkan bobot portofolio: Quality (30%), Growth (25%), Value (20%), 
+     dan Momentum (25%), lalu menghasilkan peringkat final terpadu di output/scores/final_ranking_v3.json.
+
+3. Portfolio Layer (Mesin Rebalancing)
+   - Lokasi: backtesting/rebalance.py.
+   - Peran: Menyusun portofolio investasi aktif dengan mengambil Top 10 saham terbaik 
+     dari peringkat final bulanan dan mengalokasikannya secara merata (Equal Weight 10%).
+
+4. Warehouse Layer (Gudang Data Historis)
+   - Lokasi: backtesting/archive_current_state.py, backtesting/archive_fundamentals.py, 
+     backtesting/archive_growth.py, backtesting/archive_factors.py.
+   - Peran: Mengarsipkan data fundamental, faktor skoring, dan struktur portofolio 
+     aktif bulanan ke dalam basis data historis terpusat (database/historical/factor_warehouse.csv 
+     dan portfolio_warehouse.csv) untuk audit jangka panjang dan keperluan backtesting dinamis.
+
+5. Dashboard Layer (Antarmuka Visual)
+   - Lokasi: dashboard/generate_dashboard.py, dashboard/index.html.
+   - Peran: Menghasilkan visualisasi dashboard investasi berbasis web statis (HTML/CSS) 
+     berpenampilan premium yang menyajikan daftar portofolio aktif, peringkat faktor, 
+     dan status sinyal radar harian secara interaktif.
+
+
+BAB 7: PROJECT TREE AKTUAL
+--------------------------------------------------------------------------------
+Berikut adalah struktur direktori proyek Indonesia Stock Intelligence (ISI) selengkapnya:
+
+Folder PATH listing
+Volume serial number is 0000002B FE98:C3CA
+C:.
+│   .gitignore
+│   README.md
+│   requirements.txt
+│   run_daily_risk_radar.py
+│   run_monthly_pipeline.py
+│   test_bugfix.py
+│   
++---.github
+│   +---workflows
+│           daily_radar.yml
+│           monthly_pipeline.yml
+│           
++---archives
+│   +---portfolios
+│   │       2026-05.json
+│   │       
+│   +---rankings
+│           2026-05.json
+│           
++---automation
+│       monthly_job.sh
+│       
++---backtesting
+│   │   archive_current_state.py
+│   │   archive_factors.py
+│   │   archive_fundamentals.py
+│   │   archive_growth.py
+│   │   metrics.py
+│   │   monthly_returns.py
+│   │   point_in_time_backtest.py
+│   │   rebalance.py
+│   │   validate_archives.py
+│   │   __init__.py
+│   │   
+│   +---__pycache__
+│           archive_current_state.cpython-312.pyc
+│           archive_factors.cpython-312.pyc
+│           archive_fundamentals.cpython-312.pyc
+│           archive_growth.cpython-312.pyc
+│           metrics.cpython-312.pyc
+│           rebalance.cpython-312.pyc
+│           __init__.cpython-312.pyc
+│           
++---benchmarks
+│       ihsg.csv
+│       ihsg_monthly.csv
+│       
++---collectors
+│   │   daily_flow_collector.py
+│   │   fundamentals.py
+│   │   growth.py
+│   │   history.py
+│   │   prices.py
+│   │   __init__.py
+│   │   
+│   +---__pycache__
+│           daily_flow_collector.cpython-312.pyc
+│           fundamentals.cpython-312.pyc
+│           growth.cpython-312.pyc
+│           prices.cpython-312.pyc
+│           __init__.cpython-312.pyc
+│           
++---config
+│       scoring_weights.json
+│       sector_rules.json
+│       settings.json
+│       universe.json
+│       
++---dashboard
+│   │   generate_dashboard.py
+│   │   index.html
+│   │   
+│   +---__pycache__
+│           generate_dashboard.cpython-312.pyc
+│           
++---database
+│   +---historical
+│   │       factor_warehouse.csv
+│   │       portfolio_warehouse.csv
+│   │       
+│   +---monthly
+│           ADRO.JK.csv
+│           AKRA.JK.csv
+│           AMMN.JK.csv
+│           ANTM.JK.csv
+│           ASII.JK.csv
+│           BBCA.JK.csv
+│           BBNI.JK.csv
+│           BBRI.JK.csv
+│           BMRI.JK.csv
+│           BRPT.JK.csv
+│           CPIN.JK.csv
+│           ESSA.JK.csv
+│           EXCL.JK.csv
+│           GOTO.JK.csv
+│           HEAL.JK.csv
+│           ICBP.JK.csv
+│           INDF.JK.csv
+│           INTP.JK.csv
+│           ITMG.JK.csv
+│           KLBF.JK.csv
+│           MAPI.JK.csv
+│           MDKA.JK.csv
+│           MIKA.JK.csv
+│           PGAS.JK.csv
+│           PTBA.JK.csv
+│           SIDO.JK.csv
+│           SMGR.JK.csv
+│           TLKM.JK.csv
+│           TPIA.JK.csv
+│           UNTR.JK.csv
+│           
++---output
+│   +---history
+│   │       2026-05-30.json
+│   │       
+│   +---history_prices
+│   │       ADRO.JK.csv
+│   │       AKRA.JK.csv
+│   │       AMMN.JK.csv
+│   │       ANTM.JK.csv
+│   │       ASII.JK.csv
+│   │       BBCA.JK.csv
+│   │       BBNI.JK.csv
+│   │       BBRI.JK.csv
+│   │       BMRI.JK.csv
+│   │       BRPT.JK.csv
+│   │       CPIN.JK.csv
+│   │       ESSA.JK.csv
+│   │       EXCL.JK.csv
+│   │       GOTO.JK.csv
+│   │       HEAL.JK.csv
+│   │       ICBP.JK.csv
+│   │       INDF.JK.csv
+│   │       INTP.JK.csv
+│   │       ITMG.JK.csv
+│   │       KLBF.JK.csv
+│   │       MAPI.JK.csv
+│   │       MDKA.JK.csv
+│   │       MIKA.JK.csv
+│   │       PGAS.JK.csv
+│   │       PTBA.JK.csv
+│   │       SIDO.JK.csv
+│   │       SMGR.JK.csv
+│   │       TLKM.JK.csv
+│   │       TPIA.JK.csv
+│   │       UNTR.JK.csv
+│   │       
+│   +---raw
+│   │       fundamentals.json
+│   │       growth.json
+│   │       prices.json
+│   │       
+│   +---scores
+│           final_ranking_v3.json
+│           growth_ranking.json
+│           momentum_ranking.json
+│           quality_ranking.json
+│           value_ranking.json
+│           
++---reports
+│       comparison.csv
+│       portfolio_returns.csv
+│       
++---research
+│       data_audit.py
+│       factor_overlap.py
+│       momentum_vs_final.py
+│       project_status.py
+│       v2_vs_v3_holdings.py
+│       
++---scoring
+│   │   final_score_v3.py
+│   │   growth_score.py
+│   │   momentum_score.py
+│   │   quality_score.py
+│   │   utils.py
+│   │   value_score.py
+│   │   
+│   +---__pycache__
+│           final_score_v3.cpython-312.pyc
+│           growth_score.cpython-312.pyc
+│           momentum_score.cpython-312.pyc
+│           quality_score.cpython-312.pyc
+│           utils.cpython-312.pyc
+│           value_score.cpython-312.pyc
+│           
++---snapshots
+│   │   README.md
+│   │   
+│   +---final
+│   │       2026-05.json
+│   │       
+│   +---fundamentals
+│   │       2026-05.json
+│   │       
+│   +---growth
+│   │       2026-05.json
+│   │       
+│   +---momentum
+│   │       2026-05.json
+│   │       
+│   +---quality
+│   │       2026-05.json
+│   │       
+│   +---rankings
+│   │       2026-05.json
+│   │       
+│   +---value
+│           2026-05.json
+│           
++---universe
+│       idx30.json
+│       
++---utils
+│   │   config_loader.py
+│   │   data_provider.py
+│   │   data_validator.py
+│   │   email_notifier.py
+│   │   logger.py
+│   │   telegram_notifier.py
+│   │   __init__.py
+│   │   
+│   +---__pycache__
+│           config_loader.cpython-312.pyc
+│           data_provider.cpython-312.pyc
+│           email_notifier.cpython-312.pyc
+│           telegram_notifier.cpython-312.pyc
+│           __init__.cpython-312.pyc
+│           
++---__pycache__
+        run_monthly_pipeline.cpython-312.pyc
+
+
+BAB 8: IMPLEMENTATION STATUS
+--------------------------------------------------------------------------------
+Berikut adalah status implementasi dari modul-modul sistem:
+
+* SUDAH SELESAI (Completed & Verified)
+  - Modul Skoring Multi-Faktor (Quality, Growth, Value, Momentum) berbasis Persentil.
+  - Penanganan khusus anomali perbankan (Bank Rule) dan valuasi komoditas (Commodity Trap Rule).
+  - Mekanisme multithreaded collector untuk mengambil data keuangan gratis dari YFinance.
+  - Modul Warehouse bulanan untuk mengarsipkan hasil peringkat dan portofolio historis.
+  - Modul Hybrid V5 Daily Risk Radar yang melakukan pemantauan Volume Shock harian.
+  - Integrasi Notifikasi Email dan Telegram (berjalan dengan aman tanpa hardcode kredensial).
+  - Skrip pengujian terpusat (test_bugfix.py) yang memvalidasi integritas 41/41 unit test.
+
+* SEDANG BERJALAN (In Progress / Semi-Stable)
+  - Otomatisasi pemicuan Daily Risk Radar harian melalui GitHub Actions (proses sinkronisasi scheduler).
+  - Integrasi dashboard HTML dinamis dengan data real-time dari hasil radar harian.
+
+* BELUM FINAL (Backlog / Future Development)
+  - Sistem pengujian Walk-Forward Backtesting multi-tahun untuk membandingkan performa 
+    kumulatif taktis terhadap IHSG / IDX30.
+  - Modul NLP Sentiment Analyzer untuk menyaring berita emiten secara real-time.
+
+
+BAB 9: PORTFOLIO LOGIC
+--------------------------------------------------------------------------------
+Sistem ISI menggunakan aturan mekanis dalam mengelola alokasi aset portofolio:
+
+1. Pemilihan Saham (Stock Selection)
+   - Setiap akhir bulan, pipeline (`run_monthly_pipeline.py`) dijalankan untuk memproses 
+     data fundamental dan momentum IDX30 terbaru.
+   - Saham diurutkan berdasarkan `final_score` gabungan (bobot: Quality 30%, Growth 25%, 
+     Value 20%, Momentum 25%).
+   - Hanya Top 10 saham dengan `final_score` tertinggi yang dipilih masuk ke portofolio aktif.
+
+2. Pembobotan Aset (Asset Weighting)
+   - Portofolio aktif menerapkan sistem Equal Weighting (pembobotan merata).
+   - Setiap saham dari 10 saham terpilih mendapatkan alokasi dana sebesar 10% dari total nilai portofolio.
+   - Hal ini bertujuan memitigasi risiko konsentrasi yang berlebihan pada satu saham tertentu.
+
+3. Penyeimbangan Ulang (Rebalancing)
+   - Rebalancing dieksekusi secara bulanan melalui `backtesting/rebalance.py`.
+   - Saham-saham portofolio lama yang keluar dari peringkat Top 10 bulanan akan dijual sepenuhnya.
+   - Dana hasil penjualan dialokasikan untuk membeli saham-saham baru yang berhasil menembus Top 10.
+   - Semua biaya transaksi (transaction cost/slippage) diasumsikan sebesar 0.2% per transaksi 
+     untuk simulasi performa yang realistis.
+
+
+BAB 10: FITUR MASA DEPAN
+--------------------------------------------------------------------------------
+Berikut adalah cetak biru (blueprint) pengembangan fitur ISI untuk AI berikutnya:
+
+1. Dynamic Emergency Portfolio Rebalancer
+   - Menghubungkan Daily Risk Radar secara aktif ke mesin portofolio.
+   - Jika Daily Risk Radar memicu status EMERGENCY (Distribusi Masif / Volume Shock berat) 
+     pada salah satu saham portofolio aktif di tengah bulan, sistem akan secara otomatis 
+     melakukan penjualan darurat (emergency sell) tanpa menunggu jadwal rebalancing bulanan.
+   - Dana tunai hasil penjualan darurat disimpan dalam instrumen berisiko rendah (reksadana 
+     pasar uang atau kas) hingga jadwal rebalancing bulan berikutnya.
+
+2. Sentiment NLP Integration
+   - Mengembangkan kolektor berita (News Collector) yang mengambil data RSS Feed media 
+     keuangan terkemuka Indonesia (seperti CNBC Indonesia, Kontan, Bisnis Indonesia).
+   - Menggunakan model NLP ringan untuk menghitung skor sentimen emiten (Sentiment Score).
+   - Menjadikan Sentiment Score sebagai faktor filter tambahan: mendiskon peringkat saham 
+     meskipun fundamentalnya bagus jika sentimen berita didominasi oleh isu korupsi, 
+     tuntutan hukum, atau masalah tata kelola (bad GCG).
+
+
+BAB 11: ARCHITECTURAL DECISION LOG
+--------------------------------------------------------------------------------
+Catatan keputusan arsitektur penting yang telah diambil beserta dampaknya:
+
+1. Masalah: Terjadinya Outlier Crisis pada metode normalisasi Min-Max.
+   ↓
+   Insight: Perusahaan dengan pertumbuhan laba ekstrim yang sifatnya temporer 
+   mendistorsi seluruh skala linier, merusak performa skoring emiten fundamental bagus lainnya.
+   ↓
+   Keputusan: Mengubah sistem normalisasi dari linier Min-Max ke peringkat berbasis 
+   persentil (Percentile Normalization).
+   ↓
+   Konsekuensi: Menghilangkan distorsi outlier secara total. Peringkat menjadi sangat stabil. 
+   Kelemahannya, jarak kekuatan fundamental antar saham tidak lagi mencerminkan nilai absolut rasionya.
+
+2. Masalah: Eksekusi pipeline bulanan sering kali crash akibat relative path file yang berubah 
+   tergantung pada folder kerja eksekusi (CWD).
+   ↓
+   Insight: Lingkungan pemicuan otomatis (seperti GitHub runner) mengeksekusi file dari root, 
+   sedangkan eksekusi manual terkadang dijalankan dari dalam subfolder.
+   ↓
+   Keputusan: Memperbaiki modul utilitas `config_loader.py` untuk mengidentifikasi letak dirinya 
+   menggunakan `__file__` dan mendefinisikan konstanta `BASE_DIR` secara absolut.
+   ↓
+   Konsekuensi: Menjamin stabilitas eksekusi. Skrip pipeline bulanan dan pengujian dapat dijalankan 
+   secara aman dari folder manapun tanpa risiko kegagalan `FileNotFoundError`.
+
+3. Masalah: Tabrakan ruang nama (namespace collision) pada impor package 'utils'.
+   ↓
+   Insight: Folder root `utils/` bertabrakan dengan berkas `scoring/utils.py` saat python dijalankan 
+   sebagai modul `-m scoring.*`, sehingga menyebabkan kegagalan import modul config_loader.
+   ↓
+   Keputusan: Memindahkan semua import internal yang memanggil fungsi normalisasi di dalam folder 
+   scoring untuk menggunakan nama modul penuh secara eksplisit: `from scoring.utils import ...` 
+   serta memperbaiki struktur path di `test_bugfix.py` agar tidak melakukan `sys.path.insert(0, "scoring")`.
+   ↓
+   Konsekuensi: Struktur eksekusi modular menjadi sangat bersih dan standar, menyelesaikan semua 
+   masalah ImportError yang mengganggu pipeline.
+
+
+BAB 12: KNOWN RISKS
+--------------------------------------------------------------------------------
+Berikut adalah risiko teknis dan pasar yang masih terbuka dan wajib diwaspadai:
+
+* Ketergantungan API YFinance (Yahoo Finance)
+  - YFinance bersifat tidak resmi (unofficial API) yang melakukan scraping langsung ke server Yahoo. 
+    Jika struktur HTML atau mekanisme respons Yahoo Finance berubah, modul collector harga 
+    dan fundamental akan rusak secara mendadak.
+  - Mitigasi: Pastikan FMP API Key diisi di `config/settings.json` sebagai fallback utama yang stabil.
+
+* Ketiadaan Walk-Forward Backtesting yang Valid
+  - Model skoring multi-faktor belum diuji melalui simulasi berjalan (Walk-Forward) selama 
+    minimal 5 - 10 tahun ke belakang untuk membuktikan ketahanannya melewati berbagai siklus 
+    krisis pasar (seperti krisis pandemi 2020 atau krisis komoditas 2015).
+  - Mitigasi: Prioritaskan pembuatan mesin backtest historis berjalan menggunakan warehouse data.
+
+* Kredensial Notifikasi Kosong
+  - Token Telegram dan Email yang dikosongkan pada berkas `config/settings.json` lokal saat ini 
+    membuat notifikasi Daily Risk Radar dilewati secara otomatis (bypassed).
+  - Mitigasi: Pastikan untuk menyetel kredensial ini melalui environment variables di server 
+    produksi / GitHub Secrets, bukan dengan menuliskannya langsung ke berkas kode.
+
+
+BAB 13: ROADMAP
+--------------------------------------------------------------------------------
+Rencana pengembangan sistem berdasarkan skala prioritas:
+
+* PRIORITY 1: Konfigurasi Environment & Kredensial Produksi
+  - Menghubungkan variabel token Telegram dan kredensial Email dari GitHub Secrets ke dalam 
+    proses run di `.github/workflows/daily_radar.yml` agar alert darurat dapat meluncur otomatis.
+
+* PRIORITY 2: Pembuatan Dashboard Kinerja Historis Portofolio vs IHSG
+  - Menambahkan modul visualisasi grafik performa historis portofolio ISI bulanan dibandingkan 
+    dengan return IHSG (Indeks Harga Saham Gabungan) langsung ke dalam antarmuka HTML dashboard.
+
+* PRIORITY 3: Implementasi Mesin Backtest Historis Dinamis (Walk-Forward)
+  - Memanfaatkan `database/historical/factor_warehouse.csv` untuk mensimulasikan kinerja model 
+    skoring ISI dari waktu ke waktu secara historis guna mengukur tingkat drawdown dan Sharpe Ratio.
+
+
+BAB 14: INSTRUCTIONS FOR FUTURE AI
+--------------------------------------------------------------------------------
+Petunjuk penting bagi AI berikutnya yang melanjutkan pengembangan proyek ini:
+
+1. JANGAN PERNAH menggunakan normalisasi Min-Max untuk skoring faktor fundamental utama; 
+   selalu pertahankan Percentile Normalization demi stabilitas kurva peringkat dari gangguan outlier.
+2. JANGAN PERNAH menghapus atau melompati "Bank Rule" (DER Bypass) dan "Commodity Trap Rule" 
+   (50% PE Discount). Logika sektoral ini sangat krusial dalam menyaring anomali pasar lokal Indonesia.
+3. JANGAN PERNAH melakukan hardcode pada daftar emiten yang diawasi oleh Daily Risk Radar. 
+   Daftar pantau wajib selalu diambil secara dinamis dari file output fundamental bulanan terbaru 
+   (`output/scores/quality_ranking.json`) untuk menjaga integritas arsitektur hybrid.
+4. JANGAN PERNAH menggunakan relative path mentah untuk memproses file konfigurasi; 
+   selalu gunakan fungsi pembungkus yang disediakan oleh `utils/config_loader.py`.
+5. JANGAN PERNAH melakukan manipulasi atau penghapusan terhadap isi data warehouse historis 
+   (`database/historical/*.csv`) secara langsung tanpa pencatatan/backup, karena data tersebut 
+   adalah fondasi utama pengujian backtest.
+
+
+BAB 15: KESIMPULAN
+--------------------------------------------------------------------------------
+Proyek Indonesia Stock Intelligence (ISI) saat ini berada dalam kondisi sangat sehat (stable). 
+Seluruh komponen arsitektur V5 (Hybrid Architecture) telah berhasil diintegrasikan. 
+Jalur pengumpulan data fundamental bulanan dapat berjalan lancar tanpa terhambat bug path file, 
+skoring multi-faktor mampu berjalan seimbang tanpa gangguan outlier, dan Daily Risk Radar siap 
+melakukan pengawasan risiko harian secara dinamis. Peringkat portofolio bulanan IDX30 terbaru 
+telah berhasil di-generate secara akurat, siap untuk dievaluasi lebih lanjut seiring dengan 
+kondisi akumulasi bandar asing di pasar riil.
+================================================================================

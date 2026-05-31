@@ -1,0 +1,182 @@
+[
+    {
+        "ticker": "BRPT.JK",
+        "growth_score": 96.55,
+        "revenue_growth": 2.322,
+        "earnings_growth": 4.61
+    },
+    {
+        "ticker": "ESSA.JK",
+        "growth_score": 91.38,
+        "revenue_growth": 0.368,
+        "earnings_growth": 1.31
+    },
+    {
+        "ticker": "ADRO.JK",
+        "growth_score": 79.31,
+        "revenue_growth": 0.234,
+        "earnings_growth": 0.748
+    },
+    {
+        "ticker": "MAPI.JK",
+        "growth_score": 77.59,
+        "revenue_growth": 0.32,
+        "earnings_growth": 0.33
+    },
+    {
+        "ticker": "CPIN.JK",
+        "growth_score": 74.14,
+        "revenue_growth": 0.127,
+        "earnings_growth": 0.677
+    },
+    {
+        "ticker": "SMGR.JK",
+        "growth_score": 72.41,
+        "revenue_growth": 0.083,
+        "earnings_growth": 0.887
+    },
+    {
+        "ticker": "ANTM.JK",
+        "growth_score": 70.69,
+        "revenue_growth": 0.121,
+        "earnings_growth": 0.599
+    },
+    {
+        "ticker": "AKRA.JK",
+        "growth_score": 70.69,
+        "revenue_growth": 0.262,
+        "earnings_growth": 0.161
+    },
+    {
+        "ticker": "AMMN.JK",
+        "growth_score": 67.24,
+        "revenue_growth": 379.373,
+        "earnings_growth": 0
+    },
+    {
+        "ticker": "BBRI.JK",
+        "growth_score": 65.52,
+        "revenue_growth": 0.163,
+        "earnings_growth": 0.143
+    },
+    {
+        "ticker": "TPIA.JK",
+        "growth_score": 65.52,
+        "revenue_growth": 2.864,
+        "earnings_growth": 0
+    },
+    {
+        "ticker": "EXCL.JK",
+        "growth_score": 62.07,
+        "revenue_growth": 0.374,
+        "earnings_growth": 0
+    },
+    {
+        "ticker": "GOTO.JK",
+        "growth_score": 56.89,
+        "revenue_growth": 0.263,
+        "earnings_growth": 0
+    },
+    {
+        "ticker": "PTBA.JK",
+        "growth_score": 55.17,
+        "revenue_growth": -0.003,
+        "earnings_growth": 1.047
+    },
+    {
+        "ticker": "BBNI.JK",
+        "growth_score": 53.45,
+        "revenue_growth": 0.078,
+        "earnings_growth": 0.052
+    },
+    {
+        "ticker": "INDF.JK",
+        "growth_score": 51.72,
+        "revenue_growth": 0.074,
+        "earnings_growth": 0.086
+    },
+    {
+        "ticker": "MIKA.JK",
+        "growth_score": 46.55,
+        "revenue_growth": 0.066,
+        "earnings_growth": 0.048
+    },
+    {
+        "ticker": "BMRI.JK",
+        "growth_score": 45.69,
+        "revenue_growth": 0.015,
+        "earnings_growth": 0.167
+    },
+    {
+        "ticker": "PGAS.JK",
+        "growth_score": 43.1,
+        "revenue_growth": -0.038,
+        "earnings_growth": 0.458
+    },
+    {
+        "ticker": "KLBF.JK",
+        "growth_score": 39.66,
+        "revenue_growth": 0.101,
+        "earnings_growth": -0.035
+    },
+    {
+        "ticker": "BBCA.JK",
+        "growth_score": 36.21,
+        "revenue_growth": 0.025,
+        "earnings_growth": 0.037
+    },
+    {
+        "ticker": "ICBP.JK",
+        "growth_score": 36.21,
+        "revenue_growth": 0.076,
+        "earnings_growth": -0.031
+    },
+    {
+        "ticker": "MDKA.JK",
+        "growth_score": 36.2,
+        "revenue_growth": 0.063,
+        "earnings_growth": 0
+    },
+    {
+        "ticker": "INTP.JK",
+        "growth_score": 31.04,
+        "revenue_growth": -0.033,
+        "earnings_growth": 0.041
+    },
+    {
+        "ticker": "HEAL.JK",
+        "growth_score": 22.41,
+        "revenue_growth": 0.054,
+        "earnings_growth": -0.187
+    },
+    {
+        "ticker": "ITMG.JK",
+        "growth_score": 22.41,
+        "revenue_growth": 0.031,
+        "earnings_growth": -0.149
+    },
+    {
+        "ticker": "TLKM.JK",
+        "growth_score": 14.66,
+        "revenue_growth": 0.015,
+        "earnings_growth": -0.216
+    },
+    {
+        "ticker": "ASII.JK",
+        "growth_score": 12.07,
+        "revenue_growth": -0.056,
+        "earnings_growth": -0.146
+    },
+    {
+        "ticker": "UNTR.JK",
+        "growth_score": 1.73,
+        "revenue_growth": -0.167,
+        "earnings_growth": -0.794
+    },
+    {
+        "ticker": "SIDO.JK",
+        "growth_score": 1.73,
+        "revenue_growth": -0.188,
+        "earnings_growth": -0.35
+    }
+]

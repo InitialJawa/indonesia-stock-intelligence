@@ -1,9 +1,18 @@
 # file: scoring/value_score.py
 
 import json
+import os
 from utils import percentile_normalize
 
 def main():
+    # 1. Load Sector Rules untuk deteksi Value Trap Komoditas
+    try:
+        with open("config/sector_rules.json") as f:
+            sector_rules = json.load(f)
+            commodities = sector_rules.get("commodity_cyclical", [])
+    except FileNotFoundError:
+        commodities = []
+
     with open("output/raw/fundamentals.json") as f:
         data = json.load(f)
 
@@ -12,8 +21,13 @@ def main():
     pe_values = []
     pb_values = []
     dividend_values = []
+    ticker_is_commodity = []
 
     for ticker, info in data.items():
+        is_commodity = ticker in commodities
+        ticker_is_commodity.append(is_commodity)
+
+        # Jika info bernilai None, fallback ke 0
         pe = info.get("pe_ratio") or 0
         pb = info.get("pb_ratio") or 0
         dividend = info.get("dividend_yield") or 0
@@ -22,22 +36,27 @@ def main():
         pb_values.append(pb)
         dividend_values.append(dividend)
 
-    # Menggunakan Percentile Normalization
+    # 2. Percentile Normalization
     pe_scores = percentile_normalize(pe_values)
     pb_scores = percentile_normalize(pb_values)
+    dividend_scores = percentile_normalize(dividend_values)
 
-    # Inversi skor: mahal -> score rendah, murah -> score tinggi
+    # Inversi skor: valuasi mahal -> score rendah, murah -> score tinggi
     pe_scores = [100 - s for s in pe_scores]
     pb_scores = [100 - s for s in pb_scores]
-
-    # Dividend tinggi = bagus
-    dividend_scores = percentile_normalize(dividend_values)
 
     ranking = []
 
     for i, ticker in enumerate(tickers):
+        is_commodity = ticker_is_commodity[i]
+
+        # RULE: The Value Trap Discount (Anomali Komoditas)
+        final_pe_score = pe_scores[i]
+        if is_commodity:
+            final_pe_score = final_pe_score * 0.5 
+
         value_score = (
-            pe_scores[i] * 0.40 +
+            final_pe_score * 0.40 +
             pb_scores[i] * 0.30 +
             dividend_scores[i] * 0.30
         )
@@ -47,7 +66,8 @@ def main():
             "value_score": round(value_score, 2),
             "pe_ratio": pe_values[i],
             "pb_ratio": pb_values[i],
-            "dividend_yield": dividend_values[i]
+            "dividend_yield": dividend_values[i],
+            "is_commodity": is_commodity
         })
 
     ranking = sorted(
@@ -56,14 +76,16 @@ def main():
         reverse=True
     )
 
+    os.makedirs("output/scores", exist_ok=True)
     with open("output/scores/value_ranking.json", "w") as f:
         json.dump(ranking, f, indent=4)
 
-    print("\n=== VALUE RANKING (PERCENTILE NORMALIZED) ===\n")
+    print("\n=== VALUE RANKING (PERCENTILE NORMALIZED + COMMODITY TRAP FIX) ===\n")
     for i, stock in enumerate(ranking, start=1):
+        trap_tag = "[COMMODITY - PE DISCOUNTED]" if stock["is_commodity"] else ""
         print(
             f"{i}. {stock['ticker']} | "
-            f"Value={stock['value_score']}"
+            f"Value={stock['value_score']} {trap_tag}"
         )
 
 if __name__ == "__main__":

@@ -1,7 +1,12 @@
 {
-    "top_n": 5,
-    "risk_free_rate": 0.05,
-    "universe": "IDX30",
-    "benchmark": "^JKSE",
-    "rebalance_frequency": "monthly"
+    "telegram": {
+        "bot_token": "8499692835:AAElY688gIhCi5h2KtGF_co09Lh3RJ6ftaY",
+        "chat_id": "indonesia-stock-intelligence"
+    },
+    "email": {
+        "smtp_server": "smtp.gmail.com",
+        "smtp_port": 587,
+        "sender_email": "your_email@gmail.com",
+        "sender_password": "your_app_password"
+    }
 }

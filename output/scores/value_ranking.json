@@ -4,209 +4,239 @@
         "value_score": 83.45,
         "pe_ratio": 6.761348,
         "pb_ratio": 1.2474817,
-        "dividend_yield": 11.69
-    },
-    {
-        "ticker": "UNTR.JK",
-        "value_score": 82.07,
-        "pe_ratio": 6.770486,
-        "pb_ratio": 0.83769846,
-        "dividend_yield": 9.56
+        "dividend_yield": 11.69,
+        "is_commodity": false
     },
     {
         "ticker": "INTP.JK",
         "value_score": 80.35,
         "pe_ratio": 7.23589,
         "pb_ratio": 0.69142926,
-        "dividend_yield": 9.55
+        "dividend_yield": 9.55,
+        "is_commodity": false
     },
     {
         "ticker": "BBRI.JK",
         "value_score": 77.59,
         "pe_ratio": 7.5815983,
         "pb_ratio": 1.3133987,
-        "dividend_yield": 14.17
+        "dividend_yield": 14.17,
+        "is_commodity": false
     },
     {
         "ticker": "ASII.JK",
         "value_score": 77.59,
         "pe_ratio": 6.3694267,
         "pb_ratio": 0.86060655,
-        "dividend_yield": 7.8
+        "dividend_yield": 7.8,
+        "is_commodity": false
     },
     {
         "ticker": "BBNI.JK",
         "value_score": 77.58,
         "pe_ratio": 6.788866,
         "pb_ratio": 0.85512024,
-        "dividend_yield": 9.44
+        "dividend_yield": 9.44,
+        "is_commodity": false
     },
     {
         "ticker": "INDF.JK",
         "value_score": 74.83,
         "pe_ratio": 5.567929,
         "pb_ratio": 0.7864415,
-        "dividend_yield": 4.04
+        "dividend_yield": 4.04,
+        "is_commodity": false
     },
     {
         "ticker": "EXCL.JK",
         "value_score": 70.69,
         "pe_ratio": 0,
         "pb_ratio": 1.7263939,
-        "dividend_yield": 5.62
+        "dividend_yield": 5.62,
+        "is_commodity": false
+    },
+    {
+        "ticker": "UNTR.JK",
+        "value_score": 66.9,
+        "pe_ratio": 6.770486,
+        "pb_ratio": 0.83769846,
+        "dividend_yield": 9.56,
+        "is_commodity": true
     },
     {
         "ticker": "PTBA.JK",
-        "value_score": 70.0,
+        "value_score": 60.34,
         "pe_ratio": 9.587859,
         "pb_ratio": 1.360204,
-        "dividend_yield": 11.96
-    },
-    {
-        "ticker": "ADRO.JK",
-        "value_score": 59.31,
-        "pe_ratio": 7.524454,
-        "pb_ratio": 13529.412,
-        "dividend_yield": 10.28
+        "dividend_yield": 11.96,
+        "is_commodity": true
     },
     {
         "ticker": "GOTO.JK",
         "value_score": 58.79,
         "pe_ratio": 0,
         "pb_ratio": 1.6553551,
-        "dividend_yield": 0
-    },
-    {
-        "ticker": "AKRA.JK",
-        "value_score": 56.9,
-        "pe_ratio": 9.514638,
-        "pb_ratio": 1.9067999,
-        "dividend_yield": 8.1
+        "dividend_yield": 0,
+        "is_commodity": false
     },
     {
         "ticker": "ICBP.JK",
         "value_score": 53.1,
         "pe_ratio": 9.057971,
         "pb_ratio": 1.5166079,
-        "dividend_yield": 3.52
-    },
-    {
-        "ticker": "ITMG.JK",
-        "value_score": 51.38,
-        "pe_ratio": 7.7519383,
-        "pb_ratio": 13022.981,
-        "dividend_yield": 7.83
+        "dividend_yield": 3.52,
+        "is_commodity": false
     },
     {
         "ticker": "SIDO.JK",
         "value_score": 49.31,
         "pe_ratio": 9.94046,
         "pb_ratio": 3.469618,
-        "dividend_yield": 9.64
+        "dividend_yield": 9.64,
+        "is_commodity": false
     },
     {
         "ticker": "KLBF.JK",
         "value_score": 47.93,
         "pe_ratio": 9.66123,
         "pb_ratio": 1.4339722,
-        "dividend_yield": 2.6
+        "dividend_yield": 2.6,
+        "is_commodity": false
     },
     {
         "ticker": "ANTM.JK",
         "value_score": 46.55,
         "pe_ratio": 9.671181,
         "pb_ratio": 1.7939405,
-        "dividend_yield": 5.23
+        "dividend_yield": 5.23,
+        "is_commodity": false
+    },
+    {
+        "ticker": "AKRA.JK",
+        "value_score": 46.55,
+        "pe_ratio": 9.514638,
+        "pb_ratio": 1.9067999,
+        "dividend_yield": 8.1,
+        "is_commodity": true
+    },
+    {
+        "ticker": "ADRO.JK",
+        "value_score": 46.21,
+        "pe_ratio": 7.524454,
+        "pb_ratio": 13529.412,
+        "dividend_yield": 10.28,
+        "is_commodity": true
     },
     {
         "ticker": "TPIA.JK",
         "value_score": 43.1,
         "pe_ratio": 4.7709413,
         "pb_ratio": 41511.625,
-        "dividend_yield": 0.34
+        "dividend_yield": 0.34,
+        "is_commodity": false
     },
     {
         "ticker": "MDKA.JK",
         "value_score": 40.17,
         "pe_ratio": 0,
         "pb_ratio": 80937.5,
-        "dividend_yield": 0
+        "dividend_yield": 0,
+        "is_commodity": false
+    },
+    {
+        "ticker": "ITMG.JK",
+        "value_score": 39.66,
+        "pe_ratio": 7.7519383,
+        "pb_ratio": 13022.981,
+        "dividend_yield": 7.83,
+        "is_commodity": true
     },
     {
         "ticker": "SMGR.JK",
         "value_score": 38.28,
         "pe_ratio": 49.74978,
         "pb_ratio": 0.2613957,
-        "dividend_yield": 1.68
+        "dividend_yield": 1.68,
+        "is_commodity": false
     },
     {
         "ticker": "CPIN.JK",
         "value_score": 37.93,
         "pe_ratio": 10.493205,
         "pb_ratio": 1.9070367,
-        "dividend_yield": 4.22
+        "dividend_yield": 4.22,
+        "is_commodity": false
     },
     {
         "ticker": "BBCA.JK",
         "value_score": 36.55,
         "pe_ratio": 12.106537,
         "pb_ratio": 2.702845,
-        "dividend_yield": 5.89
-    },
-    {
-        "ticker": "PGAS.JK",
-        "value_score": 36.55,
-        "pe_ratio": 10.245902,
-        "pb_ratio": 15598.291,
-        "dividend_yield": 6.88
+        "dividend_yield": 5.89,
+        "is_commodity": false
     },
     {
         "ticker": "TLKM.JK",
         "value_score": 35.17,
         "pe_ratio": 18.416094,
         "pb_ratio": 2.1886785,
-        "dividend_yield": 7.01
+        "dividend_yield": 7.01,
+        "is_commodity": false
     },
     {
         "ticker": "MAPI.JK",
         "value_score": 35.17,
         "pe_ratio": 10.4494295,
         "pb_ratio": 1.6938207,
-        "dividend_yield": 0.67
+        "dividend_yield": 0.67,
+        "is_commodity": false
+    },
+    {
+        "ticker": "PGAS.JK",
+        "value_score": 29.65,
+        "pe_ratio": 10.245902,
+        "pb_ratio": 15598.291,
+        "dividend_yield": 6.88,
+        "is_commodity": true
     },
     {
         "ticker": "MIKA.JK",
         "value_score": 26.55,
         "pe_ratio": 16.340528,
         "pb_ratio": 2.9726624,
-        "dividend_yield": 2.65
+        "dividend_yield": 2.65,
+        "is_commodity": false
     },
     {
         "ticker": "HEAL.JK",
         "value_score": 20.0,
         "pe_ratio": 35.459663,
         "pb_ratio": 2.532161,
-        "dividend_yield": 1.43
+        "dividend_yield": 1.43,
+        "is_commodity": false
     },
     {
         "ticker": "ESSA.JK",
-        "value_score": 18.62,
+        "value_score": 14.48,
         "pe_ratio": 12.723129,
         "pb_ratio": 24814.814,
-        "dividend_yield": 1.04
+        "dividend_yield": 1.04,
+        "is_commodity": true
     },
     {
         "ticker": "BRPT.JK",
         "value_score": 8.1,
         "pe_ratio": 18.04987,
         "pb_ratio": 77600.0,
-        "dividend_yield": 0
+        "dividend_yield": 0,
+        "is_commodity": false
     },
     {
         "ticker": "AMMN.JK",
         "value_score": 6.38,
         "pe_ratio": 22.83105,
         "pb_ratio": 43421.055,
-        "dividend_yield": 0
+        "dividend_yield": 0,
+        "is_commodity": false
     }
 ]

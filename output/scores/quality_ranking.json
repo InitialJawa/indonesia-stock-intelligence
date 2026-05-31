@@ -1,237 +1,273 @@
 [
     {
-        "ticker": "BBCA.JK",
-        "quality_score": 82.07,
-        "roe": 0.22972,
-        "net_margin": 0.53462005,
-        "operating_margin": 0.67586,
-        "debt_to_equity": 0,
-        "free_cash_flow": 0
-    },
-    {
-        "ticker": "BMRI.JK",
-        "quality_score": 80.0,
-        "roe": 0.21040002,
-        "net_margin": 0.40245,
-        "operating_margin": 0.58581,
-        "debt_to_equity": 0,
-        "free_cash_flow": 0
-    },
-    {
         "ticker": "SIDO.JK",
-        "quality_score": 79.65,
+        "quality_score": 82.3,
         "roe": 0.32823002,
         "net_margin": 0.29088,
         "operating_margin": 0.2754,
         "debt_to_equity": 0.00049,
-        "free_cash_flow": 953373229056
+        "free_cash_flow": 953373229056,
+        "is_bank": false
     },
     {
-        "ticker": "BBRI.JK",
-        "quality_score": 75.69,
-        "roe": 0.18135999,
-        "net_margin": 0.40230998,
-        "operating_margin": 0.42025003,
-        "debt_to_equity": 0,
-        "free_cash_flow": 0
+        "ticker": "BBCA.JK",
+        "quality_score": 80.35,
+        "roe": 0.22972,
+        "net_margin": 0.53462005,
+        "operating_margin": 0.67586,
+        "debt_to_equity": null,
+        "free_cash_flow": 0,
+        "is_bank": true
+    },
+    {
+        "ticker": "BMRI.JK",
+        "quality_score": 77.59,
+        "roe": 0.21040002,
+        "net_margin": 0.40245,
+        "operating_margin": 0.58581,
+        "debt_to_equity": null,
+        "free_cash_flow": 0,
+        "is_bank": true
     },
     {
         "ticker": "MIKA.JK",
-        "quality_score": 71.38,
+        "quality_score": 73.92,
         "roe": 0.17981,
         "net_margin": 0.25302,
         "operating_margin": 0.30093,
         "debt_to_equity": 0.00111,
-        "free_cash_flow": 511055921152
+        "free_cash_flow": 511055921152,
+        "is_bank": false
     },
     {
-        "ticker": "BBNI.JK",
-        "quality_score": 66.03,
-        "roe": 0.12029,
-        "net_margin": 0.40032002,
-        "operating_margin": 0.47421002,
-        "debt_to_equity": 0,
-        "free_cash_flow": 0
-    },
-    {
-        "ticker": "CPIN.JK",
-        "quality_score": 61.9,
-        "roe": 0.19496,
-        "net_margin": 0.091630004,
-        "operating_margin": 0.17216,
-        "debt_to_equity": 0.18068,
-        "free_cash_flow": 2504820785152
+        "ticker": "BBRI.JK",
+        "quality_score": 71.21,
+        "roe": 0.18135999,
+        "net_margin": 0.40230998,
+        "operating_margin": 0.42025003,
+        "debt_to_equity": null,
+        "free_cash_flow": 0,
+        "is_bank": true
     },
     {
         "ticker": "ESSA.JK",
-        "quality_score": 61.9,
+        "quality_score": 64.65,
         "roe": 0.121120006,
         "net_margin": 0.15882,
         "operating_margin": 0.35653,
         "debt_to_equity": 0.00021999999999999998,
-        "free_cash_flow": 86916824
+        "free_cash_flow": 86916824,
+        "is_bank": false
     },
     {
-        "ticker": "TLKM.JK",
-        "quality_score": 61.21,
-        "roe": 0.14214,
-        "net_margin": 0.11276,
-        "operating_margin": 0.24590999,
-        "debt_to_equity": 0.44115000000000004,
-        "free_cash_flow": 32677625331712
+        "ticker": "CPIN.JK",
+        "quality_score": 63.88,
+        "roe": 0.19496,
+        "net_margin": 0.091630004,
+        "operating_margin": 0.17216,
+        "debt_to_equity": 0.18068,
+        "free_cash_flow": 2504820785152,
+        "is_bank": false
     },
     {
         "ticker": "KLBF.JK",
-        "quality_score": 60.17,
+        "quality_score": 62.6,
         "roe": 0.1443,
         "net_margin": 0.09988,
         "operating_margin": 0.13664,
         "debt_to_equity": 0.01187,
-        "free_cash_flow": 2396069298176
+        "free_cash_flow": 2396069298176,
+        "is_bank": false
+    },
+    {
+        "ticker": "TLKM.JK",
+        "quality_score": 62.2,
+        "roe": 0.14214,
+        "net_margin": 0.11276,
+        "operating_margin": 0.24590999,
+        "debt_to_equity": 0.44115000000000004,
+        "free_cash_flow": 32677625331712,
+        "is_bank": false
     },
     {
         "ticker": "ICBP.JK",
-        "quality_score": 58.45,
+        "quality_score": 59.0,
         "roe": 0.14631,
         "net_margin": 0.11969,
         "operating_margin": 0.20801,
         "debt_to_equity": 0.62219,
-        "free_cash_flow": 6226821251072
+        "free_cash_flow": 6226821251072,
+        "is_bank": false
     },
     {
-        "ticker": "ASII.JK",
-        "quality_score": 52.41,
-        "roe": 0.13245,
-        "net_margin": 0.099429995,
-        "operating_margin": 0.0857,
-        "debt_to_equity": 0.39859,
-        "free_cash_flow": 15747374907392
+        "ticker": "BBNI.JK",
+        "quality_score": 53.96,
+        "roe": 0.12029,
+        "net_margin": 0.40032002,
+        "operating_margin": 0.47421002,
+        "debt_to_equity": null,
+        "free_cash_flow": 0,
+        "is_bank": true
     },
     {
         "ticker": "ADRO.JK",
-        "quality_score": 51.9,
+        "quality_score": 53.77,
         "roe": 0.10256,
         "net_margin": 0.2543,
         "operating_margin": 0.31133,
         "debt_to_equity": 0.19536,
-        "free_cash_flow": -21144876
+        "free_cash_flow": -21144876,
+        "is_bank": false
     },
     {
-        "ticker": "TPIA.JK",
-        "quality_score": 50.0,
-        "roe": 0.42368,
-        "net_margin": 0.14337,
-        "operating_margin": 0.16072,
-        "debt_to_equity": 1.1702299999999999,
-        "free_cash_flow": -1840610688
-    },
-    {
-        "ticker": "INDF.JK",
-        "quality_score": 49.83,
-        "roe": 0.13319,
-        "net_margin": 0.086780004,
-        "operating_margin": 0.18856001,
-        "debt_to_equity": 0.61085,
-        "free_cash_flow": 8638832312320
+        "ticker": "ASII.JK",
+        "quality_score": 53.52,
+        "roe": 0.13245,
+        "net_margin": 0.099429995,
+        "operating_margin": 0.0857,
+        "debt_to_equity": 0.39859,
+        "free_cash_flow": 15747374907392,
+        "is_bank": false
     },
     {
         "ticker": "ANTM.JK",
-        "quality_score": 48.97,
+        "quality_score": 50.62,
         "roe": 0.24687,
         "net_margin": 0.09661999,
         "operating_margin": 0.15276,
         "debt_to_equity": 0.21609,
-        "free_cash_flow": -4749535477760
+        "free_cash_flow": -4749535477760,
+        "is_bank": false
+    },
+    {
+        "ticker": "INDF.JK",
+        "quality_score": 50.49,
+        "roe": 0.13319,
+        "net_margin": 0.086780004,
+        "operating_margin": 0.18856001,
+        "debt_to_equity": 0.61085,
+        "free_cash_flow": 8638832312320,
+        "is_bank": false
     },
     {
         "ticker": "UNTR.JK",
-        "quality_score": 48.8,
+        "quality_score": 50.34,
         "roe": 0.12315,
         "net_margin": 0.09766,
         "operating_margin": 0.07727,
         "debt_to_equity": 0.25751,
-        "free_cash_flow": 4743001800704
+        "free_cash_flow": 4743001800704,
+        "is_bank": false
     },
     {
-        "ticker": "AKRA.JK",
-        "quality_score": 47.93,
-        "roe": 0.18943001,
-        "net_margin": 0.05264,
-        "operating_margin": 0.06335,
-        "debt_to_equity": 0.34159999999999996,
-        "free_cash_flow": 3903885148160
+        "ticker": "TPIA.JK",
+        "quality_score": 50.22,
+        "roe": 0.42368,
+        "net_margin": 0.14337,
+        "operating_margin": 0.16072,
+        "debt_to_equity": 1.1702299999999999,
+        "free_cash_flow": -1840610688,
+        "is_bank": false
     },
     {
         "ticker": "PTBA.JK",
-        "quality_score": 47.76,
+        "quality_score": 49.96,
         "roe": 0.14413999,
         "net_margin": 0.07837,
         "operating_margin": 0.08306,
         "debt_to_equity": 0.11489,
-        "free_cash_flow": 488093122560
+        "free_cash_flow": 488093122560,
+        "is_bank": false
+    },
+    {
+        "ticker": "AKRA.JK",
+        "quality_score": 49.14,
+        "roe": 0.18943001,
+        "net_margin": 0.05264,
+        "operating_margin": 0.06335,
+        "debt_to_equity": 0.34159999999999996,
+        "free_cash_flow": 3903885148160,
+        "is_bank": false
     },
     {
         "ticker": "INTP.JK",
-        "quality_score": 45.35,
+        "quality_score": 47.44,
         "roe": 0.09884,
         "net_margin": 0.12803,
         "operating_margin": 0.05941,
         "debt_to_equity": 0.12118999999999999,
-        "free_cash_flow": 1880727224320
-    },
-    {
-        "ticker": "MAPI.JK",
-        "quality_score": 43.97,
-        "roe": 0.17545,
-        "net_margin": 0.051820002,
-        "operating_margin": 0.0855,
-        "debt_to_equity": 0.4696,
-        "free_cash_flow": 3872628146176
+        "free_cash_flow": 1880727224320,
+        "is_bank": false
     },
     {
         "ticker": "ITMG.JK",
-        "quality_score": 43.45,
+        "quality_score": 45.77,
         "roe": 0.093839996,
         "net_margin": 0.09527001,
         "operating_margin": 0.14871,
         "debt_to_equity": 0.04237,
-        "free_cash_flow": 237452256
+        "free_cash_flow": 237452256,
+        "is_bank": false
+    },
+    {
+        "ticker": "MAPI.JK",
+        "quality_score": 44.85,
+        "roe": 0.17545,
+        "net_margin": 0.051820002,
+        "operating_margin": 0.0855,
+        "debt_to_equity": 0.4696,
+        "free_cash_flow": 3872628146176,
+        "is_bank": false
     },
     {
         "ticker": "BRPT.JK",
-        "quality_score": 41.72,
+        "quality_score": 41.83,
         "roe": 0.34817,
         "net_margin": 0.05984,
         "operating_margin": 0.19275999,
         "debt_to_equity": 1.3390700000000002,
-        "free_cash_flow": -1247792384
+        "free_cash_flow": -1247792384,
+        "is_bank": false
     },
     {
         "ticker": "AMMN.JK",
-        "quality_score": 41.38,
+        "quality_score": 41.71,
         "roe": 0.10484,
         "net_margin": 0.20658001,
         "operating_margin": 0.38917,
         "debt_to_equity": 1.1655200000000001,
-        "free_cash_flow": -1094615168
+        "free_cash_flow": -1094615168,
+        "is_bank": false
     },
     {
         "ticker": "PGAS.JK",
-        "quality_score": 34.48,
+        "quality_score": 35.81,
         "roe": 0.10092,
         "net_margin": 0.061890002,
         "operating_margin": 0.13191,
         "debt_to_equity": 0.29053,
-        "free_cash_flow": 228038624
+        "free_cash_flow": 228038624,
+        "is_bank": false
     },
     {
         "ticker": "SMGR.JK",
-        "quality_score": 29.83,
+        "quality_score": 31.59,
         "roe": 0.00438,
         "net_margin": 0.00637,
         "operating_margin": 0.0312,
         "debt_to_equity": 0.21137,
-        "free_cash_flow": 2993279991808
+        "free_cash_flow": 2993279991808,
+        "is_bank": false
+    },
+    {
+        "ticker": "HEAL.JK",
+        "quality_score": 19.05,
+        "roe": 0.07834,
+        "net_margin": 0.056209996,
+        "operating_margin": 0.1254,
+        "debt_to_equity": 0.48057,
+        "free_cash_flow": -570719993856,
+        "is_bank": false
     },
     {
         "ticker": "EXCL.JK",
@@ -240,33 +276,27 @@
         "net_margin": -0.12106,
         "operating_margin": -0.00874,
         "debt_to_equity": 2.0904,
-        "free_cash_flow": 8942089404416
-    },
-    {
-        "ticker": "HEAL.JK",
-        "quality_score": 18.28,
-        "roe": 0.07834,
-        "net_margin": 0.056209996,
-        "operating_margin": 0.1254,
-        "debt_to_equity": 0.48057,
-        "free_cash_flow": -570719993856
+        "free_cash_flow": 8942089404416,
+        "is_bank": false
     },
     {
         "ticker": "GOTO.JK",
-        "quality_score": 15.0,
+        "quality_score": 16.44,
         "roe": -0.03291,
         "net_margin": -0.03316,
         "operating_margin": 0.07829,
         "debt_to_equity": 0.27754,
-        "free_cash_flow": -323724115968
+        "free_cash_flow": -323724115968,
+        "is_bank": false
     },
     {
         "ticker": "MDKA.JK",
-        "quality_score": 11.9,
+        "quality_score": 12.34,
         "roe": 0.0055299997,
         "net_margin": -0.03275,
         "operating_margin": 0.040900003,
         "debt_to_equity": 0.71135,
-        "free_cash_flow": -440244960
+        "free_cash_flow": -440244960,
+        "is_bank": false
     }
 ]

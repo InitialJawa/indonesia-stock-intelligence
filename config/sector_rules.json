@@ -1,0 +1,21 @@
+{
+    "financial_banks": [
+        "BBCA.JK", 
+        "BBRI.JK", 
+        "BMRI.JK", 
+        "BBNI.JK", 
+        "ARTO.JK", 
+        "BRIS.JK"
+    ],
+    "commodity_cyclical": [
+        "ADRO.JK", 
+        "PTBA.JK", 
+        "ITMG.JK", 
+        "HRUM.JK", 
+        "UNTR.JK", 
+        "MEDC.JK", 
+        "PGAS.JK", 
+        "AKRA.JK",
+        "ESSA.JK"
+    ]
+}

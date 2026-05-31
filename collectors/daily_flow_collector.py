@@ -26,13 +26,17 @@ def check_volume_shock(ticker: str) -> dict:
         ma20_volume = latest_data['MA20_Volume']
         current_close = latest_data['Close']
         prev_close = prev_data['Close']
-        
+
+        # Guard: MA20 masih NaN jika ada gap data (suspend, libur panjang)
+        if pd.isna(ma20_volume) or pd.isna(current_volume):
+            return {"ticker": ticker, "status": "INSUFFICIENT_DATA"}
+
         # Kalkulasi persentase perubahan harga
         price_change_pct = ((current_close - prev_close) / prev_close) * 100
-        
+
         # Logika Volume Shock: Volume hari ini > 2x rata-rata 20 hari
         is_volume_shock = current_volume > (2 * ma20_volume)
-        
+
         return {
             "ticker": ticker,
             "status": "OK",

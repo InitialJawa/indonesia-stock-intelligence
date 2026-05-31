@@ -1,7 +1,7 @@
 {
     "telegram": {
-        "bot_token": "8499692835:AAElY688gIhCi5h2KtGF_co09Lh3RJ6ftaY",
-        "chat_id": "indonesia-stock-intelligence"
+        "bot_token": "",
+        "chat_id": ""
     },
     "email": {
         "smtp_server": "smtp.gmail.com",

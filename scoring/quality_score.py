@@ -2,7 +2,7 @@
 
 import json
 import os
-from utils import percentile_normalize
+from scoring.utils import percentile_normalize
 
 def main():
     # 1. Load Sector Rules untuk deteksi Anomali

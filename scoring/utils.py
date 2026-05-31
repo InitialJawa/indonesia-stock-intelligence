@@ -28,7 +28,9 @@ def percentile_normalize(values):
     if n == 0:
         return []
     if n <= 1 or max(values) == min(values):
-        return [100.0 for _ in values]
+        # Semua nilai sama (termasuk semua 0): tidak bisa dibedakan,
+        # kembalikan 50 (posisi tengah) bukan 100 agar tidak misleading.
+        return [50.0 for _ in values]
 
     scores = []
     for v in values:

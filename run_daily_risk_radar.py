@@ -3,6 +3,7 @@
 import json
 import datetime
 from utils.telegram_notifier import send_telegram_alert
+from utils.email_notifier import send_email_alert
 from collectors.daily_flow_collector import check_volume_shock
 
 def get_dynamic_watchlist(top_n=5):
@@ -59,8 +60,12 @@ def evaluate_emergency_brake():
     if alerts_triggered:
         final_message = "\n\n".join(alerts_triggered)
         send_telegram_alert(final_message, "EMERGENCY")
+        send_email_alert(final_message, "EMERGENCY")
     else:
-        print("[-] Tidak ada anomali distribusi massal pada watchlist hari ini.")
+        safe_msg = "Tidak ada anomali distribusi massal pada watchlist hari ini. Portofolio terpantau aman."
+        print(f"[-] {safe_msg}")
+        send_telegram_alert(safe_msg, "INFO")
+        send_email_alert(safe_msg, "INFO")
 
 def evaluate_alpha_trigger():
     """

@@ -1,17 +1,17 @@
-# file: .github/workflows/daily_radar.yml
-name: ISI V5 Daily Risk Radar
+# file: .github/workflows/monthly_pipeline.yml
+name: ISI V4 Monthly Pipeline
 
 on:
   schedule:
-    # Berjalan otomatis setiap Senin-Jumat pukul 16:30 WIB
-    # Waktu server GitHub adalah UTC. 16:30 WIB = 09:30 UTC
-    - cron: '30 9 * * 1-5'
-  
+    # Berjalan otomatis setiap tanggal 1, jam 09:00 WIB
+    # Waktu server GitHub adalah UTC. 09:00 WIB = 02:00 UTC
+    - cron: '0 2 1 * *'
+
   # Mengizinkan eksekusi manual (tombol Run workflow)
-  workflow_dispatch: 
+  workflow_dispatch:
 
 jobs:
-  run-radar:
+  run-pipeline:
     runs-on: ubuntu-latest
 
     steps:
@@ -47,5 +47,15 @@ jobs:
         }
         EOF
 
-    - name: Execute Daily Risk Radar
-      run: python run_daily_risk_radar.py
+    - name: Execute Monthly Pipeline
+      run: python run_monthly_pipeline.py
+
+    - name: Commit & Push Output ke Repository
+      # Menyimpan hasil scoring, dashboard, dan warehouse kembali ke repo
+      # agar daily_radar.yml dapat membaca final_ranking_v3.json
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git add output/scores/ dashboard/index.html database/ snapshots/ archives/
+        git diff --staged --quiet || git commit -m "chore: monthly pipeline update $(date +'%Y-%m')"
+        git push

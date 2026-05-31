@@ -13,33 +13,33 @@ PIPELINE = [
     # =========================
     # Factor Scores
     # =========================
-    "python scoring/quality_score.py",
-    "python scoring/growth_score.py",
-    "python scoring/value_score.py",
-    "python scoring/momentum_score.py",
+    "python -m scoring.quality_score",
+    "python -m scoring.growth_score",
+    "python -m scoring.value_score",
+    "python -m scoring.momentum_score",
 
     # =========================
     # Final Ranking
     # =========================
-    "python scoring/final_score_v3.py",
+    "python -m scoring.final_score_v3",
 
     # =========================
     # Archives & Warehouse
     # =========================
-    "python backtesting/archive_current_state.py",
-    "python backtesting/archive_fundamentals.py",
-    "python backtesting/archive_growth.py",
-    "python backtesting/archive_factors.py",
+    "python -m backtesting.archive_current_state",
+    "python -m backtesting.archive_fundamentals",
+    "python -m backtesting.archive_growth",
+    "python -m backtesting.archive_factors",
 
     # =========================
     # Portfolio Rebalance
     # =========================
-    "python backtesting/rebalance.py",
-    
+    "python -m backtesting.rebalance",
+
     # =========================
     # Visual Dashboard
     # =========================
-    "python dashboard/generate_dashboard.py"
+    "python -m dashboard.generate_dashboard"
 ]
 
 def run():

@@ -84,9 +84,9 @@
         "quality_score": 62.2,
         "roe": 0.14214,
         "net_margin": 0.11276,
-        "operating_margin": 0.24590999,
+        "operating_margin": 0.24583,
         "debt_to_equity": 0.44115000000000004,
-        "free_cash_flow": 32677625331712,
+        "free_cash_flow": 34257999233024,
         "is_bank": false
     },
     {
@@ -204,9 +204,9 @@
         "quality_score": 45.77,
         "roe": 0.093839996,
         "net_margin": 0.09527001,
-        "operating_margin": 0.14871,
+        "operating_margin": 0.14809,
         "debt_to_equity": 0.04237,
-        "free_cash_flow": 237452256,
+        "free_cash_flow": 243388752,
         "is_bank": false
     },
     {
@@ -276,7 +276,7 @@
         "net_margin": -0.12106,
         "operating_margin": -0.00874,
         "debt_to_equity": 2.0904,
-        "free_cash_flow": 8942089404416,
+        "free_cash_flow": 11772207562752,
         "is_bank": false
     },
     {

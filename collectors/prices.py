@@ -1,50 +1,51 @@
 import json
+from pathlib import Path
 
 import yfinance as yf
 
 from utils.config_loader import load_universe
 
+OUTPUT_FILE = Path("output/raw/prices.json")
 
-tickers = load_universe()
 
-result = {}
+def collect_prices():
+    tickers = load_universe()
 
-for ticker in tickers:
+    result = {}
 
-    print(f"Fetching {ticker}")
+    for ticker in tickers:
 
-    try:
+        print(f"Fetching {ticker}")
 
-        stock = yf.Ticker(ticker)
+        try:
 
-        hist = stock.history(period="5d")
+            stock = yf.Ticker(ticker)
 
-        if not hist.empty:
+            hist = stock.history(period="5d")
 
-            result[ticker] = {
-                "close": float(hist["Close"].iloc[-1]),
-                "volume": int(hist["Volume"].iloc[-1])
-            }
+            if not hist.empty:
 
-            print(f"✓ {ticker}")
+                result[ticker] = {
+                    "close": float(hist["Close"].iloc[-1]),
+                    "volume": int(hist["Volume"].iloc[-1])
+                }
 
-        else:
+                print(f"✓ {ticker}")
 
-            print(f"✗ {ticker} -> no data")
+            else:
 
-    except Exception as e:
+                print(f"✗ {ticker} -> no data")
 
-        print(f"✗ {ticker} -> {e}")
+        except Exception as e:
 
-with open(
-    "output/raw/prices.json",
-    "w"
-) as f:
+            print(f"✗ {ticker} -> {e}")
 
-    json.dump(
-        result,
-        f,
-        indent=4
-    )
+    OUTPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
+    with open(OUTPUT_FILE, "w") as f:
+        json.dump(result, f, indent=4)
 
-print("Done!")
+    print(f"\nData harga tersimpan di {OUTPUT_FILE}")
+
+
+if __name__ == "__main__":
+    collect_prices()

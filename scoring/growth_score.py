@@ -1,7 +1,7 @@
 # file: scoring/growth_score.py
 
 import json
-from utils import min_max_normalize, percentile_normalize
+from scoring.utils import min_max_normalize, percentile_normalize
 
 def main():
     with open("output/raw/growth.json") as f:

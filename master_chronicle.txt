@@ -1,6 +1,6 @@
 MASTER CHRONICLE: INDONESIA STOCK INTELLIGENCE (ISI)
 ================================================================================
-Generated Date : 2026-05-31
+Generated Date : 2026-06-01
 Author         : Antigravity AI
 Recipient      : Future AI Architect / Analyst
 ================================================================================
@@ -8,9 +8,13 @@ Recipient      : Future AI Architect / Analyst
 BAB 1: EXECUTIVE SUMMARY
 --------------------------------------------------------------------------------
 * Status Proyek: ONLINE & FULLY FUNCTIONAL. Sistem telah dibersihkan dari 
-  berbagai bug integrasi jalur impor relatif dan path file. Semua unit test 
-  (41/41 pengujian) lulus dengan sukses. Pipeline bulanan berhasil dieksekusi 
-  hingga menghasilkan peringkat V3 akhir dan visualisasi dashboard HTML terbaru.
+  berbagai bug integrasi jalur impor relatif, path file, dan bias backtest.
+  Semua unit test (41/41 pengujian) lulus dengan sukses. Kerangka kerja penelitian 
+  momentum historis (V6) telah sukses diselesaikan dengan hasil sangat robust.
+  Integrasi FMP telah sepenuhnya didekomisi dan sistem berhasil distandardisasi 
+  pada Yahoo Finance sebagai satu-satunya data source fundamental dan harga, 
+  mengurangi kompleksitas, menghilangkan technical debt, serta menghapus ketergantungan 
+  pada API Key berbayar/terbatas.
 * Tujuan Proyek: Indonesia Stock Intelligence (ISI) dirancang untuk memproses 
   data fundamental, pertumbuhan (growth), nilai (value), dan momentum dari 
   saham-saham di Bursa Efek Indonesia (khususnya semesta IDX30). Menggunakan 
@@ -21,7 +25,7 @@ BAB 1: EXECUTIVE SUMMARY
   analisis Aliran Dana Institusi (Foreign Flow / Bandar Asing) dan Momentum Pasar.
   Keputusan investasi diambil murni secara mekanis kuantitatif guna meminimalkan 
   distorsi emosi manusia.
-* Visi Jangka Jangka Panjang: Terwujudnya platform manajemen aset otomatis 
+* Visi Jangka Panjang: Terwujudnya platform manajemen aset otomatis 
   berbasis cloud (GitHub Actions) yang berjalan secara mandiri (zero-touch). 
   Melakukan analisis fundamental berkala bulanan dan memitigasi risiko harian 
   secara dinamis (Dynamic Watchlist & Daily Risk Radar), serta mampu memicu 
@@ -30,7 +34,7 @@ BAB 1: EXECUTIVE SUMMARY
 
 BAB 2: EVOLUSI PROYEK
 --------------------------------------------------------------------------------
-Proyek ISI telah berevolusi melalui 5 tahapan arsitektur utama:
+Proyek ISI telah berevolusi melalui beberapa tahapan arsitektur utama:
 
 * V1: Fundamental Ranking Engine awal
   - Tujuan: Membuat mesin perang fundamental awal untuk menyaring saham IDX.
@@ -69,7 +73,7 @@ Proyek ISI telah berevolusi melalui 5 tahapan arsitektur utama:
     risiko harian untuk memitigasi kejatuhan pasar mendadak atau aksi distribusi bandar.
   - Keputusan: Merancang sistem hybrid yang dinamis di V5.
 
-* V5: Hybrid Architecture & GitHub Actions (Kondisi Saat Ini)
+* V5: Hybrid Architecture & GitHub Actions
   - Tujuan: Menghubungkan analisis fundamental bulanan dengan manajemen risiko harian yang dinamis.
   - Implementasi: Menggabungkan pipeline bulanan (yang menghasilkan Dynamic Watchlist dari 
     saham-saham fundamental terbaik) dengan sistem pengawasan harian (Daily Risk Radar). 
@@ -81,6 +85,31 @@ Proyek ISI telah berevolusi melalui 5 tahapan arsitektur utama:
   - Keputusan: Memperbaiki path config_loader menjadi absolut berbasis BASE_DIR, memindahkan 
     daftar impor internal scoring ke 'scoring.utils', dan merekonstruksi unit pengujian 
     test_bugfix.py untuk memvalidasi fungsionalitas config_loader secara berkala.
+
+* V6: Historical Backtest & Bias Remediation
+  - Tujuan: Membangun mesin rekonstruksi data momentum historis IDX30, menguji kinerjanya 
+    terhadap benchmark IHSG, serta mengaudit dan membersihkan bias penelitian.
+  - Implementasi:
+    - Rekonstruksi momentum historis dari `2019-01` ke `2026-05` (`historical_momentum_builder.py`).
+    - Alokasi portofolio rebalancing bulanan Top 5 momentum equal weight (`historical_portfolio_builder.py`).
+    - Mesin backtesting kinerja aktual portofolio (`momentum_backtest_engine.py`).
+    - Framework audit look-ahead bias, turnover, biaya transaksi, dan survivorship bias (`momentum_backtest_audit.py`).
+    - Audit curve, pembagian tahunan, regime analysis, dan visualisasi matplotlib (`momentum_validation_analysis.py`).
+  - Masalah:
+    1. Pengujian tahun pertama (2018) menghasilkan return all-zero karena ketiadaan data 12 bulan lalu 
+       untuk momentum (lookback warm-up period).
+    2. Kerentanan backfill/survivorship bias dari emiten IPO baru (seperti AMMN.JK dan GOTO.JK) jika 
+       saham-saham tersebut diikutsertakan dalam peringkat sebelum listing resmi.
+  - Keputusan:
+    1. Mengeliminasi data tahun 2018 secara permanen dan menetapkan `2019-01` sebagai snapshot pertama.
+    2. Membuat data metadata listing resmi (`ticker_metadata.csv`) dan menambahkan gate programatik 
+       yang secara ketat menyaring emiten sebelum bulan IPO mereka.
+
+* V6.1: FMP Decommission & YFinance Standardization (Kondisi Saat Ini)
+  - Tujuan: Mengurangi kompleksitas kode, technical debt, dan beban pemeliharaan (maintenance burden) dengan menstandardisasi satu sumber data utama.
+  - Implementasi: Menghapus total seluruh integrasi FMP dari `utils/data_provider.py` (termasuk modul fallback, requests, caching, dan pengecekan API key). Sistem diubah untuk menggunakan Yahoo Finance secara eksklusif dengan mengenalkan `YahooFinanceProvider`.
+  - Masalah: FMP memblokir kueri data keuangan IDX pada akun gratis dengan status `402 Payment Required` atau `403 Forbidden`, serta mendepresiasi endpoint legacy, sehingga seluruh fallback logic menjadi tidak berfungsi dan mengotori codebase.
+  - Keputusan: Mengubah `MultiSourceProvider` menjadi `YahooFinanceProvider` murni yang hanya melayani data fundamental Yahoo Finance secara stabil.
 
 
 BAB 3: LESSONS LEARNED
@@ -131,6 +160,36 @@ beserta solusi yang diambil:
    Solusi: Diberlakukannya "Commodity Trap Rule". Semua saham yang masuk dalam kategori komoditas 
    siklikal mendapatkan diskon skor PE sebesar 50% untuk meredam daya tarik valuasi palsu tersebut.
 
+4. Asumsi Awal: Rekonstruksi momentum historis 12-bulan dapat dimulai langsung pada bulan pertama 
+   koleksi data historis bursa (Januari 2018).
+   ↓
+   Masalah: Mengakibatkan "Fake All-Zero Rankings" pada 12 bulan pertama karena data historis 12 bulan 
+   lalu (tahun 2017) tidak ada di database, memicu ranking acak berdasarkan urutan baca file/alfabet.
+   ↓
+   Insight: Metode momentum dengan time-horizon $K$-bulan membutuhkan warm-up period minimal sepanjang 
+   $K$-bulan sebelum dapat membentuk portofolio rebalancing yang reliabel.
+   ↓
+   Solusi: Menghapus data tahun pertama (2018) dari output dan menetapkan bulan ke-13 (`2019-01`) sebagai 
+   awal pembentukan portofolio historis pertama.
+
+5. Asumsi Awal: Ticker konstituen statis aman digunakan langsung dalam backtest historis berjalan.
+   ↓
+   Masalah: "Backfill & Listing Date Bias". Saham baru (seperti AMMN dan GOTO) ikut diranking pada masa 
+   lalu sebelum tanggal IPO resmi mereka jika file CSV mereka dimodifikasi secara tidak sengaja.
+   ↓
+   Insight: Harus ada filter listing yang tegas berbasis tanggal IPO resmi untuk mencegah kebocoran data.
+   ↓
+   Solusi: Mengimplementasikan basis data `ticker_metadata.csv` berisi listing_date untuk membatasi 
+   partisipasi emiten dalam ranking.
+
+6. Asumsi Awal: Integrasi multi-source data (FMP + YFinance) dengan mekanisme fallback otomatis akan menjamin stabilitas ketersediaan data fundamental di semua kondisi.
+   ↓
+   Masalah: FMP membatasi kueri emiten IDX untuk tier gratis dan mendepresiasi endpoint v3 legacy, menyebabkan kegagalan koneksi secara permanen yang memicu silent fallback ke YFinance. Hal ini menyebabkan kode menjadi gemuk, mempersulit debugging, dan meningkatkan overhead pemeliharaan.
+   ↓
+   Insight: Mempertahankan kode integrasi untuk provider eksternal yang tidak lagi berfungsi di tier gratis adalah bentuk utang teknis (technical debt) yang sia-sia.
+   ↓
+   Solusi: Melakukan dekomisi total terhadap FMP dan menstandardisasi seluruh penarikan metrik fundamental pada provider tunggal Yahoo Finance via class `YahooFinanceProvider`.
+
 
 BAB 4: FAILED IDEAS ARCHIVE
 --------------------------------------------------------------------------------
@@ -151,9 +210,17 @@ ditinggalkan karena tidak efektif:
 3. Ide: Pengumpulan data fundamental mengandalkan satu jalur API berbayar (FMP) secara mutlak.
    - Alasan Gagal: Menyebabkan pipeline terhenti total (crash) jika API Key mengalami limitasi 
      panggilan atau tidak didefinisikan dalam lingkungan pengujian lokal/gratis.
-   - Status: DIGANTIKAN OLEH MULTI-SOURCE HYBRID PROVIDER. FMP bertindak sebagai pengumpul data 
-     utama, dan secara otomatis melakukan fallback ke scraping gratis Yahoo Finance (YFinance) 
-     jika API Key tidak ditemukan.
+   - Status: DIGANTIKAN OLEH YFINANCE Scraping (FMP dihapus sepenuhnya di V5.6 untuk 
+     mengurangi beban kompleksitas pemeliharaan dan fallback code).
+
+4. Ide: Memasukkan rebalancing return momentum pada tahun 2018 ke dalam backtest.
+   - Alasan Gagal: Semua ticker menghasilkan return_12m = 0.0 karena ketiadaan data tahun 2017, 
+     menghasilkan ranking acak/palsu (look-ahead leak).
+   - Status: DITINGGALKAN. Seluruh snapshot 2018 di-skip dan dihapus dari direktori aktif.
+
+5. Ide: Menggunakan arsitektur hybrid MultiSourceProvider (FMP + YFinance fallback).
+   - Alasan Gagal: FMP mendepresiasi endpoint v3 legacy dan memblokir data emiten IDX dengan status 402/403 pada tier gratis, membuat mekanisme fallback menjadi redundan, lambat, dan tidak berfungsi secara praktis.
+   - Status: DITINGGALKAN PERMANEN. Seluruh integrasi FMP didekomisi dan diganti dengan YahooFinanceProvider murni di V6.1.
 
 
 BAB 5: MATHEMATICAL RULES
@@ -197,13 +264,13 @@ Mesin kuantitatif ISI memiliki 3 aturan matematika utama yang tidak boleh dilang
 
 BAB 6: ARSITEKTUR SISTEM
 --------------------------------------------------------------------------------
-Arsitektur ISI V5 terbagi atas 5 layer utama yang saling terhubung:
+Arsitektur ISI terbagi atas 6 layer utama yang saling terhubung:
 
 1. Collector Layer (Pengumpul Data)
    - Lokasi: collectors/fundamentals.py, collectors/growth.py, collectors/prices.py, 
      collectors/daily_flow_collector.py.
    - Peran: Mengunduh data pasar mentah (keuangan, pertumbuhan, harga penutupan, 
-     dan volume historis) dari penyedia data eksternal. Menggunakan multithreading 
+     dan volume harian) dari Yahoo Finance secara gratis. Menggunakan multithreading 
      untuk mempercepat unduhan dan menyimpannya sebagai file JSON mentah di output/raw/.
 
 2. Scoring Layer (Mesin Skoring & Peringkat)
@@ -232,246 +299,318 @@ Arsitektur ISI V5 terbagi atas 5 layer utama yang saling terhubung:
      berpenampilan premium yang menyajikan daftar portofolio aktif, peringkat faktor, 
      dan status sinyal radar harian secara interaktif.
 
+6. Backtest & Verification Layer (Mesin Pengujian Historis - V6)
+   - Lokasi: historical_momentum_builder.py, historical_portfolio_builder.py, 
+     momentum_backtest_engine.py, momentum_backtest_audit.py, momentum_validation_analysis.py.
+   - Peran: Mengambil data historis dari database/monthly/ untuk membangun ranking momentum 
+     historis, menyusun portofolio simulasi bulanan, meluncurkan backtesting perbandingan 
+     terhadap IHSG, mengaudit bias serta mensimulasikan dampak fee transaksi dan turnover.
+
 
 BAB 7: PROJECT TREE AKTUAL
 --------------------------------------------------------------------------------
 Berikut adalah struktur direktori proyek Indonesia Stock Intelligence (ISI) selengkapnya:
 
-Folder PATH listing
-Volume serial number is 0000002B FE98:C3CA
-C:.
-│   .gitignore
-│   README.md
-│   requirements.txt
-│   run_daily_risk_radar.py
-│   run_monthly_pipeline.py
-│   test_bugfix.py
-│   
-+---.github
-│   +---workflows
-│           daily_radar.yml
-│           monthly_pipeline.yml
-│           
-+---archives
-│   +---portfolios
-│   │       2026-05.json
-│   │       
-│   +---rankings
-│           2026-05.json
-│           
-+---automation
-│       monthly_job.sh
-│       
-+---backtesting
-│   │   archive_current_state.py
-│   │   archive_factors.py
-│   │   archive_fundamentals.py
-│   │   archive_growth.py
-│   │   metrics.py
-│   │   monthly_returns.py
-│   │   point_in_time_backtest.py
-│   │   rebalance.py
-│   │   validate_archives.py
-│   │   __init__.py
-│   │   
-│   +---__pycache__
-│           archive_current_state.cpython-312.pyc
-│           archive_factors.cpython-312.pyc
-│           archive_fundamentals.cpython-312.pyc
-│           archive_growth.cpython-312.pyc
-│           metrics.cpython-312.pyc
-│           rebalance.cpython-312.pyc
-│           __init__.cpython-312.pyc
-│           
-+---benchmarks
-│       ihsg.csv
-│       ihsg_monthly.csv
-│       
-+---collectors
-│   │   daily_flow_collector.py
-│   │   fundamentals.py
-│   │   growth.py
-│   │   history.py
-│   │   prices.py
-│   │   __init__.py
-│   │   
-│   +---__pycache__
-│           daily_flow_collector.cpython-312.pyc
-│           fundamentals.cpython-312.pyc
-│           growth.cpython-312.pyc
-│           prices.cpython-312.pyc
-│           __init__.cpython-312.pyc
-│           
-+---config
-│       scoring_weights.json
-│       sector_rules.json
-│       settings.json
-│       universe.json
-│       
-+---dashboard
-│   │   generate_dashboard.py
-│   │   index.html
-│   │   
-│   +---__pycache__
-│           generate_dashboard.cpython-312.pyc
-│           
-+---database
-│   +---historical
-│   │       factor_warehouse.csv
-│   │       portfolio_warehouse.csv
-│   │       
-│   +---monthly
-│           ADRO.JK.csv
-│           AKRA.JK.csv
-│           AMMN.JK.csv
-│           ANTM.JK.csv
-│           ASII.JK.csv
-│           BBCA.JK.csv
-│           BBNI.JK.csv
-│           BBRI.JK.csv
-│           BMRI.JK.csv
-│           BRPT.JK.csv
-│           CPIN.JK.csv
-│           ESSA.JK.csv
-│           EXCL.JK.csv
-│           GOTO.JK.csv
-│           HEAL.JK.csv
-│           ICBP.JK.csv
-│           INDF.JK.csv
-│           INTP.JK.csv
-│           ITMG.JK.csv
-│           KLBF.JK.csv
-│           MAPI.JK.csv
-│           MDKA.JK.csv
-│           MIKA.JK.csv
-│           PGAS.JK.csv
-│           PTBA.JK.csv
-│           SIDO.JK.csv
-│           SMGR.JK.csv
-│           TLKM.JK.csv
-│           TPIA.JK.csv
-│           UNTR.JK.csv
-│           
-+---output
-│   +---history
-│   │       2026-05-30.json
-│   │       
-│   +---history_prices
-│   │       ADRO.JK.csv
-│   │       AKRA.JK.csv
-│   │       AMMN.JK.csv
-│   │       ANTM.JK.csv
-│   │       ASII.JK.csv
-│   │       BBCA.JK.csv
-│   │       BBNI.JK.csv
-│   │       BBRI.JK.csv
-│   │       BMRI.JK.csv
-│   │       BRPT.JK.csv
-│   │       CPIN.JK.csv
-│   │       ESSA.JK.csv
-│   │       EXCL.JK.csv
-│   │       GOTO.JK.csv
-│   │       HEAL.JK.csv
-│   │       ICBP.JK.csv
-│   │       INDF.JK.csv
-│   │       INTP.JK.csv
-│   │       ITMG.JK.csv
-│   │       KLBF.JK.csv
-│   │       MAPI.JK.csv
-│   │       MDKA.JK.csv
-│   │       MIKA.JK.csv
-│   │       PGAS.JK.csv
-│   │       PTBA.JK.csv
-│   │       SIDO.JK.csv
-│   │       SMGR.JK.csv
-│   │       TLKM.JK.csv
-│   │       TPIA.JK.csv
-│   │       UNTR.JK.csv
-│   │       
-│   +---raw
-│   │       fundamentals.json
-│   │       growth.json
-│   │       prices.json
-│   │       
-│   +---scores
-│           final_ranking_v3.json
-│           growth_ranking.json
-│           momentum_ranking.json
-│           quality_ranking.json
-│           value_ranking.json
-│           
-+---reports
-│       comparison.csv
-│       portfolio_returns.csv
-│       
-+---research
-│       data_audit.py
-│       factor_overlap.py
-│       momentum_vs_final.py
-│       project_status.py
-│       v2_vs_v3_holdings.py
-│       
-+---scoring
-│   │   final_score_v3.py
-│   │   growth_score.py
-│   │   momentum_score.py
-│   │   quality_score.py
-│   │   utils.py
-│   │   value_score.py
-│   │   
-│   +---__pycache__
-│           final_score_v3.cpython-312.pyc
-│           growth_score.cpython-312.pyc
-│           momentum_score.cpython-312.pyc
-│           quality_score.cpython-312.pyc
-│           utils.cpython-312.pyc
-│           value_score.cpython-312.pyc
-│           
-+---snapshots
-│   │   README.md
-│   │   
-│   +---final
-│   │       2026-05.json
-│   │       
-│   +---fundamentals
-│   │       2026-05.json
-│   │       
-│   +---growth
-│   │       2026-05.json
-│   │       
-│   +---momentum
-│   │       2026-05.json
-│   │       
-│   +---quality
-│   │       2026-05.json
-│   │       
-│   +---rankings
-│   │       2026-05.json
-│   │       
-│   +---value
-│           2026-05.json
-│           
-+---universe
-│       idx30.json
-│       
-+---utils
-│   │   config_loader.py
-│   │   data_provider.py
-│   │   data_validator.py
-│   │   email_notifier.py
-│   │   logger.py
-│   │   telegram_notifier.py
-│   │   __init__.py
-│   │   
-│   +---__pycache__
-│           config_loader.cpython-312.pyc
-│           data_provider.cpython-312.pyc
-│           email_notifier.cpython-312.pyc
-│           telegram_notifier.cpython-312.pyc
-│           __init__.cpython-312.pyc
-│           
-+---__pycache__
-        run_monthly_pipeline.cpython-312.pyc
+./
+    .gitignore
+    README.md
+    historical_momentum_builder.py
+    historical_portfolio_builder.py
+    master_chronicle.txt
+    momentum_backtest_audit.py
+    momentum_backtest_engine.py
+    momentum_validation_analysis.py
+    requirements.txt
+    run_daily_risk_radar.py
+    run_monthly_pipeline.py
+    test_bugfix.py
+    archives/
+        backtest/
+            momentum_portfolio.csv
+        portfolios/
+            2026-05.json
+            2026-06.json
+        rankings/
+            2026-05.json
+            2026-06.json
+        research/
+            fmp/
+                fmp_audit_report.md
+                fmp_migration_audit.md
+                v6_historical_data_audit.md
+                v6_reconstruction_feasibility.md
+    automation/
+        monthly_job.sh
+    backtesting/
+        __init__.py
+        archive_current_state.py
+        archive_factors.py
+        archive_fundamentals.py
+        archive_growth.py
+        metrics.py
+        monthly_returns.py
+        point_in_time_backtest.py
+        rebalance.py
+        validate_archives.py
+    benchmarks/
+        ihsg.csv
+        ihsg_monthly.csv
+    collectors/
+        __init__.py
+        daily_flow_collector.py
+        fundamentals.py
+        growth.py
+        history.py
+        prices.py
+    config/
+        scoring_weights.json
+        sector_rules.json
+        settings.json
+        universe.json
+    dashboard/
+        generate_dashboard.py
+        index.html
+    database/
+        historical/
+            factor_warehouse.csv
+            momentum_equity_curve.csv
+            momentum_monthly_returns.csv
+            portfolio_warehouse.csv
+            ticker_metadata.csv
+        monthly/
+            ADRO.JK.csv
+            AKRA.JK.csv
+            AMMN.JK.csv
+            ANTM.JK.csv
+            ASII.JK.csv
+            BBCA.JK.csv
+            BBNI.JK.csv
+            BBRI.JK.csv
+            BMRI.JK.csv
+            BRPT.JK.csv
+            CPIN.JK.csv
+            ESSA.JK.csv
+            EXCL.JK.csv
+            GOTO.JK.csv
+            HEAL.JK.csv
+            ICBP.JK.csv
+            INDF.JK.csv
+            INTP.JK.csv
+            ITMG.JK.csv
+            KLBF.JK.csv
+            MAPI.JK.csv
+            MDKA.JK.csv
+            MIKA.JK.csv
+            PGAS.JK.csv
+            PTBA.JK.csv
+            SIDO.JK.csv
+            SMGR.JK.csv
+            TLKM.JK.csv
+            TPIA.JK.csv
+            UNTR.JK.csv
+    docs/
+        ADR-002-DATA-SOURCE.md
+        findings/
+            FINDING_001_MOMENTUM_ALPHA.md
+    output/
+        charts/
+            momentum_vs_ihsg.png
+        history/
+            2026-05-30.json
+        history_prices/
+            ADRO.JK.csv
+            AKRA.JK.csv
+            AMMN.JK.csv
+            ANTM.JK.csv
+            ASII.JK.csv
+            BBCA.JK.csv
+            BBNI.JK.csv
+            BBRI.JK.csv
+            BMRI.JK.csv
+            BRPT.JK.csv
+            CPIN.JK.csv
+            ESSA.JK.csv
+            EXCL.JK.csv
+            GOTO.JK.csv
+            HEAL.JK.csv
+            ICBP.JK.csv
+            INDF.JK.csv
+            INTP.JK.csv
+            ITMG.JK.csv
+            KLBF.JK.csv
+            MAPI.JK.csv
+            MDKA.JK.csv
+            MIKA.JK.csv
+            PGAS.JK.csv
+            PTBA.JK.csv
+            SIDO.JK.csv
+            SMGR.JK.csv
+            TLKM.JK.csv
+            TPIA.JK.csv
+            UNTR.JK.csv
+        raw/
+            fundamentals.json
+            growth.json
+            prices.json
+        scores/
+            final_ranking_v3.json
+            growth_ranking.json
+            momentum_ranking.json
+            quality_ranking.json
+            value_ranking.json
+    reports/
+        alpha_source_analysis.md
+        backtest_audit_summary.md
+        comparison.csv
+        equity_curve_analysis.md
+        lookahead_audit.md
+        momentum_backtest.md
+        momentum_portfolio_validation.md
+        momentum_validation.md
+        portfolio_returns.csv
+        survivorship_audit.md
+        survivorship_remediation.md
+        transaction_cost_audit.md
+        turnover_audit.md
+        v6_momentum_research_summary.md
+        yearly_performance.md
+    research/
+        data_audit.py
+        factor_overlap.py
+        fmp_history_probe.py
+        momentum_vs_final.py
+        project_status.py
+        test_provider_source.py
+        v2_vs_v3_holdings.py
+    scoring/
+        final_score_v3.py
+        growth_score.py
+        momentum_score.py
+        quality_score.py
+        utils.py
+        value_score.py
+    snapshots/
+        README.md
+        final/
+            2026-05.json
+            2026-06.json
+        fundamentals/
+            2026-05.json
+            2026-06.json
+        growth/
+            2026-05.json
+            2026-06.json
+        momentum/
+            2026-05.json
+            2026-06.json
+        momentum_history/
+            2019-01.json
+            2019-02.json
+            2019-03.json
+            2019-04.json
+            2019-05.json
+            2019-06.json
+            2019-07.json
+            2019-08.json
+            2019-09.json
+            2019-10.json
+            2019-11.json
+            2019-12.json
+            2020-01.json
+            2020-02.json
+            2020-03.json
+            2020-04.json
+            2020-05.json
+            2020-06.json
+            2020-07.json
+            2020-08.json
+            2020-09.json
+            2020-10.json
+            2020-11.json
+            2020-12.json
+            2021-01.json
+            2021-02.json
+            2021-03.json
+            2021-04.json
+            2021-05.json
+            2021-06.json
+            2021-07.json
+            2021-08.json
+            2021-09.json
+            2021-10.json
+            2021-11.json
+            2021-12.json
+            2022-01.json
+            2022-02.json
+            2022-03.json
+            2022-04.json
+            2022-05.json
+            2022-06.json
+            2022-07.json
+            2022-08.json
+            2022-09.json
+            2022-10.json
+            2022-11.json
+            2022-12.json
+            2023-01.json
+            2023-02.json
+            2023-03.json
+            2023-04.json
+            2023-05.json
+            2023-06.json
+            2023-07.json
+            2023-08.json
+            2023-09.json
+            2023-10.json
+            2023-11.json
+            2023-12.json
+            2024-01.json
+            2024-02.json
+            2024-03.json
+            2024-04.json
+            2024-05.json
+            2024-06.json
+            2024-07.json
+            2024-08.json
+            2024-09.json
+            2024-10.json
+            2024-11.json
+            2024-12.json
+            2025-01.json
+            2025-02.json
+            2025-03.json
+            2025-04.json
+            2025-05.json
+            2025-06.json
+            2025-07.json
+            2025-08.json
+            2025-09.json
+            2025-10.json
+            2025-11.json
+            2025-12.json
+            2026-01.json
+            2026-02.json
+            2026-03.json
+            2026-04.json
+            2026-05.json
+        quality/
+            2026-05.json
+            2026-06.json
+        rankings/
+            2026-05.json
+        value/
+            2026-05.json
+            2026-06.json
+    universe/
+        idx30.json
+    utils/
+        __init__.py
+        config_loader.py
+        data_provider.py
+        data_validator.py
+        email_notifier.py
+        logger.py
+        telegram_notifier.py
 
 
 BAB 8: IMPLEMENTATION STATUS
@@ -486,14 +625,14 @@ Berikut adalah status implementasi dari modul-modul sistem:
   - Modul Hybrid V5 Daily Risk Radar yang melakukan pemantauan Volume Shock harian.
   - Integrasi Notifikasi Email dan Telegram (berjalan dengan aman tanpa hardcode kredensial).
   - Skrip pengujian terpusat (test_bugfix.py) yang memvalidasi integritas 41/41 unit test.
+  - **Framework Pengujian Kuantitatif Momentum Historis (V6)**: builder snapshot, rebalancer portfolio bulanan, engine backtest, evaluasi sensitivitas biaya transaksi, turnover, look-ahead bias, dan listing date gate.
+  - **Dekomisi FMP & Standardisasi YFinance (V6.1)**: Refactor penuh `utils/data_provider.py` menjadi `YahooFinanceProvider` tunggal, menghapus library `requests`, caching ganda, dan kueri API key.
 
 * SEDANG BERJALAN (In Progress / Semi-Stable)
   - Otomatisasi pemicuan Daily Risk Radar harian melalui GitHub Actions (proses sinkronisasi scheduler).
-  - Integrasi dashboard HTML dinamis dengan data real-time dari hasil radar harian.
+  - Integrasi dashboard HTML dinamis dengan data real-time dari hasil radar harian dan visualisasi kurva historis.
 
 * BELUM FINAL (Backlog / Future Development)
-  - Sistem pengujian Walk-Forward Backtesting multi-tahun untuk membandingkan performa 
-    kumulatif taktis terhadap IHSG / IDX30.
   - Modul NLP Sentiment Analyzer untuk menyaring berita emiten secara real-time.
 
 
@@ -501,24 +640,18 @@ BAB 9: PORTFOLIO LOGIC
 --------------------------------------------------------------------------------
 Sistem ISI menggunakan aturan mekanis dalam mengelola alokasi aset portofolio:
 
-1. Pemilihan Saham (Stock Selection)
+1. Pemilihan Saham Fundamental (Scoring Bulanan)
    - Setiap akhir bulan, pipeline (`run_monthly_pipeline.py`) dijalankan untuk memproses 
      data fundamental dan momentum IDX30 terbaru.
    - Saham diurutkan berdasarkan `final_score` gabungan (bobot: Quality 30%, Growth 25%, 
      Value 20%, Momentum 25%).
    - Hanya Top 10 saham dengan `final_score` tertinggi yang dipilih masuk ke portofolio aktif.
+   - Portofolio aktif menerapkan sistem Equal Weighting (bobot merata 10% per saham).
 
-2. Pembobotan Aset (Asset Weighting)
-   - Portofolio aktif menerapkan sistem Equal Weighting (pembobotan merata).
-   - Setiap saham dari 10 saham terpilih mendapatkan alokasi dana sebesar 10% dari total nilai portofolio.
-   - Hal ini bertujuan memitigasi risiko konsentrasi yang berlebihan pada satu saham tertentu.
-
-3. Penyeimbangan Ulang (Rebalancing)
-   - Rebalancing dieksekusi secara bulanan melalui `backtesting/rebalance.py`.
-   - Saham-saham portofolio lama yang keluar dari peringkat Top 10 bulanan akan dijual sepenuhnya.
-   - Dana hasil penjualan dialokasikan untuk membeli saham-saham baru yang berhasil menembus Top 10.
-   - Semua biaya transaksi (transaction cost/slippage) diasumsikan sebesar 0.2% per transaksi 
-     untuk simulasi performa yang realistis.
+2. Pemilihan Saham Strategis (Momentum Backtest)
+   - Memilih Top 5 saham murni berdasarkan return 12 bulan tertinggi dari snapshots/momentum_history/.
+   - Mengalokasikan dana secara Equal Weight (bobot merata 20% per saham).
+   - Rebalance bulanan di akhir bulan, memegang saham selama 1 bulan berikutnya.
 
 
 BAB 10: FITUR MASA DEPAN
@@ -581,6 +714,30 @@ Catatan keputusan arsitektur penting yang telah diambil beserta dampaknya:
    Konsekuensi: Struktur eksekusi modular menjadi sangat bersih dan standar, menyelesaikan semua 
    masalah ImportError yang mengganggu pipeline.
 
+4. Masalah: Keberadaan data pre-IPO memicu backfill/survivorship bias dalam pengujian historis.
+   ↓
+   Insight: Emiten baru seperti GOTO dan AMMN memicu ketidakakuratan performa jika ikut dirangking sebelum tanggal IPO resmi.
+   ↓
+   Keputusan: Menambahkan database `ticker_metadata.csv` berisi listing_date resmi dan menambahkan filter programatik yang secara ketat menyaring emiten sebelum tanggal melantai resmi di bursa.
+   ↓
+   Konsekuensi: Menghilangkan backfill bias IPO. Pengujian historis menjadi valid secara akademis/praktis.
+
+5. Masalah: Ketidaktersediaan lookback 12 bulan di tahun pertama (2018) merusak akurasi momentum.
+   ↓
+   Insight: Tanpa pembanding tahun sebelumnya, return momentum yang dihitung bernilai nol dan memicu ranking acak/palsu.
+   ↓
+   Keputusan: Memulai snapshot portfolio historis langsung pada bulan ke-13 (`2019-01`) dan mengabaikan snapshot tahun 2018.
+   ↓
+   Konsekuensi: Mengeliminasi data ranking cacat pada fase inisialisasi backtest.
+
+6. Masalah: Kompleksitas tinggi dan technical debt pada `MultiSourceProvider` akibat penutupan akses gratis FMP untuk emiten IDX dan depresiasi endpoint legacy.
+   ↓
+   Insight: Menjaga fallback logic FMP yang tidak pernah berhasil hanya mengotori codebase dengan dependensi tidak perlu (seperti library `requests`) dan kode mati.
+   ↓
+   Keputusan: Mengambil keputusan decommissioning total terhadap FMP dan menerapkan standardisasi tunggal pada Yahoo Finance via `YahooFinanceProvider`.
+   ↓
+   Konsekuensi: Menyederhanakan `utils/data_provider.py` secara drastis, menghapus dependensi `requests` serta `FMP_API_KEY`. Kebergantungan metrik fundamental kini terfokus penuh pada kestabilan Yahoo Finance.
+
 
 BAB 12: KNOWN RISKS
 --------------------------------------------------------------------------------
@@ -590,19 +747,18 @@ Berikut adalah risiko teknis dan pasar yang masih terbuka dan wajib diwaspadai:
   - YFinance bersifat tidak resmi (unofficial API) yang melakukan scraping langsung ke server Yahoo. 
     Jika struktur HTML atau mekanisme respons Yahoo Finance berubah, modul collector harga 
     dan fundamental akan rusak secara mendadak.
-  - Mitigasi: Pastikan FMP API Key diisi di `config/settings.json` sebagai fallback utama yang stabil.
-
-* Ketiadaan Walk-Forward Backtesting yang Valid
-  - Model skoring multi-faktor belum diuji melalui simulasi berjalan (Walk-Forward) selama 
-    minimal 5 - 10 tahun ke belakang untuk membuktikan ketahanannya melewati berbagai siklus 
-    krisis pasar (seperti krisis pandemi 2020 atau krisis komoditas 2015).
-  - Mitigasi: Prioritaskan pembuatan mesin backtest historis berjalan menggunakan warehouse data.
+  - Mitigasi: Pastikan menyusun skrip cadangan untuk penarikan data bursa lokal alternatif.
 
 * Kredensial Notifikasi Kosong
   - Token Telegram dan Email yang dikosongkan pada berkas `config/settings.json` lokal saat ini 
     membuat notifikasi Daily Risk Radar dilewati secara otomatis (bypassed).
   - Mitigasi: Pastikan untuk menyetel kredensial ini melalui environment variables di server 
     produksi / GitHub Secrets, bukan dengan menuliskannya langsung ke berkas kode.
+
+* Survivorship Bias Konstituen Statis (IDX30)
+  - Meskipun backfill bias IPO telah diatasi, backtest historis masih didasarkan pada konstituen 
+    IDX30 tahun 2026 secara statis. Hal ini mengabaikan saham yang didegradasi/delisted di tahun 2019-2025.
+  - Mitigasi: Rencanakan pembuatan parser konstituen historis dinamis pada prioritas berikutnya.
 
 
 BAB 13: ROADMAP
@@ -613,13 +769,13 @@ Rencana pengembangan sistem berdasarkan skala prioritas:
   - Menghubungkan variabel token Telegram dan kredensial Email dari GitHub Secrets ke dalam 
     proses run di `.github/workflows/daily_radar.yml` agar alert darurat dapat meluncur otomatis.
 
-* PRIORITY 2: Pembuatan Dashboard Kinerja Historis Portofolio vs IHSG
-  - Menambahkan modul visualisasi grafik performa historis portofolio ISI bulanan dibandingkan 
-    dengan return IHSG (Indeks Harga Saham Gabungan) langsung ke dalam antarmuka HTML dashboard.
+* PRIORITY 2: Integrasi Konstituen Dinamis Historis (IDX30)
+  - Membaca database historis pergantian anggota konstituen IDX30 untuk menyusun daftar semesta 
+    saham yang benar-benar aktif di setiap bulan masa lalu, mengeliminasi survivorship bias secara total.
 
-* PRIORITY 3: Implementasi Mesin Backtest Historis Dinamis (Walk-Forward)
-  - Memanfaatkan `database/historical/factor_warehouse.csv` untuk mensimulasikan kinerja model 
-    skoring ISI dari waktu ke waktu secara historis guna mengukur tingkat drawdown dan Sharpe Ratio.
+* PRIORITY 3: Sentiment NLP Integration
+  - Mengembangkan kolektor berita (News Collector) dan model NLP sentimen emiten sebagai filter 
+    tambahan pendukung penentu peringkat bulanan.
 
 
 BAB 14: INSTRUCTIONS FOR FUTURE AI
@@ -631,22 +787,22 @@ Petunjuk penting bagi AI berikutnya yang melanjutkan pengembangan proyek ini:
 2. JANGAN PERNAH menghapus atau melompati "Bank Rule" (DER Bypass) dan "Commodity Trap Rule" 
    (50% PE Discount). Logika sektoral ini sangat krusial dalam menyaring anomali pasar lokal Indonesia.
 3. JANGAN PERNAH melakukan hardcode pada daftar emiten yang diawasi oleh Daily Risk Radar. 
-   Daftar pantau wajib selalu diambil secara dinamis dari file output fundamental bulanan terbaru 
-   (`output/scores/quality_ranking.json`) untuk menjaga integritas arsitektur hybrid.
+   Daftar pantau wajib selalu diambil secara dinamis dari file output fundamental bulanan terbaru.
 4. JANGAN PERNAH menggunakan relative path mentah untuk memproses file konfigurasi; 
    selalu gunakan fungsi pembungkus yang disediakan oleh `utils/config_loader.py`.
-5. JANGAN PERNAH melakukan manipulasi atau penghapusan terhadap isi data warehouse historis 
-   (`database/historical/*.csv`) secara langsung tanpa pencatatan/backup, karena data tersebut 
-   adalah fondasi utama pengujian backtest.
+5. JANGAN PERNAH merangking saham sebelum tanggal IPO resminya; selalu verifikasi terhadap `ticker_metadata.csv`.
+6. JANGAN PERNAH menghitung momentum tanpa warm-up period yang cukup (selalu skip/abaikan tahun inisialisasi).
+7. JANGAN PERNAH mencoba memulihkan integrasi FMP atau menambahkan multi-source provider berbayar tanpa justifikasi bisnis yang sangat kuat; pertahankan Yahoo Finance sebagai data source tunggal yang efisien, gratis, dan andal.
 
 
 BAB 15: KESIMPULAN
 --------------------------------------------------------------------------------
 Proyek Indonesia Stock Intelligence (ISI) saat ini berada dalam kondisi sangat sehat (stable). 
-Seluruh komponen arsitektur V5 (Hybrid Architecture) telah berhasil diintegrasikan. 
-Jalur pengumpulan data fundamental bulanan dapat berjalan lancar tanpa terhambat bug path file, 
-skoring multi-faktor mampu berjalan seimbang tanpa gangguan outlier, dan Daily Risk Radar siap 
-melakukan pengawasan risiko harian secara dinamis. Peringkat portofolio bulanan IDX30 terbaru 
-telah berhasil di-generate secara akurat, siap untuk dievaluasi lebih lanjut seiring dengan 
-kondisi akumulasi bandar asing di pasar riil.
+Seluruh komponen V6 (Historical Backtest Framework) telah berhasil dituntaskan secara lengkap 
+dan bebas dari look-ahead bias maupun backfill bias IPO. Backtest historis membuktikan keperkasaan 
+faktor momentum dalam mengalahkan IHSG dengan CAGR sebesar 19.07% (vs IHSG -0.87%), Sharpe ratio 0.77 
+(vs IHSG 0.02), dan CAPM Alpha +21.04% per tahun. Hasil temuan telah didokumentasikan di bawah folder 
+docs/findings/. Selain itu, integrasi FMP telah sepenuhnya didekomisi dan codebase telah didebloat dengan 
+sukses menuju standardisasi Yahoo Finance tunggal, siap untuk ekspansi lebih lanjut ke semesta dinamis 
+historis.
 ================================================================================

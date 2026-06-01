@@ -1,27 +1,27 @@
 [
     {
-        "ticker": "ESSA.JK",
-        "weight": 20.0,
-        "final_score": 75.43
-    },
-    {
         "ticker": "ADRO.JK",
         "weight": 20.0,
-        "final_score": 75.13
+        "final_score": 74.31
+    },
+    {
+        "ticker": "ESSA.JK",
+        "weight": 20.0,
+        "final_score": 74.28
     },
     {
         "ticker": "MAPI.JK",
         "weight": 20.0,
-        "final_score": 69.94
+        "final_score": 66.17
     },
     {
-        "ticker": "BBRI.JK",
+        "ticker": "PTBA.JK",
         "weight": 20.0,
-        "final_score": 66.05
+        "final_score": 63.87
     },
     {
-        "ticker": "AKRA.JK",
+        "ticker": "ANTM.JK",
         "weight": 20.0,
-        "final_score": 65.87
+        "final_score": 63.84
     }
 ]

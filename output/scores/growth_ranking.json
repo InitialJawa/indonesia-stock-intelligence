@@ -54,16 +54,16 @@
         "earnings_growth": 0
     },
     {
-        "ticker": "BBRI.JK",
-        "growth_score": 65.52,
-        "revenue_growth": 0.163,
-        "earnings_growth": 0.143
-    },
-    {
         "ticker": "TPIA.JK",
         "growth_score": 65.52,
         "revenue_growth": 2.864,
         "earnings_growth": 0
+    },
+    {
+        "ticker": "BBRI.JK",
+        "growth_score": 65.52,
+        "revenue_growth": 0.163,
+        "earnings_growth": 0.143
     },
     {
         "ticker": "EXCL.JK",

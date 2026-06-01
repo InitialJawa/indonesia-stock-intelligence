@@ -9,6 +9,8 @@ PIPELINE = [
     "python -m collectors.fundamentals",
     "python -m collectors.growth",
     "python -m collectors.prices",
+    "python -m collectors.historical_foreign_flow",
+    "python -m backtesting.merge_foreign_flow",
 
     # =========================
     # Factor Scores

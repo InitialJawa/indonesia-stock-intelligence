@@ -347,6 +347,7 @@ Berikut adalah struktur direktori proyek Indonesia Stock Intelligence (ISI) sele
         archive_factors.py
         archive_fundamentals.py
         archive_growth.py
+        merge_foreign_flow.py
         metrics.py
         monthly_returns.py
         point_in_time_backtest.py
@@ -360,6 +361,7 @@ Berikut adalah struktur direktori proyek Indonesia Stock Intelligence (ISI) sele
         daily_flow_collector.py
         fundamentals.py
         growth.py
+        historical_foreign_flow.py
         history.py
         prices.py
     config/
@@ -377,39 +379,15 @@ Berikut adalah struktur direktori proyek Indonesia Stock Intelligence (ISI) sele
             momentum_monthly_returns.csv
             portfolio_warehouse.csv
             ticker_metadata.csv
+        historical_foreign_flow/
+            (64 CSV files - daily net foreign transaction data per ticker)
+        historical_universe/
+            (15 JSON files - monthly active IDX30 constituents)
         monthly/
-            ADRO.JK.csv
-            AKRA.JK.csv
-            AMMN.JK.csv
-            ANTM.JK.csv
-            ASII.JK.csv
-            BBCA.JK.csv
-            BBNI.JK.csv
-            BBRI.JK.csv
-            BMRI.JK.csv
-            BRPT.JK.csv
-            CPIN.JK.csv
-            ESSA.JK.csv
-            EXCL.JK.csv
-            GOTO.JK.csv
-            HEAL.JK.csv
-            ICBP.JK.csv
-            INDF.JK.csv
-            INTP.JK.csv
-            ITMG.JK.csv
-            KLBF.JK.csv
-            MAPI.JK.csv
-            MDKA.JK.csv
-            MIKA.JK.csv
-            PGAS.JK.csv
-            PTBA.JK.csv
-            SIDO.JK.csv
-            SMGR.JK.csv
-            TLKM.JK.csv
-            TPIA.JK.csv
-            UNTR.JK.csv
+            (64 CSV files - monthly factor data per ticker)
     docs/
         ADR-002-DATA-SOURCE.md
+        ADR-003-ALPHA-OPTIMIZED-WEIGHTS.md
         findings/
             FINDING_001_MOMENTUM_ALPHA.md
     output/
@@ -418,36 +396,7 @@ Berikut adalah struktur direktori proyek Indonesia Stock Intelligence (ISI) sele
         history/
             2026-05-30.json
         history_prices/
-            ADRO.JK.csv
-            AKRA.JK.csv
-            AMMN.JK.csv
-            ANTM.JK.csv
-            ASII.JK.csv
-            BBCA.JK.csv
-            BBNI.JK.csv
-            BBRI.JK.csv
-            BMRI.JK.csv
-            BRPT.JK.csv
-            CPIN.JK.csv
-            ESSA.JK.csv
-            EXCL.JK.csv
-            GOTO.JK.csv
-            HEAL.JK.csv
-            ICBP.JK.csv
-            INDF.JK.csv
-            INTP.JK.csv
-            ITMG.JK.csv
-            KLBF.JK.csv
-            MAPI.JK.csv
-            MDKA.JK.csv
-            MIKA.JK.csv
-            PGAS.JK.csv
-            PTBA.JK.csv
-            SIDO.JK.csv
-            SMGR.JK.csv
-            TLKM.JK.csv
-            TPIA.JK.csv
-            UNTR.JK.csv
+            (64 CSV files - daily historical price/volume data per ticker)
         raw/
             fundamentals.json
             growth.json
@@ -463,25 +412,33 @@ Berikut adalah struktur direktori proyek Indonesia Stock Intelligence (ISI) sele
         backtest_audit_summary.md
         comparison.csv
         equity_curve_analysis.md
+        idx30_data_sources.md
         lookahead_audit.md
         momentum_backtest.md
         momentum_portfolio_validation.md
         momentum_validation.md
         portfolio_returns.csv
         survivorship_audit.md
+        survivorship_impact_analysis.md
         survivorship_remediation.md
         transaction_cost_audit.md
         turnover_audit.md
+        universe_change_analysis.md
         v6_momentum_research_summary.md
         yearly_performance.md
     research/
+        compare_backtests.py
+        create_historical_universe_files.py
         data_audit.py
+        download_historical_tickers.py
         factor_overlap.py
         fmp_history_probe.py
         momentum_vs_final.py
         project_status.py
         test_provider_source.py
+        update_ticker_metadata.py
         v2_vs_v3_holdings.py
+        validate_universe.py
     scoring/
         final_score_v3.py
         growth_score.py
@@ -504,95 +461,7 @@ Berikut adalah struktur direktori proyek Indonesia Stock Intelligence (ISI) sele
             2026-05.json
             2026-06.json
         momentum_history/
-            2019-01.json
-            2019-02.json
-            2019-03.json
-            2019-04.json
-            2019-05.json
-            2019-06.json
-            2019-07.json
-            2019-08.json
-            2019-09.json
-            2019-10.json
-            2019-11.json
-            2019-12.json
-            2020-01.json
-            2020-02.json
-            2020-03.json
-            2020-04.json
-            2020-05.json
-            2020-06.json
-            2020-07.json
-            2020-08.json
-            2020-09.json
-            2020-10.json
-            2020-11.json
-            2020-12.json
-            2021-01.json
-            2021-02.json
-            2021-03.json
-            2021-04.json
-            2021-05.json
-            2021-06.json
-            2021-07.json
-            2021-08.json
-            2021-09.json
-            2021-10.json
-            2021-11.json
-            2021-12.json
-            2022-01.json
-            2022-02.json
-            2022-03.json
-            2022-04.json
-            2022-05.json
-            2022-06.json
-            2022-07.json
-            2022-08.json
-            2022-09.json
-            2022-10.json
-            2022-11.json
-            2022-12.json
-            2023-01.json
-            2023-02.json
-            2023-03.json
-            2023-04.json
-            2023-05.json
-            2023-06.json
-            2023-07.json
-            2023-08.json
-            2023-09.json
-            2023-10.json
-            2023-11.json
-            2023-12.json
-            2024-01.json
-            2024-02.json
-            2024-03.json
-            2024-04.json
-            2024-05.json
-            2024-06.json
-            2024-07.json
-            2024-08.json
-            2024-09.json
-            2024-10.json
-            2024-11.json
-            2024-12.json
-            2025-01.json
-            2025-02.json
-            2025-03.json
-            2025-04.json
-            2025-05.json
-            2025-06.json
-            2025-07.json
-            2025-08.json
-            2025-09.json
-            2025-10.json
-            2025-11.json
-            2025-12.json
-            2026-01.json
-            2026-02.json
-            2026-03.json
-            2026-04.json
-            2026-05.json
+            (89 JSON files - monthly historical momentum snapshots from 2019-01)
         quality/
             2026-05.json
             2026-06.json

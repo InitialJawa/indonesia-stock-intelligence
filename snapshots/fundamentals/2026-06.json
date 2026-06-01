@@ -9,16 +9,6 @@
         "pb_ratio": 2.702845,
         "dividend_yield": 5.89
     },
-    "TLKM.JK": {
-        "roe": 0.14214,
-        "net_margin": 0.11276,
-        "operating_margin": 0.24583,
-        "debt_to_equity": 0.44115000000000004,
-        "free_cash_flow": 34257999233024,
-        "pe_ratio": 18.416094,
-        "pb_ratio": 2.1886785,
-        "dividend_yield": 7.01
-    },
     "BBNI.JK": {
         "roe": 0.12029,
         "net_margin": 0.40032002,
@@ -28,16 +18,6 @@
         "pe_ratio": 6.788866,
         "pb_ratio": 0.85512024,
         "dividend_yield": 9.44
-    },
-    "BBRI.JK": {
-        "roe": 0.18135999,
-        "net_margin": 0.40230998,
-        "operating_margin": 0.42025003,
-        "debt_to_equity": null,
-        "free_cash_flow": null,
-        "pe_ratio": 7.5815983,
-        "pb_ratio": 1.3133987,
-        "dividend_yield": 14.17
     },
     "BMRI.JK": {
         "roe": 0.21040002,
@@ -49,6 +29,26 @@
         "pb_ratio": 1.2474817,
         "dividend_yield": 11.69
     },
+    "BBRI.JK": {
+        "roe": 0.18135999,
+        "net_margin": 0.40230998,
+        "operating_margin": 0.42025003,
+        "debt_to_equity": null,
+        "free_cash_flow": null,
+        "pe_ratio": 7.5815983,
+        "pb_ratio": 1.3133987,
+        "dividend_yield": 14.17
+    },
+    "TLKM.JK": {
+        "roe": 0.14214,
+        "net_margin": 0.11276,
+        "operating_margin": 0.24583,
+        "debt_to_equity": 0.44115000000000004,
+        "free_cash_flow": 34257999233024,
+        "pe_ratio": 18.416094,
+        "pb_ratio": 2.1886785,
+        "dividend_yield": 7.01
+    },
     "ASII.JK": {
         "roe": 0.13245,
         "net_margin": 0.099429995,
@@ -58,16 +58,6 @@
         "pe_ratio": 6.3694267,
         "pb_ratio": 0.86060655,
         "dividend_yield": 7.8
-    },
-    "ICBP.JK": {
-        "roe": 0.14631,
-        "net_margin": 0.11969,
-        "operating_margin": 0.20801,
-        "debt_to_equity": 0.62219,
-        "free_cash_flow": 6226821251072,
-        "pe_ratio": 9.057971,
-        "pb_ratio": 1.5166079,
-        "dividend_yield": 3.52
     },
     "KLBF.JK": {
         "roe": 0.1443,
@@ -79,6 +69,16 @@
         "pb_ratio": 1.4339722,
         "dividend_yield": 2.6
     },
+    "CPIN.JK": {
+        "roe": 0.19496,
+        "net_margin": 0.091630004,
+        "operating_margin": 0.17216,
+        "debt_to_equity": 0.18068,
+        "free_cash_flow": 2504820785152,
+        "pe_ratio": 10.493205,
+        "pb_ratio": 1.9070367,
+        "dividend_yield": 4.22
+    },
     "INDF.JK": {
         "roe": 0.13319,
         "net_margin": 0.086780004,
@@ -89,15 +89,15 @@
         "pb_ratio": 0.7864415,
         "dividend_yield": 4.04
     },
-    "CPIN.JK": {
-        "roe": 0.19496,
-        "net_margin": 0.091630004,
-        "operating_margin": 0.17216,
-        "debt_to_equity": 0.18068,
-        "free_cash_flow": 2504820785152,
-        "pe_ratio": 10.493205,
-        "pb_ratio": 1.9070367,
-        "dividend_yield": 4.22
+    "ICBP.JK": {
+        "roe": 0.14631,
+        "net_margin": 0.11969,
+        "operating_margin": 0.20801,
+        "debt_to_equity": 0.62219,
+        "free_cash_flow": 6226821251072,
+        "pe_ratio": 9.057971,
+        "pb_ratio": 1.5166079,
+        "dividend_yield": 3.52
     },
     "ADRO.JK": {
         "roe": 0.10256,
@@ -119,16 +119,6 @@
         "pb_ratio": 1.360204,
         "dividend_yield": 11.96
     },
-    "MDKA.JK": {
-        "roe": 0.0055299997,
-        "net_margin": -0.03275,
-        "operating_margin": 0.040900003,
-        "debt_to_equity": 0.71135,
-        "free_cash_flow": -440244960,
-        "pe_ratio": null,
-        "pb_ratio": 80937.5,
-        "dividend_yield": null
-    },
     "AMMN.JK": {
         "roe": 0.10484,
         "net_margin": 0.20658001,
@@ -149,6 +139,16 @@
         "pb_ratio": 1.7939405,
         "dividend_yield": 5.23
     },
+    "MDKA.JK": {
+        "roe": 0.0055299997,
+        "net_margin": -0.03275,
+        "operating_margin": 0.040900003,
+        "debt_to_equity": 0.71135,
+        "free_cash_flow": -440244960,
+        "pe_ratio": null,
+        "pb_ratio": 80937.5,
+        "dividend_yield": null
+    },
     "TPIA.JK": {
         "roe": 0.42368,
         "net_margin": 0.14337,
@@ -158,6 +158,26 @@
         "pe_ratio": 4.7709413,
         "pb_ratio": 41511.625,
         "dividend_yield": 0.34
+    },
+    "UNTR.JK": {
+        "roe": 0.12315,
+        "net_margin": 0.09766,
+        "operating_margin": 0.07727,
+        "debt_to_equity": 0.25751,
+        "free_cash_flow": 4743001800704,
+        "pe_ratio": 6.770486,
+        "pb_ratio": 0.83769846,
+        "dividend_yield": 9.56
+    },
+    "SMGR.JK": {
+        "roe": 0.00438,
+        "net_margin": 0.00637,
+        "operating_margin": 0.0312,
+        "debt_to_equity": 0.21137,
+        "free_cash_flow": 2993279991808,
+        "pe_ratio": 49.74978,
+        "pb_ratio": 0.2618958,
+        "dividend_yield": 1.68
     },
     "PGAS.JK": {
         "roe": 0.10092,
@@ -178,26 +198,6 @@
         "pe_ratio": 18.04987,
         "pb_ratio": 77600.0,
         "dividend_yield": null
-    },
-    "UNTR.JK": {
-        "roe": 0.12315,
-        "net_margin": 0.09766,
-        "operating_margin": 0.07727,
-        "debt_to_equity": 0.25751,
-        "free_cash_flow": 4743001800704,
-        "pe_ratio": 6.770486,
-        "pb_ratio": 0.83769846,
-        "dividend_yield": 9.56
-    },
-    "SMGR.JK": {
-        "roe": 0.00438,
-        "net_margin": 0.00637,
-        "operating_margin": 0.0312,
-        "debt_to_equity": 0.21137,
-        "free_cash_flow": 2993279991808,
-        "pe_ratio": 49.74978,
-        "pb_ratio": 0.2613957,
-        "dividend_yield": 1.68
     },
     "INTP.JK": {
         "roe": 0.09884,
@@ -229,16 +229,6 @@
         "pb_ratio": 24814.814,
         "dividend_yield": 1.04
     },
-    "MAPI.JK": {
-        "roe": 0.17545,
-        "net_margin": 0.051820002,
-        "operating_margin": 0.0855,
-        "debt_to_equity": 0.4696,
-        "free_cash_flow": 3872628146176,
-        "pe_ratio": 10.4494295,
-        "pb_ratio": 1.6938207,
-        "dividend_yield": 0.67
-    },
     "EXCL.JK": {
         "roe": -0.20136999,
         "net_margin": -0.12106,
@@ -248,6 +238,16 @@
         "pe_ratio": null,
         "pb_ratio": 1.7263939,
         "dividend_yield": 5.62
+    },
+    "MAPI.JK": {
+        "roe": 0.17545,
+        "net_margin": 0.051820002,
+        "operating_margin": 0.0855,
+        "debt_to_equity": 0.4696,
+        "free_cash_flow": 3872628146176,
+        "pe_ratio": 10.4494295,
+        "pb_ratio": 1.6938207,
+        "dividend_yield": 0.67
     },
     "MIKA.JK": {
         "roe": 0.17981,

@@ -777,6 +777,14 @@ Rencana pengembangan sistem berdasarkan skala prioritas:
   - Mengembangkan kolektor berita (News Collector) dan model NLP sentimen emiten sebagai filter 
     tambahan pendukung penentu peringkat bulanan.
 
+* PRIORITY 4: Factor 005 - Foreign Flow (INCONCLUSIVE)
+  - Status: Parked
+  - Keterangan: Riset dinonaktifkan sementara karena ketiadaan data transaksi investor asing yang riil (saat ini hanya diuji menggunakan proxy sintetis). Syarat aktivasi kembali adalah mendapatkan data Foreign Flow riil.
+
+* PRIORITY 5: Next Active Research - Factor 006: Relative Strength
+  - Status: Pending
+  - Keterangan: Mengembangkan faktor momentum kekuatan relatif (Relative Strength Index / RSI atau Ratio Chart terhadap IHSG) sebagai filter penentu peringkat alternatif.
+
 
 BAB 14: INSTRUCTIONS FOR FUTURE AI
 --------------------------------------------------------------------------------
@@ -839,6 +847,29 @@ BAB 16: V7.0 - ALPHA OPTIMIZED WEIGHTS
    * Efektivitas Value Premium di bursa IDX30 selama 2019-2026 sangat lemah; meminimalkan eksposur Value meningkatkan kinerja portofolio secara masif.
    * Kombinasi Momentum dan Growth merupakan motor penggerak utama return di pasar Indonesia.
    * Quality harus tetap dipertahankan sebagai benteng pertahanan risiko untuk memitigasi drawdown ekstrem selama krisis pasar makro.
+   * Proxy Factor Risk: Tidak semua data hasil simulasi mewakili fenomena dunia nyata. Sebelum menguji alpha, validitas data harus diaudit secara ilmiah.
+
+================================================================================
+
+
+BAB 17: V8.1 - FACTOR 005 POST MORTEM
+--------------------------------------------------------------------------------
+1. Tujuan:
+   Menguji apakah Foreign Flow menghasilkan alpha.
+2. Implementasi:
+   Historical Foreign Flow Database dibangun dan diuji pada pipeline bulanan.
+3. Temuan:
+   Proxy Foreign Flow yang digunakan ternyata berupa Volume-Adjusted Momentum, bukan data transaksi investor asing yang riil.
+4. Hasil Backtest:
+   * CAGR turun (dari 6.62% ke 3.11%)
+   * Alpha turun (dari +9.31% ke +5.73%)
+   * Drawdown naik (dari 38.04% ke 45.52%)
+5. Audit Ilmiah:
+   Scientific Validity = 10/100
+6. Keputusan:
+   FACTOR 005 STATUS: INCONCLUSIVE (PARKED)
+7. Pelajaran:
+   Data sintetis tidak boleh dianggap sebagai representasi data institusional riil. Proxy yang terlalu kolinear dengan faktor lain dapat menghasilkan kesimpulan palsu dalam evaluasi alpha.
 
 ================================================================================
 

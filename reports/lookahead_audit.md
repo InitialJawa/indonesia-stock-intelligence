@@ -17,7 +17,7 @@ Seluruh 88 bulan pengujian terverifikasi secara ketat menggunakan logika penunda
 ### Sampel Alignment Tanggal
 | Bulan Formasi Portofolio ($t$) | Bulan Realisasi Return ($t+1$) | Return Portofolio | Status |
 | :---: | :---: | :---: | :---: |
-| `2019-01` | `2019-02` | 5.2927% | Terverifikasi |
-| `2019-02` | `2019-03` | -4.8511% | Terverifikasi |
-| `2026-03` | `2026-04` | 7.9902% | Terverifikasi |
-| `2026-04` | `2026-05` | -13.2733% | Terverifikasi |
+| `2019-01` | `2019-02` | -2.5991% | Terverifikasi |
+| `2019-02` | `2019-03` | 0.7988% | Terverifikasi |
+| `2026-03` | `2026-04` | 12.9318% | Terverifikasi |
+| `2026-04` | `2026-05` | -20.3625% | Terverifikasi |

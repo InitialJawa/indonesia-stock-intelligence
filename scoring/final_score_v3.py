@@ -2,10 +2,31 @@ import json
 import os
 import pandas as pd
 
-QUALITY_WEIGHT = 0.30
-GROWTH_WEIGHT = 0.25
-VALUE_WEIGHT = 0.20
-MOMENTUM_WEIGHT = 0.25
+from pathlib import Path
+
+# Load weights from config if possible
+CONFIG_PATH = Path("config/scoring_weights.json")
+if CONFIG_PATH.exists():
+    try:
+        with open(CONFIG_PATH, "r") as f:
+            weights = json.load(f)
+        QUALITY_WEIGHT = weights.get("quality", 0.25)
+        GROWTH_WEIGHT = weights.get("growth", 0.30)
+        VALUE_WEIGHT = weights.get("value", 0.10)
+        MOMENTUM_WEIGHT = weights.get("momentum", 0.35)
+    except Exception as e:
+        print(f"[WARNING] Gagal memuat config/scoring_weights.json: {e}. Menggunakan default weights.")
+        QUALITY_WEIGHT = 0.25
+        GROWTH_WEIGHT = 0.30
+        VALUE_WEIGHT = 0.10
+        MOMENTUM_WEIGHT = 0.35
+else:
+    QUALITY_WEIGHT = 0.25
+    GROWTH_WEIGHT = 0.30
+    VALUE_WEIGHT = 0.10
+    MOMENTUM_WEIGHT = 0.35
+
+
 
 
 def load_json(path):

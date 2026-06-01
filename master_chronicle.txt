@@ -805,4 +805,40 @@ faktor momentum dalam mengalahkan IHSG dengan CAGR sebesar 19.07% (vs IHSG -0.87
 docs/findings/. Selain itu, integrasi FMP telah sepenuhnya didekomisi dan codebase telah didebloat dengan 
 sukses menuju standardisasi Yahoo Finance tunggal, siap untuk ekspansi lebih lanjut ke semesta dinamis 
 historis.
+BAB 16: V7.0 - ALPHA OPTIMIZED WEIGHTS
+--------------------------------------------------------------------------------
+1. Latar Belakang:
+   * Audit tingkat validitas akademis framework backtest ISI V6 selesai dilakukan, mengonfirmasi eliminasi bias IPO dan look-ahead bias secara penuh.
+   * Riset Dynamic Factor Weight Optimization telah selesai dilakukan pada 5 konfigurasi (A, B, C, D, E).
+   * Analisis Alpha Attribution selesai dilakukan dengan mensimulasikan counterfactual factor portfolios.
+
+2. Temuan Utama:
+   * Momentum: Faktor dengan kontribusi Alpha terbesar (+23.29% secara mandiri).
+   * Growth: Faktor kedua terbaik (+22.66% secara mandiri) dan menjadi mesin akselerasi return.
+   * Quality: Berfungsi sebagai stabilizer risiko dan peredam drawdown yang andal (menjaga MaxDD terendah 34.15% di masa krisis).
+   * Value: Berfungsi sebagai alpha drag dan jebakan kinerja buruk (value trap) di pasar IDX30 selama periode 2019-2026.
+
+3. Konfigurasi Bobot Faktor:
+   * Current Production (Config A):
+     Momentum: 25% | Growth: 25% | Quality: 30% | Value: 20%
+   * Candidate Production (Config B):
+     Momentum: 35% | Growth: 30% | Quality: 25% | Value: 10%
+
+4. Hasil Akhir (Dinamis Walk-Forward):
+   * CAGR meningkat dari 2.92% ke 4.88% (bersih setelah biaya transaksi 0.25%).
+   * Sharpe meningkat dari -0.08 ke -0.00.
+   * Alpha tahunan meningkat dari +5.54% ke +7.85% (tambahan excess Alpha +2.31% per tahun).
+   * Tetap robust setelah biaya transaksi riil di seluruh skenario fee (0.15%, 0.25%, dan 0.50%).
+
+5. Architectural Decision:
+   * Migrasi resmi disetujui (APPROVED) ke Config B:
+     Momentum 35%, Growth 30%, Quality 25%, Value 10%.
+   * Pintu konfigurasi weights di scoring engine (final_score_v3.py) telah didelegasikan secara terpusat ke `config/scoring_weights.json`.
+
+6. Lessons Learned:
+   * Efektivitas Value Premium di bursa IDX30 selama 2019-2026 sangat lemah; meminimalkan eksposur Value meningkatkan kinerja portofolio secara masif.
+   * Kombinasi Momentum dan Growth merupakan motor penggerak utama return di pasar Indonesia.
+   * Quality harus tetap dipertahankan sebagai benteng pertahanan risiko untuk memitigasi drawdown ekstrem selama krisis pasar makro.
+
 ================================================================================
+

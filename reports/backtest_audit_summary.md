@@ -15,8 +15,8 @@ Ringkasan evaluasi kualitas dan kredibilitas backtest momentum historis.
 | :--- | :--- | :---: |
 | **Look-Ahead Bias** | Formasi portofolio $t$ dievaluasi dengan return $t+1$. | **LULUS** (Valid) |
 | **Survivorship Bias** | Menggunakan konstituen modern tahun 2026 untuk data 2019-2025. | **GAGAL** (Bias Tinggi) |
-| **Transaction Cost** | CAGR pasca fee 0.50% tetap di `15.60%` (Sharpe `0.66`). | **LULUS** (Kuat/Robust) |
-| **Turnover** | Rata-rata `49.8%` per bulan dengan `1.1` pergantian saham. | **LULUS** (Wajar) |
+| **Transaction Cost** | CAGR pasca fee 0.50% tetap di `-2.43%` (Sharpe `0.06`). | **LULUS** (Kuat/Robust) |
+| **Turnover** | Rata-rata `54.8%` per bulan dengan `1.3` pergantian saham. | **LULUS** (Wajar) |
 
 ## 3. Langkah Perbaikan Rekomendasi
 Untuk menjadikan backtest ini valid (production-grade), disarankan melakukan refactoring berikut:

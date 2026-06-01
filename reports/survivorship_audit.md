@@ -18,9 +18,15 @@ Berikut adalah saham IDX30 modern yang belum ada atau baru melantai di bursa sel
 
 | Ticker | Tanggal IPO/Data Terawal | Dampak pada Awal Backtest (2019-2022) |
 | :--- | :---: | :--- |
+| **BTPS** | `2018-05-31` | Diabaikan otomatis dari ranking sebelum tanggal IPO (mengurangi universe aktif). |
 | **HEAL** | `2018-05-31` | Diabaikan otomatis dari ranking sebelum tanggal IPO (mengurangi universe aktif). |
+| **BUKA** | `2021-08-31` | Diabaikan otomatis dari ranking sebelum tanggal IPO (mengurangi universe aktif). |
+| **ADMR** | `2022-01-31` | Diabaikan otomatis dari ranking sebelum tanggal IPO (mengurangi universe aktif). |
 | **GOTO** | `2022-04-30` | Diabaikan otomatis dari ranking sebelum tanggal IPO (mengurangi universe aktif). |
+| **PGEO** | `2023-02-28` | Diabaikan otomatis dari ranking sebelum tanggal IPO (mengurangi universe aktif). |
+| **MBMA** | `2023-04-30` | Diabaikan otomatis dari ranking sebelum tanggal IPO (mengurangi universe aktif). |
 | **AMMN** | `2023-07-31` | Diabaikan otomatis dari ranking sebelum tanggal IPO (mengurangi universe aktif). |
+| **AADI** | `2024-12-31` | Diabaikan otomatis dari ranking sebelum tanggal IPO (mengurangi universe aktif). |
 
 ## 4. Kesimpulan Rekomendasi
 - Backtest ini memiliki **Survivorship Bias Tinggi**.

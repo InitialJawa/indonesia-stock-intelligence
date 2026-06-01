@@ -16,19 +16,19 @@
         "is_commodity": false
     },
     {
-        "ticker": "BBRI.JK",
-        "value_score": 77.59,
-        "pe_ratio": 7.5815983,
-        "pb_ratio": 1.3133987,
-        "dividend_yield": 14.17,
-        "is_commodity": false
-    },
-    {
         "ticker": "ASII.JK",
         "value_score": 77.59,
         "pe_ratio": 6.3694267,
         "pb_ratio": 0.86060655,
         "dividend_yield": 7.8,
+        "is_commodity": false
+    },
+    {
+        "ticker": "BBRI.JK",
+        "value_score": 77.59,
+        "pe_ratio": 7.5815983,
+        "pb_ratio": 1.3133987,
+        "dividend_yield": 14.17,
         "is_commodity": false
     },
     {

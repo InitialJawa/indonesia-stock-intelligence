@@ -1,8 +1,6 @@
-# file: config/scoring_weights.json
-
 {
-    "quality": 0.30,
-    "growth": 0.25,
-    "value": 0.20,
-    "momentum": 0.25
+  "quality": 0.25,
+  "growth": 0.30,
+  "value": 0.10,
+  "momentum": 0.35
 }

@@ -31,38 +31,7 @@ jobs:
           pip install requests
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-      - name: Gemini Model & SDK Audit   # TEMPORARY
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: |
-          echo "=== GEMINI MODEL & SDK AUDIT ==="
-          if [ -z "$GEMINI_API_KEY" ]; then
-            echo "::error::GEMINI_API_KEY not set"
-            exit 1
-          else
-            echo "[AUDIT] GEMINI_API_KEY EXISTS: true"
-            echo "[AUDIT] GEMINI_API_KEY LENGTH: ${#GEMINI_API_KEY}"
-          fi
-          python - <<'PY'
-import os, sys, traceback
-print("[AUDIT] Python version:", sys.version.split()[0])
-import google.generativeai as genai
-print("[AUDIT] google-generativeai version:", genai.__version__)
-api_key = os.getenv("GEMINI_API_KEY")
-print("[AUDIT] GEMINI_API_KEY EXISTS:", bool(api_key))
-print("[AUDIT] GEMINI_API_KEY LENGTH:", len(api_key) if api_key else 0)
-try:
-    models = genai.list_models()
-    print("=== AVAILABLE MODELS ===")
-    for m in models:
-        print(m.name)
-    prod = "gemini-1.0-pro"
-    print("[AUDIT] Production model:", prod)
-    print("[AUDIT] Production model available:", prod in [m.name for m in models])
-except Exception as e:
-    print("[MODEL LIST ERROR]", e)
-    raise
-PY
+
       - name: Execute Daily Risk Radar
         env:
           # Variabel ini akan ditarik dari GitHub Secrets

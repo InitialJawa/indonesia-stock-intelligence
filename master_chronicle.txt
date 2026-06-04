@@ -806,3 +806,70 @@ BAB 19: V8.3 - AUTOMATION & DASHBOARD INTEGRATION
    Sistem ISI kini sepenuhnya otomatis (zero-touch) dan memiliki satu antarmuka terintegrasi yang menyajikan data portofolio jangka panjang (bulanan) serta pemantauan risiko harian secara mendalam berdasarkan metrik transaksi aktual.
 
 ================================================================================
+========================================================
+DATE: 2026-06-05
+SESSION: Gemini AI Narrative Investigation
+STATUS: PARTIALLY RESOLVED
+========================================================
+
+PROBLEM:
+- Dashboard berhasil menampilkan section  Analisis AI.
+- Namun isi narasi AI hanya menampilkan volume summary mentah.
+- Workflow GitHub Actions sukses tetapi Gemini gagal menghasilkan narasi.
+
+FORENSIC FINDINGS:
+- GEMINI_API_KEY tersedia di GitHub Secrets.
+- Dashboard rendering bug sudah diperbaiki.
+- detail_message sekarang ditampilkan di dashboard.
+- Workflow log menunjukkan:
+
+  [GEMINI ERROR] NotFound: 404 models/gemini-1.5-flash is not found for API version v1beta
+
+- Sebelumnya model menggunakan:
+  gemini-1.0-pro
+
+- Kemudian diubah menjadi:
+  gemini-1.5-flash
+
+- Kedua model tidak tersedia pada API yang digunakan.
+
+MODEL DISCOVERY RESULT:
+Model yang tersedia:
+- gemini-2.5-flash
+- gemini-2.5-pro
+- gemini-2.0-flash
+- gemini-flash-latest
+- gemini-pro-latest
+- gemini-3.5-flash
+- gemini-3.1-flash
+- dll
+
+NEXT TARGET:
+- Ubah model menjadi salah satu model yang terverifikasi tersedia:
+    gemini-3.5-flash
+  atau
+    gemini-flash-latest
+
+CURRENT BLOCKER:
+- Commit lokal berisi perubahan model.
+- origin/main beberapa kali berubah karena auto-commit GitHub Actions bot.
+- Branch sempat diverged sehingga push beberapa kali gagal.
+- Perlu verifikasi apakah origin/main benar-benar sudah memakai model baru.
+
+VERIFICATION COMMAND:
+git show origin/main:run_daily_risk_radar.py | findstr model_name=
+
+SUCCESS CRITERIA:
+Workflow log harus menampilkan:
+
+[+] GEMINI_API_KEY terdeteksi. Memanggil Gemini AI...
+[+] Narasi AI berhasil dihasilkan
+
+and TIDAK menampilkan:
+
+[GEMINI ERROR]
+
+FINAL EXPECTED RESULT:
+detail_message berisi narasi AI asli, bukan daftar volume saham mentah.
+
+========================================================

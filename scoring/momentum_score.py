@@ -111,13 +111,11 @@ def calculate_momentum():
     # Implementasi Normalisasi Persentil Secara Ketat (Menggunakan scoring.utils)
     result["RS_6M_percentile"] = percentile_normalize(result["rs_6m"].tolist())
     result["score_12m"] = calculate_percentile(result["return_12m"])
-    result["score_ff"] = calculate_percentile(result["foreign_flow_6m"])
 
-    # Kalkulasi Akhir Momentum dengan Integrasi Asing dan Substitusi RS-6M
+    # Kalkulasi Akhir Momentum Ekuilibrium Murni (50% RS-6M + 50% Return-12M)
     result["momentum"] = (
-        result["RS_6M_percentile"] * 0.35 + 
-        result["score_12m"] * 0.35 +
-        result["score_ff"] * 0.30
+        result["RS_6M_percentile"] * 0.50 + 
+        result["score_12m"] * 0.50
     )
 
     result = result.sort_values("momentum", ascending=False)

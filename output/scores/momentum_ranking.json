@@ -1,448 +1,448 @@
 [
     {
         "ticker": "ADMR.JK",
-        "momentum": 93.03,
+        "momentum": 96.07,
         "return_6m": 0.52,
         "return_12m": 0.6,
         "foreign_flow_6m": 292295505950.55
     },
     {
-        "ticker": "ADRO.JK",
-        "momentum": 92.73,
-        "return_6m": 0.72,
-        "return_12m": 0.29,
-        "foreign_flow_6m": 624042754088.23
-    },
-    {
-        "ticker": "MDKA.JK",
-        "momentum": 89.32,
-        "return_6m": 0.42,
-        "return_12m": 0.28,
-        "foreign_flow_6m": 757090410655.32
-    },
-    {
-        "ticker": "INCO.JK",
-        "momentum": 89.05,
-        "return_6m": 0.52,
-        "return_12m": 0.35,
-        "foreign_flow_6m": 154733817924.1
-    },
-    {
-        "ticker": "TINS.JK",
-        "momentum": 88.98,
-        "return_6m": 0.26,
-        "return_12m": 1.87,
-        "foreign_flow_6m": 875141408350.87
-    },
-    {
-        "ticker": "AADI.JK",
-        "momentum": 84.86,
-        "return_6m": 0.4,
-        "return_12m": 0.24,
-        "foreign_flow_6m": 241637223156.88
-    },
-    {
         "ticker": "GGRM.JK",
-        "momentum": 84.49,
+        "momentum": 95.25,
         "return_6m": 0.42,
         "return_12m": 0.8,
         "foreign_flow_6m": 46899996278.87
     },
     {
+        "ticker": "INCO.JK",
+        "momentum": 93.74,
+        "return_6m": 0.52,
+        "return_12m": 0.35,
+        "foreign_flow_6m": 154733817924.1
+    },
+    {
+        "ticker": "ADRO.JK",
+        "momentum": 92.97,
+        "return_6m": 0.72,
+        "return_12m": 0.29,
+        "foreign_flow_6m": 624042754088.23
+    },
+    {
         "ticker": "JPFA.JK",
-        "momentum": 83.89,
+        "momentum": 89.71,
         "return_6m": 0.34,
         "return_12m": 0.62,
         "foreign_flow_6m": 85214460725.36
     },
     {
-        "ticker": "ESSA.JK",
-        "momentum": 83.51,
-        "return_6m": 0.36,
-        "return_12m": 0.14,
-        "foreign_flow_6m": 334422248892.56
-    },
-    {
-        "ticker": "PTBA.JK",
-        "momentum": 82.23,
-        "return_6m": 0.48,
-        "return_12m": 0.08,
-        "foreign_flow_6m": 206699176911.01
-    },
-    {
         "ticker": "MAPI.JK",
-        "momentum": 80.44,
+        "momentum": 87.46,
         "return_6m": 0.5,
         "return_12m": 0.16,
         "foreign_flow_6m": 59116525261.25
     },
     {
-        "ticker": "ITMG.JK",
-        "momentum": 74.66,
-        "return_6m": 0.32,
-        "return_12m": 0.05,
-        "foreign_flow_6m": 169288874066.03
+        "ticker": "MDKA.JK",
+        "momentum": 87.43,
+        "return_6m": 0.42,
+        "return_12m": 0.28,
+        "foreign_flow_6m": 757090410655.32
     },
     {
-        "ticker": "MBMA.JK",
-        "momentum": 72.48,
-        "return_6m": 0.16,
-        "return_12m": 0.33,
-        "foreign_flow_6m": 115784732819.0
-    },
-    {
-        "ticker": "ANTM.JK",
-        "momentum": 72.19,
-        "return_6m": 0.28,
-        "return_12m": -0.02,
-        "foreign_flow_6m": 762374953542.37
-    },
-    {
-        "ticker": "ISAT.JK",
-        "momentum": 72.17,
-        "return_6m": 0.23,
-        "return_12m": 0.13,
-        "foreign_flow_6m": 89578098816.13
-    },
-    {
-        "ticker": "PGAS.JK",
-        "momentum": 72.06,
-        "return_6m": 0.29,
-        "return_12m": 0.11,
-        "foreign_flow_6m": 65326400203.42
-    },
-    {
-        "ticker": "AKRA.JK",
-        "momentum": 70.66,
-        "return_6m": 0.31,
-        "return_12m": 0.04,
-        "foreign_flow_6m": 85521415390.66
-    },
-    {
-        "ticker": "BUMI.JK",
-        "momentum": 68.93,
-        "return_6m": -0.03,
-        "return_12m": 0.42,
-        "foreign_flow_6m": 4256305502612.13
-    },
-    {
-        "ticker": "BBTN.JK",
-        "momentum": 68.51,
-        "return_6m": 0.34,
-        "return_12m": 0.01,
-        "foreign_flow_6m": 53738793936.48
-    },
-    {
-        "ticker": "LPPF.JK",
-        "momentum": 66.65,
-        "return_6m": 0.37,
-        "return_12m": 0.05,
-        "foreign_flow_6m": 2102940285.97
-    },
-    {
-        "ticker": "HMSP.JK",
-        "momentum": 66.5,
-        "return_6m": 0.2,
-        "return_12m": 0.26,
-        "foreign_flow_6m": 20226944277.23
-    },
-    {
-        "ticker": "MEDC.JK",
-        "momentum": 64.38,
-        "return_6m": 0.19,
-        "return_12m": 0.02,
-        "foreign_flow_6m": 99994739783.43
+        "ticker": "AADI.JK",
+        "momentum": 85.07,
+        "return_6m": 0.4,
+        "return_12m": 0.24,
+        "foreign_flow_6m": 241637223156.88
     },
     {
         "ticker": "EXCL.JK",
-        "momentum": 64.19,
+        "momentum": 85.0,
         "return_6m": 0.32,
         "return_12m": 0.36,
         "foreign_flow_6m": -116001172259.94
     },
     {
-        "ticker": "BRPT.JK",
-        "momentum": 61.67,
-        "return_6m": -0.18,
-        "return_12m": 0.54,
-        "foreign_flow_6m": 430272420991.51
+        "ticker": "TINS.JK",
+        "momentum": 84.92,
+        "return_6m": 0.26,
+        "return_12m": 1.87,
+        "foreign_flow_6m": 875141408350.87
+    },
+    {
+        "ticker": "PTBA.JK",
+        "momentum": 81.98,
+        "return_6m": 0.48,
+        "return_12m": 0.08,
+        "foreign_flow_6m": 206699176911.01
+    },
+    {
+        "ticker": "ESSA.JK",
+        "momentum": 81.14,
+        "return_6m": 0.36,
+        "return_12m": 0.14,
+        "foreign_flow_6m": 334422248892.56
+    },
+    {
+        "ticker": "LPPF.JK",
+        "momentum": 76.46,
+        "return_6m": 0.37,
+        "return_12m": 0.05,
+        "foreign_flow_6m": 2102940285.97
+    },
+    {
+        "ticker": "PGAS.JK",
+        "momentum": 74.81,
+        "return_6m": 0.29,
+        "return_12m": 0.11,
+        "foreign_flow_6m": 65326400203.42
+    },
+    {
+        "ticker": "ITMG.JK",
+        "momentum": 72.51,
+        "return_6m": 0.32,
+        "return_12m": 0.05,
+        "foreign_flow_6m": 169288874066.03
+    },
+    {
+        "ticker": "BBTN.JK",
+        "momentum": 71.75,
+        "return_6m": 0.34,
+        "return_12m": 0.01,
+        "foreign_flow_6m": 53738793936.48
+    },
+    {
+        "ticker": "ISAT.JK",
+        "momentum": 71.62,
+        "return_6m": 0.23,
+        "return_12m": 0.13,
+        "foreign_flow_6m": 89578098816.13
+    },
+    {
+        "ticker": "HMSP.JK",
+        "momentum": 71.57,
+        "return_6m": 0.2,
+        "return_12m": 0.26,
+        "foreign_flow_6m": 20226944277.23
+    },
+    {
+        "ticker": "MBMA.JK",
+        "momentum": 70.74,
+        "return_6m": 0.16,
+        "return_12m": 0.33,
+        "foreign_flow_6m": 115784732819.0
+    },
+    {
+        "ticker": "AKRA.JK",
+        "momentum": 70.14,
+        "return_6m": 0.31,
+        "return_12m": 0.04,
+        "foreign_flow_6m": 85521415390.66
     },
     {
         "ticker": "WSKT.JK",
-        "momentum": 57.47,
+        "momentum": 65.03,
         "return_6m": 0.28,
         "return_12m": 0.0,
         "foreign_flow_6m": 0.0
     },
     {
         "ticker": "SRIL.JK",
-        "momentum": 57.47,
+        "momentum": 65.03,
         "return_6m": 0.28,
         "return_12m": 0.0,
         "foreign_flow_6m": 0.0
     },
     {
-        "ticker": "BBNI.JK",
-        "momentum": 57.4,
-        "return_6m": 0.22,
-        "return_12m": -0.1,
-        "foreign_flow_6m": 56744078195.53
-    },
-    {
-        "ticker": "BMRI.JK",
-        "momentum": 57.07,
-        "return_6m": 0.22,
-        "return_12m": -0.15,
-        "foreign_flow_6m": 83969867978.4
-    },
-    {
-        "ticker": "GOTO.JK",
-        "momentum": 50.51,
-        "return_6m": 0.06,
-        "return_12m": -0.22,
-        "foreign_flow_6m": 331497902604.39
-    },
-    {
-        "ticker": "HRUM.JK",
-        "momentum": 48.26,
-        "return_6m": 0.07,
-        "return_12m": -0.02,
-        "foreign_flow_6m": 31923454025.53
-    },
-    {
-        "ticker": "WSBP.JK",
-        "momentum": 47.05,
-        "return_6m": 0.11,
-        "return_12m": 0.0,
-        "foreign_flow_6m": -1813630309.26
-    },
-    {
         "ticker": "TLKM.JK",
-        "momentum": 47.0,
+        "momentum": 64.46,
         "return_6m": 0.14,
         "return_12m": 0.16,
         "foreign_flow_6m": -418645861137.07
     },
     {
-        "ticker": "TKIM.JK",
-        "momentum": 44.29,
-        "return_6m": 0.02,
-        "return_12m": -0.07,
-        "foreign_flow_6m": 36328591274.87
+        "ticker": "ANTM.JK",
+        "momentum": 62.28,
+        "return_6m": 0.28,
+        "return_12m": -0.02,
+        "foreign_flow_6m": 762374953542.37
     },
     {
-        "ticker": "CPIN.JK",
-        "momentum": 43.15,
-        "return_6m": 0.2,
-        "return_12m": -0.1,
-        "foreign_flow_6m": -74487694319.41
-    },
-    {
-        "ticker": "ERAA.JK",
-        "momentum": 43.12,
-        "return_6m": 0.18,
-        "return_12m": -0.3,
-        "foreign_flow_6m": 14838864589.74
+        "ticker": "MEDC.JK",
+        "momentum": 59.83,
+        "return_6m": 0.19,
+        "return_12m": 0.02,
+        "foreign_flow_6m": 99994739783.43
     },
     {
         "ticker": "UNTR.JK",
-        "momentum": 43.08,
+        "momentum": 58.2,
         "return_6m": 0.13,
         "return_12m": 0.08,
         "foreign_flow_6m": -405007462605.59
     },
     {
         "ticker": "INDF.JK",
-        "momentum": 42.93,
+        "momentum": 55.98,
         "return_6m": 0.22,
         "return_12m": -0.09,
         "foreign_flow_6m": -305524007888.48
     },
     {
-        "ticker": "PWON.JK",
-        "momentum": 42.21,
-        "return_6m": 0.04,
-        "return_12m": -0.25,
-        "foreign_flow_6m": 80069486949.08
-    },
-    {
         "ticker": "ASII.JK",
-        "momentum": 41.86,
+        "momentum": 55.78,
         "return_6m": 0.08,
         "return_12m": 0.1,
         "foreign_flow_6m": -364942030322.51
     },
     {
-        "ticker": "INTP.JK",
-        "momentum": 41.57,
-        "return_6m": 0.03,
-        "return_12m": -0.08,
-        "foreign_flow_6m": 7155857718.4
+        "ticker": "BUMI.JK",
+        "momentum": 55.62,
+        "return_6m": -0.03,
+        "return_12m": 0.42,
+        "foreign_flow_6m": 4256305502612.13
     },
     {
-        "ticker": "MNCN.JK",
-        "momentum": 41.33,
-        "return_6m": 0.1,
-        "return_12m": -0.2,
-        "foreign_flow_6m": 602784685.92
+        "ticker": "BBNI.JK",
+        "momentum": 55.21,
+        "return_6m": 0.22,
+        "return_12m": -0.1,
+        "foreign_flow_6m": 56744078195.53
+    },
+    {
+        "ticker": "CPIN.JK",
+        "momentum": 53.61,
+        "return_6m": 0.2,
+        "return_12m": -0.1,
+        "foreign_flow_6m": -74487694319.41
+    },
+    {
+        "ticker": "BMRI.JK",
+        "momentum": 52.06,
+        "return_6m": 0.22,
+        "return_12m": -0.15,
+        "foreign_flow_6m": 83969867978.4
+    },
+    {
+        "ticker": "WSBP.JK",
+        "momentum": 51.14,
+        "return_6m": 0.11,
+        "return_12m": 0.0,
+        "foreign_flow_6m": -1813630309.26
+    },
+    {
+        "ticker": "BRPT.JK",
+        "momentum": 49.26,
+        "return_6m": -0.18,
+        "return_12m": 0.54,
+        "foreign_flow_6m": 430272420991.51
+    },
+    {
+        "ticker": "HRUM.JK",
+        "momentum": 44.83,
+        "return_6m": 0.07,
+        "return_12m": -0.02,
+        "foreign_flow_6m": 31923454025.53
     },
     {
         "ticker": "JSMR.JK",
-        "momentum": 41.15,
+        "momentum": 43.38,
         "return_6m": 0.15,
         "return_12m": -0.21,
         "foreign_flow_6m": -6265634277.62
     },
     {
-        "ticker": "BUKA.JK",
-        "momentum": 37.07,
-        "return_6m": 0.0,
-        "return_12m": -0.11,
-        "foreign_flow_6m": 10308482026.06
-    },
-    {
-        "ticker": "TBIG.JK",
-        "momentum": 34.02,
-        "return_6m": 0.05,
-        "return_12m": -0.3,
-        "foreign_flow_6m": 2233783905.1
-    },
-    {
-        "ticker": "LPKR.JK",
-        "momentum": 33.53,
-        "return_6m": 0.04,
-        "return_12m": -0.21,
-        "foreign_flow_6m": -10032437059.66
-    },
-    {
         "ticker": "BBRI.JK",
-        "momentum": 32.57,
+        "momentum": 41.84,
         "return_6m": 0.17,
         "return_12m": -0.27,
         "foreign_flow_6m": -329867916056.51
     },
     {
-        "ticker": "SMGR.JK",
-        "momentum": 32.08,
-        "return_6m": -0.13,
-        "return_12m": -0.37,
-        "foreign_flow_6m": 180068996543.48
+        "ticker": "MNCN.JK",
+        "momentum": 40.96,
+        "return_6m": 0.1,
+        "return_12m": -0.2,
+        "foreign_flow_6m": 602784685.92
     },
     {
-        "ticker": "ACES.JK",
-        "momentum": 31.88,
-        "return_6m": 0.11,
-        "return_12m": -0.35,
-        "foreign_flow_6m": -6750026362.94
+        "ticker": "ERAA.JK",
+        "momentum": 39.51,
+        "return_6m": 0.18,
+        "return_12m": -0.3,
+        "foreign_flow_6m": 14838864589.74
+    },
+    {
+        "ticker": "INTP.JK",
+        "momentum": 39.3,
+        "return_6m": 0.03,
+        "return_12m": -0.08,
+        "foreign_flow_6m": 7155857718.4
+    },
+    {
+        "ticker": "TKIM.JK",
+        "momentum": 38.49,
+        "return_6m": 0.02,
+        "return_12m": -0.07,
+        "foreign_flow_6m": 36328591274.87
     },
     {
         "ticker": "EMTK.JK",
-        "momentum": 31.73,
+        "momentum": 35.96,
         "return_6m": -0.22,
         "return_12m": 0.08,
         "foreign_flow_6m": -43561969460.95
     },
     {
-        "ticker": "AMMN.JK",
-        "momentum": 31.26,
-        "return_6m": -0.22,
-        "return_12m": -0.52,
-        "foreign_flow_6m": 829959640042.33
-    },
-    {
-        "ticker": "SIDO.JK",
-        "momentum": 30.92,
-        "return_6m": 0.01,
-        "return_12m": -0.2,
-        "foreign_flow_6m": -22349098082.46
-    },
-    {
-        "ticker": "BTPS.JK",
-        "momentum": 30.31,
-        "return_6m": 0.02,
-        "return_12m": -0.23,
-        "foreign_flow_6m": -16481668051.62
-    },
-    {
-        "ticker": "PGEO.JK",
-        "momentum": 29.84,
-        "return_6m": 0.09,
-        "return_12m": -0.28,
-        "foreign_flow_6m": -51989904529.86
+        "ticker": "GOTO.JK",
+        "momentum": 34.66,
+        "return_6m": 0.06,
+        "return_12m": -0.22,
+        "foreign_flow_6m": 331497902604.39
     },
     {
         "ticker": "ICBP.JK",
-        "momentum": 28.93,
+        "momentum": 33.97,
         "return_6m": 0.12,
         "return_12m": -0.33,
         "foreign_flow_6m": -85845310794.62
     },
     {
-        "ticker": "ARTO.JK",
-        "momentum": 24.19,
-        "return_6m": -0.14,
-        "return_12m": -0.36,
-        "foreign_flow_6m": 16188420606.62
+        "ticker": "PGEO.JK",
+        "momentum": 33.92,
+        "return_6m": 0.09,
+        "return_12m": -0.28,
+        "foreign_flow_6m": -51989904529.86
+    },
+    {
+        "ticker": "LPKR.JK",
+        "momentum": 33.84,
+        "return_6m": 0.04,
+        "return_12m": -0.21,
+        "foreign_flow_6m": -10032437059.66
+    },
+    {
+        "ticker": "BUKA.JK",
+        "momentum": 32.2,
+        "return_6m": 0.0,
+        "return_12m": -0.11,
+        "foreign_flow_6m": 10308482026.06
+    },
+    {
+        "ticker": "PWON.JK",
+        "momentum": 31.51,
+        "return_6m": 0.04,
+        "return_12m": -0.25,
+        "foreign_flow_6m": 80069486949.08
+    },
+    {
+        "ticker": "SIDO.JK",
+        "momentum": 31.45,
+        "return_6m": 0.01,
+        "return_12m": -0.2,
+        "foreign_flow_6m": -22349098082.46
+    },
+    {
+        "ticker": "ACES.JK",
+        "momentum": 30.81,
+        "return_6m": 0.11,
+        "return_12m": -0.35,
+        "foreign_flow_6m": -6750026362.94
+    },
+    {
+        "ticker": "BTPS.JK",
+        "momentum": 29.91,
+        "return_6m": 0.02,
+        "return_12m": -0.23,
+        "foreign_flow_6m": -16481668051.62
+    },
+    {
+        "ticker": "TBIG.JK",
+        "momentum": 29.18,
+        "return_6m": 0.05,
+        "return_12m": -0.3,
+        "foreign_flow_6m": 2233783905.1
     },
     {
         "ticker": "BSDE.JK",
-        "momentum": 21.34,
+        "momentum": 20.43,
         "return_6m": -0.05,
         "return_12m": -0.29,
         "foreign_flow_6m": -36321934896.38
     },
     {
         "ticker": "TOWR.JK",
-        "momentum": 21.28,
+        "momentum": 19.69,
         "return_6m": -0.01,
         "return_12m": -0.34,
         "foreign_flow_6m": -36202617949.4
     },
     {
-        "ticker": "HEAL.JK",
-        "momentum": 18.38,
-        "return_6m": -0.04,
-        "return_12m": -0.38,
-        "foreign_flow_6m": -22658713887.07
-    },
-    {
-        "ticker": "PTPP.JK",
-        "momentum": 18.32,
-        "return_6m": -0.16,
-        "return_12m": -0.56,
-        "foreign_flow_6m": 11678196464.24
-    },
-    {
-        "ticker": "MIKA.JK",
-        "momentum": 16.25,
-        "return_6m": -0.07,
-        "return_12m": -0.39,
-        "foreign_flow_6m": -25600803899.5
-    },
-    {
         "ticker": "BBCA.JK",
-        "momentum": 13.72,
+        "momentum": 18.94,
         "return_6m": 0.0,
         "return_12m": -0.36,
         "foreign_flow_6m": -2364861947511.77
     },
     {
+        "ticker": "HEAL.JK",
+        "momentum": 14.2,
+        "return_6m": -0.04,
+        "return_12m": -0.38,
+        "foreign_flow_6m": -22658713887.07
+    },
+    {
+        "ticker": "MIKA.JK",
+        "momentum": 11.83,
+        "return_6m": -0.07,
+        "return_12m": -0.39,
+        "foreign_flow_6m": -25600803899.5
+    },
+    {
+        "ticker": "ARTO.JK",
+        "momentum": 11.78,
+        "return_6m": -0.14,
+        "return_12m": -0.36,
+        "foreign_flow_6m": 16188420606.62
+    },
+    {
+        "ticker": "SMGR.JK",
+        "momentum": 11.01,
+        "return_6m": -0.13,
+        "return_12m": -0.37,
+        "foreign_flow_6m": 180068996543.48
+    },
+    {
         "ticker": "KLBF.JK",
-        "momentum": 11.4,
+        "momentum": 10.26,
         "return_6m": -0.08,
         "return_12m": -0.48,
         "foreign_flow_6m": -296179109253.93
     },
     {
         "ticker": "AMRT.JK",
-        "momentum": 7.48,
+        "momentum": 8.68,
         "return_6m": -0.08,
         "return_12m": -0.52,
         "foreign_flow_6m": -551356130437.83
     },
     {
+        "ticker": "PTPP.JK",
+        "momentum": 4.74,
+        "return_6m": -0.16,
+        "return_12m": -0.56,
+        "foreign_flow_6m": 11678196464.24
+    },
+    {
+        "ticker": "AMMN.JK",
+        "momentum": 3.14,
+        "return_6m": -0.22,
+        "return_12m": -0.52,
+        "foreign_flow_6m": 829959640042.33
+    },
+    {
         "ticker": "TPIA.JK",
-        "momentum": 1.48,
+        "momentum": 0.78,
         "return_6m": -0.48,
         "return_12m": -0.81,
         "foreign_flow_6m": -1206974417956.48

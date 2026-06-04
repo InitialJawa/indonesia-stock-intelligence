@@ -1,11 +1,18 @@
 # file: research/rs6m_backtest_engine.py
 
+import sys
 import os
 import csv
 import math
 from pathlib import Path
 import pandas as pd
 import numpy as np
+
+# Add project root to python path
+BASE_DIR = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(BASE_DIR))
+
+from utils.universe_manager import get_active_universe
 
 # Path configurations
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -168,9 +175,15 @@ def main():
         ihsg_price_end = ihsg_monthly.loc[p]
         ihsg_ret_6m = (ihsg_price_end / ihsg_price_start) - 1.0
         
+        # Get active universe for period p
+        active_universe = get_active_universe(p.strftime('%Y-%m'))
+        
         # Calculate RS score for all active tickers
         rs_scores = []
         for ticker, prices in ticker_monthly.items():
+            if ticker not in active_universe:
+                continue
+                
             # Listing date gate: ticker must have listed on or before the end of the lookback start month
             listing_date = metadata[ticker]
             lookback_start_date = p_start.end_time

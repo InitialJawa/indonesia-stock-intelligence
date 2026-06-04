@@ -6,27 +6,67 @@ from utils.telegram_notifier import send_telegram_alert
 from utils.email_notifier import send_email_alert
 from collectors.daily_flow_collector import check_volume_shock
 
-def get_dynamic_watchlist(top_n=5):
+def get_sedang_anget_watchlist(top_n=5):
     """
-    Mengambil Top N saham terbaik secara otomatis dari hasil scoring fundamental bulanan (V4).
+    Mengambil maksimal 5 saham teratas HANYA dari kelompok yang menghasilkan output label 'Sedang Anget'.
     """
-    file_path = "output/scores/quality_ranking.json"
     try:
-        with open(file_path, "r") as f:
-            data = json.load(f)
+        # Load rankings
+        with open("output/scores/final_ranking_v3.json", "r") as f:
+            final_scores = json.load(f)
+        with open("output/scores/quality_ranking.json", "r") as f:
+            q_data = json.load(f)
+        with open("output/scores/value_ranking.json", "r") as f:
+            v_data = json.load(f)
+        with open("output/scores/growth_ranking.json", "r") as f:
+            g_data = json.load(f)
+        with open("output/scores/momentum_ranking.json", "r") as f:
+            m_data = json.load(f)
+            
+        q_scores = {x.get('ticker'): x.get('quality_score') for x in q_data} if isinstance(q_data, list) else {}
+        v_scores = {x.get('ticker'): x.get('value_score') for x in v_data} if isinstance(v_data, list) else {}
+        g_scores = {x.get('ticker'): x.get('growth_score') for x in g_data} if isinstance(g_data, list) else {}
+        m_scores = {x.get('ticker'): x.get('momentum') for x in m_data} if isinstance(m_data, list) else {}
         
-        # Ekstrak ticker dari N urutan teratas
-        dynamic_list = [item["ticker"] for item in data[:top_n]]
-        return dynamic_list
-    
-    except (FileNotFoundError, json.JSONDecodeError):
-        print(f"[!] Warning: File {file_path} tidak ditemukan atau rusak.")
-        print("[!] Menggunakan Fallback Portofolio Statis.")
-        # Fallback jika data V4 belum di-generate
-        return ["ADRO.JK", "ESSA.JK", "BBRI.JK", "BMRI.JK", "MAPI.JK", "BBCA.JK"]
+        anget_portfolio = []
+        if isinstance(final_scores, list):
+            for item in final_scores:
+                ticker = item.get("ticker", "UNKNOWN")
+                q = q_scores.get(ticker, 0)
+                g = g_scores.get(ticker, 0)
+                v = v_scores.get(ticker, 0)
+                m = m_scores.get(ticker, 0)
+                
+                # Apply get_action_label logic:
+                # m >= 55 and m <= 85 and q > 45 and v > 40
+                try:
+                    q_val = float(q)
+                except (ValueError, TypeError):
+                    q_val = 0.0
+                try:
+                    g_val = float(g)
+                except (ValueError, TypeError):
+                    g_val = 0.0
+                try:
+                    v_val = float(v)
+                except (ValueError, TypeError):
+                    v_val = 0.0
+                try:
+                    m_val = float(m)
+                except (ValueError, TypeError):
+                    m_val = 0.0
+                    
+                if m_val >= 55 and m_val <= 85 and q_val > 45 and v_val > 40:
+                    anget_portfolio.append(ticker)
+                    if len(anget_portfolio) == top_n:
+                        break
+        return anget_portfolio
+    except Exception as e:
+        print(f"[!] Warning: Gagal memuat watchlist dinamis Sedang Anget. Error: {e}")
+        return ["ADRO.JK", "ESSA.JK", "BBRI.JK", "BMRI.JK", "MIKA.JK"] # fallback
 
-# Target Universe: Dinamis menyedot data dari V4
-LIVE_PORTFOLIO = get_dynamic_watchlist(5)
+# Target Universe: Dinamis menyedot data dari portfolio "Sedang Anget"
+LIVE_PORTFOLIO = get_sedang_anget_watchlist(5)
 
 def evaluate_emergency_brake():
     """
@@ -37,11 +77,25 @@ def evaluate_emergency_brake():
     
     alerts_triggered = []
     anomalies_found = []
+    volume_details = []
     
     for ticker in LIVE_PORTFOLIO:
         res = check_volume_shock(ticker)
         
         if res["status"] == "OK":
+            curr_vol = res.get("current_volume", 0)
+            ma20_vol = res.get("ma20_volume", 1)
+            ratio = curr_vol / ma20_vol if ma20_vol > 0 else 1.0
+            
+            if ratio >= 2.0:
+                vol_status = "Anomali Lonjakan!"
+            elif ratio < 1.0:
+                vol_status = "Sepi"
+            else:
+                vol_status = "Wajar"
+                
+            volume_details.append(f"{ticker}: Volume {ratio:.1f}x ({vol_status})")
+            
             # Logika: Jika Volume meledak 2x lipat DAN harga anjlok lebih dari -2%
             if res["is_volume_shock"] and res["price_change_pct"] <= -2.0:
                 msg = (
@@ -57,6 +111,7 @@ def evaluate_emergency_brake():
             else:
                 print(f"    [-] {ticker} terpantau aman.")
         else:
+            volume_details.append(f"{ticker}: Gagal memuat data")
             print(f"    [?] Gagal memindai {ticker} (Data tidak mencukupi/Error).")
             
     if alerts_triggered:
@@ -69,7 +124,7 @@ def evaluate_emergency_brake():
         send_telegram_alert(safe_msg, "INFO")
         send_email_alert(safe_msg, "INFO")
 
-    return anomalies_found
+    return anomalies_found, volume_details
 
 def evaluate_alpha_trigger():
     """
@@ -90,7 +145,7 @@ def main():
     print("Status Sistem  : ONLINE")
     print(f"Watchlist (Top 5) : {', '.join(LIVE_PORTFOLIO)}\n")
 
-    anomalies = evaluate_emergency_brake()
+    anomalies, volume_details = evaluate_emergency_brake()
     alpha_anomalies = evaluate_alpha_trigger()
     if alpha_anomalies:
         anomalies.extend(alpha_anomalies)
@@ -98,10 +153,8 @@ def main():
     # Tentukan status harian
     status = "WARNING" if anomalies else "SAFE"
     
-    if status == "SAFE":
-        detail_message = "Volume transaksi di seluruh Top 5 Watchlist berada dalam batas wajar. Tidak terdeteksi adanya anomali distribusi masif atau buangan institusi hari ini."
-    else:
-        detail_message = f"Peringatan: Terdeteksi Volume Shock atau Alpha Trigger pada saham {', '.join(anomalies)}. Kemungkinan adanya distribusi masif, perketat trailing stop."
+    # Gabungkan volume_details
+    detail_message = "<br>".join(volume_details)
         
     # Simpan status ke JSON file
     status_data = {

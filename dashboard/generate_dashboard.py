@@ -61,15 +61,32 @@ def generate_dashboard():
     g_scores = {x.get('ticker'): x.get('growth_score') for x in g_data} if isinstance(g_data, list) else {}
     m_scores = {x.get('ticker'): x.get('momentum') for x in m_data} if isinstance(m_data, list) else {}
 
-    # 3. Load Portfolio Warehouse
+    # 3. Load Portfolio Warehouse & Filter dynamically for "Sedang Anget" portfolio
     try:
         df_port = pd.read_csv("database/historical/portfolio_warehouse.csv")
         latest_month = df_port['date'].max()
-        current_portfolio = df_port[df_port['date'] == latest_month]['ticker'].tolist()
     except Exception as e:
         print(f"WARNING: Gagal membaca Portfolio Warehouse. Error: {e}")
         latest_month = "Unknown"
-        current_portfolio = []
+
+    current_portfolio = []
+    if isinstance(final_scores, list):
+        for item in final_scores:
+            ticker = item.get("ticker", "UNKNOWN")
+            q = q_scores.get(ticker, 0)
+            g = g_scores.get(ticker, 0)
+            v = v_scores.get(ticker, 0)
+            m = m_scores.get(ticker, 0)
+            label = get_action_label({
+                'quality': q,
+                'growth': g,
+                'value': v,
+                'momentum': m
+            })
+            if "Sedang Anget" in label:
+                current_portfolio.append(ticker)
+                if len(current_portfolio) == 5:
+                    break
 
     # 4. Load Daily Radar Status
     radar_data = load_json("output/daily_radar_status.json")

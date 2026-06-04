@@ -793,8 +793,10 @@ BAB 19: V8.3 - AUTOMATION & DASHBOARD INTEGRATION
    * **[CI/CD]** Berhasil mengimplementasikan alur kerja GitHub Actions (`daily_radar.yml`) untuk eksekusi otomatis radar harian dan sinkronisasi dasbor. Memperbarui runner ke Python 3.12 untuk resolusi konflik dependensi `ipython`.
    * **[Deployment]** Berhasil mengonfigurasi dan mempublikasikan Dasbor ISI ke GitHub Pages, dilengkapi dengan berkas `index.html` pengalih (redirect) otomatis di root directory. Mengimplementasikan bypass Jekyll menggunakan berkas `.nojekyll`.
    * **[UI/UX Integration]** Merombak arsitektur komunikasi data: `run_daily_risk_radar.py` sekarang mengekspor status Volume Shock ke `output/daily_radar_status.json`, yang secara dinamis dibaca dan dirender oleh `dashboard/generate_dashboard.py` menjadi komponen visual Card langsung di antarmuka utama.
+   * **[Action Labels Algorithm]** Mengimplementasikan algoritma klasifikasi status aksi otomatis (`get_action_label`) di dasbor bulanan untuk mengategorikan saham secara mekanis (e.g. Rawan Pucuk, Sedang Anget, Murah Tapi Mati, Gorengan Murni, Pantau Terbatas) tanpa pembacaan manual data mentah.
+   * **[Daily Radar Details]** Memperkaya informasi radar harian di antarmuka web dengan merender parameter `detail_message` (dinamis saat WARNING dan statis saat SAFE) dari status JSON radar ke dalam box visual di bawah status badge.
 3. Kesimpulan:
-   Sistem ISI kini sepenuhnya otomatis (zero-touch) dan memiliki satu antarmuka terintegrasi yang menyajikan data portofolio jangka panjang (bulanan) sekaligus pemantauan risiko real-time (harian) secara andal.
+   Sistem ISI kini sepenuhnya otomatis (zero-touch) dan memiliki satu antarmuka terintegrasi yang menyajikan data portofolio jangka panjang (bulanan) sekaligus pemantauan risiko real-time (harian) secara detail dan andal.
 
 ================================================================================
 

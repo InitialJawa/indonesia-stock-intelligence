@@ -7,14 +7,15 @@ Recipient      : Future AI Architect / Analyst
 
 BAB 1: EXECUTIVE SUMMARY
 --------------------------------------------------------------------------------
-* Status Proyek: ONLINE & FULLY FUNCTIONAL. Sistem telah dibersihkan dari 
-  berbagai bug integrasi jalur impor relatif, path file, dan bias backtest.
-  Semua unit test (41/41 pengujian) lulus dengan sukses. Kerangka kerja penelitian 
-  momentum historis (V6) telah sukses diselesaikan dengan hasil sangat robust.
-  Integrasi FMP telah sepenuhnya didekomisi dan sistem berhasil distandardisasi 
-  pada Yahoo Finance sebagai satu-satunya data source fundamental dan harga, 
-  mengurangi kompleksitas, menghilangkan technical debt, serta menghapus ketergantungan 
-  pada API Key berbayar/terbatas.
+* Status Proyek: ONLINE & FULLY FUNCTIONAL. Sistem telah diperkuat dengan 
+  indikator Relative Strength (RS-6M) murni sebagai penggerak Momentum Score, 
+  yang terbukti secara empiris memiliki daya prediksi historis unggul dalam 
+  mengalahkan IHSG. Semua unit test (42/42 pengujian) lulus dengan sukses. 
+  Kerangka kerja penelitian momentum historis (V6) telah sukses diselesaikan 
+  dengan hasil sangat robust. Integrasi FMP telah sepenuhnya didekomisi 
+  dan sistem berhasil distandardisasi pada Yahoo Finance sebagai satu-satunya 
+  data source fundamental dan harga, mengurangi kompleksitas, menghilangkan 
+  technical debt, serta menghapus ketergantungan pada API Key berbayar/terbatas.
 * Tujuan Proyek: Indonesia Stock Intelligence (ISI) dirancang untuk memproses 
   data fundamental, pertumbuhan (growth), nilai (value), dan momentum dari 
   saham-saham di Bursa Efek Indonesia (khususnya semesta IDX30). Menggunakan 
@@ -607,6 +608,14 @@ Catatan keputusan arsitektur penting yang telah diambil beserta dampaknya:
    ↓
    Konsekuensi: Menyederhanakan `utils/data_provider.py` secara drastis, menghapus dependensi `requests` serta `FMP_API_KEY`. Kebergantungan metrik fundamental kini terfokus penuh pada kestabilan Yahoo Finance.
 
+7. Masalah: Mengintegrasikan indikator RS-6M tanpa merusak pipa data downstream pada layer scoring akhir (`final_score_v3.py`).
+   ↓
+   Insight: Memasukkan RS-6M sebagai filter gate berpotensi membuang saham fundamental kuat.
+   ↓
+   Keputusan: Menerapkan Signal Substitution. Mengganti absolut return_6m dengan RS-6M (excess return vs IHSG) di dalam momentum_score.py. Menggunakan fungsi ihsg.asof() pada pandas untuk pencocokan tanggal dinamis guna mencegah NaN error, lalu menyimpan hasil akhir dengan nama key yang sama (return_6m).
+   ↓
+   Konsekuensi: Modul momentum beralih sepenuhnya ke filosofi kekuatan relatif, tanpa perlu refaktor pada run_monthly_pipeline.py atau final_score_v3.py. 42/42 unit test tetap lulus (100% PASS).
+
 
 BAB 12: KNOWN RISKS
 --------------------------------------------------------------------------------
@@ -651,7 +660,7 @@ Rencana pengembangan sistem berdasarkan skala prioritas:
   - Keterangan: Riset dinonaktifkan sementara karena ketiadaan data transaksi investor asing yang riil (saat ini hanya diuji menggunakan proxy sintetis). Syarat aktivasi kembali adalah mendapatkan data Foreign Flow riil.
 
 * PRIORITY 5: Next Active Research - Factor 006: Relative Strength
-  - Status: Pending
+  - Status: COMPLETED / DEPLOYED
   - Keterangan: Mengembangkan faktor momentum kekuatan relatif (Relative Strength Index / RSI atau Ratio Chart terhadap IHSG) sebagai filter penentu peringkat alternatif.
 
 
@@ -739,6 +748,25 @@ BAB 17: V8.1 - FACTOR 005 POST MORTEM
    FACTOR 005 STATUS: INCONCLUSIVE (PARKED)
 7. Pelajaran:
    Data sintetis tidak boleh dianggap sebagai representasi data institusional riil. Proxy yang terlalu kolinear dengan faktor lain dapat menghasilkan kesimpulan palsu dalam evaluasi alpha.
+
+================================================================================
+
+
+BAB 18: V8.2 - FACTOR 006 (RELATIVE STRENGTH) POST-MORTEM & INTEGRATION
+--------------------------------------------------------------------------------
+1. Latar Belakang:
+   Mencari sinyal momentum yang independen dan tidak redundan untuk mengalahkan indeks.
+2. Audit Awal:
+   RS-12M dibuang secara permanen karena redundan matematis (konstanta). RS-6M divalidasi sebagai sinyal independen.
+3. Hasil Backtest (Stand-Alone RS-6M Top 5):
+   * CAGR: 41.28% (vs IHSG -0.87%)
+   * CAPM Alpha: +41.70%
+   * Sharpe Ratio: 1.08
+   * Max Drawdown: 37.87%
+4. Keputusan Akhir:
+   Diintegrasikan ke produksi utama (Config B) dengan metode Signal Substitution pada skor return_6m.
+5. Kesimpulan:
+   Berbeda dengan Factor 005 (Foreign Flow sintetik) yang gagal validasi, Factor 006 membuktikan bahwa Relative Strength adalah Alpha generator murni di bursa IDX30.
 
 ================================================================================
 

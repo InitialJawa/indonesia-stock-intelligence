@@ -34,6 +34,7 @@ jobs:
       - name: Execute Daily Risk Radar
         env:
           # Variabel ini akan ditarik dari GitHub Secrets
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           EMAIL_SENDER: ${{ secrets.EMAIL_SENDER }}

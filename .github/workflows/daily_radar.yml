@@ -1,51 +1,64 @@
-# file: .github/workflows/daily_radar.yml
-name: ISI V5 Daily Risk Radar
+name: Daily Risk Radar & Dashboard Sync
 
 on:
-  schedule:
-    # Berjalan otomatis setiap Senin-Jumat pukul 16:30 WIB
-    # Waktu server GitHub adalah UTC. 16:30 WIB = 09:30 UTC
-    - cron: '30 9 * * 1-5'
+  # Memungkinkan eksekusi manual via tombol di halaman GitHub Actions
+  workflow_dispatch:
   
-  # Mengizinkan eksekusi manual (tombol Run workflow)
-  workflow_dispatch: 
+  # Penjadwalan otomatis: Berjalan setiap Senin-Jumat pukul 10:30 UTC (17:30 WIB)
+  schedule:
+    - cron: '30 10 * * 1-5'
+
+# Memberikan izin kepada runner GitHub untuk melakukan push ke repository
+permissions:
+  contents: write
 
 jobs:
-  run-radar:
+  run-daily-radar:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-    - name: Setup Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.12'
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
 
-    - name: Install Dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install pandas yfinance requests
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-    - name: Inject Credentials to settings.json
-      # Menulis settings.json secara aman di server (tidak tersimpan di repo publik)
-      run: |
-        mkdir -p config
-        cat <<EOF > config/settings.json
-        {
-            "telegram": {
-                "bot_token": "${{ secrets.TELEGRAM_BOT_TOKEN }}",
-                "chat_id": "${{ secrets.TELEGRAM_CHAT_ID }}"
-            },
-            "email": {
-                "smtp_server": "smtp.gmail.com",
-                "smtp_port": 587,
-                "sender_email": "${{ secrets.SENDER_EMAIL }}",
-                "sender_password": "${{ secrets.SENDER_PASSWORD }}"
-            }
-        }
-        EOF
+      - name: Execute Daily Risk Radar
+        env:
+          # Variabel ini akan ditarik dari GitHub Secrets
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          EMAIL_SENDER: ${{ secrets.EMAIL_SENDER }}
+          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+          EMAIL_RECEIVER: ${{ secrets.EMAIL_RECEIVER }}
+        run: |
+          python run_daily_risk_radar.py
 
-    - name: Execute Daily Risk Radar
-      run: python run_daily_risk_radar.py
+      - name: Generate HTML Dashboard
+        run: |
+          python -m dashboard.generate_dashboard
+
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          
+          # Menambahkan perubahan pada folder output dan dashboard
+          git add output/
+          git add dashboard/
+          
+          # Hanya commit jika ada perubahan file untuk mencegah error build
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "chore(bot): update daily radar data and HTML dashboard"
+            git push
+          fi

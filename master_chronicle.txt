@@ -319,10 +319,16 @@ BAB 7: PROJECT TREE AKTUAL
 Berikut adalah struktur direktori proyek Indonesia Stock Intelligence (ISI) selengkapnya:
 
 ./
+    .github/
+        workflows/
+            daily_radar.yml
+            monthly_pipeline.yml
     .gitignore
+    .nojekyll
     README.md
     historical_momentum_builder.py
     historical_portfolio_builder.py
+    index.html
     master_chronicle.txt
     momentum_backtest_audit.py
     momentum_backtest_engine.py
@@ -398,6 +404,7 @@ Berikut adalah struktur direktori proyek Indonesia Stock Intelligence (ISI) sele
         findings/
             FINDING_001_MOMENTUM_ALPHA.md
     output/
+        daily_radar_status.json
         charts/
             momentum_vs_ihsg.png
         history/

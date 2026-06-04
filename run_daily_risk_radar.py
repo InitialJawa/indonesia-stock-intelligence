@@ -36,6 +36,7 @@ def evaluate_emergency_brake():
     print("[+] Mengevaluasi kondisi Volume Shock pada Dynamic Watchlist...")
     
     alerts_triggered = []
+    anomalies_found = []
     
     for ticker in LIVE_PORTFOLIO:
         res = check_volume_shock(ticker)
@@ -51,6 +52,7 @@ def evaluate_emergency_brake():
                     f"<b>Tindakan:</b> Segera evaluasi teknikal untuk pengamanan aset!"
                 )
                 alerts_triggered.append(msg)
+                anomalies_found.append(ticker)
                 print(f"    [!] BAHAYA: Distribusi besar terdeteksi pada {ticker}!")
             else:
                 print(f"    [-] {ticker} terpantau aman.")
@@ -67,6 +69,8 @@ def evaluate_emergency_brake():
         send_telegram_alert(safe_msg, "INFO")
         send_email_alert(safe_msg, "INFO")
 
+    return anomalies_found
+
 def evaluate_alpha_trigger():
     """
     FRAMEWORK 2: DAILY ALPHA TRIGGER
@@ -74,6 +78,7 @@ def evaluate_alpha_trigger():
     """
     print("\n[+] Mengevaluasi Institutional Breakout (Alpha Trigger)...")
     print("[-] Tidak ada sinyal Alpha Trigger hari ini.")
+    return []
 
 def main():
     print("==================================================")
@@ -85,8 +90,26 @@ def main():
     print("Status Sistem  : ONLINE")
     print(f"Watchlist (Top 5) : {', '.join(LIVE_PORTFOLIO)}\n")
 
-    evaluate_emergency_brake()
-    evaluate_alpha_trigger()
+    anomalies = evaluate_emergency_brake()
+    alpha_anomalies = evaluate_alpha_trigger()
+    if alpha_anomalies:
+        anomalies.extend(alpha_anomalies)
+
+    # Tentukan status harian
+    status = "WARNING" if anomalies else "SAFE"
+    
+    # Simpan status ke JSON file
+    status_data = {
+        "last_update": now.strftime("%Y-%m-%d %H:%M"),
+        "status": status,
+        "anomalies": anomalies
+    }
+    
+    import os
+    os.makedirs("output", exist_ok=True)
+    with open("output/daily_radar_status.json", "w") as f:
+        json.dump(status_data, f, indent=4)
+    print(f"[+] Status harian berhasil disimpan ke output/daily_radar_status.json")
 
     print("\n==================================================")
     print("Radar harian selesai dieksekusi. Standby.")

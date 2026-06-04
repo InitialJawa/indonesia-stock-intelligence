@@ -39,7 +39,46 @@ def generate_dashboard():
         latest_month = "Unknown"
         current_portfolio = []
 
-    # 4. Bangun Baris Tabel HTML
+    # 4. Load Daily Radar Status
+    radar_data = load_json("output/daily_radar_status.json")
+    if isinstance(radar_data, dict):
+        radar_update = radar_data.get("last_update", "Belum Tersedia")
+        radar_status = radar_data.get("status", "UNKNOWN")
+        radar_anomalies = radar_data.get("anomalies", [])
+    else:
+        radar_update = "Belum Tersedia"
+        radar_status = "UNKNOWN"
+        radar_anomalies = []
+
+    # Determine alert class and status text for Daily Radar Card
+    if radar_status == "SAFE":
+        radar_color = "success"
+        radar_badge = "<span class='badge bg-success mx-1'>SAFE / AMAN</span>"
+        radar_desc = "Tidak ada anomali distribusi massal pada watchlist hari ini. Portofolio terpantau aman."
+    elif radar_status == "WARNING":
+        radar_color = "danger"
+        radar_badge = "<span class='badge bg-danger mx-1'>WARNING / WASPADA</span>"
+        anomalies_str = ", ".join(radar_anomalies)
+        radar_desc = f"Terdeteksi anomali volume shock/distribusi masif pada emiten: <strong>{anomalies_str}</strong>. Segera evaluasi!"
+    else:
+        radar_color = "secondary"
+        radar_badge = "<span class='badge bg-secondary mx-1'>BELUM TERSEDIA</span>"
+        radar_desc = "Status radar harian belum diperbarui untuk hari ini."
+
+    radar_html = f"""
+            <div class="row justify-content-center mb-4">
+                <div class="col-md-8">
+                    <div class="card p-4 border-{radar_color} text-center shadow-sm">
+                        <h4 class="mb-1" style="color: #8b949e;">Daily Radar Status</h4>
+                        <div class="my-2">{radar_badge}</div>
+                        <p class="text-muted small mb-2">Terakhir Diperbarui: <strong>{radar_update}</strong></p>
+                        <p class="mb-0 small">{radar_desc}</p>
+                    </div>
+                </div>
+            </div>
+    """
+
+    # 5. Bangun Baris Tabel HTML
     rows_html = ""
     rank = 1
     
@@ -102,6 +141,8 @@ def generate_dashboard():
                 <h1 class="fw-bold" style="color: #c9d1d9;">Indonesia Stock Intelligence <span style="color: #58a6ff;">(ISI V4)</span></h1>
                 <p class="text-muted">Quantitative Research & Multi-Factor Investing Platform</p>
             </div>
+
+            {radar_html}
 
             <div class="row justify-content-center mb-5">
                 <div class="col-md-8">

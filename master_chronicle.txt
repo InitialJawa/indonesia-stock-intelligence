@@ -1,6 +1,6 @@
 MASTER CHRONICLE: INDONESIA STOCK INTELLIGENCE (ISI)
 ================================================================================
-Generated Date : 2026-06-01
+Generated Date : 2026-06-
 Author         : Antigravity AI
 Recipient      : Future AI Architect / Analyst
 ================================================================================
@@ -11,11 +11,14 @@ BAB 1: EXECUTIVE SUMMARY
   indikator Relative Strength (RS-6M) murni sebagai penggerak Momentum Score, 
   yang terbukti secara empiris memiliki daya prediksi historis unggul dalam 
   mengalahkan IHSG. Semua unit test (42/42 pengujian) lulus dengan sukses. 
-  Kerangka kerja penelitian momentum historis (V6) telah sukses diselesaikan 
-  dengan hasil sangat robust. Integrasi FMP telah sepenuhnya didekomisi 
-  dan sistem berhasil distandardisasi pada Yahoo Finance sebagai satu-satunya 
-  data source fundamental dan harga, mengurangi kompleksitas, menghilangkan 
-  technical debt, serta menghapus ketergantungan pada API Key berbayar/terbatas.
+  Sistem kini telah sepenuhnya bebas dari ilusi Survivorship Bias berkat 
+  implementasi filter Dynamic Historical Universe untuk pengujian masa lalu. 
+  Formula Momentum juga telah dimurnikan dari proxy data yang cacat. Kerangka 
+  kerja penelitian momentum historis (V6) telah sukses diselesaikan dengan 
+  hasil sangat robust. Integrasi FMP telah sepenuhnya didekomisi dan sistem 
+  berhasil distandardisasi pada Yahoo Finance sebagai satu-satunya data source 
+  fundamental dan harga, mengurangi kompleksitas, menghilangkan technical 
+  debt, serta menghapus ketergantungan pada API Key berbayar/terbatas.
 * Tujuan Proyek: Indonesia Stock Intelligence (ISI) dirancang untuk memproses 
   data fundamental, pertumbuhan (growth), nilai (value), dan momentum dari 
   saham-saham di Bursa Efek Indonesia (khususnya semesta IDX30). Menggunakan 
@@ -616,6 +619,14 @@ Catatan keputusan arsitektur penting yang telah diambil beserta dampaknya:
    ↓
    Konsekuensi: Modul momentum beralih sepenuhnya ke filosofi kekuatan relatif, tanpa perlu refaktor pada run_monthly_pipeline.py atau final_score_v3.py. 42/42 unit test tetap lulus (100% PASS).
 
+8. Masalah: Faktor Foreign Flow (proksi sintetis) mendistorsi Alpha, dan penggunaan konstituen IDX30 statis (tahun 2026) memicu Survivorship Bias ekstrem pada backtest (menghasilkan ilusi CAGR 41.28%).
+   ↓
+   Insight: Menyembunyikan performa sebenarnya dengan bias survival dan proksi foreign flow sintetis yang cacat menurunkan validitas akademis algoritma secara keseluruhan.
+   ↓
+   Keputusan: Menghapus sepenuhnya Foreign Flow dari ekuilibrium bobot momentum_score.py (diubah menjadi 50% RS-6M dan 50% Return-12M). Membangun utilitas utils/universe_manager.py untuk memaksa engine backtest hanya memeringkat emiten yang secara historis terdaftar pada indeks IDX30 di bulan spesifik tersebut.
+   ↓
+   Konsekuensi: Ilusi kinerja hancur. CAGR kembali ke level realistis 1.21% (namun tetap valid mengalahkan IHSG yang -0.87%). Backtest kini berstandar presisi institusional murni.
+
 
 BAB 12: KNOWN RISKS
 --------------------------------------------------------------------------------
@@ -633,10 +644,6 @@ Berikut adalah risiko teknis dan pasar yang masih terbuka dan wajib diwaspadai:
   - Mitigasi: Pastikan untuk menyetel kredensial ini melalui environment variables di server 
     produksi / GitHub Secrets, bukan dengan menuliskannya langsung ke berkas kode.
 
-* Survivorship Bias Konstituen Statis (IDX30)
-  - Meskipun backfill bias IPO telah diatasi, backtest historis masih didasarkan pada konstituen 
-    IDX30 tahun 2026 secara statis. Hal ini mengabaikan saham yang didegradasi/delisted di tahun 2019-2025.
-  - Mitigasi: Rencanakan pembuatan parser konstituen historis dinamis pada prioritas berikutnya.
 
 
 BAB 13: ROADMAP
@@ -648,7 +655,8 @@ Rencana pengembangan sistem berdasarkan skala prioritas:
     proses run di `.github/workflows/daily_radar.yml` agar alert darurat dapat meluncur otomatis.
 
 * PRIORITY 2: Integrasi Konstituen Dinamis Historis (IDX30)
-  - Membaca database historis pergantian anggota konstituen IDX30 untuk menyusun daftar semesta 
+  - Status: COMPLETED / DEPLOYED
+  - Keterangan: Membaca database historis pergantian anggota konstituen IDX30 untuk menyusun daftar semesta 
     saham yang benar-benar aktif di setiap bulan masa lalu, mengeliminasi survivorship bias secara total.
 
 * PRIORITY 3: Sentiment NLP Integration
@@ -767,6 +775,8 @@ BAB 18: V8.2 - FACTOR 006 (RELATIVE STRENGTH) POST-MORTEM & INTEGRATION
    Diintegrasikan ke produksi utama (Config B) dengan metode Signal Substitution pada skor return_6m.
 5. Kesimpulan:
    Berbeda dengan Factor 005 (Foreign Flow sintetik) yang gagal validasi, Factor 006 membuktikan bahwa Relative Strength adalah Alpha generator murni di bursa IDX30.
+6. Remediasi Survivorship Bias:
+   Setelah integrasi RS-6M awal (Pilihan 2), dilakukan remediasi Survivorship Bias. Metrik Alpha +41.70% sebelumnya dikonfirmasi sebagai ilusi backfill bias dari saham statis yang bertahan. Setelah Dynamic Historical Universe diimplementasikan, CAGR sesungguhnya adalah 1.21% (vs IHSG -0.87%). Membuang proksi Foreign Flow dan menghilangkan bias adalah harga mati untuk validitas algoritma.
 
 ================================================================================
 

@@ -1,6 +1,8 @@
 {
-    "last_update": "2026-06-05 00:32",
-    "status": "SAFE",
-    "anomalies": [],
+    "last_update": "2026-06-04 18:20",
+    "status": "WARNING",
+    "anomalies": [
+        "BBNI.JK"
+    ],
     "detail_message": "PTBA.JK: Volume 1.8x (Wajar)<br>AKRA.JK: Volume 1.2x (Wajar)<br>ANTM.JK: Volume 1.7x (Wajar)<br>BBNI.JK: Volume 2.5x (Anomali Lonjakan!)<br>INDF.JK: Volume 1.5x (Wajar)"
 }

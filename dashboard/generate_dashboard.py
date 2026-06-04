@@ -94,12 +94,14 @@ def generate_dashboard():
         radar_update = radar_data.get("last_update", "Belum Tersedia")
         radar_status = radar_data.get("status", "UNKNOWN")
         radar_anomalies = radar_data.get("anomalies", [])
-        radar_detail = radar_data.get("detail_message", "")
+        radar_detail = radar_data.get("detail", "")
+        radar_narrative = radar_data.get("detail_message", "Narasi AI tidak tersedia.")
     else:
         radar_update = "Belum Tersedia"
         radar_status = "UNKNOWN"
         radar_anomalies = []
         radar_detail = ""
+        radar_narrative = ""
 
     # Determine alert class and status text for Daily Radar Card
     if radar_status == "SAFE":
@@ -117,7 +119,7 @@ def generate_dashboard():
         radar_desc = "Status radar harian belum diperbarui untuk hari ini."
 
     radar_detail_p = f'<p class="mb-0 text-muted small mt-2 py-1" style="background-color: #1c2128; border-radius: 4px; border: 1px solid #30363d; padding-left: 10px; padding-right: 10px;">{radar_detail}</p>' if radar_detail else ""
-
+    ai_narrative_html = f'''<div class="ai-narrative"><h4 class="mb-1" style="color: #8b949e;">Analisis AI</h4><p class="text-muted small">{radar_narrative}</p></div>'''
     radar_html = f"""
             <div class="row justify-content-center mb-4">
                 <div class="col-md-8">
@@ -125,6 +127,7 @@ def generate_dashboard():
                         <h4 class="mb-1" style="color: #8b949e;">Daily Radar Status</h4>
                         <div class="my-2">{radar_badge}</div>
                         {radar_detail_p}
+        {ai_narrative_html}
                         <p class="text-muted small mb-2 mt-3">Terakhir Diperbarui: <strong>{radar_update}</strong></p>
                         <p class="mb-0 small">{radar_desc}</p>
                     </div>

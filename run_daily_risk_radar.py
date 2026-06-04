@@ -98,11 +98,17 @@ def main():
     # Tentukan status harian
     status = "WARNING" if anomalies else "SAFE"
     
+    if status == "SAFE":
+        detail_message = "Volume transaksi di seluruh Top 5 Watchlist berada dalam batas wajar. Tidak terdeteksi adanya anomali distribusi masif atau buangan institusi hari ini."
+    else:
+        detail_message = f"Peringatan: Terdeteksi Volume Shock atau Alpha Trigger pada saham {', '.join(anomalies)}. Kemungkinan adanya distribusi masif, perketat trailing stop."
+        
     # Simpan status ke JSON file
     status_data = {
         "last_update": now.strftime("%Y-%m-%d %H:%M"),
         "status": status,
-        "anomalies": anomalies
+        "anomalies": anomalies,
+        "detail_message": detail_message
     }
     
     import os

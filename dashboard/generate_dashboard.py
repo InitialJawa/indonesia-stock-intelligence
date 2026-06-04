@@ -13,6 +13,38 @@ def load_json(filepath):
     with open(path, 'r') as f:
         return json.load(f)
 
+def get_action_label(row):
+    """
+    Mengklasifikasikan status aksi berdasarkan skor faktor.
+    """
+    try:
+        q = float(row.get('quality', 0))
+    except (ValueError, TypeError):
+        q = 0.0
+    try:
+        g = float(row.get('growth', 0))
+    except (ValueError, TypeError):
+        g = 0.0
+    try:
+        v = float(row.get('value', 0))
+    except (ValueError, TypeError):
+        v = 0.0
+    try:
+        m = float(row.get('momentum', 0))
+    except (ValueError, TypeError):
+        m = 0.0
+
+    if m > 85 and v < 40:
+        return '<span class="badge bg-danger">⚠️ Rawan Pucuk</span>'
+    elif m >= 55 and m <= 80 and q > 60 and v > 50:
+        return '<span class="badge bg-success">🚀 Sedang Anget</span>'
+    elif v > 80 and m < 40:
+        return '<span class="badge bg-secondary">⚓ Murah Tapi Mati</span>'
+    elif m > 80 and q < 40 and g < 40:
+        return '<span class="badge bg-warning text-dark">🗑️ Gorengan Murni</span>'
+    else:
+        return '<span class="badge bg-light text-dark">➖ Pantau Terbatas</span>'
+
 def generate_dashboard():
     print("--- Membangun ISI V4 Dashboard ---")
     
@@ -45,10 +77,12 @@ def generate_dashboard():
         radar_update = radar_data.get("last_update", "Belum Tersedia")
         radar_status = radar_data.get("status", "UNKNOWN")
         radar_anomalies = radar_data.get("anomalies", [])
+        radar_detail = radar_data.get("detail_message", "")
     else:
         radar_update = "Belum Tersedia"
         radar_status = "UNKNOWN"
         radar_anomalies = []
+        radar_detail = ""
 
     # Determine alert class and status text for Daily Radar Card
     if radar_status == "SAFE":
@@ -65,13 +99,16 @@ def generate_dashboard():
         radar_badge = "<span class='badge bg-secondary mx-1'>BELUM TERSEDIA</span>"
         radar_desc = "Status radar harian belum diperbarui untuk hari ini."
 
+    radar_detail_p = f'<p class="mb-0 text-muted small mt-2 py-1" style="background-color: #1c2128; border-radius: 4px; border: 1px solid #30363d; padding-left: 10px; padding-right: 10px;">{radar_detail}</p>' if radar_detail else ""
+
     radar_html = f"""
             <div class="row justify-content-center mb-4">
                 <div class="col-md-8">
                     <div class="card p-4 border-{radar_color} text-center shadow-sm">
                         <h4 class="mb-1" style="color: #8b949e;">Daily Radar Status</h4>
                         <div class="my-2">{radar_badge}</div>
-                        <p class="text-muted small mb-2">Terakhir Diperbarui: <strong>{radar_update}</strong></p>
+                        {radar_detail_p}
+                        <p class="text-muted small mb-2 mt-3">Terakhir Diperbarui: <strong>{radar_update}</strong></p>
                         <p class="mb-0 small">{radar_desc}</p>
                     </div>
                 </div>
@@ -98,6 +135,13 @@ def generate_dashboard():
             v = v_scores.get(ticker, "-")
             m = m_scores.get(ticker, "-")
 
+            action_label = get_action_label({
+                'quality': q,
+                'growth': g,
+                'value': v,
+                'momentum': m
+            })
+
             rows_html += f"""
             <tr class="{row_class}">
                 <td>{rank}</td>
@@ -107,6 +151,7 @@ def generate_dashboard():
                 <td>{v}</td>
                 <td>{m}</td>
                 <td class="text-warning"><strong>{final}</strong></td>
+                <td>{action_label}</td>
             </tr>
             """
             rank += 1
@@ -168,6 +213,7 @@ def generate_dashboard():
                                 <th>Value (20%)</th>
                                 <th>Momentum (25%)</th>
                                 <th>Final Score</th>
+                                <th>Status Aksi</th>
                             </tr>
                         </thead>
                         <tbody>

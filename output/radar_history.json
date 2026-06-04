@@ -19,7 +19,7 @@
         "tanggal": "2026-06-04",
         "jumlah_saham_sedang_anget": 5,
         "ringkasan_volume_hari_itu": {
-            "status_sistem": "WARNING",
+            "status_sistem": "SAFE",
             "saham_anomali_lonjakan": 1,
             "saham_volume_sepi": 0,
             "detail": [

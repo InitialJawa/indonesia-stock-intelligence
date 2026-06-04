@@ -74,16 +74,7 @@ PY
           EMAIL_RECEIVER: ${{ secrets.EMAIL_RECEIVER }}
         run: |
           python run_daily_risk_radar.py
-        env:
-          # Variabel ini akan ditarik dari GitHub Secrets
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          EMAIL_SENDER: ${{ secrets.EMAIL_SENDER }}
-          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
-          EMAIL_RECEIVER: ${{ secrets.EMAIL_RECEIVER }}
-        run: |
-          python run_daily_risk_radar.py
+
 
       - name: Generate HTML Dashboard
         run: |

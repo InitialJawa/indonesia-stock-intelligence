@@ -46,5 +46,21 @@
                 "INDF.JK: Volume 1.5x (Wajar)"
             ]
         }
+    },
+    {
+        "tanggal": "2026-06-04",
+        "jumlah_saham_sedang_anget": 5,
+        "ringkasan_volume_hari_itu": {
+            "status_sistem": "SAFE",
+            "saham_anomali_lonjakan": 1,
+            "saham_volume_sepi": 0,
+            "detail": [
+                "PTBA.JK: Volume 1.8x (Wajar)",
+                "AKRA.JK: Volume 1.2x (Wajar)",
+                "ANTM.JK: Volume 1.7x (Wajar)",
+                "BBNI.JK: Volume 2.5x (Anomali Lonjakan!)",
+                "INDF.JK: Volume 1.5x (Wajar)"
+            ]
+        }
     }
 ]

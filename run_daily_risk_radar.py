@@ -140,6 +140,14 @@ def generate_ai_narrative(history: list, volume_details: list, watchlist: list, 
         import google.generativeai as genai
 
         genai.configure(api_key=api_key)
+        # List available Gemini models and their supported generation methods for debugging
+        try:
+            models = genai.list_models()
+            for m in models:
+                print("MODEL:", m.name)
+                print("METHODS:", m.supported_generation_methods)
+        except Exception as list_err:
+            print("[GEMINI LIST ERROR]", type(list_err).__name__, list_err)
 
         # Serialisasi data untuk prompt
         history_json_str = json.dumps(history, indent=2, ensure_ascii=False)
@@ -163,7 +171,7 @@ def generate_ai_narrative(history: list, volume_details: list, watchlist: list, 
         generation_config = genai.types.GenerationConfig(temperature=0.1)
 
         model = genai.GenerativeModel(
-            model_name="gemini-1.5-flash",
+            model_name="gemini-3.5-flash",
             generation_config=generation_config
         )
 

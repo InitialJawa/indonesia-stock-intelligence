@@ -160,7 +160,7 @@ def generate_ai_narrative(history: list, volume_details: list, watchlist: list, 
         generation_config = genai.types.GenerationConfig(temperature=0.1)
 
         model = genai.GenerativeModel(
-            model_name="gemini-1.5-flash",
+            model_name="gemini-1.5-flash-latest",
             generation_config=generation_config
         )
 
@@ -170,7 +170,14 @@ def generate_ai_narrative(history: list, volume_details: list, watchlist: list, 
         return ai_text
 
     except Exception as e:
-        print(f"[!] Error saat memanggil Gemini API: {e}. Menggunakan fallback.")
+        import traceback
+        print(f"\n{'='*60}")
+        print(f"DEBUG - Tipe Error   : {type(e).__name__}")
+        print(f"DEBUG - Detail Error Gemini API: {e}")
+        print(f"DEBUG - Traceback Lengkap:")
+        traceback.print_exc()
+        print(f"{'='*60}\n")
+        print("[!] Menggunakan fallback karena Gemini API gagal.")
         fallback_lines = volume_details if volume_details else ["Gagal menghasilkan analisis AI."]
         return "<br>".join(fallback_lines)
 

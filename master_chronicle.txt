@@ -510,7 +510,8 @@ Berikut adalah status implementasi dari modul-modul sistem:
   - Skrip pengujian terpusat (test_bugfix.py) yang memvalidasi integritas 42/42 unit test.
   - **Framework Pengujian Kuantitatif Momentum Historis (V6)**: builder snapshot, rebalancer portfolio bulanan, engine backtest, evaluasi sensitivitas biaya transaksi, turnover, look-ahead bias, dan listing date gate.
   - **Dekomisi FMP & Standardisasi YFinance (V6.1)**: Refactor penuh `utils/data_provider.py` menjadi `YahooFinanceProvider` tunggal, menghapus library `requests`, caching ganda, dan kueri API key.
-  - **Otomatisasi & Integrasi Dasbor (V8.3)**: Implementasi CI/CD radar harian via GitHub Actions (`daily_radar.yml`), konfigurasi GitHub Pages dengan bypass Jekyll (`.nojekyll`) dan redirect di root folder (`index.html`), serta integrasi dinamis hasil radar harian via `output/daily_radar_status.json` langsung ke dasbor HTML utama.
+  - **Otomatisasi & Integrasi Dasbor (V8.3)**: Implementasi CI/CD radar harian via GitHub Actions (`daily_radar.yml`) konfigurasi GitHub Pages dengan bypass Jekyll (`.nojekyll`) dan redirect di root folder (`index.html`), serta integrasi dinamis hasil radar harian via `output/daily_radar_status.json` langsung ke dasbor HTML utama.
+* BUG: AI narrative generation gagal karena GEMINI_API_KEY tidak ditemukan di environment, sehingga sistem menggunakan fallback data mentah.
 
 * SEDANG BERJALAN (In Progress / Semi-Stable)
   - (Tidak ada modul kritis yang sedang berjalan. Semua fitur utama berada dalam status stabil/selesai).

@@ -129,9 +129,13 @@ def generate_ai_narrative(history: list, volume_details: list, watchlist: list, 
         print("[!] GEMINI_API_KEY tidak ditemukan. Menggunakan mode fallback (data mentah).")
         fallback_lines = volume_details if volume_details else ["Tidak ada data volume tersedia."]
         return "<br>".join(fallback_lines)
-
+    # --- Updated Gemini integration block with detailed error logging and API key debug ---
     # --- MODE AI: Dengan API Key ---
     print("[+] GEMINI_API_KEY terdeteksi. Memanggil Gemini AI...")
+    # Debug prints for secret status
+    print("[DEBUG] GEMINI_API_KEY EXISTS:", bool(api_key))
+    if api_key:
+        print("[DEBUG] GEMINI_API_KEY PREFIX:", api_key[:6] + "...")
     try:
         import google.generativeai as genai
 
@@ -152,15 +156,14 @@ def generate_ai_narrative(history: list, volume_details: list, watchlist: list, 
             f"Watchlist aktif: {today_watchlist_str}\n"
             f"Rasio volume per saham:\n{today_volume_str}\n"
             f"Status sistem keseluruhan: {status}\n\n"
-            "Tugas: Buat 1 paragraf ringkasan maksimal 3 kalimat mengenai apakah kondisi hari ini "
-            "aman untuk eksekusi beli, tahan (hold), atau hindari pasar."
+            "Tugas: Buat 1 paragraf ringkasan maksimal 3 kalimat mengenai apakah kondisi hari ini aman untuk eksekusi beli, tahan (hold), atau hindari pasar."
         )
 
         # Konfigurasi model dengan parameter super-strict
         generation_config = genai.types.GenerationConfig(temperature=0.1)
 
         model = genai.GenerativeModel(
-            model_name="gemini-1.5-flash-latest",
+            model_name="gemini-1.0-pro",
             generation_config=generation_config
         )
 
@@ -171,13 +174,9 @@ def generate_ai_narrative(history: list, volume_details: list, watchlist: list, 
 
     except Exception as e:
         import traceback
-        print(f"\n{'='*60}")
-        print(f"DEBUG - Tipe Error   : {type(e).__name__}")
-        print(f"DEBUG - Detail Error Gemini API: {e}")
-        print(f"DEBUG - Traceback Lengkap:")
+        print(f"[GEMINI ERROR] {type(e).__name__}: {e}")
         traceback.print_exc()
-        print(f"{'='*60}\n")
-        print("[!] Menggunakan fallback karena Gemini API gagal.")
+        # Fallback to raw data display
         fallback_lines = volume_details if volume_details else ["Gagal menghasilkan analisis AI."]
         return "<br>".join(fallback_lines)
 

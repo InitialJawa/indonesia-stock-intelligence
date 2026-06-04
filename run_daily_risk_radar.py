@@ -163,7 +163,7 @@ def generate_ai_narrative(history: list, volume_details: list, watchlist: list, 
         generation_config = genai.types.GenerationConfig(temperature=0.1)
 
         model = genai.GenerativeModel(
-            model_name="gemini-1.0-pro",
+            model_name="gemini-1.5-flash",
             generation_config=generation_config
         )
 

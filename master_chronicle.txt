@@ -13,10 +13,13 @@ BAB 1: EXECUTIVE SUMMARY
   mengalahkan IHSG. Semua unit test (42/42 pengujian) lulus dengan sukses. 
   Sistem kini telah sepenuhnya bebas dari ilusi Survivorship Bias berkat 
   implementasi filter Dynamic Historical Universe untuk pengujian masa lalu. 
-  Formula Momentum juga telah dimurnikan dari proxy data yang cacat. Kerangka 
-  kerja penelitian momentum historis (V6) telah sukses diselesaikan dengan 
-  hasil sangat robust. Integrasi FMP telah sepenuhnya didekomisi dan sistem 
-  berhasil distandardisasi pada Yahoo Finance sebagai satu-satunya data source 
+  Formula Momentum juga telah dimurnikan dari proxy data yang cacat. 
+  Infrastruktur otomasi CI/CD melalui GitHub Actions (`daily_radar.yml`) dan 
+  integrasi dasbor terpadu harian-bulanan (`daily_radar_status.json`) telah 
+  aktif 100% dan dideploy ke GitHub Pages. Kerangka kerja penelitian 
+  momentum historis (V6) telah sukses diselesaikan dengan hasil sangat 
+  robust. Integrasi FMP telah sepenuhnya didekomisi dan sistem berhasil 
+  distandardisasi pada Yahoo Finance sebagai satu-satunya data source 
   fundamental dan harga, mengurangi kompleksitas, menghilangkan technical 
   debt, serta menghapus ketergantungan pada API Key berbayar/terbatas.
 * Tujuan Proyek: Indonesia Stock Intelligence (ISI) dirancang untuk memproses 
@@ -497,13 +500,13 @@ Berikut adalah status implementasi dari modul-modul sistem:
   - Modul Warehouse bulanan untuk mengarsipkan hasil peringkat dan portofolio historis.
   - Modul Hybrid V5 Daily Risk Radar yang melakukan pemantauan Volume Shock harian.
   - Integrasi Notifikasi Email dan Telegram (berjalan dengan aman tanpa hardcode kredensial).
-  - Skrip pengujian terpusat (test_bugfix.py) yang memvalidasi integritas 41/41 unit test.
+  - Skrip pengujian terpusat (test_bugfix.py) yang memvalidasi integritas 42/42 unit test.
   - **Framework Pengujian Kuantitatif Momentum Historis (V6)**: builder snapshot, rebalancer portfolio bulanan, engine backtest, evaluasi sensitivitas biaya transaksi, turnover, look-ahead bias, dan listing date gate.
   - **Dekomisi FMP & Standardisasi YFinance (V6.1)**: Refactor penuh `utils/data_provider.py` menjadi `YahooFinanceProvider` tunggal, menghapus library `requests`, caching ganda, dan kueri API key.
+  - **Otomatisasi & Integrasi Dasbor (V8.3)**: Implementasi CI/CD radar harian via GitHub Actions (`daily_radar.yml`), konfigurasi GitHub Pages dengan bypass Jekyll (`.nojekyll`) dan redirect di root folder (`index.html`), serta integrasi dinamis hasil radar harian via `output/daily_radar_status.json` langsung ke dasbor HTML utama.
 
 * SEDANG BERJALAN (In Progress / Semi-Stable)
-  - Otomatisasi pemicuan Daily Risk Radar harian melalui GitHub Actions (proses sinkronisasi scheduler).
-  - Integrasi dashboard HTML dinamis dengan data real-time dari hasil radar harian dan visualisasi kurva historis.
+  - (Tidak ada modul kritis yang sedang berjalan. Semua fitur utama berada dalam status stabil/selesai).
 
 * BELUM FINAL (Backlog / Future Development)
   - Modul NLP Sentiment Analyzer untuk menyaring berita emiten secara real-time.
@@ -777,6 +780,21 @@ BAB 18: V8.2 - FACTOR 006 (RELATIVE STRENGTH) POST-MORTEM & INTEGRATION
    Berbeda dengan Factor 005 (Foreign Flow sintetik) yang gagal validasi, Factor 006 membuktikan bahwa Relative Strength adalah Alpha generator murni di bursa IDX30.
 6. Remediasi Survivorship Bias:
    Setelah integrasi RS-6M awal (Pilihan 2), dilakukan remediasi Survivorship Bias. Metrik Alpha +41.70% sebelumnya dikonfirmasi sebagai ilusi backfill bias dari saham statis yang bertahan. Setelah Dynamic Historical Universe diimplementasikan, CAGR sesungguhnya adalah 1.21% (vs IHSG -0.87%). Membuang proksi Foreign Flow dan menghilangkan bias adalah harga mati untuk validitas algoritma.
+
+================================================================================
+
+
+BAB 19: V8.3 - AUTOMATION & DASHBOARD INTEGRATION
+--------------------------------------------------------------------------------
+1. Latar Belakang:
+   Menghubungkan analisis fundamental bulanan dengan radar risiko harian serta membangun 
+   satu pintu antarmuka (dashboard) otomatis yang terintegrasi penuh.
+2. Pencapaian & Detail Implementasi:
+   * **[CI/CD]** Berhasil mengimplementasikan alur kerja GitHub Actions (`daily_radar.yml`) untuk eksekusi otomatis radar harian dan sinkronisasi dasbor. Memperbarui runner ke Python 3.12 untuk resolusi konflik dependensi `ipython`.
+   * **[Deployment]** Berhasil mengonfigurasi dan mempublikasikan Dasbor ISI ke GitHub Pages, dilengkapi dengan berkas `index.html` pengalih (redirect) otomatis di root directory. Mengimplementasikan bypass Jekyll menggunakan berkas `.nojekyll`.
+   * **[UI/UX Integration]** Merombak arsitektur komunikasi data: `run_daily_risk_radar.py` sekarang mengekspor status Volume Shock ke `output/daily_radar_status.json`, yang secara dinamis dibaca dan dirender oleh `dashboard/generate_dashboard.py` menjadi komponen visual Card langsung di antarmuka utama.
+3. Kesimpulan:
+   Sistem ISI kini sepenuhnya otomatis (zero-touch) dan memiliki satu antarmuka terintegrasi yang menyajikan data portofolio jangka panjang (bulanan) sekaligus pemantauan risiko real-time (harian) secara andal.
 
 ================================================================================
 

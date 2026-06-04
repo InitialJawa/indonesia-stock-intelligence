@@ -36,9 +36,9 @@ def get_action_label(row):
 
     if m > 85 and v < 40:
         return '<span class="badge bg-danger">⚠️ Rawan Pucuk</span>'
-    elif m >= 55 and m <= 80 and q > 60 and v > 50:
+    elif m >= 55 and m <= 85 and q > 45 and v > 40:
         return '<span class="badge bg-success">🚀 Sedang Anget</span>'
-    elif v > 80 and m < 40:
+    elif v > 70 and m < 40:
         return '<span class="badge bg-secondary">⚓ Murah Tapi Mati</span>'
     elif m > 80 and q < 40 and g < 40:
         return '<span class="badge bg-warning text-dark">🗑️ Gorengan Murni</span>'

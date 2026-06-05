@@ -873,3 +873,123 @@ FINAL EXPECTED RESULT:
 detail_message berisi narasi AI asli, bukan daftar volume saham mentah.
 
 ========================================================
+
+========================================================
+DATE: 2026-06-05
+SESSION: Gemini 2.5 Flash Fix, Workflow Audit, and GitHub Handover
+STATUS: READY FOR MANUAL GITHUB ACTIONS TEST
+========================================================
+
+PROBLEM CONTINUATION:
+- Section Analisis AI di dashboard masih menampilkan data volume mentah.
+- Penyebab operasional: fallback aktif karena Gemini API call gagal.
+- Target utama sesi ini adalah memastikan repo GitHub sudah memakai model Gemini yang valid dan workflow sudah mengirim secret API key ke runner.
+
+LOCAL AND REMOTE REPOSITORY STATE:
+- Repository lokal telah disinkronkan dengan:
+  https://github.com/InitialJawa/indonesia-stock-intelligence
+- Branch lokal telah dirapikan dari master menjadi main dan tracking origin/main.
+- Remote origin:
+  https://github.com/InitialJawa/indonesia-stock-intelligence.git
+- Commit penting:
+  f5ca647 Change model name from gemini-3.5 to gemini-2.5
+  4434131 chore(bot): update daily radar data and HTML dashboard
+- Pada akhir sesi, git push origin main menghasilkan:
+  Everything up-to-date
+
+CODE AUDIT RESULT:
+- File:
+  run_daily_risk_radar.py
+- Model aktif sudah benar:
+  model_name="gemini-2.5-flash"
+- Model discovery di log GitHub Actions mengonfirmasi model tersedia:
+  MODEL: models/gemini-2.5-flash
+  METHODS: ['generateContent', 'countTokens', 'createCachedContent', 'batchGenerateContent']
+
+WORKFLOW AUDIT RESULT:
+- File:
+  .github/workflows/daily_radar.yml
+- Step Execute Daily Risk Radar sudah memiliki env secret:
+
+  env:
+    GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+
+- Secret GEMINI_API_KEY terbukti terbaca di runner pada log:
+  [+] GEMINI_API_KEY terdeteksi. Memanggil Gemini AI...
+  [DEBUG] GEMINI_API_KEY EXISTS: True
+
+IMPORTANT FORENSIC NOTE:
+- Run manual terbaru yang berhasil dibaca:
+  Run ID: 27001897642
+  Job ID: 79684082822
+  Event: workflow_dispatch
+  Status: completed
+  Conclusion: success
+  Started at: 2026-06-05T07:33:05Z
+- Run tersebut memakai commit sebelum fix final model 2.5:
+  ecd981fc87f51957d561ad68815ab640a8683fcb
+- Karena itu log error run tersebut masih menyebut quota model lama:
+  model: gemini-3.5-flash
+
+LATEST OBSERVED GEMINI ERROR:
+- Error bukan lagi 404 model not found.
+- Error berubah menjadi quota/rate limit:
+
+  [GEMINI ERROR] ResourceExhausted: 429 You exceeded your current quota
+  Quota exceeded for metric:
+  generativelanguage.googleapis.com/generate_content_free_tier_requests
+
+- Ini berarti:
+  1. Secret API key sudah sampai ke runner.
+  2. Library google.generativeai berhasil load.
+  3. Gemini API berhasil dihubungi.
+  4. Kegagalan terakhir bersifat quota/rate limit, bukan salah model atau secret kosong.
+
+CURRENT OUTPUT STATE:
+- File output/daily_radar_status.json masih fallback raw volume.
+- Contoh isi detail_message terakhir:
+  PTBA.JK: Volume 0.6x (Sepi)<br>AKRA.JK: Volume 0.4x (Sepi)<br>...
+- Artinya dashboard masih belum memenuhi success criteria narasi AI sampai ada workflow run baru yang berhasil melewati quota.
+
+WHAT HAS BEEN FIXED:
+- Model produksi sudah dipastikan menjadi:
+  gemini-2.5-flash
+- Workflow sudah dipastikan pass:
+  GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+- Repo GitHub sudah up to date dengan commit model fix.
+
+WHAT COULD NOT BE DONE AUTOMATICALLY:
+- Codex tidak bisa trigger workflow_dispatch via GitHub API karena endpoint mengembalikan:
+  401 Requires authentication
+- GitHub CLI (gh) tidak tersedia/login di mesin lokal.
+- Karena itu manual test harus dilakukan dari GitHub UI oleh owner repo.
+
+NEXT ACTION FOR HUMAN / NEXT AI:
+1. Buka GitHub Actions:
+   https://github.com/InitialJawa/indonesia-stock-intelligence/actions/workflows/daily_radar.yml
+2. Klik Run workflow pada branch main.
+3. Pastikan run memakai commit terbaru setelah:
+   f5ca647 Change model name from gemini-3.5 to gemini-2.5
+4. Cek log step Execute Daily Risk Radar.
+
+SUCCESS LOG EXPECTED:
+[+] GEMINI_API_KEY terdeteksi. Memanggil Gemini AI...
+[+] Narasi AI berhasil dihasilkan
+
+FAILURE LOG TO WATCH:
+[GEMINI ERROR]
+ResourceExhausted: 429
+NotFound: 404
+
+SUCCESS CRITERIA:
+- output/daily_radar_status.json field detail_message berisi 1 paragraf naratif dari Gemini.
+- Dashboard section Analisis AI menampilkan teks narasi risiko, bukan daftar ticker dan rasio volume mentah.
+- Tidak ada fallback raw data di detail_message.
+
+RECOMMENDED NEXT IMPROVEMENT IF 429 PERSISTS:
+- Tambahkan retry sederhana untuk ResourceExhausted 429 dengan sleep 30-60 detik sebelum fallback.
+- Alternatif model fallback kedua:
+  gemini-2.0-flash
+- Pertimbangkan mengurangi list_models debug di production log setelah investigasi selesai.
+
+========================================================

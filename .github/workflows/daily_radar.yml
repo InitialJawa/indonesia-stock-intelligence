@@ -1,14 +1,10 @@
 name: Daily Risk Radar & Dashboard Sync
 
 on:
-  # Memungkinkan eksekusi manual via tombol di halaman GitHub Actions
   workflow_dispatch:
-  
-  # Penjadwalan otomatis: Berjalan setiap Senin-Jumat pukul 10:30 UTC (17:30 WIB)
   schedule:
-    - cron: '30 10 * * 1-5'
+    - cron: '30 9 * * *'
 
-# Memberikan izin kepada runner GitHub untuk melakukan push ke repository
 permissions:
   contents: write
 
@@ -28,22 +24,12 @@ jobs:
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install requests
+          pip install yfinance pandas requests
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-
-      - name: Execute Daily Risk Radar
-        env:
-          # Variabel ini akan ditarik dari GitHub Secrets
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          EMAIL_SENDER: ${{ secrets.EMAIL_SENDER }}
-          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
-          EMAIL_RECEIVER: ${{ secrets.EMAIL_RECEIVER }}
+      - name: Run Data Fetcher
         run: |
-          python run_daily_risk_radar.py
-
+          python data_fetcher.py
 
       - name: Generate HTML Dashboard
         run: |
@@ -53,16 +39,11 @@ jobs:
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          
-          # Menambahkan perubahan pada folder output dan dashboard
-          git add output/
-          git add dashboard/
-          
-          # Hanya commit jika ada perubahan file untuk mencegah error build
+          git add dashboard/data.json data_fetcher.py dashboard/generate_dashboard.py dashboard/index.html
           if git diff --staged --quiet; then
             echo "No changes to commit."
           else
-            git commit -m "chore(bot): update daily radar data and HTML dashboard"
+            git commit -m "feat: automated data pipeline with safe_float sanitization"
             git pull --rebase origin main
             git push
           fi

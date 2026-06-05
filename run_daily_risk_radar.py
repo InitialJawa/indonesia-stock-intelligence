@@ -123,10 +123,17 @@ def generate_ai_narrative(history: list, volume_details: list, watchlist: list, 
     Jika GEMINI_API_KEY tidak ditemukan, gunakan mode fallback (teks mentah).
     """
     api_key = os.environ.get("GEMINI_API_KEY", "").strip()
+    if not api_key:
+        try:
+            with open("config/settings.json", "r") as f:
+                settings = json.load(f)
+                api_key = settings.get("gemini", {}).get("api_key", "").strip()
+        except Exception:
+            pass
 
     # --- MODE FALLBACK: Tanpa API Key ---
     if not api_key:
-        print("[!] GEMINI_API_KEY tidak ditemukan. Menggunakan mode fallback (data mentah).")
+        print("[!] GEMINI_API_KEY tidak ditemukan di environment maupun config/settings.json. Menggunakan mode fallback (data mentah).")
         fallback_lines = volume_details if volume_details else ["Tidak ada data volume tersedia."]
         return "<br>".join(fallback_lines)
     # --- Updated Gemini integration block with detailed error logging and API key debug ---

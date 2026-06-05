@@ -515,22 +515,34 @@ def generate_dashboard():
 </div>
 
 <script>
-const stocks = {stocks_json_str};
+let stocks = [];
 
-const bmap = {{
+// Load stock data from generated data.json
+async function loadStocks() {
+  try {
+    const res = await fetch('data.json');
+    stocks = await res.json();
+    renderRows(stocks);
+  } catch (error) {
+    console.error('Failed to load data:', error);
+    document.getElementById('tb').innerHTML = '<tr><td colspan="8" style="text-align:center">Failed to load market data.</td></tr>';
+  }
+}
+
+const bmap = {
   hot: ['bh', '🚀 Anget'],
   watch: ['bw', '— Pantau'],
   risk: ['br', '⚠ Rawan'],
   dead: ['bd', '⚓ Mati'],
   junk: ['bj', '🗑 Goreng']
-}};
+};
 
-const bc = {{
+const bc = {
   q: '#00c26f',
   g: '#38bdf8',
   v: '#a855f7',
   m: '#ff9f1a'
-}};
+};
 
 function bar(v, k) {{
   return `<div class="fb">
@@ -725,7 +737,7 @@ function closeModal(e) {{
 }}
 
 // Initial render
-renderRows(stocks);
+loadStocks();
 </script>
 </body>
 </html>

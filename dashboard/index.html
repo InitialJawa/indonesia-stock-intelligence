@@ -245,14 +245,24 @@ function filter(type, btn) {
   else renderRows(stocks.filter(d => d.port));
 }
 
-// Build active portfolio card grid
-document.getElementById('portGrid').innerHTML = stocks.filter(d => d.port).map(d => `
+
+async function loadStocks() {
+  try {
+    const res = await fetch('./data.json');
+    stocks = await res.json();
+    renderRows(stocks);
+    // Build active portfolio card grid after data is loaded
+    document.getElementById('portGrid').innerHTML = stocks.filter(d => d.port).map(d => `
   <div class="pc" onclick="openModal('${d.t}')">
     <div class="ptk">${d.t}</div>
     <div class="psc">${d.f.toFixed(1)}</div>
-    <div class="pal">20%</div>
+    <div class="pal">${d.weight || '20%'}</div>
   </div>`).join('');
-
+  } catch (error) {
+    console.error('Failed to load data:', error);
+    document.getElementById('tb').innerHTML = '<tr><td colspan="8" style="text-align:center">Failed to load market data.</td></tr>';
+  }
+}
 function openModal(ticker) {
   const d = stocks.find(s => s.t === ticker);
   if (!d) return;

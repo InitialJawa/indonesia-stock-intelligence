@@ -606,14 +606,24 @@ function filter(type, btn) {{
   else renderRows(stocks.filter(d => d.port));
 }}
 
-// Build active portfolio card grid
-document.getElementById('portGrid').innerHTML = stocks.filter(d => d.port).map(d => `
+
+async function loadStocks() {{
+  try {{
+    const res = await fetch('./data.json');
+    stocks = await res.json();
+    renderRows(stocks);
+    // Build active portfolio card grid after data is loaded
+    document.getElementById('portGrid').innerHTML = stocks.filter(d => d.port).map(d => `
   <div class="pc" onclick="openModal('${{d.t}}')">
     <div class="ptk">${{d.t}}</div>
     <div class="psc">${{d.f.toFixed(1)}}</div>
-    <div class="pal">20%</div>
+    <div class="pal">${{d.weight || '20%'}}</div>
   </div>`).join('');
-
+  }} catch (error) {{
+    console.error('Failed to load data:', error);
+    document.getElementById('tb').innerHTML = '<tr><td colspan="8" style="text-align:center">Failed to load market data.</td></tr>';
+  }}
+}}
 function openModal(ticker) {{
   const d = stocks.find(s => s.t === ticker);
   if (!d) return;
@@ -777,8 +787,14 @@ loadStocks();
     output_path.parent.mkdir(parents=True, exist_ok=True)
     with open(output_path, "w", encoding="utf-8") as f:
         f.write(html_content)
-        
+
     print(f"Sukses! Dashboard HTML modern telah dibuat di: {output_path}")
+
+    # 5. Tulis processed stocks data ke dashboard/data.json (format yang dipakai JS)
+    data_json_path = Path("dashboard/data.json")
+    with open(data_json_path, "w", encoding="utf-8") as f:
+        f.write(stocks_json_str)
+    print(f"Sukses! Stocks data ditulis ke: {data_json_path}")
 
 if __name__ == "__main__":
     generate_dashboard()

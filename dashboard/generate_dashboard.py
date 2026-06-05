@@ -518,16 +518,16 @@ def generate_dashboard():
 let stocks = [];
 
 // Load stock data from generated data.json
-async function loadStocks() {
-  try {
+async function loadStocks() {{
+  try {{
     const res = await fetch('data.json');
     stocks = await res.json();
     renderRows(stocks);
-  } catch (error) {
+  }} catch (error) {{
     console.error('Failed to load data:', error);
     document.getElementById('tb').innerHTML = '<tr><td colspan="8" style="text-align:center">Failed to load market data.</td></tr>';
-  }
-}
+  }}
+}}
 
 const bmap = {
   hot: ['bh', '🚀 Anget'],

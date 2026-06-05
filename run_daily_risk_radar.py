@@ -327,6 +327,13 @@ def main():
         json.dump(status_data, f, indent=4, ensure_ascii=False)
     print(f"[+] Status harian berhasil disimpan ke {STATUS_FILE}")
 
+    # Otomatis update dashboard HTML agar sinkron dengan status radar harian terbaru
+    try:
+        from dashboard.generate_dashboard import generate_dashboard
+        generate_dashboard()
+    except Exception as e:
+        print(f"[!] Warning: Gagal memperbarui dashboard HTML: {e}")
+
     print("\n==================================================")
     print("Radar harian selesai dieksekusi. Standby.")
 

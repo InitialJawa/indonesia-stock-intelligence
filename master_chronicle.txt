@@ -746,6 +746,18 @@ BAB 16: V7.0 - ALPHA OPTIMIZED WEIGHTS
    * Quality harus tetap dipertahankan sebagai benteng pertahanan risiko untuk memitigasi drawdown ekstrem selama krisis pasar makro.
    * Proxy Factor Risk: Tidak semua data hasil simulasi mewakili fenomena dunia nyata. Sebelum menguji alpha, validitas data harus diaudit secara ilmiah.
 
+STATUS: UNDER REVIEW
+
+Reason:
+Framework optimisasi bobot tidak benar-benar melakukan
+historical factor re-ranking karena snapshots historis
+tidak mengandung factor-level scores.
+
+Result:
+Config B superiority remains unproven.
+Current production weights may remain unchanged until
+Historical Factor Warehouse V2 exists.
+
 ================================================================================
 
 
@@ -1422,6 +1434,29 @@ LESSON LEARNED
 Framework penelitian dapat dibangun dengan benar, tetapi kualitas penelitian tetap dibatasi oleh kualitas dan kelengkapan data historis yang tersedia.
 
 Sebelum menambah faktor baru atau mengoptimalkan bobot faktor, selalu audit ketersediaan data historis terlebih dahulu.
+
+AUDIT FINDING
+
+V8.4 successfully validates historical performance
+stability using TRAIN / VALIDATION / TEST splits.
+
+However:
+
+The optimization component is currently a placeholder.
+
+Historical snapshots only contain:
+- ticker
+- return_12m
+- rank
+
+Therefore candidate weight configurations cannot
+be meaningfully re-ranked historically.
+
+Implication:
+
+V8.4 is a valid Out-of-Sample Evaluation Framework,
+but not yet a valid Factor Weight Optimization Framework.
+
 
 BAB 20: HISTORICAL FACTOR WAREHOUSE AUDIT
 

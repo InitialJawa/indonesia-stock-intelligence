@@ -298,7 +298,7 @@ def generate_dashboard():
         
         is_bank = ticker in banks
         is_commodity = ticker in commodity_cyclical
-
+        
         stocks_js_list.append({
             'r': rank,
             't': ticker_clean,
@@ -326,6 +326,35 @@ def generate_dashboard():
             'is_commodity': is_commodity
         })
         rank += 1
+
+    # --- New Section: Score‑Weighted Portfolio Allocation ---
+    # Identify top 5 'hot' stocks (already stored in current_portfolio)
+    top5 = [s for s in stocks_js_list if s['port']]
+    if len(top5) > 5:
+        top5 = top5[:5]
+    total_score = sum(s['f'] for s in top5)
+    # Load previous weights if any
+    prev_weights = {}
+    try:
+        prev_data = load_json('output/data.json')
+        for p in prev_data:
+            if p.get('port'):
+                prev_weights[p['t']] = float(p.get('weight', 0))
+    except Exception:
+        pass
+    rebalance_needed = False
+    for s in top5:
+        raw_weight = (s['f'] / total_score) * 100 if total_score else 0
+        weight = min(max(raw_weight, 10), 30)
+        s['weight'] = f"{weight:.1f}%"
+        prev = prev_weights.get(s['t'], 0)
+        if abs(weight - prev) > 5:
+            rebalance_needed = True
+    # Attach flag to each stock (optional) and overall flag
+    for s in stocks_js_list:
+        s['rebalance_needed'] = rebalance_needed
+
+        # Duplicate block removed – weight & rebalance already applied
 
     stocks_json_str = json.dumps(stocks_js_list, indent=2)
 

@@ -1099,3 +1099,34 @@ NEXT HYGIENE RECOMMENDATION:
 - Consider replacing tracked `config/settings.json` with `config/settings.example.json` only after updating notifier/test fallback behavior.
 
 ========================================================
+
+========================================================
+DATE: 2026-06-05
+SESSION: Overhauled Interactive Dashboard & CI/CD Push Fix
+STATUS: COMPLETED & DEPLOYED TO GITHUB
+========================================================
+
+OBJECTIVE:
+- Meningkatkan kegunaan dan daya tarik visual dasbor HTML (`dashboard/index.html`) agar interaktif seperti contoh "isi_dashboard_with_detail.html".
+- Sinkronisasi otomatis dasbor HTML setiap kali analisis harian atau bulanan dijalankan.
+- Memperbaiki kegagalan push pada alur kerja GitHub Actions (CI/CD) akibat penolakan push (rejected refs).
+
+IMPLEMENTATION DETAILS:
+1. **Interactive Overhaul (`dashboard/generate_dashboard.py` & `dashboard/index.html`):**
+   - Mengubah generator untuk menghasilkan representasi data terstruktur JSON (`stocks`) di sisi klien.
+   - Menambahkan filter tab interaktif ("Semua", "🚀 Sedang Anget", "⭐ Portfolio") berbasis JavaScript.
+   - Menambahkan pop-up modal detail interaktif saat baris tabel diklik, menampilkan rasio fundamental lengkap (ROE, Net Margin, Operating Margin, DER, P/E, P/B), pertumbuhan YoY (Revenue, Net Income), dan sinyal teknikal (RS-6M vs IHSG, Volume Ratio).
+   - Menambahkan visualisasi penanda aturan khusus (Bank Rule & Commodity Trap Rule) secara dinamis.
+   - Mengintegrasikan kueri volume real-time via yfinance secara dinamis dengan fallback aman dari radar_history.json.
+2. **Dashboard Auto-Sync (`run_daily_risk_radar.py`):**
+   - Menambahkan pemanggilan generate_dashboard() otomatis di akhir eksekusi radar risiko harian, sehingga dasbor HTML langsung terbarui sesaat setelah status radar disimpan.
+3. **CI/CD Push Rejection Fix (`.github/workflows/daily_radar.yml` & `.github/workflows/monthly_pipeline.yml`):**
+   - Memodifikasi langkah Commit and Push Changes untuk melakukan git pull --rebase origin main tepat sebelum git push.
+   - Hal ini menyelesaikan konflik ketika remote cabang mengandung komit baru dari pengembang, memastikan integrasi otomatis berjalan tanpa kegagalan.
+
+SUCCESS CRITERIA MET:
+- Dasbor HTML terbukti premium, responsif, dan interaktif.
+- Skrip radar harian sukses mengevaluasi risiko, memperbarui status harian, dan menghasilkan ulang dasbor secara lokal.
+- Kode berhasil dikomit dan dikirim ke repositori GitHub utama dengan sukses.
+
+========================================================

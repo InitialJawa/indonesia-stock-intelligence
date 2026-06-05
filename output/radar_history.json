@@ -16,66 +16,66 @@
         }
     },
     {
+        "tanggal": "2026-06-04",
+        "jumlah_saham_sedang_anget": 5,
+        "ringkasan_volume_hari_itu": {
+            "status_sistem": "WARNING",
+            "saham_anomali_lonjakan": 1,
+            "saham_volume_sepi": 0,
+            "detail": [
+                "PTBA.JK: Volume 1.8x (Wajar)",
+                "AKRA.JK: Volume 1.2x (Wajar)",
+                "ANTM.JK: Volume 1.7x (Wajar)",
+                "BBNI.JK: Volume 2.5x (Anomali Lonjakan!)",
+                "INDF.JK: Volume 1.5x (Wajar)"
+            ]
+        }
+    },
+    {
+        "tanggal": "2026-06-04",
+        "jumlah_saham_sedang_anget": 5,
+        "ringkasan_volume_hari_itu": {
+            "status_sistem": "WARNING",
+            "saham_anomali_lonjakan": 1,
+            "saham_volume_sepi": 0,
+            "detail": [
+                "PTBA.JK: Volume 1.8x (Wajar)",
+                "AKRA.JK: Volume 1.2x (Wajar)",
+                "ANTM.JK: Volume 1.7x (Wajar)",
+                "BBNI.JK: Volume 2.5x (Anomali Lonjakan!)",
+                "INDF.JK: Volume 1.5x (Wajar)"
+            ]
+        }
+    },
+    {
+        "tanggal": "2026-06-04",
+        "jumlah_saham_sedang_anget": 5,
+        "ringkasan_volume_hari_itu": {
+            "status_sistem": "WARNING",
+            "saham_anomali_lonjakan": 1,
+            "saham_volume_sepi": 0,
+            "detail": [
+                "PTBA.JK: Volume 1.8x (Wajar)",
+                "AKRA.JK: Volume 1.2x (Wajar)",
+                "ANTM.JK: Volume 1.7x (Wajar)",
+                "BBNI.JK: Volume 2.5x (Anomali Lonjakan!)",
+                "INDF.JK: Volume 1.5x (Wajar)"
+            ]
+        }
+    },
+    {
         "tanggal": "2026-06-05",
         "jumlah_saham_sedang_anget": 5,
         "ringkasan_volume_hari_itu": {
             "status_sistem": "SAFE",
-            "saham_anomali_lonjakan": 1,
-            "saham_volume_sepi": 0,
+            "saham_anomali_lonjakan": 0,
+            "saham_volume_sepi": 3,
             "detail": [
-                "PTBA.JK: Volume 1.8x (Wajar)",
-                "AKRA.JK: Volume 1.2x (Wajar)",
-                "ANTM.JK: Volume 1.7x (Wajar)",
-                "BBNI.JK: Volume 2.5x (Anomali Lonjakan!)",
-                "INDF.JK: Volume 1.5x (Wajar)"
-            ]
-        }
-    },
-    {
-        "tanggal": "2026-06-04",
-        "jumlah_saham_sedang_anget": 5,
-        "ringkasan_volume_hari_itu": {
-            "status_sistem": "WARNING",
-            "saham_anomali_lonjakan": 1,
-            "saham_volume_sepi": 0,
-            "detail": [
-                "PTBA.JK: Volume 1.8x (Wajar)",
-                "AKRA.JK: Volume 1.2x (Wajar)",
-                "ANTM.JK: Volume 1.7x (Wajar)",
-                "BBNI.JK: Volume 2.5x (Anomali Lonjakan!)",
-                "INDF.JK: Volume 1.5x (Wajar)"
-            ]
-        }
-    },
-    {
-        "tanggal": "2026-06-04",
-        "jumlah_saham_sedang_anget": 5,
-        "ringkasan_volume_hari_itu": {
-            "status_sistem": "WARNING",
-            "saham_anomali_lonjakan": 1,
-            "saham_volume_sepi": 0,
-            "detail": [
-                "PTBA.JK: Volume 1.8x (Wajar)",
-                "AKRA.JK: Volume 1.2x (Wajar)",
-                "ANTM.JK: Volume 1.7x (Wajar)",
-                "BBNI.JK: Volume 2.5x (Anomali Lonjakan!)",
-                "INDF.JK: Volume 1.5x (Wajar)"
-            ]
-        }
-    },
-    {
-        "tanggal": "2026-06-04",
-        "jumlah_saham_sedang_anget": 5,
-        "ringkasan_volume_hari_itu": {
-            "status_sistem": "WARNING",
-            "saham_anomali_lonjakan": 1,
-            "saham_volume_sepi": 0,
-            "detail": [
-                "PTBA.JK: Volume 1.8x (Wajar)",
-                "AKRA.JK: Volume 1.2x (Wajar)",
-                "ANTM.JK: Volume 1.7x (Wajar)",
-                "BBNI.JK: Volume 2.5x (Anomali Lonjakan!)",
-                "INDF.JK: Volume 1.5x (Wajar)"
+                "PTBA.JK: Volume 0.6x (Sepi)",
+                "AKRA.JK: Volume 0.4x (Sepi)",
+                "ANTM.JK: Volume 1.0x (Wajar)",
+                "BBNI.JK: Volume 1.3x (Wajar)",
+                "INDF.JK: Volume 0.8x (Sepi)"
             ]
         }
     }

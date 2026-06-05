@@ -1135,3 +1135,79 @@ SESSION: Final Deployment & Git Push
 STATUS: COMPLETED & PUSHED TO GITHUB
 =======================================================
 =
+
+========================================================
+DATE: 2026-06-05 (18:30 WIB)
+SESSION: Dashboard Data Pipeline Fix & Score-Weighted Portfolio
+STATUS: COMPLETED & DEPLOYED TO GITHUB PAGES
+========================================================
+
+OBJECTIVE:
+- Memperbaiki error "Failed to load market data" di dashboard GitHub Pages.
+- Mengimplementasikan logika Score-Weighted Portfolio Allocation.
+- Memperbaiki semua f-string escaping bug di generate_dashboard.py.
+
+PROBLEMS SOLVED (Kronologis):
+
+1. F-String Escaping Bug (NameError: 'hot' is not defined)
+   - Root Cause: Objek JavaScript di dalam f-string Python tidak memakai kurung kurawal ganda.
+     Contoh: `{hot: [...]}` di dalam f-string dibaca Python sebagai variabel Python.
+   - Fix: Semua kurung kurawal JS di-escape menjadi `{{` dan `}}` di generate_dashboard.py.
+   - Commit: "fix: escape curly braces in JS f-string"
+
+2. Score-Weighted Portfolio Allocation Logic
+   - Requirement: Ganti Equal Weight (20%) dengan bobot proporsional berbasis skor.
+   - Formula: weight = (stock.final_score / total_score) * 100
+   - Constraint: Min 10%, Max 30% per saham.
+   - Flag: Jika selisih bobot baru vs lama > 5%, set rebalance_needed = True.
+   - Filter: Hanya 5 ticker teratas dengan momentum score > 55.
+   - Implementasi: Ditambahkan di blok "Score-Weighted Portfolio Allocation" di generate_dashboard.py.
+
+3. Git Merge Conflict in index.html (SyntaxError: Unexpected token '<<')
+   - Root Cause: Saat push sebelumnya, git pull --rebase meninggalkan conflict marker
+     `<<<<<<< HEAD` / `=======` / `>>>>>>>` di dalam file index.html.
+   - Akibat: Browser gagal parse JavaScript karena ada simbol `<<` yang bukan JS valid.
+   - Fix: Dihapus semua conflict marker, dipertahankan versi `fetch('./data.json')`.
+   - Commit: "fix: resolve merge conflict in index.html, use relative ./data.json fetch path"
+
+4. Schema Mismatch (Root Cause Utama "Failed to load market data")
+   - Root Cause: File dashboard/data.json ditulis oleh data_fetcher.py dengan schema lama:
+     { "ticker": "ADRO.JK", "quality": 6.15, "growth": -38.71, ... }
+     Tetapi JavaScript di index.html mengharapkan schema baru dari stocks_js_list:
+     { "t": "ADRO", "q": 53.77, "g": 79.31, "f": 74.4, "s": "watch", ... }
+   - Akibat: d.f.toFixed(1) → TypeError karena d.f = undefined → catch error → "Failed to load market data."
+   - Fix: generate_dashboard.py sekarang menulis stocks_js_list (processed, schema benar)
+     langsung ke dashboard/data.json setelah membangun HTML.
+   - Commit: "fix: write processed stocks_js_list to data.json with correct schema for JS dashboard"
+
+5. portGrid Rendered Before Data Loaded
+   - Root Cause: `document.getElementById('portGrid').innerHTML = stocks.filter(...)` dijalankan
+     di tingkat atas script saat stocks = [] (sebelum fetch selesai), sehingga portGrid kosong.
+   - Fix: Dipindahkan ke dalam fungsi loadStocks() setelah data berhasil di-fetch.
+
+ARCHITECTURAL NOTE:
+- generate_dashboard.py sekarang menulis DUA file output:
+  1. dashboard/index.html  → template HTML dengan UI dan JS logic
+  2. dashboard/data.json   → processed stocks_js_list dengan schema {t, q, g, v, m, f, s, ...}
+- data_fetcher.py tetap menulis ke path-nya sendiri (bukan dashboard/data.json lagi).
+- CI/CD workflow (daily_radar.yml) sudah mencakup `dashboard/data.json` di git add step.
+
+COMMITS PUSHED:
+- 40085a5  fix: escape curly braces in JS f-string
+- 2a36b9a  fix: adjust fetch path to relative ./data.json and update index.html
+- e054707  fix: ensure data.json is in dashboard folder and update fetch path
+- 7b4de3b  fix: resolve merge conflict in index.html, use relative ./data.json fetch path
+- 7a398f9  fix: write processed stocks_js_list to data.json with correct schema for JS dashboard
+
+VERIFICATION:
+- HTTP GET dashboard/data.json → 200 OK
+- HTTP GET dashboard/index.html → 200 OK, tidak ada conflict marker
+- python dashboard/generate_dashboard.py → sukses tanpa error
+- dashboard/data.json sekarang menggunakan schema baru: { "r": 1, "t": "ADRO", "q": 53.77, ... }
+
+SUCCESS CRITERIA MET:
+- Dashboard seharusnya menampilkan Universe Ranking Board dengan data lengkap 30 saham IDX30.
+- Portfolio cards dan filter tabs (Semua / Sedang Anget / Portfolio) berfungsi penuh.
+- Score-Weighted allocation ditampilkan di portfolio cards.
+
+========================================================

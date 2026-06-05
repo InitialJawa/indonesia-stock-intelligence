@@ -1,411 +1,1176 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ISI V8.3 | Quant Dashboard</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap');
+    *{box-sizing:border-box;margin:0;padding:0;}
+    .w{font-family:'DM Sans',sans-serif;background:#0a0e14;color:#e2e8f0;padding-bottom:2rem;min-height:100vh;}
+    .hdr{padding:1.2rem 1.5rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #1e293b;}
+    .logo{font-family:'Space Mono',monospace;font-size:12px;color:#38bdf8;letter-spacing:.1em;}
+    .logo span{color:#334155;}
+    .dt{font-size:11px;color:#334155;font-family:'Space Mono',monospace;}
+    .hero{padding:1.2rem 1.5rem;display:grid;grid-template-columns:1.2fr 0.8fr;gap:10px;}
+    @media (max-width: 768px) {
+      .hero{grid-template-columns:1fr;}
+    }
+    .hero-main{background:#0f172a;border:1px solid #1e293b;border-radius:12px;padding:1.2rem;position:relative;overflow:hidden;}
+    .hero-main::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#22d3ee,#3b82f6,#22d3ee);background-size:200%;animation:sh 3s linear infinite;}
+    @keyframes sh{0%{background-position:200% 0}100%{background-position:-200% 0}}
+    .sbadge{display:inline-flex;align-items:center;gap:5px;background:#052e16;border:1px solid #166534;color:#4ade80;font-size:10px;font-family:'Space Mono',monospace;padding:3px 8px;border-radius:4px;margin-bottom:8px;}
+    .sdot{width:5px;height:5px;border-radius:50%;background:#4ade80;animation:pu 2s infinite;}
+    @keyframes pu{0%,100%{opacity:1}50%{opacity:.3}}
+    .hero-main h2{font-size:11px;color:#475569;margin-bottom:5px;font-weight:400;text-transform:uppercase;letter-spacing:.08em;}
+    .ait{font-size:12px;color:#94a3b8;line-height:1.6;}
+    .ait strong{color:#e2e8f0;}
+    .hstats{display:flex;flex-direction:column;gap:8px;}
+    .sc{background:#0f172a;border:1px solid #1e293b;border-radius:10px;padding:.9rem 1.1rem;flex:1;}
+    .sl{font-size:10px;color:#475569;font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;}
+    .sv{font-size:20px;font-weight:600;color:#f1f5f9;font-family:'Space Mono',monospace;}
+    .sv.g{color:#4ade80;}.sv.a{color:#fbbf24;}
+    .ss{font-size:10px;color:#334155;margin-top:2px;}
+    .sec{padding:0 1.5rem;margin-top:1.1rem;}
+    .st{font-size:10px;font-family:'Space Mono',monospace;color:#334155;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+    .st::after{content:'';flex:1;height:1px;background:#1e293b;}
+    .pgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;}
+    @media (max-width: 480px) {
+      .pgrid{grid-template-columns:repeat(2,1fr);}
+    }
+    .pc{background:#0f172a;border:1px solid #1e2d3d;border-radius:8px;padding:.7rem .5rem;text-align:center;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;}
+    .pc:hover{border-color:#38bdf8;background:#0c1929;transform:translateY(-1px);}
+    .ptk{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:#38bdf8;}
+    .psc{font-size:16px;font-weight:600;color:#f1f5f9;margin:3px 0 2px;font-family:'Space Mono',monospace;}
+    .pal{font-size:10px;color:#334155;}
+    .tw{background:#0f172a;border:1px solid #1e293b;border-radius:12px;overflow-x:auto;}
+    .rt{width:100%;border-collapse:collapse;min-width:750px;}
+    .rt th{font-size:10px;font-family:'Space Mono',monospace;color:#334155;text-transform:uppercase;letter-spacing:.05em;padding:.55rem .7rem;border-bottom:1px solid #1e293b;text-align:left;white-space:nowrap;}
+    .rt tr:hover td{background:#111827;cursor:pointer;}
+    .rt td{padding:.5rem .7rem;font-size:12px;border-bottom:1px solid #0c1018;vertical-align:middle;}
+    .rn{font-family:'Space Mono',monospace;color:#1e293b;font-size:10px;}
+    .tk{font-family:'Space Mono',monospace;font-weight:700;font-size:12px;color:#94a3b8;}
+    .tk.act{color:#38bdf8;}
+    .tk .star{color:#fbbf24;font-size:9px;margin-left:3px;}
+    .sf{font-family:'Space Mono',monospace;font-weight:700;font-size:12px;text-align:right;}
+    .sf.top{color:#4ade80;}.sf.mid{color:#fbbf24;}.sf.low{color:#64748b;}
+    .fb{display:flex;align-items:center;gap:4px;}
+    .fb-bar{height:3px;border-radius:2px;background:#1e293b;width:60px;overflow:hidden;}
+    .fb-fill{height:100%;border-radius:2px;}
+    .fv{font-size:10px;color:#475569;font-family:'Space Mono',monospace;min-width:26px;text-align:right;}
+    .badge{font-size:9px;padding:2px 6px;border-radius:3px;font-family:'Space Mono',monospace;white-space:nowrap;display:inline-block;}
+    .bh{background:#1c1917;color:#fb923c;border:1px solid #431407;}
+    .bw{background:#0f172a;color:#334155;border:1px solid #1e293b;}
+    .br{background:#1c0a00;color:#f97316;border:1px solid #7c2d12;}
+    .bd{background:#0c0c10;color:#334155;border:1px solid #1a1a24;}
+    .bj{background:#2d0a0a;color:#ef4444;border:1px solid #7f1d1d;}
+    .tabs{display:flex;gap:4px;margin-bottom:8px;}
+    .tab{font-size:10px;font-family:'Space Mono',monospace;padding:4px 10px;border-radius:4px;border:1px solid #1e293b;color:#334155;cursor:pointer;background:transparent;transition:all .15s;}
+    .tab.act{background:#0f172a;color:#38bdf8;border-color:#38bdf8;}
 
-    <!DOCTYPE html>
-    <html lang="id" data-bs-theme="dark">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>ISI V4 | Quant Dashboard</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-        <style>
-            body { background-color: #0d1117; color: #c9d1d9; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
-            .card { background-color: #161b22; border: 1px solid #30363d; border-radius: 8px; }
-            .table { border-color: #30363d; }
-            .table th { background-color: #21262d; color: #58a6ff; font-weight: 600; border-bottom: 2px solid #30363d; }
-            .table-active { background-color: #1f6feb20 !important; border-left: 3px solid #58a6ff; }
-            .text-info { color: #58a6ff !important; }
-            .text-warning { color: #d2a8ff !important; }
-        </style>
-    </head>
-    <body>
-        <div class="container py-5">
-            <div class="text-center mb-5">
-                <h1 class="fw-bold" style="color: #c9d1d9;">Indonesia Stock Intelligence <span style="color: #58a6ff;">(ISI V4)</span></h1>
-                <p class="text-muted">Quantitative Research & Multi-Factor Investing Platform</p>
-            </div>
+    /* MODAL */
+    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(4px);z-index:100;display:none;align-items:center;justify-content:center;padding:1rem;}
+    .overlay.open{display:flex;}
+    .modal{background:#0d1117;border:1px solid #1e293b;border-radius:16px;width:100%;max-width:520px;max-height:85vh;overflow-y:auto;position:relative;}
+    .modal-hdr{padding:1.2rem 1.5rem;border-bottom:1px solid #1e293b;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#0d1117;z-index:1;}
+    .modal-tk{font-family:'Space Mono',monospace;font-size:18px;font-weight:700;color:#38bdf8;}
+    .modal-name{font-size:12px;color:#475569;margin-top:2px;}
+    .close-btn{background:#1e293b;border:none;color:#94a3b8;width:28px;height:28px;border-radius:6px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:background .15s;}
+    .close-btn:hover{background:#334155;}
+    .modal-body{padding:1.2rem 1.5rem;}
+    .modal-section{margin-bottom:1.2rem;}
+    .modal-section-title{font-size:10px;font-family:'Space Mono',monospace;color:#334155;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #1e293b;}
+    .factor-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+    .fcard{background:#0f172a;border:1px solid #1e293b;border-radius:8px;padding:.8rem;}
+    .fcard-label{font-size:10px;color:#475569;font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;}
+    .fcard-val{font-size:20px;font-weight:600;font-family:'Space Mono',monospace;color:#e2e8f0;}
+    .fcard-bar{height:3px;border-radius:2px;background:#1e293b;margin-top:6px;overflow:hidden;}
+    .fcard-fill{height:100%;border-radius:2px;transition:width .5s;}
+    .ratio-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+    .rcard{background:#0f172a;border:1px solid #1e293b;border-radius:8px;padding:.8rem;text-align:center;}
+    .rcard-label{font-size:9px;color:#334155;font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;}
+    .rcard-val{font-size:15px;font-weight:600;font-family:'Space Mono',monospace;}
+    .rcard-val.pos{color:#4ade80;}.rcard-val.neg{color:#ef4444;}.rcard-val.neu{color:#94a3b8;}
+    .rcard-sub{font-size:9px;color:#334155;margin-top:2px;line-height:1.2;}
+    .tech-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #0f172a;}
+    .tech-label{font-size:12px;color:#64748b;}
+    .tech-val{font-size:12px;font-family:'Space Mono',monospace;font-weight:600;}
+    .tech-val.pos{color:#4ade80;}.tech-val.neg{color:#ef4444;}.tech-val.neu{color:#94a3b8;}
+    .signal{font-size:10px;padding:2px 7px;border-radius:3px;font-family:'Space Mono',monospace;}
+    .sig-bull{background:#052e16;color:#4ade80;}.sig-bear{background:#2d0a0a;color:#ef4444;}.sig-neu{background:#1e293b;color:#64748b;}
+    .modal-score-hdr{display:flex;align-items:baseline;gap:8px;margin-bottom:12px;}
+    .big-score{font-size:36px;font-weight:700;font-family:'Space Mono',monospace;}
+    .big-score.top{color:#4ade80;}.big-score.mid{color:#fbbf24;}.big-score.low{color:#ef4444;}
+    .score-rank{font-size:12px;color:#475569;}
+    .status-pill{font-size:11px;padding:4px 10px;border-radius:6px;font-family:'Space Mono',monospace;}
+  </style>
+</head>
+<body>
+<div class="w">
+  <div class="hdr">
+    <div class="logo">ISI <span>·</span> V8.3 <span>·</span> QUANT DASHBOARD</div>
+    <div class="dt">2026-06-05 · IDX30</div>
+  </div>
 
-            
-            <div class="row justify-content-center mb-4">
-                <div class="col-md-8">
-                    <div class="card p-4 border-success text-center shadow-sm">
-                        <h4 class="mb-1" style="color: #8b949e;">Daily Radar Status</h4>
-                        <div class="my-2"><span class='badge bg-success mx-1'>SAFE / AMAN</span></div>
-                        
-        <div class="ai-narrative"><h4 class="mb-1" style="color: #8b949e;">Analisis AI</h4><p class="text-muted small">Status sistem keseluruhan 'SAFE' tidak menutupi fakta bahwa PTBA.JK menunjukkan volume sepi hari ini, sebuah indikator likuiditas yang tidak meyakinkan. Mengingat prioritas mutlak perlindungan modal dan pola volume yang tidak konsisten dari data historis, kondisi pasar saat ini tidak memenuhi standar untuk eksekusi. Perintah jelas: WAIT AND SEE.</p></div>
-                        <p class="text-muted small mb-2 mt-3">Terakhir Diperbarui: <strong>2026-06-05 08:28</strong></p>
-                        <p class="mb-0 small">Tidak ada anomali distribusi massal pada watchlist hari ini. Portofolio terpantau aman.</p>
-                    </div>
-                </div>
-            </div>
-    
+  <div class="hero">
+    <div class="hero-main">
+      <div class="sbadge"><span class="sdot"></span>SAFE / AMAN</div>
+      <h2>Analisis AI Hari Ini</h2>
+      <p class="ait">Status sistem keseluruhan 'SAFE' tidak menutupi fakta bahwa PTBA.JK menunjukkan volume sepi hari ini, sebuah indikator likuiditas yang tidak meyakinkan. Mengingat prioritas mutlak perlindungan modal dan pola volume yang tidak konsisten dari data historis, kondisi pasar saat ini tidak memenuhi standar untuk eksekusi. Perintah jelas: WAIT AND SEE.</p>
+    </div>
+    <div class="hstats">
+      <div class="sc">
+        <div class="sl">Portfolio Aktif</div>
+        <div class="sv">5</div>
+        <div class="ss">Equal Weight 20% · Target 2026-06</div>
+      </div>
+      <div class="sc">
+        <div class="sl">Sedang Anget</div>
+        <div class="sv a">7</div>
+        <div class="ss">saham dari 30 universe</div>
+      </div>
+    </div>
+  </div>
 
-            <div class="row justify-content-center mb-5">
-                <div class="col-md-8">
-                    <div class="card p-4 text-center shadow-sm">
-                        <h4 class="mb-1" style="color: #8b949e;">Live Forward Portfolio</h4>
-                        <p class="text-muted small mb-3">Target Bulan Imbal Hasil: <strong>2026-06 (M+1)</strong></p>
-                        <h2 class="mb-0"><span class='badge bg-success mx-1'>PTBA.JK</span> <span class='badge bg-success mx-1'>AKRA.JK</span> <span class='badge bg-success mx-1'>ANTM.JK</span> <span class='badge bg-success mx-1'>BBNI.JK</span> <span class='badge bg-success mx-1'>INDF.JK</span></h2>
-                        <div class="mt-3 text-muted small">Alokasi: Equal Weight (20%)</div>
-                    </div>
-                </div>
-            </div>
+  <div class="sec">
+    <div class="st">Live Forward Portfolio</div>
+    <div class="pgrid" id="portGrid"></div>
+  </div>
 
-            <div class="card p-4 shadow-sm">
-                <h5 class="mb-4" style="color: #8b949e;">Universe Ranking Board <span class="badge bg-secondary ms-2 text-dark">Percentile Normalized</span></h5>
-                <div class="table-responsive">
-                    <table class="table table-hover text-center align-middle mb-0">
-                        <thead>
-                            <tr>
-                                <th>Rank</th>
-                                <th>Ticker</th>
-                                <th>Quality (30%)</th>
-                                <th>Growth (25%)</th>
-                                <th>Value (20%)</th>
-                                <th>Momentum (25%)</th>
-                                <th>Final Score</th>
-                                <th>Status Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            
-            <tr class="">
-                <td>1</td>
-                <td><strong>ADRO.JK</strong> </td>
-                <td>53.77</td>
-                <td>79.31</td>
-                <td>46.21</td>
-                <td>92.97</td>
-                <td class="text-warning"><strong>74.4</strong></td>
-                <td><span class="badge bg-light text-dark">➖ Pantau Terbatas</span></td>
-            </tr>
-            
-            <tr class="">
-                <td>2</td>
-                <td><strong>ESSA.JK</strong> </td>
-                <td>64.65</td>
-                <td>91.38</td>
-                <td>14.48</td>
-                <td>81.14</td>
-                <td class="text-warning"><strong>73.42</strong></td>
-                <td><span class="badge bg-light text-dark">➖ Pantau Terbatas</span></td>
-            </tr>
-            
-            <tr class="">
-                <td>3</td>
-                <td><strong>MAPI.JK</strong> </td>
-                <td>44.85</td>
-                <td>77.59</td>
-                <td>35.17</td>
-                <td>87.46</td>
-                <td class="text-warning"><strong>68.62</strong></td>
-                <td><span class="badge bg-danger">⚠️ Rawan Pucuk</span></td>
-            </tr>
-            
-            <tr class="table-active fw-bold text-info">
-                <td>4</td>
-                <td><strong>PTBA.JK</strong> ⭐</td>
-                <td>49.96</td>
-                <td>55.17</td>
-                <td>60.34</td>
-                <td>81.98</td>
-                <td class="text-warning"><strong>63.77</strong></td>
-                <td><span class="badge bg-success">🚀 Sedang Anget</span></td>
-            </tr>
-            
-            <tr class="table-active fw-bold text-info">
-                <td>5</td>
-                <td><strong>AKRA.JK</strong> ⭐</td>
-                <td>49.14</td>
-                <td>70.69</td>
-                <td>46.55</td>
-                <td>70.14</td>
-                <td class="text-warning"><strong>62.7</strong></td>
-                <td><span class="badge bg-success">🚀 Sedang Anget</span></td>
-            </tr>
-            
-            <tr class="">
-                <td>6</td>
-                <td><strong>CPIN.JK</strong> </td>
-                <td>63.88</td>
-                <td>74.14</td>
-                <td>37.93</td>
-                <td>53.61</td>
-                <td class="text-warning"><strong>60.77</strong></td>
-                <td><span class="badge bg-light text-dark">➖ Pantau Terbatas</span></td>
-            </tr>
-            
-            <tr class="table-active fw-bold text-info">
-                <td>7</td>
-                <td><strong>ANTM.JK</strong> ⭐</td>
-                <td>50.62</td>
-                <td>70.69</td>
-                <td>46.55</td>
-                <td>62.28</td>
-                <td class="text-warning"><strong>60.32</strong></td>
-                <td><span class="badge bg-success">🚀 Sedang Anget</span></td>
-            </tr>
-            
-            <tr class="">
-                <td>8</td>
-                <td><strong>EXCL.JK</strong> </td>
-                <td>18.62</td>
-                <td>62.07</td>
-                <td>70.69</td>
-                <td>85.0</td>
-                <td class="text-warning"><strong>60.1</strong></td>
-                <td><span class="badge bg-light text-dark">➖ Pantau Terbatas</span></td>
-            </tr>
-            
-            <tr class="">
-                <td>9</td>
-                <td><strong>BBRI.JK</strong> </td>
-                <td>71.21</td>
-                <td>65.52</td>
-                <td>77.59</td>
-                <td>41.84</td>
-                <td class="text-warning"><strong>59.86</strong></td>
-                <td><span class="badge bg-light text-dark">➖ Pantau Terbatas</span></td>
-            </tr>
-            
-            <tr class="">
-                <td>10</td>
-                <td><strong>BMRI.JK</strong> </td>
-                <td>77.59</td>
-                <td>45.69</td>
-                <td>83.45</td>
-                <td>52.06</td>
-                <td class="text-warning"><strong>59.67</strong></td>
-                <td><span class="badge bg-light text-dark">➖ Pantau Terbatas</span></td>
-            </tr>
-            
-            <tr class="">
-                <td>11</td>
-                <td><strong>BRPT.JK</strong> </td>
-                <td>41.83</td>
-                <td>96.55</td>
-                <td>8.1</td>
-                <td>49.26</td>
-                <td class="text-warning"><strong>57.47</strong></td>
-                <td><span class="badge bg-light text-dark">➖ Pantau Terbatas</span></td>
-            </tr>
-            
-            <tr class="table-active fw-bold text-info">
-                <td>12</td>
-                <td><strong>BBNI.JK</strong> ⭐</td>
-                <td>53.96</td>
-                <td>53.45</td>
-                <td>77.58</td>
-                <td>55.21</td>
-                <td class="text-warning"><strong>56.61</strong></td>
-                <td><span class="badge bg-success">🚀 Sedang Anget</span></td>
-            </tr>
-            
-            <tr class="table-active fw-bold text-info">
-                <td>13</td>
-                <td><strong>INDF.JK</strong> ⭐</td>
-                <td>50.49</td>
-                <td>51.72</td>
-                <td>74.83</td>
-                <td>55.98</td>
-                <td class="text-warning"><strong>55.21</strong></td>
-                <td><span class="badge bg-success">🚀 Sedang Anget</span></td>
-            </tr>
-            
-            <tr class="">
-                <td>14</td>
-                <td><strong>PGAS.JK</strong> </td>
-                <td>35.81</td>
-                <td>43.1</td>
-                <td>29.65</td>
-                <td>74.81</td>
-                <td class="text-warning"><strong>51.03</strong></td>
-                <td><span class="badge bg-light text-dark">➖ Pantau Terbatas</span></td>
-            </tr>
-            
-            <tr class="">
-                <td>15</td>
-                <td><strong>MDKA.JK</strong> </td>
-                <td>12.34</td>
-                <td>36.2</td>
-                <td>40.17</td>
-                <td>87.43</td>
-                <td class="text-warning"><strong>48.56</strong></td>
-                <td><span class="badge bg-warning text-dark">🗑️ Gorengan Murni</span></td>
-            </tr>
-            
-            <tr class="">
-                <td>16</td>
-                <td><strong>ITMG.JK</strong> </td>
-                <td>45.77</td>
-                <td>22.41</td>
-                <td>39.66</td>
-                <td>72.51</td>
-                <td class="text-warning"><strong>47.51</strong></td>
-                <td><span class="badge bg-light text-dark">➖ Pantau Terbatas</span></td>
-            </tr>
-            
-            <tr class="">
-                <td>17</td>
-                <td><strong>TLKM.JK</strong> </td>
-                <td>62.2</td>
-                <td>14.66</td>
-                <td>35.17</td>
-                <td>64.46</td>
-                <td class="text-warning"><strong>46.03</strong></td>
-                <td><span class="badge bg-light text-dark">➖ Pantau Terbatas</span></td>
-            </tr>
-            
-            <tr class="">
-                <td>18</td>
-                <td><strong>ASII.JK</strong> </td>
-                <td>53.52</td>
-                <td>12.07</td>
-                <td>77.59</td>
-                <td>55.78</td>
-                <td class="text-warning"><strong>44.28</strong></td>
-                <td><span class="badge bg-success">🚀 Sedang Anget</span></td>
-            </tr>
-            
-            <tr class="">
-                <td>19</td>
-                <td><strong>INTP.JK</strong> </td>
-                <td>47.44</td>
-                <td>31.04</td>
-                <td>80.35</td>
-                <td>39.3</td>
-                <td class="text-warning"><strong>42.96</strong></td>
-                <td><span class="badge bg-secondary">⚓ Murah Tapi Mati</span></td>
-            </tr>
-            
-            <tr class="">
-                <td>20</td>
-                <td><strong>ICBP.JK</strong> </td>
-                <td>59.0</td>
-                <td>36.21</td>
-                <td>53.1</td>
-                <td>33.97</td>
-                <td class="text-warning"><strong>42.81</strong></td>
-                <td><span class="badge bg-light text-dark">➖ Pantau Terbatas</span></td>
-            </tr>
-            
-            <tr class="">
-                <td>21</td>
-                <td><strong>BBCA.JK</strong> </td>
-                <td>80.35</td>
-                <td>36.21</td>
-                <td>36.55</td>
-                <td>18.94</td>
-                <td class="text-warning"><strong>41.23</strong></td>
-                <td><span class="badge bg-light text-dark">➖ Pantau Terbatas</span></td>
-            </tr>
-            
-            <tr class="">
-                <td>22</td>
-                <td><strong>UNTR.JK</strong> </td>
-                <td>50.34</td>
-                <td>1.73</td>
-                <td>66.9</td>
-                <td>58.2</td>
-                <td class="text-warning"><strong>40.16</strong></td>
-                <td><span class="badge bg-success">🚀 Sedang Anget</span></td>
-            </tr>
-            
-            <tr class="">
-                <td>23</td>
-                <td><strong>MIKA.JK</strong> </td>
-                <td>73.92</td>
-                <td>46.55</td>
-                <td>26.55</td>
-                <td>11.83</td>
-                <td class="text-warning"><strong>39.24</strong></td>
-                <td><span class="badge bg-light text-dark">➖ Pantau Terbatas</span></td>
-            </tr>
-            
-            <tr class="">
-                <td>24</td>
-                <td><strong>GOTO.JK</strong> </td>
-                <td>16.44</td>
-                <td>56.89</td>
-                <td>58.79</td>
-                <td>34.66</td>
-                <td class="text-warning"><strong>39.19</strong></td>
-                <td><span class="badge bg-light text-dark">➖ Pantau Terbatas</span></td>
-            </tr>
-            
-            <tr class="">
-                <td>25</td>
-                <td><strong>SMGR.JK</strong> </td>
-                <td>31.59</td>
-                <td>72.41</td>
-                <td>38.28</td>
-                <td>11.01</td>
-                <td class="text-warning"><strong>37.3</strong></td>
-                <td><span class="badge bg-light text-dark">➖ Pantau Terbatas</span></td>
-            </tr>
-            
-            <tr class="">
-                <td>26</td>
-                <td><strong>SIDO.JK</strong> </td>
-                <td>82.3</td>
-                <td>1.73</td>
-                <td>49.31</td>
-                <td>31.45</td>
-                <td class="text-warning"><strong>37.03</strong></td>
-                <td><span class="badge bg-light text-dark">➖ Pantau Terbatas</span></td>
-            </tr>
-            
-            <tr class="">
-                <td>27</td>
-                <td><strong>TPIA.JK</strong> </td>
-                <td>50.22</td>
-                <td>65.52</td>
-                <td>43.1</td>
-                <td>0.78</td>
-                <td class="text-warning"><strong>36.79</strong></td>
-                <td><span class="badge bg-light text-dark">➖ Pantau Terbatas</span></td>
-            </tr>
-            
-            <tr class="">
-                <td>28</td>
-                <td><strong>KLBF.JK</strong> </td>
-                <td>62.6</td>
-                <td>39.66</td>
-                <td>47.93</td>
-                <td>10.26</td>
-                <td class="text-warning"><strong>35.93</strong></td>
-                <td><span class="badge bg-light text-dark">➖ Pantau Terbatas</span></td>
-            </tr>
-            
-            <tr class="">
-                <td>29</td>
-                <td><strong>AMMN.JK</strong> </td>
-                <td>41.71</td>
-                <td>67.24</td>
-                <td>6.38</td>
-                <td>3.14</td>
-                <td class="text-warning"><strong>32.34</strong></td>
-                <td><span class="badge bg-light text-dark">➖ Pantau Terbatas</span></td>
-            </tr>
-            
-            <tr class="">
-                <td>30</td>
-                <td><strong>HEAL.JK</strong> </td>
-                <td>19.05</td>
-                <td>22.41</td>
-                <td>20.0</td>
-                <td>14.2</td>
-                <td class="text-warning"><strong>18.46</strong></td>
-                <td><span class="badge bg-light text-dark">➖ Pantau Terbatas</span></td>
-            </tr>
-            
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            
-            <div class="text-center mt-4 text-muted small">
-                <p>Generated automatically by ISI Pipeline.</p>
-            </div>
+  <div class="sec">
+    <div class="st">Universe Ranking Board</div>
+    <div class="tabs">
+      <button class="tab act" onclick="filter('all',this)">Semua</button>
+      <button class="tab" onclick="filter('hot',this)">🚀 Sedang Anget</button>
+      <button class="tab" onclick="filter('port',this)">⭐ Portfolio</button>
+    </div>
+    <div class="tw">
+      <table class="rt">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Ticker</th>
+            <th>Quality (30%)</th>
+            <th>Growth (25%)</th>
+            <th>Value (10%)</th>
+            <th>Momentum (35%)</th>
+            <th style="text-align:right">Score</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="tb"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="overlay" id="overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <div class="modal-hdr">
+      <div>
+        <div class="modal-tk" id="m-ticker"></div>
+        <div class="modal-name" id="m-name"></div>
+      </div>
+      <button class="close-btn" onclick="closeModal(null)">✕</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<script>
+const stocks = [
+  {
+    "r": 1,
+    "t": "ADRO",
+    "name": "Adaro Energy",
+    "sector": "Coal",
+    "q": 53.77,
+    "g": 79.31,
+    "v": 46.21,
+    "m": 92.97,
+    "f": 74.4,
+    "s": "watch",
+    "port": false,
+    "roe": 10.3,
+    "npm": 25.4,
+    "opm": 31.1,
+    "der": 19.5,
+    "pe": 7.5,
+    "pb": 13529.4,
+    "fcf": 24,
+    "rev_g": 23.4,
+    "ni_g": 74.8,
+    "rs6m": 72.0,
+    "vol_ratio": 0.63,
+    "is_bank": false,
+    "is_commodity": true
+  },
+  {
+    "r": 2,
+    "t": "ESSA",
+    "name": "Essa Industries",
+    "sector": "Chemicals",
+    "q": 64.65,
+    "g": 91.38,
+    "v": 14.48,
+    "m": 81.14,
+    "f": 73.42,
+    "s": "watch",
+    "port": false,
+    "roe": 12.1,
+    "npm": 15.9,
+    "opm": 35.7,
+    "der": 0.0,
+    "pe": 12.7,
+    "pb": 24814.8,
+    "fcf": 41,
+    "rev_g": 36.8,
+    "ni_g": 131.0,
+    "rs6m": 36.0,
+    "vol_ratio": 0.64,
+    "is_bank": false,
+    "is_commodity": true
+  },
+  {
+    "r": 3,
+    "t": "MAPI",
+    "name": "Mitra Adiperkasa",
+    "sector": "Retail",
+    "q": 44.85,
+    "g": 77.59,
+    "v": 35.17,
+    "m": 87.46,
+    "f": 68.62,
+    "s": "risk",
+    "port": false,
+    "roe": 17.5,
+    "npm": 5.2,
+    "opm": 8.6,
+    "der": 47.0,
+    "pe": 10.4,
+    "pb": 1.7,
+    "fcf": 75,
+    "rev_g": 32.0,
+    "ni_g": 33.0,
+    "rs6m": 50.0,
+    "vol_ratio": 0.87,
+    "is_bank": false,
+    "is_commodity": false
+  },
+  {
+    "r": 4,
+    "t": "PTBA",
+    "name": "Bukit Asam",
+    "sector": "Coal",
+    "q": 49.96,
+    "g": 55.17,
+    "v": 60.34,
+    "m": 81.98,
+    "f": 63.77,
+    "s": "hot",
+    "port": true,
+    "roe": 14.4,
+    "npm": 7.8,
+    "opm": 8.3,
+    "der": 11.5,
+    "pe": 9.6,
+    "pb": 1.4,
+    "fcf": 51,
+    "rev_g": -0.3,
+    "ni_g": 104.7,
+    "rs6m": 48.0,
+    "vol_ratio": 0.84,
+    "is_bank": false,
+    "is_commodity": true
+  },
+  {
+    "r": 5,
+    "t": "AKRA",
+    "name": "AKR Corporindo",
+    "sector": "Distribution",
+    "q": 49.14,
+    "g": 70.69,
+    "v": 46.55,
+    "m": 70.14,
+    "f": 62.7,
+    "s": "hot",
+    "port": true,
+    "roe": 18.9,
+    "npm": 5.3,
+    "opm": 6.3,
+    "der": 34.2,
+    "pe": 9.5,
+    "pb": 1.9,
+    "fcf": 79,
+    "rev_g": 26.2,
+    "ni_g": 16.1,
+    "rs6m": 31.0,
+    "vol_ratio": 1.4,
+    "is_bank": false,
+    "is_commodity": true
+  },
+  {
+    "r": 6,
+    "t": "CPIN",
+    "name": "Charoen Pokphand",
+    "sector": "Poultry",
+    "q": 63.88,
+    "g": 74.14,
+    "v": 37.93,
+    "m": 53.61,
+    "f": 60.77,
+    "s": "watch",
+    "port": false,
+    "roe": 19.5,
+    "npm": 9.2,
+    "opm": 17.2,
+    "der": 18.1,
+    "pe": 10.5,
+    "pb": 1.9,
+    "fcf": 68,
+    "rev_g": 12.7,
+    "ni_g": 67.7,
+    "rs6m": 20.0,
+    "vol_ratio": 1.19,
+    "is_bank": false,
+    "is_commodity": false
+  },
+  {
+    "r": 7,
+    "t": "ANTM",
+    "name": "Aneka Tambang",
+    "sector": "Mining",
+    "q": 50.62,
+    "g": 70.69,
+    "v": 46.55,
+    "m": 62.28,
+    "f": 60.32,
+    "s": "hot",
+    "port": true,
+    "roe": 24.7,
+    "npm": 9.7,
+    "opm": 15.3,
+    "der": 21.6,
+    "pe": 9.7,
+    "pb": 1.8,
+    "fcf": 0,
+    "rev_g": 12.1,
+    "ni_g": 59.9,
+    "rs6m": 28.0,
+    "vol_ratio": 1.28,
+    "is_bank": false,
+    "is_commodity": false
+  },
+  {
+    "r": 8,
+    "t": "EXCL",
+    "name": "XL Axiata",
+    "sector": "Telecom",
+    "q": 18.62,
+    "g": 62.07,
+    "v": 70.69,
+    "m": 85.0,
+    "f": 60.1,
+    "s": "watch",
+    "port": false,
+    "roe": -20.1,
+    "npm": -12.1,
+    "opm": -0.9,
+    "der": 209.0,
+    "pe": null,
+    "pb": 1.7,
+    "fcf": 93,
+    "rev_g": 37.4,
+    "ni_g": null,
+    "rs6m": 32.0,
+    "vol_ratio": 0.6,
+    "is_bank": false,
+    "is_commodity": false
+  },
+  {
+    "r": 9,
+    "t": "BBRI",
+    "name": "Bank Rakyat Indonesia",
+    "sector": "Banking",
+    "q": 71.21,
+    "g": 65.52,
+    "v": 77.59,
+    "m": 41.84,
+    "f": 59.86,
+    "s": "watch",
+    "port": false,
+    "roe": 18.1,
+    "npm": 40.2,
+    "opm": 42.0,
+    "der": null,
+    "pe": 7.6,
+    "pb": 1.3,
+    "fcf": 32,
+    "rev_g": 16.3,
+    "ni_g": 14.3,
+    "rs6m": 17.0,
+    "vol_ratio": 1.01,
+    "is_bank": true,
+    "is_commodity": false
+  },
+  {
+    "r": 10,
+    "t": "BMRI",
+    "name": "Bank Mandiri",
+    "sector": "Banking",
+    "q": 77.59,
+    "g": 45.69,
+    "v": 83.45,
+    "m": 52.06,
+    "f": 59.67,
+    "s": "watch",
+    "port": false,
+    "roe": 21.0,
+    "npm": 40.2,
+    "opm": 58.6,
+    "der": null,
+    "pe": 6.8,
+    "pb": 1.2,
+    "fcf": 32,
+    "rev_g": 1.5,
+    "ni_g": 16.7,
+    "rs6m": 22.0,
+    "vol_ratio": 1.19,
+    "is_bank": true,
+    "is_commodity": false
+  },
+  {
+    "r": 11,
+    "t": "BRPT",
+    "name": "Barito Pacific",
+    "sector": "Chemicals",
+    "q": 41.83,
+    "g": 96.55,
+    "v": 8.1,
+    "m": 49.26,
+    "f": 57.47,
+    "s": "watch",
+    "port": false,
+    "roe": 34.8,
+    "npm": 6.0,
+    "opm": 19.3,
+    "der": 133.9,
+    "pe": 18.0,
+    "pb": 77600.0,
+    "fcf": 13,
+    "rev_g": 232.2,
+    "ni_g": 461.0,
+    "rs6m": -18.0,
+    "vol_ratio": 0.73,
+    "is_bank": false,
+    "is_commodity": false
+  },
+  {
+    "r": 12,
+    "t": "BBNI",
+    "name": "Bank Negara Indonesia",
+    "sector": "Banking",
+    "q": 53.96,
+    "g": 53.45,
+    "v": 77.58,
+    "m": 55.21,
+    "f": 56.61,
+    "s": "hot",
+    "port": true,
+    "roe": 12.0,
+    "npm": 40.0,
+    "opm": 47.4,
+    "der": null,
+    "pe": 6.8,
+    "pb": 0.9,
+    "fcf": 32,
+    "rev_g": 7.8,
+    "ni_g": 5.2,
+    "rs6m": 22.0,
+    "vol_ratio": 1.62,
+    "is_bank": true,
+    "is_commodity": false
+  },
+  {
+    "r": 13,
+    "t": "INDF",
+    "name": "Indofood Sukses",
+    "sector": "Consumer",
+    "q": 50.49,
+    "g": 51.72,
+    "v": 74.83,
+    "m": 55.98,
+    "f": 55.21,
+    "s": "hot",
+    "port": true,
+    "roe": 13.3,
+    "npm": 8.7,
+    "opm": 18.9,
+    "der": 61.1,
+    "pe": 5.6,
+    "pb": 0.8,
+    "fcf": 89,
+    "rev_g": 7.4,
+    "ni_g": 8.6,
+    "rs6m": 22.0,
+    "vol_ratio": 1.14,
+    "is_bank": false,
+    "is_commodity": false
+  },
+  {
+    "r": 14,
+    "t": "PGAS",
+    "name": "PGN",
+    "sector": "Gas",
+    "q": 35.81,
+    "g": 43.1,
+    "v": 29.65,
+    "m": 74.81,
+    "f": 51.03,
+    "s": "watch",
+    "port": false,
+    "roe": 10.1,
+    "npm": 6.2,
+    "opm": 13.2,
+    "der": 29.1,
+    "pe": 10.2,
+    "pb": 15598.3,
+    "fcf": 44,
+    "rev_g": -3.8,
+    "ni_g": 45.8,
+    "rs6m": 29.0,
+    "vol_ratio": 1.99,
+    "is_bank": false,
+    "is_commodity": true
+  },
+  {
+    "r": 15,
+    "t": "MDKA",
+    "name": "Merdeka Copper Gold",
+    "sector": "Mining",
+    "q": 12.34,
+    "g": 36.2,
+    "v": 40.17,
+    "m": 87.43,
+    "f": 48.56,
+    "s": "junk",
+    "port": false,
+    "roe": 0.6,
+    "npm": -3.3,
+    "opm": 4.1,
+    "der": 71.1,
+    "pe": null,
+    "pb": 80937.5,
+    "fcf": 20,
+    "rev_g": 6.3,
+    "ni_g": null,
+    "rs6m": 42.0,
+    "vol_ratio": 1.13,
+    "is_bank": false,
+    "is_commodity": false
+  },
+  {
+    "r": 16,
+    "t": "ITMG",
+    "name": "Indo Tambangraya",
+    "sector": "Coal",
+    "q": 45.77,
+    "g": 22.41,
+    "v": 39.66,
+    "m": 72.51,
+    "f": 47.51,
+    "s": "watch",
+    "port": false,
+    "roe": 9.4,
+    "npm": 9.5,
+    "opm": 14.8,
+    "der": 4.2,
+    "pe": 7.8,
+    "pb": 13023.0,
+    "fcf": 48,
+    "rev_g": 3.1,
+    "ni_g": -14.9,
+    "rs6m": 32.0,
+    "vol_ratio": 1.45,
+    "is_bank": false,
+    "is_commodity": true
+  },
+  {
+    "r": 17,
+    "t": "TLKM",
+    "name": "Telkom Indonesia",
+    "sector": "Telecom",
+    "q": 62.2,
+    "g": 14.66,
+    "v": 35.17,
+    "m": 64.46,
+    "f": 46.03,
+    "s": "watch",
+    "port": false,
+    "roe": 14.2,
+    "npm": 11.3,
+    "opm": 24.6,
+    "der": 44.1,
+    "pe": 18.4,
+    "pb": 2.2,
+    "fcf": 100,
+    "rev_g": 1.5,
+    "ni_g": -21.6,
+    "rs6m": 14.0,
+    "vol_ratio": 0.48,
+    "is_bank": false,
+    "is_commodity": false
+  },
+  {
+    "r": 18,
+    "t": "ASII",
+    "name": "Astra International",
+    "sector": "Conglomerate",
+    "q": 53.52,
+    "g": 12.07,
+    "v": 77.59,
+    "m": 55.78,
+    "f": 44.28,
+    "s": "hot",
+    "port": false,
+    "roe": 13.2,
+    "npm": 9.9,
+    "opm": 8.6,
+    "der": 39.9,
+    "pe": 6.4,
+    "pb": 0.9,
+    "fcf": 96,
+    "rev_g": -5.6,
+    "ni_g": -14.6,
+    "rs6m": 8.0,
+    "vol_ratio": 0.65,
+    "is_bank": false,
+    "is_commodity": false
+  },
+  {
+    "r": 19,
+    "t": "INTP",
+    "name": "Indocement",
+    "sector": "Cement",
+    "q": 47.44,
+    "g": 31.04,
+    "v": 80.35,
+    "m": 39.3,
+    "f": 42.96,
+    "s": "dead",
+    "port": false,
+    "roe": 9.9,
+    "npm": 12.8,
+    "opm": 5.9,
+    "der": 12.1,
+    "pe": 7.2,
+    "pb": 0.7,
+    "fcf": 62,
+    "rev_g": -3.3,
+    "ni_g": 4.1,
+    "rs6m": 3.0,
+    "vol_ratio": 1.47,
+    "is_bank": false,
+    "is_commodity": false
+  },
+  {
+    "r": 20,
+    "t": "ICBP",
+    "name": "Indofood CBP",
+    "sector": "Consumer",
+    "q": 59.0,
+    "g": 36.21,
+    "v": 53.1,
+    "m": 33.97,
+    "f": 42.81,
+    "s": "watch",
+    "port": false,
+    "roe": 14.6,
+    "npm": 12.0,
+    "opm": 20.8,
+    "der": 62.2,
+    "pe": 9.1,
+    "pb": 1.5,
+    "fcf": 86,
+    "rev_g": 7.6,
+    "ni_g": -3.1,
+    "rs6m": 12.0,
+    "vol_ratio": 1.41,
+    "is_bank": false,
+    "is_commodity": false
+  },
+  {
+    "r": 21,
+    "t": "BBCA",
+    "name": "Bank Central Asia",
+    "sector": "Banking",
+    "q": 80.35,
+    "g": 36.21,
+    "v": 36.55,
+    "m": 18.94,
+    "f": 41.23,
+    "s": "watch",
+    "port": false,
+    "roe": 23.0,
+    "npm": 53.5,
+    "opm": 67.6,
+    "der": null,
+    "pe": 12.1,
+    "pb": 2.7,
+    "fcf": 32,
+    "rev_g": 2.5,
+    "ni_g": 3.7,
+    "rs6m": 0.0,
+    "vol_ratio": 2.03,
+    "is_bank": true,
+    "is_commodity": false
+  },
+  {
+    "r": 22,
+    "t": "UNTR",
+    "name": "United Tractors",
+    "sector": "Heavy Equip",
+    "q": 50.34,
+    "g": 1.73,
+    "v": 66.9,
+    "m": 58.2,
+    "f": 40.16,
+    "s": "hot",
+    "port": false,
+    "roe": 12.3,
+    "npm": 9.8,
+    "opm": 7.7,
+    "der": 25.8,
+    "pe": 6.8,
+    "pb": 0.8,
+    "fcf": 82,
+    "rev_g": -16.7,
+    "ni_g": -79.4,
+    "rs6m": 13.0,
+    "vol_ratio": 0.81,
+    "is_bank": false,
+    "is_commodity": true
+  },
+  {
+    "r": 23,
+    "t": "MIKA",
+    "name": "Mitra Keluarga",
+    "sector": "Healthcare",
+    "q": 73.92,
+    "g": 46.55,
+    "v": 26.55,
+    "m": 11.83,
+    "f": 39.24,
+    "s": "watch",
+    "port": false,
+    "roe": 18.0,
+    "npm": 25.3,
+    "opm": 30.1,
+    "der": 0.1,
+    "pe": 16.3,
+    "pb": 3.0,
+    "fcf": 55,
+    "rev_g": 6.6,
+    "ni_g": 4.8,
+    "rs6m": -7.0,
+    "vol_ratio": 0.8,
+    "is_bank": false,
+    "is_commodity": false
+  },
+  {
+    "r": 24,
+    "t": "GOTO",
+    "name": "GoTo Gojek Tokopedia",
+    "sector": "Tech",
+    "q": 16.44,
+    "g": 56.89,
+    "v": 58.79,
+    "m": 34.66,
+    "f": 39.19,
+    "s": "watch",
+    "port": false,
+    "roe": -3.3,
+    "npm": -3.3,
+    "opm": 7.8,
+    "der": 27.8,
+    "pe": null,
+    "pb": 1.7,
+    "fcf": 6,
+    "rev_g": 26.3,
+    "ni_g": null,
+    "rs6m": 6.0,
+    "vol_ratio": 0.14,
+    "is_bank": false,
+    "is_commodity": false
+  },
+  {
+    "r": 25,
+    "t": "SMGR",
+    "name": "Semen Indonesia",
+    "sector": "Cement",
+    "q": 31.59,
+    "g": 72.41,
+    "v": 38.28,
+    "m": 11.01,
+    "f": 37.3,
+    "s": "watch",
+    "port": false,
+    "roe": 0.4,
+    "npm": 0.6,
+    "opm": 3.1,
+    "der": 21.1,
+    "pe": 49.7,
+    "pb": 0.3,
+    "fcf": 72,
+    "rev_g": 8.3,
+    "ni_g": 88.7,
+    "rs6m": -13.0,
+    "vol_ratio": 0.5,
+    "is_bank": false,
+    "is_commodity": false
+  },
+  {
+    "r": 26,
+    "t": "SIDO",
+    "name": "Industri Jamu Sido Muncul",
+    "sector": "Consumer",
+    "q": 82.3,
+    "g": 1.73,
+    "v": 49.31,
+    "m": 31.45,
+    "f": 37.03,
+    "s": "watch",
+    "port": false,
+    "roe": 32.8,
+    "npm": 29.1,
+    "opm": 27.5,
+    "der": 0.0,
+    "pe": 9.9,
+    "pb": 3.5,
+    "fcf": 58,
+    "rev_g": -18.8,
+    "ni_g": -35.0,
+    "rs6m": 1.0,
+    "vol_ratio": 0.42,
+    "is_bank": false,
+    "is_commodity": false
+  },
+  {
+    "r": 27,
+    "t": "TPIA",
+    "name": "Chandra Asri",
+    "sector": "Chemicals",
+    "q": 50.22,
+    "g": 65.52,
+    "v": 43.1,
+    "m": 0.78,
+    "f": 36.79,
+    "s": "watch",
+    "port": false,
+    "roe": 42.4,
+    "npm": 14.3,
+    "opm": 16.1,
+    "der": 117.0,
+    "pe": 4.8,
+    "pb": 41511.6,
+    "fcf": 10,
+    "rev_g": 286.4,
+    "ni_g": null,
+    "rs6m": -48.0,
+    "vol_ratio": 4.49,
+    "is_bank": false,
+    "is_commodity": false
+  },
+  {
+    "r": 28,
+    "t": "KLBF",
+    "name": "Kalbe Farma",
+    "sector": "Healthcare",
+    "q": 62.6,
+    "g": 39.66,
+    "v": 47.93,
+    "m": 10.26,
+    "f": 35.93,
+    "s": "watch",
+    "port": false,
+    "roe": 14.4,
+    "npm": 10.0,
+    "opm": 13.7,
+    "der": 1.2,
+    "pe": 9.7,
+    "pb": 1.4,
+    "fcf": 65,
+    "rev_g": 10.1,
+    "ni_g": -3.5,
+    "rs6m": -8.0,
+    "vol_ratio": 0.68,
+    "is_bank": false,
+    "is_commodity": false
+  },
+  {
+    "r": 29,
+    "t": "AMMN",
+    "name": "Amman Mineral",
+    "sector": "Mining",
+    "q": 41.71,
+    "g": 67.24,
+    "v": 6.38,
+    "m": 3.14,
+    "f": 32.34,
+    "s": "watch",
+    "port": false,
+    "roe": 10.5,
+    "npm": 20.7,
+    "opm": 38.9,
+    "der": 116.6,
+    "pe": 22.8,
+    "pb": 43421.1,
+    "fcf": 17,
+    "rev_g": 37937.3,
+    "ni_g": null,
+    "rs6m": -22.0,
+    "vol_ratio": 1.02,
+    "is_bank": false,
+    "is_commodity": false
+  },
+  {
+    "r": 30,
+    "t": "HEAL",
+    "name": "Medikaloka Hermina",
+    "sector": "Healthcare",
+    "q": 19.05,
+    "g": 22.41,
+    "v": 20.0,
+    "m": 14.2,
+    "f": 18.46,
+    "s": "watch",
+    "port": false,
+    "roe": 7.8,
+    "npm": 5.6,
+    "opm": 12.5,
+    "der": 48.1,
+    "pe": 35.5,
+    "pb": 2.5,
+    "fcf": 3,
+    "rev_g": 5.4,
+    "ni_g": -18.7,
+    "rs6m": -4.0,
+    "vol_ratio": 0.45,
+    "is_bank": false,
+    "is_commodity": false
+  }
+];
+
+const bmap = {
+  hot: ['bh', '🚀 Anget'],
+  watch: ['bw', '— Pantau'],
+  risk: ['br', '⚠ Rawan'],
+  dead: ['bd', '⚓ Mati'],
+  junk: ['bj', '🗑 Goreng']
+};
+
+const bc = {
+  q: '#3b82f6',
+  g: '#10b981',
+  v: '#a855f7',
+  m: '#f59e0b'
+};
+
+function bar(v, k) {
+  return `<div class="fb">
+    <div class="fb-bar"><div class="fb-fill" style="width:${v}%;background:${bc[k]}"></div></div>
+    <span class="fv">${v.toFixed(0)}</span>
+  </div>`;
+}
+
+function sc(f) {
+  return f >= 60 ? 'top' : f >= 45 ? 'mid' : 'low';
+}
+
+function renderRows(rows) {
+  document.getElementById('tb').innerHTML = rows.map(d => `
+    <tr onclick="openModal('${d.t}')">
+      <td class="rn">${d.r}</td>
+      <td><span class="tk ${d.s === 'hot' || d.port ? 'act' : ''}">${d.t}.JK${d.port ? '<span class="star">★</span>' : ''}</span></td>
+      <td>${bar(d.q, 'q')}</td>
+      <td>${bar(d.g, 'g')}</td>
+      <td>${bar(d.v, 'v')}</td>
+      <td>${bar(d.m, 'm')}</td>
+      <td class="sf ${sc(d.f)}">${d.f.toFixed(1)}</td>
+      <td><span class="badge ${bmap[d.s][0]}">${bmap[d.s][1]}</span></td>
+    </tr>`).join('');
+}
+
+function filter(type, btn) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('act'));
+  btn.classList.add('act');
+  if (type === 'all') renderRows(stocks);
+  else if (type === 'hot') renderRows(stocks.filter(d => d.s === 'hot'));
+  else renderRows(stocks.filter(d => d.port));
+}
+
+// Build active portfolio card grid
+document.getElementById('portGrid').innerHTML = stocks.filter(d => d.port).map(d => `
+  <div class="pc" onclick="openModal('${d.t}')">
+    <div class="ptk">${d.t}</div>
+    <div class="psc">${d.f.toFixed(1)}</div>
+    <div class="pal">20%</div>
+  </div>`).join('');
+
+function openModal(ticker) {
+  const d = stocks.find(s => s.t === ticker);
+  if (!d) return;
+  document.getElementById('m-ticker').textContent = d.t + '.JK';
+  document.getElementById('m-name').textContent = d.name + ' · ' + d.sector;
+
+  const isBk = d.is_bank;
+  const rs6c = d.rs6m > 0 ? 'pos' : d.rs6m < 0 ? 'neg' : 'neu';
+  const rs6label = d.rs6m > 0 ? 'Outperform IHSG' : d.rs6m < 0 ? 'Underperform IHSG' : 'Netral';
+  const volC = d.vol_ratio > 1.5 ? 'neg' : d.vol_ratio >= 0.8 ? 'neu' : 'neg';
+  const volLabel = d.vol_ratio > 1.5 ? 'Anomali Lonjakan' : d.vol_ratio >= 0.8 ? 'Wajar' : 'Sepi';
+  const fcfC = d.fcf > 60 ? 'pos' : d.fcf > 30 ? 'neu' : 'neg';
+
+  // Format Helper
+  const fmtPct = (val) => val !== null ? val.toFixed(1) + '%' : 'N/A';
+  const fmtPE = (val) => val !== null ? val.toFixed(1) + 'x' : 'N/A';
+  const fmtPB = (val) => val !== null ? val.toFixed(1) + 'x' : 'N/A';
+  const valClass = (val, thPos, thNeg) => {
+    if (val === null) return 'neu';
+    return val > thPos ? 'pos' : val < thNeg ? 'neg' : 'neu';
+  };
+
+  document.getElementById('modal-body').innerHTML = `
+    <div class="modal-section">
+      <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:8px;">
+        <span class="big-score ${sc(d.f)}">${d.f.toFixed(1)}</span>
+        <span class="score-rank">Rank #${d.r} dari ${stocks.length}</span>
+        <span class="badge ${bmap[d.s][0]}" style="margin-left:auto">${bmap[d.s][1]}</span>
+      </div>
+      <div class="factor-grid">
+        <div class="fcard">
+          <div class="fcard-label" style="color:#3b82f6">Quality (30%)</div>
+          <div class="fcard-val">${d.q.toFixed(1)}</div>
+          <div class="fcard-bar"><div class="fcard-fill" style="width:${d.q}%;background:#3b82f6"></div></div>
         </div>
-    </body>
-    </html>
-    
+        <div class="fcard">
+          <div class="fcard-label" style="color:#10b981">Growth (25%)</div>
+          <div class="fcard-val">${d.g.toFixed(1)}</div>
+          <div class="fcard-bar"><div class="fcard-fill" style="width:${d.g}%;background:#10b981"></div></div>
+        </div>
+        <div class="fcard">
+          <div class="fcard-label" style="color:#a855f7">Value (10%)</div>
+          <div class="fcard-val">${d.v.toFixed(1)}</div>
+          <div class="fcard-bar"><div class="fcard-fill" style="width:${d.v}%;background:#a855f7"></div></div>
+        </div>
+        <div class="fcard">
+          <div class="fcard-label" style="color:#f59e0b">Momentum (35%)</div>
+          <div class="fcard-val">${d.m.toFixed(1)}</div>
+          <div class="fcard-bar"><div class="fcard-fill" style="width:${d.m}%;background:#f59e0b"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-section">
+      <div class="modal-section-title">Fundamental Rasio</div>
+      <div class="ratio-grid">
+        <div class="rcard">
+          <div class="rcard-label">ROE</div>
+          <div class="rcard-val ${valClass(d.roe, 15, 8)}">${fmtPct(d.roe)}</div>
+          <div class="rcard-sub">Return on Equity</div>
+        </div>
+        <div class="rcard">
+          <div class="rcard-label">Net Margin</div>
+          <div class="rcard-val ${valClass(d.npm, 15, 5)}">${fmtPct(d.npm)}</div>
+          <div class="rcard-sub">Net Profit Margin</div>
+        </div>
+        <div class="rcard">
+          <div class="rcard-label">Op Margin</div>
+          <div class="rcard-val ${valClass(d.opm, 20, 8)}">${fmtPct(d.opm)}</div>
+          <div class="rcard-sub">Operating Margin</div>
+        </div>
+        <div class="rcard">
+          <div class="rcard-label">DER</div>
+          ${isBk ? `
+          <div class="rcard-val neu">N/A</div>
+          <div class="rcard-sub">Bank Rule aktif</div>
+          ` : `
+          <div class="rcard-val ${d.der !== null && d.der < 50 ? 'pos' : d.der !== null && d.der < 100 ? 'neu' : 'neg'}">${fmtPct(d.der)}</div>
+          <div class="rcard-sub">Debt/Equity</div>
+          `}
+        </div>
+        <div class="rcard">
+          <div class="rcard-label">P/E</div>
+          <div class="rcard-val ${d.pe !== null && d.pe > 0 && d.pe < 12 ? 'pos' : d.pe !== null && d.pe > 25 ? 'neg' : 'neu'}">${fmtPE(d.pe)}</div>
+          <div class="rcard-sub">Price/Earnings</div>
+        </div>
+        <div class="rcard">
+          <div class="rcard-label">P/B</div>
+          <div class="rcard-val ${valClass(d.pb, 3.0, 1.5)}">${fmtPB(d.pb)}</div>
+          <div class="rcard-sub">Price/Book</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-section">
+      <div class="modal-section-title">Growth YoY</div>
+      <div class="ratio-grid">
+        <div class="rcard">
+          <div class="rcard-label">Revenue</div>
+          <div class="rcard-val ${valClass(d.rev_g, 10, 0)}">${d.rev_g !== null ? (d.rev_g > 0 ? '+' : '') + d.rev_g.toFixed(1) + '%' : 'N/A'}</div>
+          <div class="rcard-sub">Growth YoY</div>
+        </div>
+        <div class="rcard">
+          <div class="rcard-label">Net Income</div>
+          <div class="rcard-val ${valClass(d.ni_g, 10, 0)}">${d.ni_g !== null ? (d.ni_g > 0 ? '+' : '') + d.ni_g.toFixed(1) + '%' : 'N/A'}</div>
+          <div class="rcard-sub">Growth YoY</div>
+        </div>
+        <div class="rcard">
+          <div class="rcard-label">FCF Score</div>
+          <div class="rcard-val ${fcfC}">${d.fcf}</div>
+          <div class="rcard-sub">Percentile</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-section">
+      <div class="modal-section-title">Sinyal Teknikal</div>
+      <div class="tech-row">
+        <span class="tech-label">RS-6M vs IHSG</span>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <span class="tech-val ${rs6c}">${d.rs6m !== null ? (d.rs6m > 0 ? '+' : '') + d.rs6m.toFixed(1) + '%' : 'N/A'}</span>
+          <span class="signal ${d.rs6m > 0 ? 'sig-bull' : d.rs6m < 0 ? 'sig-bear' : 'sig-neu'}">${rs6label}</span>
+        </div>
+      </div>
+      <div class="tech-row">
+        <span class="tech-label">Volume Ratio (vs MA20)</span>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <span class="tech-val ${volC}">${d.vol_ratio !== null ? d.vol_ratio.toFixed(2) + 'x' : 'N/A'}</span>
+          <span class="signal ${d.vol_ratio >= 1.5 ? 'sig-bear' : d.vol_ratio >= 0.8 ? 'sig-neu' : 'sig-bear'}">${volLabel}</span>
+        </div>
+      </div>
+      ${isBk ? `
+      <div class="tech-row" style="border:none">
+        <span class="tech-label">Bank Rule</span>
+        <span class="signal sig-neu" style="font-size:9px">DER dinonaktifkan · ROE bobot 45%</span>
+      </div>` : ''}
+      ${d.is_commodity ? `
+      <div class="tech-row" style="border:none">
+        <span class="tech-label">Commodity Trap Rule</span>
+        <span class="signal sig-bear" style="font-size:9px">PE discount 50% aktif</span>
+      </div>` : ''}
+    </div>`;
+
+  document.getElementById('overlay').classList.add('open');
+}
+
+function closeModal(e) {
+  if (!e || e.target === document.getElementById('overlay'))
+    document.getElementById('overlay').classList.remove('open');
+}
+
+// Initial render
+renderRows(stocks);
+</script>
+</body>
+</html>

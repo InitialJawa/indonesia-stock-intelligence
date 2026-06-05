@@ -1,6 +1,6 @@
 {
-    "last_update": "2026-06-05 08:02",
+    "last_update": "2026-06-05 08:28",
     "status": "SAFE",
     "anomalies": [],
-    "detail_message": "Analisis volume hari ini menunjukkan mayoritas saham dalam daftar pantauan mengalami aktivitas yang sepi. Tiga dari lima saham menunjukkan volume di bawah rata-rata, mengindikasikan kurangnya minat pasar yang meyakinkan. Dengan kondisi volume yang tidak mendukung, perlindungan modal menjadi prioritas utama; oleh karena itu, perintahnya adalah **WAIT AND SEE**."
+    "detail_message": "Status sistem keseluruhan 'SAFE' tidak menutupi fakta bahwa PTBA.JK menunjukkan volume sepi hari ini, sebuah indikator likuiditas yang tidak meyakinkan. Mengingat prioritas mutlak perlindungan modal dan pola volume yang tidak konsisten dari data historis, kondisi pasar saat ini tidak memenuhi standar untuk eksekusi. Perintah jelas: WAIT AND SEE."
 }

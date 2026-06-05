@@ -993,3 +993,109 @@ RECOMMENDED NEXT IMPROVEMENT IF 429 PERSISTS:
 - Pertimbangkan mengurangi list_models debug di production log setelah investigasi selesai.
 
 ========================================================
+
+========================================================
+DATE: 2026-06-05
+SESSION: Repository Cleanup and Tree Hygiene
+STATUS: CLEANUP COMPLETED, READY TO COMMIT/PUSH
+========================================================
+
+OBJECTIVE:
+- Membersihkan file yang tidak terpakai tanpa mengganggu pipeline bulanan, Daily Risk Radar, dashboard GitHub Pages, atau data backtest.
+- Prinsip cleanup: hanya hapus file dengan risiko rendah dan bukti jelas tidak diperlukan.
+
+FILES REMOVED FROM GIT TRACKING:
+- .github/workflows/monthly_pipeline.yml.bak
+  Reason: backup workflow lama. File aktif `.github/workflows/monthly_pipeline.yml` sudah lebih baru dan memiliki `permissions: contents: write`.
+- __pycache__/run_monthly_pipeline.cpython-312.pyc
+- backtesting/__pycache__/metrics.cpython-312.pyc
+- scoring/__pycache__/utils.cpython-312.pyc
+  Reason: Python bytecode/cache artifacts. `.gitignore` sudah mengabaikan `__pycache__/` dan `*.pyc`, sehingga file ini tidak seharusnya berada di repo.
+
+LOCAL UNTRACKED FILES REMOVED:
+- .local-backup-before-pull/
+  Reason: backup README lokal dari proses pull sebelumnya.
+- DEVELOPER_API.md
+- FILE_MANIFEST.md
+- INSTALLATION.md
+- MASTER_INDEX.md
+- PROJECT_SUMMARY.md
+- QUICK_START.md
+- USER_GUIDE.md
+  Reason: file lokal untracked dari konteks/proyek lain, tidak bagian dari repo `indonesia-stock-intelligence`.
+- WeddingOS_5Sheets.gs
+- WeddingOS_Advanced.gs
+- WeddingOS_Main.gs
+  Reason: file Google Apps Script WeddingOS, tidak terkait sistem kuantitatif IDX30.
+
+FILES INTENTIONALLY KEPT:
+- config/settings.json
+  Reason: meskipun tercantum di `.gitignore`, file ini masih dibaca oleh notifier dan test. Isinya placeholder kosong, bukan secret aktif.
+- research/momentum_vs_final.py
+- research/factor_overlap.py
+  Reason: script riset lama masih merujuk `output/scores/final_ranking.json`, tetapi keputusan aman adalah refactor atau arsip nanti, bukan hapus langsung.
+- output/
+- database/
+- snapshots/
+- archives/
+  Reason: dipakai pipeline, dashboard, backtest, dan riset point-in-time. Tidak dibersihkan hanya karena ukurannya besar.
+
+CURRENT TRACKED TREE SUMMARY:
+- Total tracked files after cleanup: 447
+- Top-level tracked tree:
+  .gemini/
+  .github/
+  archives/
+  automation/
+  backtesting/
+  benchmarks/
+  collectors/
+  config/
+  dashboard/
+  database/
+  docs/
+  output/
+  reports/
+  research/
+  scoring/
+  snapshots/
+  universe/
+  utils/
+  historical_momentum_builder.py
+  historical_portfolio_builder.py
+  index.html
+  master_chronicle.txt
+  model_audit_report.md
+  momentum_backtest_audit.py
+  momentum_backtest_engine.py
+  momentum_validation_analysis.py
+  README.md
+  requirements.txt
+  root_cause_report.md
+  run_daily_risk_radar.py
+  run_monthly_pipeline.py
+  task.md
+  test_bugfix.py
+  .gitignore
+  .nojekyll
+
+IMPORTANT ACTIVE FILES:
+- .github/workflows/daily_radar.yml
+- .github/workflows/monthly_pipeline.yml
+- run_daily_risk_radar.py
+- run_monthly_pipeline.py
+- dashboard/generate_dashboard.py
+- dashboard/index.html
+- output/scores/final_ranking_v3.json
+- output/daily_radar_status.json
+- output/radar_history.json
+- config/scoring_weights.json
+- config/settings.json
+
+NEXT HYGIENE RECOMMENDATION:
+- Refactor or archive research scripts that still reference `output/scores/final_ranking.json`:
+  research/momentum_vs_final.py
+  research/factor_overlap.py
+- Consider replacing tracked `config/settings.json` with `config/settings.example.json` only after updating notifier/test fallback behavior.
+
+========================================================

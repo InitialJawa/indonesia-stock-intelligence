@@ -529,20 +529,20 @@ async function loadStocks() {{
   }}
 }}
 
-const bmap = {
+const bmap = {{
   hot: ['bh', '🚀 Anget'],
   watch: ['bw', '— Pantau'],
   risk: ['br', '⚠ Rawan'],
   dead: ['bd', '⚓ Mati'],
   junk: ['bj', '🗑 Goreng']
-};
+}};
 
-const bc = {
+const bc = {{
   q: '#00c26f',
   g: '#38bdf8',
   v: '#a855f7',
   m: '#ff9f1a'
-};
+}};
 
 function bar(v, k) {{
   return `<div class="fb">

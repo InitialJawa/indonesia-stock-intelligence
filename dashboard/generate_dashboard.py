@@ -549,7 +549,7 @@ let stocks = [];
 // Load stock data from generated data.json
 async function loadStocks() {{
   try {{
-    const res = await fetch('data.json');
+    const res = await fetch('./data.json');
     stocks = await res.json();
     renderRows(stocks);
   }} catch (error) {{

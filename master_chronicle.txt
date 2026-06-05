@@ -1211,3 +1211,76 @@ SUCCESS CRITERIA MET:
 - Score-Weighted allocation ditampilkan di portfolio cards.
 
 ========================================================
+
+========================================================
+DATE: 2026-06-05 (18:44 WIB)
+SESSION: V8.4 Out-of-Sample Validation Framework
+STATUS: COMPLETED AND DEPLOYED TO GITHUB
+========================================================
+
+BAB 19: V8.4 - OUT-OF-SAMPLE VALIDATION FRAMEWORK
+--------------------------------------------------------------------------------
+
+1. Latar Belakang & Motivasi:
+   * Setiap kali Config B (Alpha Optimized) dipilih berdasarkan backtest penuh 2019-2026,
+     ada risiko overfitting: parameter dipilih menggunakan data yang sama yang dievaluasi.
+   * Standard institusional kuantitatif mengharuskan pemisahan data Train / Validation / Test
+     agar tidak ada data leakage dari periode evaluasi final ke proses optimasi.
+   * Framework ini menegakkan aturan tersebut secara programatik.
+
+2. Data Split:
+   * TRAIN      : 2019-02 s/d 2023-12  (59 bulan return)
+   * VALIDATION : 2024-01 s/d 2024-12  (12 bulan return)
+   * TEST       : 2025-01 s/d sekarang (17 bulan return, open-ended)
+
+3. Modul: research/out_of_sample_validation.py
+   Fungsi:
+   - load_monthly_returns()     : Memuat returns dari momentum_monthly_returns.csv
+   - load_snapshot_rankings()   : Memuat snapshot per bulan dari snapshots/momentum_history/
+   - calculate_metrics()        : CAGR, Sharpe, Sortino, MaxDD, Alpha, WinRate
+   - compute_turnover()         : Estimasi turnover bulanan dari snapshot rankings
+   - run_weighted_backtest()    : Re-rank portfolio menggunakan candidate weight configs
+   - compute_verdict()          : PASS / WARNING / FAIL berdasarkan stabilitas
+   - write_report()             : Laporan ke reports/out_of_sample_validation.md
+
+4. Workflow:
+   Step 1: Optimization HANYA pada TRAIN (2019-02 s/d 2023-12)
+   Step 2: Pilih konfigurasi terbaik via VALIDATION (2024-01 s/d 2024-12)
+   Step 3: Evaluasi final pada TEST (2025-01 s/d sekarang) TANPA tuning ulang
+   GUARANTEE: Tidak ada parameter yang dipilih menggunakan data TEST.
+
+5. Hasil OOS Validation (2026-06-05):
+
+   METRIK           TRAIN     VALIDATION    TEST
+   ─────────────────────────────────────────────
+   CAGR             0.53%      -5.18%       6.35%
+   Sharpe           0.15       -0.21        0.35
+   Sortino          0.14       -0.17        0.35
+   Max Drawdown    39.66%      17.69%      30.59%
+   Win Rate        57.63%      58.33%      47.06%
+   Alpha (Ann.)    -0.15%      -2.06%      +23.58%
+   Excess CAGR     -1.68%      -2.53%      +16.05%
+   Turnover        26.55%      29.09%      22.50%
+
+   IHSG Benchmark CAGR: TRAIN +2.21% | VALIDATION -2.65% | TEST -9.70%
+
+6. VERDICT: PASS
+   * Tidak ada degradasi signifikan lintas periode.
+   * TEST CAGR 6.35%, Sharpe 0.35, Alpha +23.58% lebih baik dari TRAIN.
+   * Win Rate TEST 47.06% masih di atas threshold 40%.
+   * Max Drawdown TEST 30.59% < 2x TRAIN 39.66% - kondisi FAIL tidak terpenuhi.
+   * Alpha TEST yang tinggi (+23.58%) didorong IHSG sangat lemah (-9.70% CAGR di 2025-2026).
+
+7. Aturan Wajib (Institutional Guarantee):
+   1. Optimization HANYA pada TRAIN.
+   2. Seleksi config via VALIDATION Sharpe tertinggi.
+   3. TEST adalah hakim final, jalankan sekali tanpa tuning ulang.
+   4. Semua riset faktor baru WAJIB melewati framework ini sebelum production.
+   5. Verdict FAIL = rollback ke konfigurasi stabil sebelumnya.
+
+8. Files:
+   - research/out_of_sample_validation.py  (modul framework)
+   - reports/out_of_sample_validation.md   (laporan otomatis)
+   - master_chronicle.txt                  (BAB 19)
+
+================================================================================

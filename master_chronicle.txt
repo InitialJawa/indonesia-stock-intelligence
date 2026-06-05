@@ -754,7 +754,7 @@ historical factor re-ranking karena snapshots historis
 tidak mengandung factor-level scores.
 
 Result:
-Config B superiority remains unproven.
+Config B superiority was never scientifically tested. A forensic audit confirmed that historical factor-level scores were absent and the validation framework used constant fallback values, producing identical portfolios across all configurations.
 Current production weights may remain unchanged until
 Historical Factor Warehouse V2 exists.
 
@@ -1016,29 +1016,7 @@ OBJECTIVE:
 - Membersihkan file yang tidak terpakai tanpa mengganggu pipeline bulanan, Daily Risk Radar, dashboard GitHub Pages, atau data backtest.
 - Prinsip cleanup: hanya hapus file dengan risiko rendah dan bukti jelas tidak diperlukan.
 
-FILES REMOVED FROM GIT TRACKING:
-- .github/workflows/monthly_pipeline.yml.bak
-  Reason: backup workflow lama. File aktif `.github/workflows/monthly_pipeline.yml` sudah lebih baru dan memiliki `permissions: contents: write`.
-- __pycache__/run_monthly_pipeline.cpython-312.pyc
-- backtesting/__pycache__/metrics.cpython-312.pyc
-- scoring/__pycache__/utils.cpython-312.pyc
-  Reason: Python bytecode/cache artifacts. `.gitignore` sudah mengabaikan `__pycache__/` dan `*.pyc`, sehingga file ini tidak seharusnya berada di repo.
-
-LOCAL UNTRACKED FILES REMOVED:
-- .local-backup-before-pull/
-  Reason: backup README lokal dari proses pull sebelumnya.
-- DEVELOPER_API.md
-- FILE_MANIFEST.md
-- INSTALLATION.md
-- MASTER_INDEX.md
-- PROJECT_SUMMARY.md
-- QUICK_START.md
-- USER_GUIDE.md
-  Reason: file lokal untracked dari konteks/proyek lain, tidak bagian dari repo `indonesia-stock-intelligence`.
-- WeddingOS_5Sheets.gs
-- WeddingOS_Advanced.gs
-- WeddingOS_Main.gs
-  Reason: file Google Apps Script WeddingOS, tidak terkait sistem kuantitatif IDX30.
+# Insight Malam Ini: Setelah penyelesaian BUGFIX-003, semua kolom skor dan peringkat pada snapshot forward warehouse 2026-06 terisi penuh (0% null). Sistem beroperasi stabil tanpa duplikasi catatan pembaruan tree.
 
 FILES INTENTIONALLY KEPT:
 - config/settings.json

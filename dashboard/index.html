@@ -188,11 +188,7 @@ let stocks = [];
 // Load stock data from generated data.json
 async function loadStocks() {
   try {
-<<<<<<< HEAD
-    const res = await fetch('data.json');
-=======
     const res = await fetch('./data.json');
->>>>>>> 2a36b9a (fix: adjust fetch path to relative ./data.json and update index.html)
     stocks = await res.json();
     renderRows(stocks);
   } catch (error) {

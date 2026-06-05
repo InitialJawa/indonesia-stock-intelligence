@@ -1284,3 +1284,141 @@ BAB 19: V8.4 - OUT-OF-SAMPLE VALIDATION FRAMEWORK
    - master_chronicle.txt                  (BAB 19)
 
 ================================================================================
+
+BACKGROUND
+
+Setelah implementasi awal V8.4 Out-of-Sample Validation Framework, dilakukan audit independen terhadap kemampuan framework dalam melakukan factor weight optimization secara historis.
+
+HASIL AUDIT
+
+Framework berhasil melakukan:
+
+TRAIN / VALIDATION / TEST split
+CAGR calculation
+Sharpe calculation
+Sortino calculation
+Max Drawdown calculation
+Alpha calculation
+Win Rate calculation
+Turnover calculation
+PASS / WARNING / FAIL verdict generation
+
+Namun ditemukan keterbatasan data historis yang signifikan.
+
+ROOT CAUSE
+
+Snapshot historis yang tersedia pada:
+
+snapshots/momentum_history/
+
+hanya berisi:
+
+ticker
+return_12m
+rank
+
+Contoh:
+
+{
+"ticker": "MNCN.JK",
+"return_12m": 0.3954,
+"rank": 1
+}
+
+Snapshot TIDAK berisi:
+
+quality_score
+growth_score
+value_score
+momentum_score
+final_score
+
+Akibatnya seluruh candidate weight configurations menghasilkan ranking identik karena framework menggunakan fallback default values.
+
+KESIMPULAN AUDIT
+
+V8.4 berhasil sebagai:
+
+OUT-OF-SAMPLE PERFORMANCE EVALUATION FRAMEWORK
+
+Tetapi BELUM dapat berfungsi sebagai:
+
+OUT-OF-SAMPLE FACTOR OPTIMIZATION FRAMEWORK
+
+karena historical factor-level data tidak tersedia.
+
+STATUS RESMI
+
+V8.4 STATUS:
+
+PARTIALLY COMPLETE
+
+COMPLETE:
+✓ Historical performance evaluation
+✓ Train/Validation/Test separation
+✓ Performance stability audit
+
+NOT YET POSSIBLE:
+✗ Historical factor weight optimization
+✗ Historical factor re-ranking
+✗ Config A vs Config B vs Config C scientific comparison
+
+DATA INVENTORY DISCOVERY
+
+Data yang tersedia:
+
+✓ database/monthly/.csv
+✓ snapshots/momentum_history/.json
+✓ database/historical_universe/*.json
+✓ monthly returns
+✓ historical prices
+✓ historical momentum rankings
+
+Data yang tidak tersedia:
+
+✗ Historical ROE
+✗ Historical DER
+✗ Historical PE
+✗ Historical PB
+✗ Historical Revenue Growth
+✗ Historical Earnings Growth
+✗ Historical FCF
+
+ARCHITECTURAL INSIGHT
+
+Masalah utama ISI saat ini bukan kekurangan faktor baru.
+
+Masalah utama adalah ketiadaan Point-in-Time Historical Fundamental Database yang memungkinkan penelitian faktor Quality, Growth, dan Value secara historis.
+
+ROADMAP REVISION
+
+PRIORITY 1
+
+Data Quality Engine
+Sector Exposure Control
+
+PRIORITY 2
+
+Regime Detection
+Historical Momentum Warehouse
+
+PRIORITY 3
+
+Point-in-Time Fundamental Database
+
+DECISION
+
+Jangan membangun Historical Factor Warehouse penuh sebelum sumber data fundamental historis point-in-time tersedia.
+
+Fokus penelitian jangka pendek dialihkan ke:
+
+Momentum Research
+Risk Management
+Portfolio Construction
+Data Quality
+
+LESSON LEARNED
+
+Framework penelitian dapat dibangun dengan benar, tetapi kualitas penelitian tetap dibatasi oleh kualitas dan kelengkapan data historis yang tersedia.
+
+Sebelum menambah faktor baru atau mengoptimalkan bobot faktor, selalu audit ketersediaan data historis terlebih dahulu.

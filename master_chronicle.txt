@@ -1422,3 +1422,88 @@ LESSON LEARNED
 Framework penelitian dapat dibangun dengan benar, tetapi kualitas penelitian tetap dibatasi oleh kualitas dan kelengkapan data historis yang tersedia.
 
 Sebelum menambah faktor baru atau mengoptimalkan bobot faktor, selalu audit ketersediaan data historis terlebih dahulu.
+
+BAB 20: HISTORICAL FACTOR WAREHOUSE AUDIT
+
+=======================================================================
+DATE: 2026-06-05
+=======================================================================
+
+OBJECTIVE:
+Determine whether historical Quality/Growth/Value
+factor warehouse can be reconstructed.
+
+FINDINGS:
+
+1. Existing historical data:
+   - Momentum snapshots: available (2019-present)
+   - Monthly price database: available
+   - Historical universe: available
+
+2. Missing historical data:
+   - Quality factor scores
+   - Growth factor scores
+   - Value factor scores
+
+3. Yahoo Finance Coverage Audit:
+
+Tickers tested:
+- BBCA.JK
+- BBRI.JK
+- BMRI.JK
+- TLKM.JK
+- ASII.JK
+
+Results:
+
+Annual statements:
+- typically available only from 2021-2022 onward
+
+Quarterly statements:
+- typically available only from 2024 onward
+
+Conclusion:
+
+Full reconstruction of 2019-present
+historical factor warehouse is not feasible
+using Yahoo Finance alone.
+
+However:
+
+A partial Historical Factor Warehouse V2
+covering approximately 2021-present
+may still be feasible and should be investigated.
+
+ARCHITECTURAL DECISION:
+
+Rejected:
+Historical reconstruction 2019-present
+
+Potentially viable:
+Historical reconstruction 2021-present
+
+Status:
+FURTHER FEASIBILITY STUDY REQUIRED
+
+PROJECT STATUS: STABLE
+
+Momentum Research:
+VALID
+
+Historical Momentum Database:
+VALID
+
+Survivorship Bias Remediation:
+VALID
+
+Out-of-Sample Evaluation:
+VALID
+
+Factor Weight Optimization:
+NOT YET VALIDATED
+
+Historical Factor Warehouse:
+NOT AVAILABLE
+
+Historical Factor Warehouse V2 (2021+):
+UNDER INVESTIGATION

@@ -21,16 +21,13 @@ def main():
         )
 
     # MENGGUNAKAN PERCENTILE NORMALIZATION UNTUK MENGHILANGKAN DISTORSI OUTLIER
-    revenue_scores = percentile_normalize(revenue_values)
+    # EARNINGS-ONLY GROWTH: Menghilangkan Revenue Growth yang menghasilkan alpha negatif
     earnings_scores = percentile_normalize(earnings_values)
 
     ranking = []
 
     for i, ticker in enumerate(tickers):
-        growth_score = (
-            revenue_scores[i] * 0.50 +
-            earnings_scores[i] * 0.50
-        )
+        growth_score = earnings_scores[i]
 
         ranking.append({
             "ticker": ticker,

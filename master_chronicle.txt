@@ -1618,3 +1618,64 @@ BAB 21: RESEARCH-003 - PRODUCTION PORTFOLIO DEFINITION
     - reports/config_f_final_validation.md
 
 ============================================================================
+
+============================================================================
+DATE: 2026-06-07
+SESSION: Growth Factor Fix, Dashboard Enhancement & Readability Improvement
+STATUS: COMPLETED, READY FOR PRODUCTION & GITHUB
+============================================================================
+
+BAB 22: GROWTH FACTOR FIX & DASHBOARD UX OVERHAUL
+--------------------------------------------------------------------------------
+
+1. OBJECTIVE HARI INI:
+   * Memperbaiki Growth Factor yang menghasilkan alpha leakage karena Revenue Growth
+   * Meningkatkan fitur interaktif dashboard (sorting, filtering, sector)
+   * Meningkatkan readability (kontras, ukuran font, warna text)
+
+2. PROBLEMS IDENTIFIED & SOLVED:
+   a. GROWTH FACTOR LEAKAGE:
+      - Root Cause: Revenue Growth menghasilkan alpha negatif (IC = -0.1036, t-stat = -3.05)
+      - Fix: Ubah scoring/growth_score.py menjadi Earnings-Only Growth (menghilangkan Revenue Growth 50% weight)
+      - Result: Growth factor sekarang hanya menggunakan earnings_growth_score, menghilangkan leakage
+
+   b. DASHBOARD ENHANCEMENTS:
+      - Fitur Sorting per Kolom: Klik pada header (#, Ticker, Q, G, V, M, Score) untuk mengurutkan ascending/descending
+      - Filter Sector: Dropdown untuk memilih sektor tertentu
+      - Filter Minimum Score: Dropdown untuk memilih skor minimum (0/30/50/70)
+      - Visual Indicator Sort: Panah menunjukkan arah sort
+
+   c. DASHBOARD READABILITY:
+      - Background lebih gelap: #0f1115
+      - Text lebih terang: #f8fafc / #e2e8f0 / #cbd5e1
+      - Ukuran font lebih besar: 13px tabel, 14px AI narrative
+      - Kontras filter dan header lebih tinggi
+
+3. CONFIGURATION UPDATE:
+   - scoring_weights.json telah diupdate dari Config B (25/30/10/35) ke Config F (25/10/30/35)
+   - Sesuai dengan final weight validation di reports/FINAL_WEIGHT_DECISION.md
+
+4. FILES MODIFIED:
+   - scoring/growth_score.py: Fix to Earnings-Only Growth
+   - config/scoring_weights.json: Update to Config F (25/10/30/35)
+   - dashboard/generate_dashboard.py: Added sorting, sector filter, min score filter, improved readability
+   - dashboard/index.html: Re-generated with new features
+   - dashboard/data.json: Re-generated with new schema
+
+5. VALIDATION:
+   - Semua test_bugfix.py passed (42/42)
+   - generate_dashboard.py berjalan tanpa error
+   - Dashboard UI dapat diakses dan interaktif
+   - Tabel dapat diurutkan sesuai momentum tertinggi
+   - Filter berfungsi dengan baik
+
+6. DEPLOYMENT STATUS:
+   - Siap di-commit dan di-push ke GitHub
+   - GitHub Pages akan menampilkan dashboard baru secara otomatis
+
+7. NEXT STEPS (OPTIONAL):
+   - Jalankan run_monthly_pipeline.py untuk melihat perubahan performa
+   - Test fitur dashboard secara manual di GitHub Pages
+   - Monitor performa forward portfolio dengan Config F dan Earnings-Only Growth
+
+============================================================================

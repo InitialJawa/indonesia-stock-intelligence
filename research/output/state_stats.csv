@@ -1,0 +1,8 @@
+,fwd_return_1m,fwd_return_1m,fwd_return_1m,fwd_return_3m,fwd_return_3m,fwd_return_3m,fwd_return_6m,fwd_return_6m,fwd_return_6m,fwd_drawdown_3m,fwd_drawdown_3m,fwd_drawdown_3m
+,mean,median,count,mean,median,count,mean,median,count,mean,median,min
+state,,,,,,,,,,,,
+ACCUMULATE,-0.011,-0.0095,125,-0.0462,-0.0428,125,-0.0899,-0.046,123,-0.0725,-0.0554,-0.3356
+AVOID,-0.0076,-0.0,1072,-0.0149,-0.0,1072,-0.0327,-0.0,1048,-0.0767,-0.0517,-0.66
+BUY,-0.008,-0.0088,356,-0.0261,-0.0203,356,-0.0504,-0.0414,347,-0.0785,-0.0627,-0.3966
+WATCH,-0.0006,-0.0,264,-0.0314,-0.023,264,-0.0486,-0.0221,253,-0.0719,-0.0526,-0.3769
+WEAK,-0.0062,-0.0,454,-0.022,-0.0,454,-0.0431,-0.0,436,-0.0527,-0.0325,-0.4526

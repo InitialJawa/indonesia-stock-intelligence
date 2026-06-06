@@ -1,0 +1,67 @@
+{
+  "BBCA.JK": {
+    "ticker": "BBCA.JK",
+    "price": 9118.837890625,
+    "net_income_fy2023": 48639122000000.0,
+    "equity_fy2023": 242537593000000.0,
+    "info_shares": 122876240600.0,
+    "info_marketCap": 623596904906752.0,
+    "info_trailingPE": 10.775863,
+    "info_priceToBook": 2.4064806,
+    "pe_pit": 12.820891481280276,
+    "pb_pit": 2.571135044235192,
+    "pit_method": "MarketCap-derived shares"
+  },
+  "BMRI.JK": {
+    "ticker": "BMRI.JK",
+    "price": 5031.25439453125,
+    "net_income_fy2023": 55060057000000.0,
+    "equity_fy2023": 287494962000000.0,
+    "info_shares": 93333333331.0,
+    "info_marketCap": 358399988465664.0,
+    "info_trailingPE": 6.1274314,
+    "info_priceToBook": 1.1741004,
+    "pe_pit": 6.50925567450219,
+    "pb_pit": 1.2466305008352252,
+    "pit_method": "MarketCap-derived shares"
+  },
+  "BBRI.JK": {
+    "ticker": "BBRI.JK",
+    "price": 3809.0732421875,
+    "net_income_fy2023": 60099863000000.0,
+    "equity_fy2023": 316858895000000.0,
+    "info_shares": 150574927703.0,
+    "info_marketCap": 412575296651264.0,
+    "info_trailingPE": 7.042254,
+    "info_priceToBook": 1.2199025,
+    "pe_pit": 6.864829236819791,
+    "pb_pit": 1.3020789479533594,
+    "pit_method": "MarketCap-derived shares"
+  },
+  "TLKM.JK": {
+    "ticker": "TLKM.JK",
+    "price": 2901.470703125,
+    "net_income_fy2023": 23053000000000.0,
+    "equity_fy2023": 149195000000000.0,
+    "info_shares": 98710452399.0,
+    "info_marketCap": 272440848547840.0,
+    "info_trailingPE": 16.778116,
+    "info_priceToBook": 2.0289195,
+    "pe_pit": 11.818021452645642,
+    "pb_pit": 1.826072244698817,
+    "pit_method": "MarketCap-derived shares"
+  },
+  "ASII.JK": {
+    "ticker": "ASII.JK",
+    "price": 3833.880615234375,
+    "net_income_fy2023": 33839000000000.0,
+    "equity_fy2023": 250424000000000.0,
+    "info_shares": 40063816240.0,
+    "info_marketCap": 183091637256192.0,
+    "info_trailingPE": 5.820692,
+    "info_priceToBook": 0.7865944,
+    "pe_pit": 5.41066926493667,
+    "pb_pit": 0.7311265583817527,
+    "pit_method": "MarketCap-derived shares"
+  }
+}

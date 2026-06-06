@@ -1,0 +1,867 @@
+{
+  "results": [
+    {
+      "ticker": "ADRO.JK",
+      "income_earliest": 2021,
+      "balance_earliest": 2021,
+      "cashflow_earliest": 2021,
+      "common_earliest": 2021,
+      "income_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "balance_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "cashflow_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "group": "A (2021-2025)"
+    },
+    {
+      "ticker": "AKRA.JK",
+      "income_earliest": 2022,
+      "balance_earliest": 2021,
+      "cashflow_earliest": 2021,
+      "common_earliest": 2022,
+      "income_years": [
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "balance_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "cashflow_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "group": "B (2022-2025)"
+    },
+    {
+      "ticker": "AMMN.JK",
+      "income_earliest": 2022,
+      "balance_earliest": 2021,
+      "cashflow_earliest": 2021,
+      "common_earliest": 2022,
+      "income_years": [
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "balance_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "cashflow_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "group": "B (2022-2025)"
+    },
+    {
+      "ticker": "ANTM.JK",
+      "income_earliest": 2021,
+      "balance_earliest": 2021,
+      "cashflow_earliest": 2021,
+      "common_earliest": 2021,
+      "income_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "balance_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "cashflow_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "group": "A (2021-2025)"
+    },
+    {
+      "ticker": "ASII.JK",
+      "income_earliest": 2021,
+      "balance_earliest": 2022,
+      "cashflow_earliest": 2021,
+      "common_earliest": 2022,
+      "income_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "balance_years": [
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "cashflow_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "group": "B (2022-2025)"
+    },
+    {
+      "ticker": "BBCA.JK",
+      "income_earliest": 2022,
+      "balance_earliest": 2021,
+      "cashflow_earliest": 2021,
+      "common_earliest": 2022,
+      "income_years": [
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "balance_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "cashflow_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "group": "B (2022-2025)"
+    },
+    {
+      "ticker": "BBNI.JK",
+      "income_earliest": 2022,
+      "balance_earliest": 2021,
+      "cashflow_earliest": 2021,
+      "common_earliest": 2022,
+      "income_years": [
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "balance_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "cashflow_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "group": "B (2022-2025)"
+    },
+    {
+      "ticker": "BBRI.JK",
+      "income_earliest": 2021,
+      "balance_earliest": 2021,
+      "cashflow_earliest": 2021,
+      "common_earliest": 2021,
+      "income_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "balance_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "cashflow_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "group": "A (2021-2025)"
+    },
+    {
+      "ticker": "BMRI.JK",
+      "income_earliest": 2021,
+      "balance_earliest": 2021,
+      "cashflow_earliest": 2021,
+      "common_earliest": 2021,
+      "income_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "balance_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "cashflow_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "group": "A (2021-2025)"
+    },
+    {
+      "ticker": "BRPT.JK",
+      "income_earliest": 2021,
+      "balance_earliest": 2021,
+      "cashflow_earliest": 2021,
+      "common_earliest": 2021,
+      "income_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "balance_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "cashflow_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "group": "A (2021-2025)"
+    },
+    {
+      "ticker": "CPIN.JK",
+      "income_earliest": 2021,
+      "balance_earliest": 2021,
+      "cashflow_earliest": 2021,
+      "common_earliest": 2021,
+      "income_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "balance_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "cashflow_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "group": "A (2021-2025)"
+    },
+    {
+      "ticker": "ESSA.JK",
+      "income_earliest": 2022,
+      "balance_earliest": 2021,
+      "cashflow_earliest": 2021,
+      "common_earliest": 2022,
+      "income_years": [
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "balance_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "cashflow_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "group": "B (2022-2025)"
+    },
+    {
+      "ticker": "EXCL.JK",
+      "income_earliest": 2021,
+      "balance_earliest": 2021,
+      "cashflow_earliest": 2021,
+      "common_earliest": 2021,
+      "income_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "balance_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "cashflow_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "group": "A (2021-2025)"
+    },
+    {
+      "ticker": "GOTO.JK",
+      "income_earliest": 2022,
+      "balance_earliest": 2021,
+      "cashflow_earliest": 2021,
+      "common_earliest": 2022,
+      "income_years": [
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "balance_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "cashflow_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "group": "B (2022-2025)"
+    },
+    {
+      "ticker": "HEAL.JK",
+      "income_earliest": 2021,
+      "balance_earliest": 2021,
+      "cashflow_earliest": 2021,
+      "common_earliest": 2021,
+      "income_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "balance_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "cashflow_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "group": "A (2021-2025)"
+    },
+    {
+      "ticker": "ICBP.JK",
+      "income_earliest": 2021,
+      "balance_earliest": 2021,
+      "cashflow_earliest": 2021,
+      "common_earliest": 2021,
+      "income_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "balance_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "cashflow_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "group": "A (2021-2025)"
+    },
+    {
+      "ticker": "INDF.JK",
+      "income_earliest": 2021,
+      "balance_earliest": 2021,
+      "cashflow_earliest": 2021,
+      "common_earliest": 2021,
+      "income_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "balance_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "cashflow_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "group": "A (2021-2025)"
+    },
+    {
+      "ticker": "INTP.JK",
+      "income_earliest": 2022,
+      "balance_earliest": 2021,
+      "cashflow_earliest": 2022,
+      "common_earliest": 2022,
+      "income_years": [
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "balance_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "cashflow_years": [
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "group": "B (2022-2025)"
+    },
+    {
+      "ticker": "ITMG.JK",
+      "income_earliest": 2021,
+      "balance_earliest": 2021,
+      "cashflow_earliest": 2021,
+      "common_earliest": 2021,
+      "income_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "balance_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "cashflow_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "group": "A (2021-2025)"
+    },
+    {
+      "ticker": "KLBF.JK",
+      "income_earliest": 2021,
+      "balance_earliest": 2021,
+      "cashflow_earliest": 2021,
+      "common_earliest": 2021,
+      "income_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "balance_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "cashflow_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "group": "A (2021-2025)"
+    },
+    {
+      "ticker": "MAPI.JK",
+      "income_earliest": 2021,
+      "balance_earliest": 2021,
+      "cashflow_earliest": 2021,
+      "common_earliest": 2021,
+      "income_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "balance_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "cashflow_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "group": "A (2021-2025)"
+    },
+    {
+      "ticker": "MDKA.JK",
+      "income_earliest": 2021,
+      "balance_earliest": 2021,
+      "cashflow_earliest": 2022,
+      "common_earliest": 2022,
+      "income_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "balance_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "cashflow_years": [
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "group": "B (2022-2025)"
+    },
+    {
+      "ticker": "MIKA.JK",
+      "income_earliest": 2021,
+      "balance_earliest": 2021,
+      "cashflow_earliest": 2021,
+      "common_earliest": 2021,
+      "income_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "balance_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "cashflow_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "group": "A (2021-2025)"
+    },
+    {
+      "ticker": "PGAS.JK",
+      "income_earliest": 2021,
+      "balance_earliest": 2021,
+      "cashflow_earliest": 2021,
+      "common_earliest": 2021,
+      "income_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "balance_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "cashflow_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "group": "A (2021-2025)"
+    },
+    {
+      "ticker": "PTBA.JK",
+      "income_earliest": 2021,
+      "balance_earliest": 2021,
+      "cashflow_earliest": 2021,
+      "common_earliest": 2021,
+      "income_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "balance_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "cashflow_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "group": "A (2021-2025)"
+    },
+    {
+      "ticker": "SIDO.JK",
+      "income_earliest": 2021,
+      "balance_earliest": 2021,
+      "cashflow_earliest": 2021,
+      "common_earliest": 2021,
+      "income_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "balance_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "cashflow_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "group": "A (2021-2025)"
+    },
+    {
+      "ticker": "SMGR.JK",
+      "income_earliest": 2021,
+      "balance_earliest": 2022,
+      "cashflow_earliest": 2021,
+      "common_earliest": 2022,
+      "income_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "balance_years": [
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "cashflow_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "group": "B (2022-2025)"
+    },
+    {
+      "ticker": "TLKM.JK",
+      "income_earliest": 2021,
+      "balance_earliest": 2021,
+      "cashflow_earliest": 2021,
+      "common_earliest": 2021,
+      "income_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "balance_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "cashflow_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "group": "A (2021-2025)"
+    },
+    {
+      "ticker": "TPIA.JK",
+      "income_earliest": 2022,
+      "balance_earliest": 2021,
+      "cashflow_earliest": 2021,
+      "common_earliest": 2022,
+      "income_years": [
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "balance_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "cashflow_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "group": "B (2022-2025)"
+    },
+    {
+      "ticker": "UNTR.JK",
+      "income_earliest": 2022,
+      "balance_earliest": 2021,
+      "cashflow_earliest": 2022,
+      "common_earliest": 2022,
+      "income_years": [
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "balance_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "cashflow_years": [
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "group": "B (2022-2025)"
+    }
+  ],
+  "errors": [],
+  "groups": {
+    "A (2021-2025)": 18,
+    "B (2022-2025)": 12,
+    "C (2023-2025)": 0,
+    "D (Insufficient)": 0
+  }
+}

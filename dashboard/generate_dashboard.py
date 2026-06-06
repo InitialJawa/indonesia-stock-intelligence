@@ -7,38 +7,38 @@ from pathlib import Path
 import datetime
 import traceback
 
-# Static mapping for IDX30 names, sectors, and domains for icons
+# Static mapping for IDX30 names, sectors, and reliable logo URLs
 TICKER_INFO = {
-    'ADRO.JK': {'name': 'Adaro Energy', 'sector': 'Coal', 'domain': 'adaro.co.id'},
-    'ESSA.JK': {'name': 'Essa Industries', 'sector': 'Chemicals', 'domain': 'essa.co.id'},
-    'MAPI.JK': {'name': 'Mitra Adiperkasa', 'sector': 'Retail', 'domain': 'matahari.com'},
-    'PTBA.JK': {'name': 'Bukit Asam', 'sector': 'Coal', 'domain': 'bukitasam.co.id'},
-    'AKRA.JK': {'name': 'AKRA Corporindo', 'sector': 'Distribution', 'domain': 'akra.co.id'},
-    'CPIN.JK': {'name': 'Charoen Pokphand', 'sector': 'Poultry', 'domain': 'cp-indonesia.co.id'},
-    'ANTM.JK': {'name': 'Aneka Tambang', 'sector': 'Mining', 'domain': 'antam.com'},
-    'EXCL.JK': {'name': 'XL Axiata', 'sector': 'Telecom', 'domain': 'xl.co.id'},
-    'BBRI.JK': {'name': 'Bank Rakyat Indonesia', 'sector': 'Banking', 'domain': 'bri.co.id'},
-    'BMRI.JK': {'name': 'Bank Mandiri', 'sector': 'Banking', 'domain': 'mandiri.co.id'},
-    'BRPT.JK': {'name': 'Barito Pacific', 'sector': 'Chemicals', 'domain': 'baritopacific.com'},
-    'BBNI.JK': {'name': 'Bank Negara Indonesia', 'sector': 'Banking', 'domain': 'bni.co.id'},
-    'INDF.JK': {'name': 'Indofood Sukses', 'sector': 'Consumer', 'domain': 'indofood.com'},
-    'PGAS.JK': {'name': 'PGAS', 'sector': 'Gas', 'domain': 'pgas.co.id'},
-    'MDKA.JK': {'name': 'Merdeka Copper Gold', 'sector': 'Mining', 'domain': 'merdekacopper.com'},
-    'ITMG.JK': {'name': 'Indo Tambangraya', 'sector': 'Coal', 'domain': 'itmg.co.id'},
-    'TLKM.JK': {'name': 'Telkom Indonesia', 'sector': 'Telecom', 'domain': 'telkomsel.com'},
-    'ASII.JK': {'name': 'Astra International', 'sector': 'Conglomerate', 'domain': 'astra.co.id'},
-    'INTP.JK': {'name': 'Indocement', 'sector': 'Cement', 'domain': 'indocement.com'},
-    'ICBP.JK': {'name': 'Indofood CBP', 'sector': 'Consumer', 'domain': 'icbp.com'},
-    'BBCA.JK': {'name': 'Bank Central Asia', 'sector': 'Banking', 'domain': 'bca.co.id'},
-    'UNTR.JK': {'name': 'United Tractors', 'sector': 'Heavy Equip', 'domain': 'unitedtractors.com'},
-    'MIKA.JK': {'name': 'Mitra Keluarga', 'sector': 'Healthcare', 'domain': 'mitrakeluarga.com'},
-    'GOTO.JK': {'name': 'GoTo Gojek Tokopedia', 'sector': 'Tech', 'domain': 'gojek.com'},
-    'SMGR.JK': {'name': 'Semen Indonesia', 'sector': 'Cement', 'domain': 'semenindonesia.com'},
-    'SIDO.JK': {'name': 'Industri Jamu Sido Muncul', 'sector': 'Consumer', 'domain': 'sidomuncul.co.id'},
-    'TPIA.JK': {'name': 'Chandra Asri', 'sector': 'Chemicals', 'domain': 'chandraasri.com'},
-    'KLBF.JK': {'name': 'Kalbe Farma', 'sector': 'Healthcare', 'domain': 'kalbe.co.id'},
-    'AMMN.JK': {'name': 'Amman Mineral', 'sector': 'Mining', 'domain': 'ammanmineral.com'},
-    'HEAL.JK': {'name': 'Medikaloka Hermina', 'sector': 'Healthcare', 'domain': 'herminahospitals.com'}
+    'ADRO.JK': {'name': 'Adaro Energy', 'sector': 'Coal', 'logo': 'https://upload.wikimedia.org/wikipedia/commons/6/6e/Adaro_Energy_Logo.svg'},
+    'ESSA.JK': {'name': 'Essa Industries', 'sector': 'Chemicals', 'logo': 'https://www.google.com/s2/favicons?domain=essa.co.id&sz=64'},
+    'MAPI.JK': {'name': 'Mitra Adiperkasa', 'sector': 'Retail', 'logo': 'https://www.google.com/s2/favicons?domain=matahari.com&sz=64'},
+    'PTBA.JK': {'name': 'Bukit Asam', 'sector': 'Coal', 'logo': 'https://upload.wikimedia.org/wikipedia/id/9/91/Logo_PTBA.svg'},
+    'AKRA.JK': {'name': 'AKRA Corporindo', 'sector': 'Distribution', 'logo': 'https://www.google.com/s2/favicons?domain=akra.co.id&sz=64'},
+    'CPIN.JK': {'name': 'Charoen Pokphand', 'sector': 'Poultry', 'logo': 'https://www.google.com/s2/favicons?domain=cp-indonesia.co.id&sz=64'},
+    'ANTM.JK': {'name': 'Aneka Tambang', 'sector': 'Mining', 'logo': 'https://upload.wikimedia.org/wikipedia/id/7/7d/Logo_Antam.svg'},
+    'EXCL.JK': {'name': 'XL Axiata', 'sector': 'Telecom', 'logo': 'https://upload.wikimedia.org/wikipedia/id/0/0c/XL_Axiata_logo.svg'},
+    'BBRI.JK': {'name': 'Bank Rakyat Indonesia', 'sector': 'Banking', 'logo': 'https://upload.wikimedia.org/wikipedia/id/5/5d/Logo_Bank_Rakyat_Indonesia.svg'},
+    'BMRI.JK': {'name': 'Bank Mandiri', 'sector': 'Banking', 'logo': 'https://upload.wikimedia.org/wikipedia/id/6/6e/Logo_Bank_Mandiri.svg'},
+    'BRPT.JK': {'name': 'Barito Pacific', 'sector': 'Chemicals', 'logo': 'https://www.google.com/s2/favicons?domain=baritopacific.com&sz=64'},
+    'BBNI.JK': {'name': 'Bank Negara Indonesia', 'sector': 'Banking', 'logo': 'https://upload.wikimedia.org/wikipedia/id/2/2d/Logo_Bank_Negara_Indonesia.svg'},
+    'INDF.JK': {'name': 'Indofood Sukses', 'sector': 'Consumer', 'logo': 'https://upload.wikimedia.org/wikipedia/id/8/86/Logo_Indofood.svg'},
+    'PGAS.JK': {'name': 'PGAS', 'sector': 'Gas', 'logo': 'https://upload.wikimedia.org/wikipedia/id/5/5e/Logo_Perusahaan_Gas_Negara.svg'},
+    'MDKA.JK': {'name': 'Merdeka Copper Gold', 'sector': 'Mining', 'logo': 'https://www.google.com/s2/favicons?domain=merdekacopper.com&sz=64'},
+    'ITMG.JK': {'name': 'Indo Tambangraya', 'sector': 'Coal', 'logo': 'https://www.google.com/s2/favicons?domain=itmg.co.id&sz=64'},
+    'TLKM.JK': {'name': 'Telkom Indonesia', 'sector': 'Telecom', 'logo': 'https://upload.wikimedia.org/wikipedia/id/0/0e/Telkom_Indonesia_logo.svg'},
+    'ASII.JK': {'name': 'Astra International', 'sector': 'Conglomerate', 'logo': 'https://upload.wikimedia.org/wikipedia/id/9/9e/Logo_Astra_International.svg'},
+    'INTP.JK': {'name': 'Indocement', 'sector': 'Cement', 'logo': 'https://www.google.com/s2/favicons?domain=indocement.com&sz=64'},
+    'ICBP.JK': {'name': 'Indofood CBP', 'sector': 'Consumer', 'logo': 'https://www.google.com/s2/favicons?domain=icbp.com&sz=64'},
+    'BBCA.JK': {'name': 'Bank Central Asia', 'sector': 'Banking', 'logo': 'https://upload.wikimedia.org/wikipedia/id/4/4f/Logo_Bank_Central_Asia.svg'},
+    'UNTR.JK': {'name': 'United Tractors', 'sector': 'Heavy Equip', 'logo': 'https://upload.wikimedia.org/wikipedia/id/3/3a/Logo_United_Tractors.svg'},
+    'MIKA.JK': {'name': 'Mitra Keluarga', 'sector': 'Healthcare', 'logo': 'https://www.google.com/s2/favicons?domain=mitrakeluarga.com&sz=64'},
+    'GOTO.JK': {'name': 'GoTo Gojek Tokopedia', 'sector': 'Tech', 'logo': 'https://upload.wikimedia.org/wikipedia/commons/2/2f/GoTo_Logo.svg'},
+    'SMGR.JK': {'name': 'Semen Indonesia', 'sector': 'Cement', 'logo': 'https://upload.wikimedia.org/wikipedia/id/6/6a/Logo_Semen_Indonesia.svg'},
+    'SIDO.JK': {'name': 'Industri Jamu Sido Muncul', 'sector': 'Consumer', 'logo': 'https://www.google.com/s2/favicons?domain=sidomuncul.co.id&sz=64'},
+    'TPIA.JK': {'name': 'Chandra Asri', 'sector': 'Chemicals', 'logo': 'https://www.google.com/s2/favicons?domain=chandraasri.com&sz=64'},
+    'KLBF.JK': {'name': 'Kalbe Farma', 'sector': 'Healthcare', 'logo': 'https://upload.wikimedia.org/wikipedia/id/8/83/Logo_Kalbe_Farma.svg'},
+    'AMMN.JK': {'name': 'Amman Mineral', 'sector': 'Mining', 'logo': 'https://www.google.com/s2/favicons?domain=ammanmineral.com&sz=64'},
+    'HEAL.JK': {'name': 'Medikaloka Hermina', 'sector': 'Healthcare', 'logo': 'https://www.google.com/s2/favicons?domain=herminahospitals.com&sz=64'}
 }
 
 def load_json(filepath):
@@ -297,7 +297,7 @@ def generate_dashboard():
             't': ticker_clean,
             'name': meta['name'],
             'sector': meta['sector'],
-            'domain': meta['domain'],
+            'logo': meta['logo'],
             'q': q,
             'g': g,
             'v': v,
@@ -649,7 +649,7 @@ async function loadStocks() {{
         <div class="portfolio-logo" style="display:none;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-weight:700;color:#fff;background:hsl(${{getHueFromName(d.name)}},70%,40%);">
           ${{getInitials(d.name)}}
         </div>
-        <img src="https://icon.horse/icon/${{d.domain}}" alt="${{d.t}}" class="portfolio-logo" onerror="this.previousElementSibling.style.display='flex';this.style.display='none'">
+        <img src="${{d.logo}}" alt="${{d.t}}" class="portfolio-logo" onerror="this.previousElementSibling.style.display='flex';this.style.display='none'">
         <div class="ptk">${{d.t}}</div>
         <div class="psc">${{d.f.toFixed(1)}}</div>
         <div class="pal">${{d.weight || '20%'}}</div>
@@ -705,7 +705,7 @@ function renderRows(rows) {{
         <div class="company-logo" style="display:none;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-weight:700;color:#fff;background:hsl(${{getHueFromName(d.name)}},70%,40%);">
           ${{getInitials(d.name)}}
         </div>
-        <img src="https://icon.horse/icon/${{d.domain}}" alt="${{d.t}}" class="company-logo" onerror="this.previousElementSibling.style.display='flex';this.style.display='none'">
+        <img src="${{d.logo}}" alt="${{d.t}}" class="company-logo" onerror="this.previousElementSibling.style.display='flex';this.style.display='none'">
         <span class="tk ${{d.s === 'hot' || d.port ? 'act' : ''}}">${{d.t}}.JK${{d.port ? '<span class="star">★</span>' : ''}}</span>
       </td>
       <td>${{bar(d.q, 'q')}}</td>
@@ -820,7 +820,7 @@ function openModal(ticker) {{
         <div class="modal-logo" style="display:none;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-weight:700;color:#fff;background:hsl(${{getHueFromName(d.name)}},70%,40%);">
           ${{getInitials(d.name)}}
         </div>
-        <img src="https://icon.horse/icon/${{d.domain}}" alt="${{d.t}}" class="modal-logo" onerror="this.previousElementSibling.style.display='flex';this.style.display='none'">
+        <img src="${{d.logo}}" alt="${{d.t}}" class="modal-logo" onerror="this.previousElementSibling.style.display='flex';this.style.display='none'">
         <div>
           <span class="big-score ${{sc(d.f)}}">${{d.f.toFixed(1)}}</span>
           <div class="score-rank">Rank #${{d.r}} dari ${{stocks.length}}</div>

@@ -285,13 +285,13 @@ Arsitektur ISI terbagi atas 6 layer utama yang saling terhubung:
      scoring/momentum_score.py, scoring/final_score_v3.py, scoring/utils.py.
    - Peran: Memproses data mentah menjadi skor ternormalisasi menggunakan Percentile 
      Normalization. Menerapkan Bank Rule & Commodity Trap Rule, menggabungkan faktor-faktor 
-     tersebut berdasarkan bobot portofolio: Quality (30%), Growth (25%), Value (20%), 
-     dan Momentum (25%), lalu menghasilkan peringkat final terpadu di output/scores/final_ranking_v3.json.
+     tersebut berdasarkan bobot portofolio: Quality (25%), Growth (30%), Value (10%), 
+     dan Momentum (35%), lalu menghasilkan peringkat final terpadu di output/scores/final_ranking_v3.json.
 
 3. Portfolio Layer (Mesin Rebalancing)
    - Lokasi: backtesting/rebalance.py.
-   - Peran: Menyusun portofolio investasi aktif dengan mengambil Top 10 saham terbaik 
-     dari peringkat final bulanan dan mengalokasikannya secara merata (Equal Weight 10%).
+   - Peran: Menyusun portofolio investasi aktif dengan mengambil Top 5 saham terbaik 
+     dari peringkat final bulanan dan mengalokasikannya secara merata (Equal Weight 20%).
 
 4. Warehouse Layer (Gudang Data Historis)
    - Lokasi: backtesting/archive_current_state.py, backtesting/archive_fundamentals.py, 
@@ -529,8 +529,8 @@ Sistem ISI menggunakan aturan mekanis dalam mengelola alokasi aset portofolio:
      data fundamental dan momentum IDX30 terbaru.
    - Saham diurutkan berdasarkan `final_score` gabungan (bobot: Quality 30%, Growth 25%, 
      Value 20%, Momentum 25%).
-   - Hanya Top 10 saham dengan `final_score` tertinggi yang dipilih masuk ke portofolio aktif.
-   - Portofolio aktif menerapkan sistem Equal Weighting (bobot merata 10% per saham).
+   - Hanya Top 5 saham dengan `final_score` tertinggi yang dipilih masuk ke portofolio aktif.
+   - Portofolio aktif menerapkan sistem Equal Weighting (bobot merata 20% per saham).
 
 2. Pemilihan Saham Strategis (Momentum Backtest)
    - Memilih Top 5 saham murni berdasarkan return 12 bulan tertinggi dari snapshots/momentum_history/.
@@ -1520,3 +1520,101 @@ NOT AVAILABLE
 
 Historical Factor Warehouse V2 (2021+):
 UNDER INVESTIGATION
+
+============================================================================
+DATE: 2026-06-06
+SESSION: RESEARCH-003: Production Portfolio Definition
+STATUS: COMPLETED & DEPLOYED TO GITHUB
+============================================================================
+
+BAB 21: RESEARCH-003 - PRODUCTION PORTFOLIO DEFINITION
+-------------------------------------------------------------------------------
+
+1. Latar Belakang:
+   * Config B unggul di Top 5, Config F unggul di Top 10.
+   * Keputusan portfolio size menjadi kunci untuk menentukan production config.
+   * Diperlukan analisis definitif: Top 5, Top 7, Top 10, Top 12, atau Top 15.
+
+2. Metodologi:
+   * Backtest Config B (25/30/10/35) di 5 portfolio sizes (5/7/10/12/15)
+   * Period: 2022-01 to 2025-11 (47 months, full data tersedia)
+   * Metrics: CAGR, Sharpe, Sortino, Max DD, Win Rate, Alpha, Vol, Turnover
+   * Transaction cost: 0.30% one-way
+
+3. Hasil Test 1: Portfolio Size Comparison
+
+   | Size | CAGR | Sharpe | Sortino | Max DD | Win Rate | Alpha | Vol |
+   |:----:|:----:|:------:|:-------:|:------:|:--------:|:-----:|:---:|
+   | 5 | 17.45% | 0.5407 | 0.6847 | -29.17% | 53.19% | 12.02% | 26.47% |
+   | 7 | 16.94% | 0.5733 | 0.7476 | -19.22% | 63.83% | 10.90% | 23.46% |
+   | 10 | 14.28% | 0.5301 | 0.6675 | -19.04% | 61.70% | 7.73% | 19.35% |
+   | 12 | 13.89% | 0.5267 | 0.5804 | -16.89% | 61.70% | 7.27% | 18.58% |
+   | 15 | 12.05% | 0.4354 | 0.4541 | -19.69% | 63.83% | 5.38% | 17.24% |
+   | IHSG | 6.78% | - | - | - | - | - | - |
+
+4. Hasil Test 2: Diversification Efficiency
+   * Sharpe per stock: Top 5 (0.1081) > Top 7 (0.0819) > Top 10 (0.0530) > Top 12 (0.0439) > Top 15 (0.0290)
+   * Diminishing returns begin immediately after Top 5
+   * Marginal CAGR/stock: 5->7 = -0.25%, 7->10 = -0.89%, 10->12 = -0.20%, 12->15 = -0.61%
+   * Marginal Sharpe/stock: 5->7 = +0.016 (only positive), 7->10 = -0.014, 10->12 = -0.002, 12->15 = -0.030
+
+5. Hasil Test 3: Stability
+   * Rank persistence improves with size: Top 5 (78.7%) -> Top 15 (87.0%)
+   * Turnover decreases: Top 5 (20.9%) -> Top 15 (12.8%)
+   * Stability gains come at cost of lower CAGR and alpha dilution
+
+6. Temuan Utama:
+   a) Top 5 = Maximum absolute return (CAGR 17.45%, Alpha 12.02%)
+   b) Top 7 = Maximum risk-adjusted return (Sharpe 0.5733, Sortino 0.7476)
+   c) Top 10+ = Dimulai diworsification (alpha terdilusi, marginal return negatif)
+   d) Sharpe per stock peaks at Top 5, declines monotonically after
+
+7. Finalized Decisions:
+
+   Production Locked:
+   - Portfolio Size = Top 5
+   - Config = B (25% Quality, 30% Growth, 10% Value, 35% Momentum)
+   - Equal Weight
+   - Monthly Rebalance
+
+   Research Findings:
+   - Growth Factor Failure (#010) tetap valid, Revenue Growth menghasilkan alpha negatif
+   - Earnings Only mengurangi alpha leakage tapi tidak cukup untuk menggeser Config B
+   - Config F unggul pada Top 10 namun kalah pada Top 5
+   - Karena Production Portfolio = Top 5, Config B tetap menjadi production configuration
+   - Config F tidak dipromosikan (Research Only)
+
+   New Finding (Informal - Top 7):
+   - Top 7 memberikan Sharpe (0.5733) dan Sortino (0.7476) terbaik
+   - CAGR hanya 0.51% lebih rendah dari Top 5 (16.94% vs 17.45%)
+   - Drawdown jauh lebih kecil (-19.22% vs -29.17%)
+   - Kandidat untuk "Low Risk Variant" portfolio
+   - Tidak menggantikan Top 5 Production Core
+
+8. Decision Rule Application:
+   * Top 10 dominates Top 5: FALSE (Sharpe: Top 5 0.5407 > Top 10 0.5301; CAGR: Top 5 17.45% > Top 10 14.28%)
+   * Top 5 dominates Top 10: TRUE -> Production Portfolio = Top 5
+   * Config B stays as production configuration
+   * Config F remains Research Only
+
+9. Implikasi Arsitektur:
+   * Tidak ada perubahan pada kode produksi
+   * Bobot scoring_weights.json tetap: Q25 G30 V10 M35
+   * Portfolio layer tetap Top 5 selection
+   * Tidak perlu portofolio expansion ke Top 10/12/15
+
+10. Future Research Queue (updated):
+    1. Low Volatility factor integration
+    2. Top 7 Low-Risk Portfolio Variant (based on RESEARCH-003 finding)
+    3. Growth replacement study (Earnings-only refinement)
+    4. Dividend factor validation
+    5. Sector-strength factor validation
+    6. Dynamic regime switching (Bull/Bear/Sideways)
+
+11. Files:
+    - research/production_portfolio_definition.py
+    - reports/production_portfolio_definition.md
+    - research/config_f_final_validation.py
+    - reports/config_f_final_validation.md
+
+============================================================================

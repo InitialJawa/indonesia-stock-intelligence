@@ -7,38 +7,38 @@ from pathlib import Path
 import datetime
 import traceback
 
-# Static mapping for IDX30 names, sectors, and logos
+# Static mapping for IDX30 names, sectors
 TICKER_INFO = {
-    'ADRO.JK': {'name': 'Adaro Energy', 'sector': 'Coal', 'logo': 'https://s3-symbol-logo.tradingview.com/adaro-energy--big.svg'},
-    'ESSA.JK': {'name': 'Essa Industries', 'sector': 'Chemicals', 'logo': 'https://s3-symbol-logo.tradingview.com/essa-indonesia--big.svg'},
-    'MAPI.JK': {'name': 'Mitra Adiperkasa', 'sector': 'Retail', 'logo': 'https://s3-symbol-logo.tradingview.com/mitra-adiperkasa--big.svg'},
-    'PTBA.JK': {'name': 'Bukit Asam', 'sector': 'Coal', 'logo': 'https://s3-symbol-logo.tradingview.com/bukit-asam--big.svg'},
-    'AKRA.JK': {'name': 'AKRA Corporindo', 'sector': 'Distribution', 'logo': 'https://s3-symbol-logo.tradingview.com/akra-corporindo--big.svg'},
-    'CPIN.JK': {'name': 'Charoen Pokphand', 'sector': 'Poultry', 'logo': 'https://s3-symbol-logo.tradingview.com/charoen-pokphand--big.svg'},
-    'ANTM.JK': {'name': 'Aneka Tambang', 'sector': 'Mining', 'logo': 'https://s3-symbol-logo.tradingview.com/aneka-tambang--big.svg'},
-    'EXCL.JK': {'name': 'XL Axiata', 'sector': 'Telecom', 'logo': 'https://s3-symbol-logo.tradingview.com/xl-axiata--big.svg'},
-    'BBRI.JK': {'name': 'Bank Rakyat Indonesia', 'sector': 'Banking', 'logo': 'https://s3-symbol-logo.tradingview.com/bank-ri--big.svg'},
-    'BMRI.JK': {'name': 'Bank Mandiri', 'sector': 'Banking', 'logo': 'https://s3-symbol-logo.tradingview.com/bank-mandiri--big.svg'},
-    'BRPT.JK': {'name': 'Barito Pacific', 'sector': 'Chemicals', 'logo': 'https://s3-symbol-logo.tradingview.com/barito-pacific--big.svg'},
-    'BBNI.JK': {'name': 'Bank Negara Indonesia', 'sector': 'Banking', 'logo': 'https://s3-symbol-logo.tradingview.com/bank-negara-indonesia--big.svg'},
-    'INDF.JK': {'name': 'Indofood Sukses', 'sector': 'Consumer', 'logo': 'https://s3-symbol-logo.tradingview.com/indofood-sukses-makmur--big.svg'},
-    'PGAS.JK': {'name': 'PGAS', 'sector': 'Gas', 'logo': 'https://s3-symbol-logo.tradingview.com/perusahaan-gas-negara--big.svg'},
-    'MDKA.JK': {'name': 'Merdeka Copper Gold', 'sector': 'Mining', 'logo': 'https://s3-symbol-logo.tradingview.com/merdeka-copper-gold--big.svg'},
-    'ITMG.JK': {'name': 'Indo Tambangraya', 'sector': 'Coal', 'logo': 'https://s3-symbol-logo.tradingview.com/indo-tambangraya-mahakam--big.svg'},
-    'TLKM.JK': {'name': 'Telkom Indonesia', 'sector': 'Telecom', 'logo': 'https://s3-symbol-logo.tradingview.com/telkom-indonesia--big.svg'},
-    'ASII.JK': {'name': 'Astra International', 'sector': 'Conglomerate', 'logo': 'https://s3-symbol-logo.tradingview.com/astra-international--big.svg'},
-    'INTP.JK': {'name': 'Indocement', 'sector': 'Cement', 'logo': 'https://s3-symbol-logo.tradingview.com/indocement--big.svg'},
-    'ICBP.JK': {'name': 'Indofood CBP', 'sector': 'Consumer', 'logo': 'https://s3-symbol-logo.tradingview.com/indofood-cbp--big.svg'},
-    'BBCA.JK': {'name': 'Bank Central Asia', 'sector': 'Banking', 'logo': 'https://s3-symbol-logo.tradingview.com/bank-ca--big.svg'},
-    'UNTR.JK': {'name': 'United Tractors', 'sector': 'Heavy Equip', 'logo': 'https://s3-symbol-logo.tradingview.com/united-tractors--big.svg'},
-    'MIKA.JK': {'name': 'Mitra Keluarga', 'sector': 'Healthcare', 'logo': 'https://s3-symbol-logo.tradingview.com/mitra-keluarga--big.svg'},
-    'GOTO.JK': {'name': 'GoTo Gojek Tokopedia', 'sector': 'Tech', 'logo': 'https://s3-symbol-logo.tradingview.com/goto--big.svg'},
-    'SMGR.JK': {'name': 'Semen Indonesia', 'sector': 'Cement', 'logo': 'https://s3-symbol-logo.tradingview.com/semen-indonesia--big.svg'},
-    'SIDO.JK': {'name': 'Industri Jamu Sido Muncul', 'sector': 'Consumer', 'logo': 'https://s3-symbol-logo.tradingview.com/industri-jamu-sido-muncul--big.svg'},
-    'TPIA.JK': {'name': 'Chandra Asri', 'sector': 'Chemicals', 'logo': 'https://s3-symbol-logo.tradingview.com/chandra-asri--big.svg'},
-    'KLBF.JK': {'name': 'Kalbe Farma', 'sector': 'Healthcare', 'logo': 'https://s3-symbol-logo.tradingview.com/kalbe-farma--big.svg'},
-    'AMMN.JK': {'name': 'Amman Mineral', 'sector': 'Mining', 'logo': 'https://s3-symbol-logo.tradingview.com/amman-mineral--big.svg'},
-    'HEAL.JK': {'name': 'Medikaloka Hermina', 'sector': 'Healthcare', 'logo': 'https://s3-symbol-logo.tradingview.com/medikaloka-hermina--big.svg'}
+    'ADRO.JK': {'name': 'Adaro Energy', 'sector': 'Coal'},
+    'ESSA.JK': {'name': 'Essa Industries', 'sector': 'Chemicals'},
+    'MAPI.JK': {'name': 'Mitra Adiperkasa', 'sector': 'Retail'},
+    'PTBA.JK': {'name': 'Bukit Asam', 'sector': 'Coal'},
+    'AKRA.JK': {'name': 'AKRA Corporindo', 'sector': 'Distribution'},
+    'CPIN.JK': {'name': 'Charoen Pokphand', 'sector': 'Poultry'},
+    'ANTM.JK': {'name': 'Aneka Tambang', 'sector': 'Mining'},
+    'EXCL.JK': {'name': 'XL Axiata', 'sector': 'Telecom'},
+    'BBRI.JK': {'name': 'Bank Rakyat Indonesia', 'sector': 'Banking'},
+    'BMRI.JK': {'name': 'Bank Mandiri', 'sector': 'Banking'},
+    'BRPT.JK': {'name': 'Barito Pacific', 'sector': 'Chemicals'},
+    'BBNI.JK': {'name': 'Bank Negara Indonesia', 'sector': 'Banking'},
+    'INDF.JK': {'name': 'Indofood Sukses', 'sector': 'Consumer'},
+    'PGAS.JK': {'name': 'PGAS', 'sector': 'Gas'},
+    'MDKA.JK': {'name': 'Merdeka Copper Gold', 'sector': 'Mining'},
+    'ITMG.JK': {'name': 'Indo Tambangraya', 'sector': 'Coal'},
+    'TLKM.JK': {'name': 'Telkom Indonesia', 'sector': 'Telecom'},
+    'ASII.JK': {'name': 'Astra International', 'sector': 'Conglomerate'},
+    'INTP.JK': {'name': 'Indocement', 'sector': 'Cement'},
+    'ICBP.JK': {'name': 'Indofood CBP', 'sector': 'Consumer'},
+    'BBCA.JK': {'name': 'Bank Central Asia', 'sector': 'Banking'},
+    'UNTR.JK': {'name': 'United Tractors', 'sector': 'Heavy Equip'},
+    'MIKA.JK': {'name': 'Mitra Keluarga', 'sector': 'Healthcare'},
+    'GOTO.JK': {'name': 'GoTo Gojek Tokopedia', 'sector': 'Tech'},
+    'SMGR.JK': {'name': 'Semen Indonesia', 'sector': 'Cement'},
+    'SIDO.JK': {'name': 'Industri Jamu Sido Muncul', 'sector': 'Consumer'},
+    'TPIA.JK': {'name': 'Chandra Asri', 'sector': 'Chemicals'},
+    'KLBF.JK': {'name': 'Kalbe Farma', 'sector': 'Healthcare'},
+    'AMMN.JK': {'name': 'Amman Mineral', 'sector': 'Mining'},
+    'HEAL.JK': {'name': 'Medikaloka Hermina', 'sector': 'Healthcare'}
 }
 
 def load_json(filepath):
@@ -297,7 +297,6 @@ def generate_dashboard():
             't': ticker_clean,
             'name': meta['name'],
             'sector': meta['sector'],
-            'logo': meta['logo'],
             'q': q,
             'g': g,
             'v': v,
@@ -646,10 +645,9 @@ async function loadStocks() {{
     // Build portfolio grid
     document.getElementById('portGrid').innerHTML = stocks.filter(d => d.port).map(d => `
       <div class="pc" onclick="openModal('${{d.t}}')">
-        <div class="portfolio-logo" style="display:none;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-weight:700;color:#fff;background:hsl(${{getHueFromName(d.name)}},70%,40%);">
+        <div class="portfolio-logo" style="display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-weight:700;color:#fff;background:hsl(${{getHueFromName(d.name)}},70%,40%);">
           ${{getInitials(d.name)}}
         </div>
-        <img src="${{d.logo || ''}}" alt="${{d.t}}" class="portfolio-logo" onerror="this.previousElementSibling.style.display='flex';this.style.display='none'">
         <div class="ptk">${{d.t}}</div>
         <div class="psc">${{d.f.toFixed(1)}}</div>
         <div class="pal">${{d.weight || '20%'}}</div>
@@ -702,10 +700,9 @@ function renderRows(rows) {{
     <tr onclick="openModal('${{d.t}}')">
       <td class="rn">${{idx+1}}</td>
       <td class="ticker-cell">
-        <div class="company-logo" style="display:none;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-weight:700;color:#fff;background:hsl(${{getHueFromName(d.name)}},70%,40%);">
+        <div class="company-logo" style="display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-weight:700;color:#fff;background:hsl(${{getHueFromName(d.name)}},70%,40%);">
           ${{getInitials(d.name)}}
         </div>
-        <img src="${{d.logo || ''}}" alt="${{d.t}}" class="company-logo" onerror="this.previousElementSibling.style.display='flex';this.style.display='none'">
         <span class="tk ${{d.s === 'hot' || d.port ? 'act' : ''}}">${{d.t}}.JK${{d.port ? '<span class="star">★</span>' : ''}}</span>
       </td>
       <td>${{bar(d.q, 'q')}}</td>
@@ -817,10 +814,9 @@ function openModal(ticker) {{
   document.getElementById('modal-body').innerHTML = `
     <div class="modal-section">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
-        <div class="modal-logo" style="display:none;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-weight:700;color:#fff;background:hsl(${{getHueFromName(d.name)}},70%,40%);">
+        <div class="modal-logo" style="display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-weight:700;color:#fff;background:hsl(${{getHueFromName(d.name)}},70%,40%);">
           ${{getInitials(d.name)}}
         </div>
-        <img src="${{d.logo || ''}}" alt="${{d.t}}" class="modal-logo" onerror="this.previousElementSibling.style.display='flex';this.style.display='none'">
         <div>
           <span class="big-score ${{sc(d.f)}}">${{d.f.toFixed(1)}}</span>
           <div class="score-rank">Rank #${{d.r}} dari ${{stocks.length}}</div>

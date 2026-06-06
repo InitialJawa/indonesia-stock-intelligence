@@ -57,39 +57,7 @@
     .tk.act{color:#00c26f;}
     .tk .star{color:#ff9f1a;font-size:9px;margin-left:3px;}
 
-    /* Logo Styles */
-    .ticker-cell {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-    .company-logo {
-        width: 32px;
-        height: 32px;
-        border-radius: 8px;
-        object-fit: contain;
-        background: #171b20;
-        border: 1px solid #222830;
-        flex-shrink: 0;
-    }
-    .portfolio-logo {
-        width: 40px;
-        height: 40px;
-        border-radius: 10px;
-        object-fit: contain;
-        background: #171b20;
-        border: 1px solid #222830;
-        margin-bottom: 4px;
-    }
-    .modal-logo {
-        width: 48px;
-        height: 48px;
-        border-radius: 12px;
-        object-fit: contain;
-        background: #171b20;
-        border: 1px solid #222830;
-        margin-right: 12px;
-    }
+
     .sf{font-family:'Space Mono',monospace;font-weight:700;font-size:14px;text-align:right;}
     .sf.top{color:#00c26f;}.sf.mid{color:#ff9f1a;}.sf.low{color:#f87171;}
     .fb{display:flex;align-items:center;gap:4px;}
@@ -308,10 +276,6 @@ async function loadStocks() {
     // Build portfolio grid
     document.getElementById('portGrid').innerHTML = stocks.filter(d => d.port).map(d => `
       <div class="pc" onclick="openModal('${d.t}')">
-        <div class="portfolio-logo" style="display:none;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-weight:700;color:#fff;background:hsl(${getHueFromName(d.name)},70%,40%);">
-          ${getInitials(d.name)}
-        </div>
-        <img src="${d.logo}" alt="${d.t}" class="portfolio-logo" onerror="this.previousElementSibling.style.display='flex';this.style.display='none'">
         <div class="ptk">${d.t}</div>
         <div class="psc">${d.f.toFixed(1)}</div>
         <div class="pal">${d.weight || '20%'}</div>
@@ -348,28 +312,11 @@ function sc(f) {
   return f >= 60 ? 'top' : f >= 45 ? 'mid' : 'low';
 }
 
-function getInitials(name) {
-  return name.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
-}
-function getHueFromName(name) {
-  let hash = 0;
-  for (let i = 0; i < name.length; i++) {
-    hash = name.charCodeAt(i) + ((hash << 5) - hash);
-  }
-  return hash % 360;
-}
-
 function renderRows(rows) {
   document.getElementById('tb').innerHTML = rows.map((d, idx) => `
     <tr onclick="openModal('${d.t}')">
       <td class="rn">${idx+1}</td>
-      <td class="ticker-cell">
-        <div class="company-logo" style="display:none;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-weight:700;color:#fff;background:hsl(${getHueFromName(d.name)},70%,40%);">
-          ${getInitials(d.name)}
-        </div>
-        <img src="${d.logo}" alt="${d.t}" class="company-logo" onerror="this.previousElementSibling.style.display='flex';this.style.display='none'">
-        <span class="tk ${d.s === 'hot' || d.port ? 'act' : ''}">${d.t}.JK${d.port ? '<span class="star">★</span>' : ''}</span>
-      </td>
+      <td><span class="tk ${d.s === 'hot' || d.port ? 'act' : ''}">${d.t}.JK${d.port ? '<span class="star">★</span>' : ''}</span></td>
       <td>${bar(d.q, 'q')}</td>
       <td>${bar(d.g, 'g')}</td>
       <td>${bar(d.v, 'v')}</td>
@@ -478,15 +425,9 @@ function openModal(ticker) {
 
   document.getElementById('modal-body').innerHTML = `
     <div class="modal-section">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
-        <div class="modal-logo" style="display:none;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-weight:700;color:#fff;background:hsl(${getHueFromName(d.name)},70%,40%);">
-          ${getInitials(d.name)}
-        </div>
-        <img src="${d.logo}" alt="${d.t}" class="modal-logo" onerror="this.previousElementSibling.style.display='flex';this.style.display='none'">
-        <div>
-          <span class="big-score ${sc(d.f)}">${d.f.toFixed(1)}</span>
-          <div class="score-rank">Rank #${d.r} dari ${stocks.length}</div>
-        </div>
+      <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:12px;">
+        <span class="big-score ${sc(d.f)}">${d.f.toFixed(1)}</span>
+        <div class="score-rank">Rank #${d.r} dari ${stocks.length}</div>
         <span class="badge ${bmap[d.s][0]}" style="margin-left:auto">${bmap[d.s][1]}</span>
       </div>
       <div class="factor-grid">

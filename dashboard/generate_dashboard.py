@@ -7,38 +7,38 @@ from pathlib import Path
 import datetime
 import traceback
 
-# Static mapping for IDX30 names, sectors
+# Static mapping for IDX30 names, sectors, and domains for icons
 TICKER_INFO = {
-    'ADRO.JK': {'name': 'Adaro Energy', 'sector': 'Coal'},
-    'ESSA.JK': {'name': 'Essa Industries', 'sector': 'Chemicals'},
-    'MAPI.JK': {'name': 'Mitra Adiperkasa', 'sector': 'Retail'},
-    'PTBA.JK': {'name': 'Bukit Asam', 'sector': 'Coal'},
-    'AKRA.JK': {'name': 'AKRA Corporindo', 'sector': 'Distribution'},
-    'CPIN.JK': {'name': 'Charoen Pokphand', 'sector': 'Poultry'},
-    'ANTM.JK': {'name': 'Aneka Tambang', 'sector': 'Mining'},
-    'EXCL.JK': {'name': 'XL Axiata', 'sector': 'Telecom'},
-    'BBRI.JK': {'name': 'Bank Rakyat Indonesia', 'sector': 'Banking'},
-    'BMRI.JK': {'name': 'Bank Mandiri', 'sector': 'Banking'},
-    'BRPT.JK': {'name': 'Barito Pacific', 'sector': 'Chemicals'},
-    'BBNI.JK': {'name': 'Bank Negara Indonesia', 'sector': 'Banking'},
-    'INDF.JK': {'name': 'Indofood Sukses', 'sector': 'Consumer'},
-    'PGAS.JK': {'name': 'PGAS', 'sector': 'Gas'},
-    'MDKA.JK': {'name': 'Merdeka Copper Gold', 'sector': 'Mining'},
-    'ITMG.JK': {'name': 'Indo Tambangraya', 'sector': 'Coal'},
-    'TLKM.JK': {'name': 'Telkom Indonesia', 'sector': 'Telecom'},
-    'ASII.JK': {'name': 'Astra International', 'sector': 'Conglomerate'},
-    'INTP.JK': {'name': 'Indocement', 'sector': 'Cement'},
-    'ICBP.JK': {'name': 'Indofood CBP', 'sector': 'Consumer'},
-    'BBCA.JK': {'name': 'Bank Central Asia', 'sector': 'Banking'},
-    'UNTR.JK': {'name': 'United Tractors', 'sector': 'Heavy Equip'},
-    'MIKA.JK': {'name': 'Mitra Keluarga', 'sector': 'Healthcare'},
-    'GOTO.JK': {'name': 'GoTo Gojek Tokopedia', 'sector': 'Tech'},
-    'SMGR.JK': {'name': 'Semen Indonesia', 'sector': 'Cement'},
-    'SIDO.JK': {'name': 'Industri Jamu Sido Muncul', 'sector': 'Consumer'},
-    'TPIA.JK': {'name': 'Chandra Asri', 'sector': 'Chemicals'},
-    'KLBF.JK': {'name': 'Kalbe Farma', 'sector': 'Healthcare'},
-    'AMMN.JK': {'name': 'Amman Mineral', 'sector': 'Mining'},
-    'HEAL.JK': {'name': 'Medikaloka Hermina', 'sector': 'Healthcare'}
+    'ADRO.JK': {'name': 'Adaro Energy', 'sector': 'Coal', 'domain': 'adaro.co.id'},
+    'ESSA.JK': {'name': 'Essa Industries', 'sector': 'Chemicals', 'domain': 'essa.co.id'},
+    'MAPI.JK': {'name': 'Mitra Adiperkasa', 'sector': 'Retail', 'domain': 'matahari.com'},
+    'PTBA.JK': {'name': 'Bukit Asam', 'sector': 'Coal', 'domain': 'bukitasam.co.id'},
+    'AKRA.JK': {'name': 'AKRA Corporindo', 'sector': 'Distribution', 'domain': 'akra.co.id'},
+    'CPIN.JK': {'name': 'Charoen Pokphand', 'sector': 'Poultry', 'domain': 'cp-indonesia.co.id'},
+    'ANTM.JK': {'name': 'Aneka Tambang', 'sector': 'Mining', 'domain': 'antam.com'},
+    'EXCL.JK': {'name': 'XL Axiata', 'sector': 'Telecom', 'domain': 'xl.co.id'},
+    'BBRI.JK': {'name': 'Bank Rakyat Indonesia', 'sector': 'Banking', 'domain': 'bri.co.id'},
+    'BMRI.JK': {'name': 'Bank Mandiri', 'sector': 'Banking', 'domain': 'mandiri.co.id'},
+    'BRPT.JK': {'name': 'Barito Pacific', 'sector': 'Chemicals', 'domain': 'baritopacific.com'},
+    'BBNI.JK': {'name': 'Bank Negara Indonesia', 'sector': 'Banking', 'domain': 'bni.co.id'},
+    'INDF.JK': {'name': 'Indofood Sukses', 'sector': 'Consumer', 'domain': 'indofood.com'},
+    'PGAS.JK': {'name': 'PGAS', 'sector': 'Gas', 'domain': 'pgas.co.id'},
+    'MDKA.JK': {'name': 'Merdeka Copper Gold', 'sector': 'Mining', 'domain': 'merdekacopper.com'},
+    'ITMG.JK': {'name': 'Indo Tambangraya', 'sector': 'Coal', 'domain': 'itmg.co.id'},
+    'TLKM.JK': {'name': 'Telkom Indonesia', 'sector': 'Telecom', 'domain': 'telkomsel.com'},
+    'ASII.JK': {'name': 'Astra International', 'sector': 'Conglomerate', 'domain': 'astra.co.id'},
+    'INTP.JK': {'name': 'Indocement', 'sector': 'Cement', 'domain': 'indocement.com'},
+    'ICBP.JK': {'name': 'Indofood CBP', 'sector': 'Consumer', 'domain': 'icbp.com'},
+    'BBCA.JK': {'name': 'Bank Central Asia', 'sector': 'Banking', 'domain': 'bca.co.id'},
+    'UNTR.JK': {'name': 'United Tractors', 'sector': 'Heavy Equip', 'domain': 'unitedtractors.com'},
+    'MIKA.JK': {'name': 'Mitra Keluarga', 'sector': 'Healthcare', 'domain': 'mitrakeluarga.com'},
+    'GOTO.JK': {'name': 'GoTo Gojek Tokopedia', 'sector': 'Tech', 'domain': 'gojek.com'},
+    'SMGR.JK': {'name': 'Semen Indonesia', 'sector': 'Cement', 'domain': 'semenindonesia.com'},
+    'SIDO.JK': {'name': 'Industri Jamu Sido Muncul', 'sector': 'Consumer', 'domain': 'sidomuncul.co.id'},
+    'TPIA.JK': {'name': 'Chandra Asri', 'sector': 'Chemicals', 'domain': 'chandraasri.com'},
+    'KLBF.JK': {'name': 'Kalbe Farma', 'sector': 'Healthcare', 'domain': 'kalbe.co.id'},
+    'AMMN.JK': {'name': 'Amman Mineral', 'sector': 'Mining', 'domain': 'ammanmineral.com'},
+    'HEAL.JK': {'name': 'Medikaloka Hermina', 'sector': 'Healthcare', 'domain': 'herminahospitals.com'}
 }
 
 def load_json(filepath):
@@ -297,6 +297,7 @@ def generate_dashboard():
             't': ticker_clean,
             'name': meta['name'],
             'sector': meta['sector'],
+            'domain': meta['domain'],
             'q': q,
             'g': g,
             'v': v,
@@ -645,9 +646,10 @@ async function loadStocks() {{
     // Build portfolio grid
     document.getElementById('portGrid').innerHTML = stocks.filter(d => d.port).map(d => `
       <div class="pc" onclick="openModal('${{d.t}}')">
-        <div class="portfolio-logo" style="display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-weight:700;color:#fff;background:hsl(${{getHueFromName(d.name)}},70%,40%);">
+        <div class="portfolio-logo" style="display:none;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-weight:700;color:#fff;background:hsl(${{getHueFromName(d.name)}},70%,40%);">
           ${{getInitials(d.name)}}
         </div>
+        <img src="https://icon.horse/icon/${{d.domain}}" alt="${{d.t}}" class="portfolio-logo" onerror="this.previousElementSibling.style.display='flex';this.style.display='none'">
         <div class="ptk">${{d.t}}</div>
         <div class="psc">${{d.f.toFixed(1)}}</div>
         <div class="pal">${{d.weight || '20%'}}</div>
@@ -700,9 +702,10 @@ function renderRows(rows) {{
     <tr onclick="openModal('${{d.t}}')">
       <td class="rn">${{idx+1}}</td>
       <td class="ticker-cell">
-        <div class="company-logo" style="display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-weight:700;color:#fff;background:hsl(${{getHueFromName(d.name)}},70%,40%);">
+        <div class="company-logo" style="display:none;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-weight:700;color:#fff;background:hsl(${{getHueFromName(d.name)}},70%,40%);">
           ${{getInitials(d.name)}}
         </div>
+        <img src="https://icon.horse/icon/${{d.domain}}" alt="${{d.t}}" class="company-logo" onerror="this.previousElementSibling.style.display='flex';this.style.display='none'">
         <span class="tk ${{d.s === 'hot' || d.port ? 'act' : ''}}">${{d.t}}.JK${{d.port ? '<span class="star">★</span>' : ''}}</span>
       </td>
       <td>${{bar(d.q, 'q')}}</td>
@@ -814,9 +817,10 @@ function openModal(ticker) {{
   document.getElementById('modal-body').innerHTML = `
     <div class="modal-section">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
-        <div class="modal-logo" style="display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-weight:700;color:#fff;background:hsl(${{getHueFromName(d.name)}},70%,40%);">
+        <div class="modal-logo" style="display:none;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-weight:700;color:#fff;background:hsl(${{getHueFromName(d.name)}},70%,40%);">
           ${{getInitials(d.name)}}
         </div>
+        <img src="https://icon.horse/icon/${{d.domain}}" alt="${{d.t}}" class="modal-logo" onerror="this.previousElementSibling.style.display='flex';this.style.display='none'">
         <div>
           <span class="big-score ${{sc(d.f)}}">${{d.f.toFixed(1)}}</span>
           <div class="score-rank">Rank #${{d.r}} dari ${{stocks.length}}</div>

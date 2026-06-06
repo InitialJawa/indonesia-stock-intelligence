@@ -308,7 +308,10 @@ async function loadStocks() {
     // Build portfolio grid
     document.getElementById('portGrid').innerHTML = stocks.filter(d => d.port).map(d => `
       <div class="pc" onclick="openModal('${d.t}')">
-        <img src="${d.logo || ''}" alt="${d.t}" class="portfolio-logo" onerror="this.style.display='none'">
+        <div class="portfolio-logo" style="display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-weight:700;color:#fff;background:hsl(${getHueFromName(d.name)},70%,40%);">
+          ${getInitials(d.name)}
+        </div>
+        <img src="${d.logo || ''}" alt="${d.t}" class="portfolio-logo" onerror="this.previousElementSibling.style.display='flex';this.style.display='none'">
         <div class="ptk">${d.t}</div>
         <div class="psc">${d.f.toFixed(1)}</div>
         <div class="pal">${d.weight || '20%'}</div>
@@ -345,12 +348,26 @@ function sc(f) {
   return f >= 60 ? 'top' : f >= 45 ? 'mid' : 'low';
 }
 
+function getInitials(name) {
+  return name.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
+}
+function getHueFromName(name) {
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) {
+    hash = name.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  return hash % 360;
+}
+
 function renderRows(rows) {
   document.getElementById('tb').innerHTML = rows.map((d, idx) => `
     <tr onclick="openModal('${d.t}')">
       <td class="rn">${idx+1}</td>
       <td class="ticker-cell">
-        <img src="${d.logo || ''}" alt="${d.t}" class="company-logo" onerror="this.style.display='none'">
+        <div class="company-logo" style="display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-weight:700;color:#fff;background:hsl(${getHueFromName(d.name)},70%,40%);">
+          ${getInitials(d.name)}
+        </div>
+        <img src="${d.logo || ''}" alt="${d.t}" class="company-logo" onerror="this.previousElementSibling.style.display='flex';this.style.display='none'">
         <span class="tk ${d.s === 'hot' || d.port ? 'act' : ''}">${d.t}.JK${d.port ? '<span class="star">★</span>' : ''}</span>
       </td>
       <td>${bar(d.q, 'q')}</td>
@@ -462,7 +479,10 @@ function openModal(ticker) {
   document.getElementById('modal-body').innerHTML = `
     <div class="modal-section">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
-        <img src="${d.logo || ''}" alt="${d.t}" class="modal-logo" onerror="this.style.display='none'">
+        <div class="modal-logo" style="display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-weight:700;color:#fff;background:hsl(${getHueFromName(d.name)},70%,40%);">
+          ${getInitials(d.name)}
+        </div>
+        <img src="${d.logo || ''}" alt="${d.t}" class="modal-logo" onerror="this.previousElementSibling.style.display='flex';this.style.display='none'">
         <div>
           <span class="big-score ${sc(d.f)}">${d.f.toFixed(1)}</span>
           <div class="score-rank">Rank #${d.r} dari ${stocks.length}</div>

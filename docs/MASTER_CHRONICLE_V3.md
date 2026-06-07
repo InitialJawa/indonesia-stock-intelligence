@@ -107,6 +107,7 @@ isolates alpha failure.
 | IMPLEMENT-003 | Dashboard regression recovery | Insight Layer V1 caused TDZ crash (PF before init), table disappearance | ENGINEERING RULE-005 established, append-only mandate |
 | RESEARCH-012 | Portfolio Decision Layer | Does EXIT + Rank + Turnaround beat passive Top 5? | P1 complete (EXIT→SELL REJECTED), P2 complete (Drop>10 VALIDATED) |
 | RESEARCH-012A | EXIT Sell Hypothesis | Does EXIT state justify automatic selling? | REJECTED — EXIT stocks outperform Healthy at 90D (+2.16%, p=0.04) |
+| RESEARCH-012B | Rank Deterioration Validation | Can rank deterioration justify selling? | COMPLETE — Drop > 10 validated: 25.58% CAGR, 16.61% Alpha. Promoted to P3 |
 
 ### RESEARCH-012: Portfolio Decision Layer V1
 
@@ -170,7 +171,8 @@ Research-supported results. Do NOT modify without new evidence.
 
 ### Rank Deterioration (RESEARCH-012 P2)
 - **Rank collapse > 10** is a strong sell signal: 25.58% CAGR (vs 19.45% baseline), 0.76 Sharpe, 16.61% Alpha, -20.2% MaxDD, 4.6% turnover
-- Exit thresholds based on absolute rank (Exit Top 5/10/20) ALL underperform baseline
+- **Absolute rank thresholds** (Exit Top 5/10/20) are NOT useful sell signals — all underperform baseline
+- **"Loss of leadership"** is the signal, not current rank: stock falling >10 positions from entry rank represents meaningful deterioration
 - Drop > 5 ranks also beats baseline (23.31% CAGR) but higher turnover (8.3%)
 - Drop > 15 ranks underperforms (13.62% CAGR) — too loose, catches false positives
 

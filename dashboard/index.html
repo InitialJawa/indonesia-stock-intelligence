@@ -488,10 +488,10 @@ function ac(t){
   L.forEach(function(d){if(d.ticker===tk)ld=d})
   T.forEach(function(d){if(d.ticker===tk)td=d})
   EX.forEach(function(d){if(d.ticker===tk)ed=d})
-  if(ld&&ld.rank<=10&&ed&&ed.exit_state==='HEALTHY')return'#00ff88'
+  if(ed&&ed.exit_state==='EXIT')return'#ff5555'
   if(ld&&ld.rank<=10&&ed&&ed.exit_state==='EXIT RISK')return'#ffcc33'
-  if(ld&&ld.rank<=10&&ed&&ed.exit_state==='EXIT')return'#ff5555'
-  if(td&&td.context_match&&td.transition_match&&(!ed||ed.exit_state!=='EXIT'))return'#4da3ff'
+  if(ld&&ld.rank<=10&&ed&&ed.exit_state==='HEALTHY')return'#00ff88'
+  if(td&&td.context_match&&td.transition_match)return'#4da3ff'
   return'#cccccc'
 }
 
@@ -620,18 +620,6 @@ function tickerData(t){
 
 function aiExplain(leaderData,turnaroundData,exitData){
   var lines=[]
-  if(turnaroundData&&turnaroundData.context_match&&turnaroundData.transition_match){
-    lines.push('<div class="panel-status turnaround"><b>KANDIDAT TURNAROUND</b>')
-    lines.push('<div style="margin-top:6px;font-size:11px;color:#9CA3AF;font-weight:400">')
-    if(turnaroundData.drawdown_252d<-20)lines.push('<span class="panel-bullet">&#8226;</span>Penurunan dalam')
-    if(turnaroundData.distance_from_high_252d<-15)lines.push('<span class="panel-bullet">&#8226;</span>Jauh dari harga tertinggi')
-    if(turnaroundData.rs_change_60d>0)lines.push('<span class="panel-bullet">&#8226;</span>Kekuatan relatif membaik')
-    if(turnaroundData.volume_ratio>1.3)lines.push('<span class="panel-bullet">&#8226;</span>Volume meningkat')
-    if(turnaroundData.recovery_from_60d_low>5)lines.push('<span class="panel-bullet">&#8226;</span>Pemulihan dari dasar')
-    lines.push('</div></div>')
-    lines.push('<div style="font-size:11px;color:#64748b;margin-top:6px;line-height:1.5">Saham masih berisiko tinggi tetapi menunjukkan tanda awal akumulasi.</div>')
-    return lines.join('')
-  }
   if(exitData&&exitData.exit_state==='EXIT'){
     lines.push('<div class="panel-status exit"><b>SINYAL EXIT AKTIF</b>')
     lines.push('<div style="margin-top:6px;font-size:11px;color:#9CA3AF;font-weight:400">')
@@ -647,6 +635,18 @@ function aiExplain(leaderData,turnaroundData,exitData){
     lines.push('<span class="panel-bullet">&#8226;</span>Peringkat 5 besar dalam sistem Config B')
     lines.push('<span class="panel-bullet">&#8226;</span>Saat ini masuk portofolio')
     lines.push('</div></div>')
+    return lines.join('')
+  }
+  if(turnaroundData&&turnaroundData.context_match&&turnaroundData.transition_match){
+    lines.push('<div class="panel-status turnaround"><b>KANDIDAT TURNAROUND</b>')
+    lines.push('<div style="margin-top:6px;font-size:11px;color:#9CA3AF;font-weight:400">')
+    if(turnaroundData.drawdown_252d<-20)lines.push('<span class="panel-bullet">&#8226;</span>Penurunan dalam')
+    if(turnaroundData.distance_from_high_252d<-15)lines.push('<span class="panel-bullet">&#8226;</span>Jauh dari harga tertinggi')
+    if(turnaroundData.rs_change_60d>0)lines.push('<span class="panel-bullet">&#8226;</span>Kekuatan relatif membaik')
+    if(turnaroundData.volume_ratio>1.3)lines.push('<span class="panel-bullet">&#8226;</span>Volume meningkat')
+    if(turnaroundData.recovery_from_60d_low>5)lines.push('<span class="panel-bullet">&#8226;</span>Pemulihan dari dasar')
+    lines.push('</div></div>')
+    lines.push('<div style="font-size:11px;color:#64748b;margin-top:6px;line-height:1.5">Saham masih berisiko tinggi tetapi menunjukkan tanda awal akumulasi.</div>')
     return lines.join('')
   }
     lines.push('<div class="panel-status healthy"><b>PEMANTAUAN</b></div>')
@@ -724,10 +724,10 @@ function renderFundamentals(fd){
 
 function renderAlignment(ld,td,ed){
   var state='netral',label='NETRAL',icon='&#9898;',cls='align-netral',desc='Tidak ada sinyal dominan dari sistem.'
-  if(ld&&ld.rank<=10&&ed&&ed.exit_state==='HEALTHY'){state='sejalan';label='SEJALAN';icon='&#128994;';cls='align-sejalan';desc='Fundamental dan tren harga sejalan.'}
-  else if(ld&&ld.rank<=10&&ed&&ed.exit_state==='EXIT RISK'){state='perhatian';label='PERLU PERHATIAN';icon='&#128993;';cls='align-perhatian';desc='Fundamental masih kuat dan masuk portofolio, tetapi tren harga belum sepenuhnya pulih.'}
-  else if(ld&&ld.rank<=10&&ed&&ed.exit_state==='EXIT'){state='konflik';label='KONFLIK';icon='&#128992;';cls='align-konflik';desc='Perusahaan masih berada di peringkat atas Config B, namun Exit Layer mendeteksi pelemahan momentum. Perlu pemantauan tambahan sebelum mengambil keputusan.'}
-  else if(td&&td.context_match&&td.transition_match&&(!ed||ed.exit_state!=='EXIT')){state='turnaround';label='TURNAROUND';icon='&#128309;';cls='align-turnaround';desc='Masuk kandidat turnaround dengan tanda pemulihan yang mulai muncul.'}
+  if(ed&&ed.exit_state==='EXIT'){state='konflik';label='KONFLIK';icon='&#128992;';cls='align-konflik';desc=ld&&ld.rank<=10?'Exit Layer mendeteksi pelemahan pada saham peringkat atas. Perlu pemantauan.':'Saham dalam status EXIT — keluar dari sistem.'}
+  else if(ld&&ld.rank<=10&&ed&&ed.exit_state==='EXIT RISK'){state='perhatian';label='PERLU PERHATIAN';icon='&#128993;';cls='align-perhatian';desc='Fundamental masih kuat, tetapi tren harga mulai melemah.'}
+  else if(ld&&ld.rank<=10&&ed&&ed.exit_state==='HEALTHY'){state='sejalan';label='SEJALAN';icon='&#128994;';cls='align-sejalan';desc='Fundamental dan tren harga sejalan.'}
+  else if(td&&td.context_match&&td.transition_match){state='turnaround';label='TURNAROUND';icon='&#128309;';cls='align-turnaround';desc='Masuk kandidat turnaround dengan tanda pemulihan yang mulai muncul.'}
   var html='<div class="panel-section"><div class="panel-section-title">STATUS KESELARASAN</div>'
   html+='<div class="align-card '+cls+'">'
   html+='<div class="align-title">'+icon+' '+label+'</div>'

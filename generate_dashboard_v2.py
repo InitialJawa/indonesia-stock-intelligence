@@ -9,6 +9,7 @@ LEADERS_FILE = Path("leaders_latest.csv")
 TURNAROUND_FILE = Path("turnaround_latest.csv")
 SUMMARY_FILE = Path("turnaround_summary.json")
 EXIT_FILE = Path("exit_watchlist_latest.csv")
+PROFILES_FILE = Path("company_profiles.json")
 
 def read_csv(filepath):
     if not filepath.exists():
@@ -99,7 +100,7 @@ def file_age(path):
     age = datetime.datetime.now() - mtime
     return f"{age.days}d {age.seconds // 3600}h ago" if age.days < 30 else f"{age.days}d ago"
 
-def build_html(leaders, turnaround, summary, history, streaks, date_str, exit_data=None):
+def build_html(leaders, turnaround, summary, history, streaks, date_str, exit_data=None, profiles=None):
     date_short = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
     summary_data = summary if isinstance(summary, dict) else {}
     top_candidates = summary_data.get('top_candidates', [])
@@ -113,6 +114,7 @@ def build_html(leaders, turnaround, summary, history, streaks, date_str, exit_da
     summary_json = json.dumps(summary_data)
     streaks_json = json.dumps(streaks)
     exit_json = json.dumps(exit_data if exit_data else [])
+    profiles_json = json.dumps(profiles if profiles else {})
 
     return f'''<!DOCTYPE html>
 <html lang="en">
@@ -174,6 +176,31 @@ tr:hover td{{background:#1a1e24}}
 .tip:hover{{background:#333a44;color:#F5F7FA}}
 .sortable{{cursor:pointer}}
 .sortable:hover{{color:#F5F7FA}}
+.tk-click{{cursor:pointer;color:#60a5fa!important;transition:color .15s}}
+.tk-click:hover{{color:#93c5fd!important;text-decoration:underline}}
+.overlay{{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:99;display:none}}
+.overlay.show{{display:block}}
+.panel{{position:fixed;top:0;right:-420px;width:400px;height:100vh;background:#161a20;border-left:1px solid #222830;z-index:100;overflow-y:auto;transition:right .25s ease;padding:0}}
+.panel.show{{right:0}}
+.panel-hdr{{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem;border-bottom:1px solid #222830;position:sticky;top:0;background:#161a20;z-index:2}}
+.panel-hdr .tk{{font-size:16px;font-weight:700}}
+.panel-hdr .name{{font-size:11px;color:#9CA3AF;font-family:'DM Sans',sans-serif;margin-top:2px}}
+.panel-close{{background:transparent;border:none;color:#9CA3AF;font-size:18px;cursor:pointer;padding:4px 8px;border-radius:4px;font-family:'Space Mono',monospace}}
+.panel-close:hover{{background:#222830;color:#F5F7FA}}
+.panel-body{{padding:1rem 1.25rem}}
+.panel-section{{margin-bottom:1.25rem}}
+.panel-section-title{{font-size:9px;font-family:'Space Mono',monospace;color:#9CA3AF;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;font-weight:600}}
+.panel-row{{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #1a1f26;font-size:12px}}
+.panel-row:last-child{{border:none}}
+.panel-label{{color:#9CA3AF}}
+.panel-val{{font-family:'Space Mono',monospace;font-weight:600;color:#F5F7FA}}
+.panel-status{{font-size:11px;padding:8px 12px;border-radius:4px;margin-bottom:8px;line-height:1.5}}
+.panel-status.turnaround{{background:#0c1929;border:1px solid #1e3a5f;color:#60a5fa}}
+.panel-status.exit{{background:#2a1111;border:1px solid #661111;color:#ef4444}}
+.panel-status.portfolio{{background:#052e16;border:1px solid #166534;color:#00c26f}}
+.panel-status.healthy{{background:#171b20;border:1px solid #222830;color:#9CA3AF}}
+.panel-bullet{{color:#9CA3AF;margin-right:6px}}
+.panel-summary{{font-size:12px;color:#C9D1D9;line-height:1.6;padding:8px 0}}
 </style>
 </head>
 <body>
@@ -220,17 +247,17 @@ tr:hover td{{background:#1a1e24}}
 <div class="tc" id="t2">
   <div class="section-title">Today's Snapshot</div>
   <div class="card-grid">
-    <div class="card"><div class="card-label">SAHAM TERTEKAN<span class="tip" title="Saham yang sudah jatuh dalam dan masih tertekan.&#10;&#10;(Perhitungan:&#10;Drawdown &lt; -25%&#10;Distance From High &lt; -20%&#10;Volatility = Top 33%&#10;Research: Research-008B / 009B)">?</span></div><div class="card-val g">{ctx_count}</div><div class="card-sub">Saham yang jatuh berat dan masih dalam kondisi tertekan</div></div>
-    <div class="card"><div class="card-label">MULAI MEMBAIK<span class="tip" title="Saham yang menunjukkan perbaikan kekuatan relatif.&#10;&#10;(Perhitungan:&#10;RS_CHANGE_60D &gt; 0&#10;Research: Research-008B / 009B)">?</span></div><div class="card-val y">{trn_count}</div><div class="card-sub">Saham dengan kekuatan relatif yang mulai meningkat</div></div>
-    <div class="card"><div class="card-label">KANDIDAT TURNAROUND<span class="tip" title="Saham tertekan yang mulai pulih — terdeteksi oleh dua sinyal sekaligus.&#10;&#10;(Perhitungan:&#10;Context Match = True&#10;+&#10;Transition Match = True&#10;Research: Research-008B / 009B)">?</span></div><div class="card-val b">{full_count}</div><div class="card-sub">Saham tertekan yang mulai menunjukkan pemulihan</div></div>
+    <div class="card"><div class="card-label">SAHAM TERTEKAN<span class="tip" title="What does this mean?&#10;Stock is still under heavy pressure.&#10;&#10;How is it calculated?&#10;Price is far below previous highs&#10;and volatility remains elevated.&#10;&#10;Research Source:&#10;Research-009B">?</span></div><div class="card-val g">{ctx_count}</div><div class="card-sub">Saham yang jatuh berat dan masih dalam kondisi tertekan</div></div>
+    <div class="card"><div class="card-label">MULAI MEMBAIK<span class="tip" title="What does this mean?&#10;Stock is starting to recover.&#10;&#10;How is it calculated?&#10;Current strength is better than it was&#10;during the previous two months.&#10;&#10;Research Source:&#10;Research-008B / Research-009B">?</span></div><div class="card-val y">{trn_count}</div><div class="card-sub">Saham dengan kekuatan relatif yang mulai meningkat</div></div>
+    <div class="card"><div class="card-label">KANDIDAT TURNAROUND<span class="tip" title="What does this mean?&#10;Distressed stocks that are beginning&#10;to show signs of recovery.&#10;&#10;How is it calculated?&#10;Stock meets BOTH conditions:&#10;1. Under heavy pressure (Context Match)&#10;2. Improving relative strength (Transition Match)&#10;&#10;Research Source:&#10;Research-008B / Research-009B">?</span></div><div class="card-val b">{full_count}</div><div class="card-sub">Saham tertekan yang mulai menunjukkan pemulihan</div></div>
     <div class="card"><div class="card-label">Universe</div><div class="card-val">{summary_data.get('universe_size', 0)}</div><div class="card-sub">IDX30 tickers</div></div>
   </div>
   <div class="section-title">Signal Diagnostics</div>
   <div class="card-grid">
-    <div class="card"><div class="card-label">KEKUATAN MULAI NAIK<span class="tip" title="Saham yang mulai mengungguli pasar secara relatif.&#10;&#10;(Perhitungan:&#10;RS_CHANGE_60D &gt; 0&#10;Research: Research-009)">?</span></div><div class="card-val g">{sig.get('rs_change_60d_positive_count', 0)}</div><div class="card-sub">Saham yang mulai outperform pasar</div></div>
-    <div class="card"><div class="card-label">MINAT BELI MENINGKAT<span class="tip" title="Volume perdagangan di atas normal — menandakan minat pasar.&#10;&#10;(Perhitungan:&#10;Volume Ratio &gt; 1.3x&#10;Research: Research-008B)">?</span></div><div class="card-val y">{sig.get('volume_ratio_high_count', 0)}</div><div class="card-sub">Aktivitas perdagangan di atas normal</div></div>
-    <div class="card"><div class="card-label">DI ATAS TREND PENDEK<span class="tip" title="Harga di atas rata-rata pergerakan 20 hari — tren jangka pendek positif.&#10;&#10;(Perhitungan:&#10;Close &gt; MA20&#10;Research: Research-009B)">?</span></div><div class="card-val">{sig.get('above_ma20_count', 0)}</div><div class="card-sub">Harga di atas rata-rata 20 hari</div></div>
-    <div class="card"><div class="card-label">PANTUL DARI DASAR<span class="tip" title="Saham yang memantul lebih dari 10% dari titik terendah 60 hari.&#10;&#10;(Perhitungan:&#10;Recovery From 60D Low &gt; 10%&#10;Research: Research-008B)">?</span></div><div class="card-val g">{sig.get('recovery_gt_10pct_count', 0)}</div><div class="card-sub">Memantul &gt;10% dari level terendah 60 hari</div></div>
+    <div class="card"><div class="card-label">KEKUATAN MULAI NAIK<span class="tip" title="What does this mean?&#10;Stocks starting to outperform the market.&#10;&#10;How is it calculated?&#10;RS_CHANGE_60D &gt; 0&#10;Relative strength improved over 60 days.&#10;&#10;Research Source:&#10;Research-009">?</span></div><div class="card-val g">{sig.get('rs_change_60d_positive_count', 0)}</div><div class="card-sub">Saham yang mulai outperform pasar</div></div>
+    <div class="card"><div class="card-label">MINAT BELI MENINGKAT<span class="tip" title="What does this mean?&#10;Trading activity is increasing.&#10;&#10;How is it calculated?&#10;Current volume is at least&#10;30% higher than normal.&#10;&#10;Research Source:&#10;Research-008B">?</span></div><div class="card-val y">{sig.get('volume_ratio_high_count', 0)}</div><div class="card-sub">Aktivitas perdagangan di atas normal</div></div>
+    <div class="card"><div class="card-label">DI ATAS TREND PENDEK<span class="tip" title="What does this mean?&#10;Price has moved above&#10;its short-term trend.&#10;&#10;How is it calculated?&#10;Current price is above&#10;its average price over&#10;the last 20 trading days.&#10;&#10;Research Source:&#10;Research-009B">?</span></div><div class="card-val">{sig.get('above_ma20_count', 0)}</div><div class="card-sub">Harga di atas rata-rata 20 hari</div></div>
+    <div class="card"><div class="card-label">PANTUL DARI DASAR<span class="tip" title="What does this mean?&#10;Stock has rebounded from&#10;a recent low.&#10;&#10;How is it calculated?&#10;Price is more than 10%&#10;above the lowest point&#10;of the last 60 trading days.&#10;&#10;Research Source:&#10;Research-008B">?</span></div><div class="card-val g">{sig.get('recovery_gt_10pct_count', 0)}</div><div class="card-sub">Memantul &gt;10% dari level terendah 60 hari</div></div>
     <div class="card"><div class="card-label">RATA-RATA PENURUNAN<span class="tip" title="Rata-rata penurunan semua saham dari harga tertinggi masing-masing.&#10;&#10;(Perhitungan:&#10;Mean Drawdown_252D&#10;— seluruh universe IDX30)">?</span></div><div class="card-val r">{sig.get('avg_drawdown_252d', 0)}%</div><div class="card-sub">Rata-rata penurunan dari harga tertinggi</div></div>
     <div class="card"><div class="card-label">RATA-RATA GEJOLAK<span class="tip" title="Intensitas pergerakan harga rata-rata — semakin tinggi semakin berisiko.&#10;&#10;(Perhitungan:&#10;Mean Volatility_60D&#10;— seluruh universe IDX30)">?</span></div><div class="card-val y">{sig.get('avg_volatility_60d', 0)}%</div><div class="card-sub">Intensitas pergerakan harga rata-rata</div></div>
   </div>
@@ -296,6 +323,14 @@ tr:hover td{{background:#1a1e24}}
   </div>
 </div>
 
+<div class="overlay" id="overlay" onclick="closePanel()"></div>
+<div class="panel" id="panel">
+  <div class="panel-hdr">
+    <div><div class="tk" id="ptk"></div><div class="name" id="pname"></div></div>
+    <button class="panel-close" onclick="closePanel()">✕</button>
+  </div>
+  <div class="panel-body" id="pbody"></div>
+</div>
 <script>
 const L={leaders_json};
 const T={turnaround_json};
@@ -338,7 +373,7 @@ function makeSortable(id,s,fn){{
   var full=L;var s={{key:null,dir:'asc'}}
   function render(d){{
     document.getElementById('tbody-leaders').innerHTML=d.map(function(r){{
-      return '<tr><td class="tk" style="color:#9CA3AF;font-size:11px">'+r.rank+'</td><td class="tk">'+r.ticker.split('.')[0]+(r.rank<=5?'<span class="flag">★</span>':'')+'</td><td class="sf '+sc(r.final_score)+'">'+r.final_score.toFixed(1)+'</td><td>'+bar(r.quality,'#3b82f6')+'</td><td>'+bar(r.growth,'#10b981')+'</td><td>'+bar(r.value,'#a855f7')+'</td><td>'+bar(r.momentum,'#f59e0b')+'</td><td>'+(r.rank<=5?'<span class="badge bg-green">PORTFOLIO</span>':'<span class="badge bg-gray">WATCH</span>')+'</td></tr>'
+      return '<tr><td class="tk" style="color:#9CA3AF;font-size:11px">'+r.rank+'</td><td class="tk tk-click" data-ticker="'+r.ticker.split('.')[0]+'">'+r.ticker.split('.')[0]+(r.rank<=5?'<span class="flag">★</span>':'')+'</td><td class="sf '+sc(r.final_score)+'">'+r.final_score.toFixed(1)+'</td><td>'+bar(r.quality,'#3b82f6')+'</td><td>'+bar(r.growth,'#10b981')+'</td><td>'+bar(r.value,'#a855f7')+'</td><td>'+bar(r.momentum,'#f59e0b')+'</td><td>'+(r.rank<=5?'<span class="badge bg-green">PORTFOLIO</span>':'<span class="badge bg-gray">WATCH</span>')+'</td></tr>'
     }}).join('')
   }}
   function refresh(){{render(sortData(full,s))}}
@@ -357,7 +392,7 @@ function makeSortable(id,s,fn){{
   }}
   function render(d){{
     document.getElementById('tbody-turnaround').innerHTML=d.map(function(r,i){{
-      return '<tr><td style="color:#9CA3AF;font-size:11px;font-family:monospace">'+(i+1)+'</td><td class="tk">'+r.ticker.split('.')[0]+'</td><td class="sf '+(r.drawdown_252d<-25?'low':r.drawdown_252d<-10?'mid':'high')+'">'+pct(r.drawdown_252d)+'</td><td class="sf '+(r.distance_from_high_252d<-20?'low':r.distance_from_high_252d<-5?'mid':'high')+'">'+pct(r.distance_from_high_252d)+'</td><td>'+r.volatility_60d.toFixed(2)+'%</td><td class="sf '+(r.rs_change_60d>0?'high':'low')+'">'+pct(r.rs_change_60d)+'</td><td>'+r.volume_ratio.toFixed(2)+'x</td><td>'+pct(r.recovery_from_60d_low)+'</td><td>'+ctxLabel(r)+'</td><td>'+trnLabel(r)+'</td></tr>'
+      return '<tr><td style="color:#9CA3AF;font-size:11px;font-family:monospace">'+(i+1)+'</td><td class="tk tk-click" data-ticker="'+r.ticker.split('.')[0]+'">'+r.ticker.split('.')[0]+'</td><td class="sf '+(r.drawdown_252d<-25?'low':r.drawdown_252d<-10?'mid':'high')+'">'+pct(r.drawdown_252d)+'</td><td class="sf '+(r.distance_from_high_252d<-20?'low':r.distance_from_high_252d<-5?'mid':'high')+'">'+pct(r.distance_from_high_252d)+'</td><td>'+r.volatility_60d.toFixed(2)+'%</td><td class="sf '+(r.rs_change_60d>0?'high':'low')+'">'+pct(r.rs_change_60d)+'</td><td>'+r.volume_ratio.toFixed(2)+'x</td><td>'+pct(r.recovery_from_60d_low)+'</td><td>'+ctxLabel(r)+'</td><td>'+trnLabel(r)+'</td></tr>'
     }}).join('')
   }}
   function refresh(){{render(sortData(filtered(),s))}}
@@ -370,7 +405,7 @@ function makeSortable(id,s,fn){{
   var full=SM.top_candidates||[];var s={{key:null,dir:'asc'}}
   function render(d){{
     document.getElementById('tbody-top').innerHTML=d.map(function(r){{
-      return '<tr><td class="tk">'+r.ticker.split('.')[0]+'</td><td class="sf high">'+(r.full_match?'FULL':r.context_match?'CTX':'TRN')+'</td><td class="sf low">'+pct(r.drawdown)+'</td><td class="sf low">'+pct(r.distance_from_high)+'</td><td>'+r.volatility.toFixed(2)+'%</td><td class="sf '+(r.rs_change_60d>0?'high':'low')+'">'+pct(r.rs_change_60d)+'</td><td>'+r.volume_ratio.toFixed(2)+'x</td><td>'+pct(r.recovery)+'</td><td>'+fullLabel(r)+'</td></tr>'
+      return '<tr><td class="tk tk-click" data-ticker="'+r.ticker.split('.')[0]+'">'+r.ticker.split('.')[0]+'</td><td class="sf high">'+(r.full_match?'FULL':r.context_match?'CTX':'TRN')+'</td><td class="sf low">'+pct(r.drawdown)+'</td><td class="sf low">'+pct(r.distance_from_high)+'</td><td>'+r.volatility.toFixed(2)+'%</td><td class="sf '+(r.rs_change_60d>0?'high':'low')+'">'+pct(r.rs_change_60d)+'</td><td>'+r.volume_ratio.toFixed(2)+'x</td><td>'+pct(r.recovery)+'</td><td>'+fullLabel(r)+'</td></tr>'
     }}).join('')
   }}
   function refresh(){{render(sortData(full,s))}}
@@ -393,7 +428,7 @@ function makeSortable(id,s,fn){{
     }}
     document.getElementById('tbody-history').innerHTML=keys.map(function(t){{
       var d=full[t]
-      return '<tr><td class="tk">'+t.split('.')[0]+'</td><td>'+(d.ctx_days>0?'<span class="streak-bar"><span class="n">'+d.ctx_days+'</span>d</span>':'<span class="badge bg-gray">0d</span>')+'</td><td>'+(d.trn_days>0?'<span class="streak-bar"><span class="n" style="color:#f59e0b">'+d.trn_days+'</span>d</span>':'<span class="badge bg-gray">0d</span>')+'</td><td style="font-family:monospace;font-size:11px;color:#9CA3AF">'+d.first_ctx+'</td><td style="font-family:monospace;font-size:11px;color:#9CA3AF">'+d.first_trn+'</td><td style="font-family:monospace;font-size:11px;color:#9CA3AF">'+d.total_entries+' days</td></tr>'
+      return '<tr><td class="tk tk-click" data-ticker="'+t.split('.')[0]+'">'+t.split('.')[0]+'</td><td>'+(d.ctx_days>0?'<span class="streak-bar"><span class="n">'+d.ctx_days+'</span>d</span>':'<span class="badge bg-gray">0d</span>')+'</td><td>'+(d.trn_days>0?'<span class="streak-bar"><span class="n" style="color:#f59e0b">'+d.trn_days+'</span>d</span>':'<span class="badge bg-gray">0d</span>')+'</td><td style="font-family:monospace;font-size:11px;color:#9CA3AF">'+d.first_ctx+'</td><td style="font-family:monospace;font-size:11px;color:#9CA3AF">'+d.first_trn+'</td><td style="font-family:monospace;font-size:11px;color:#9CA3AF">'+d.total_entries+' days</td></tr>'
     }}).join('')
   }}
   render()
@@ -412,7 +447,7 @@ function makeSortable(id,s,fn){{
       var m100=r.close<r.ma100?'<span class="badge bg-red">BELOW</span>':'<span class="badge bg-green">ABOVE</span>'
       var dd=r.drawdown_from_entry<-15?'sf low':'sf high'
       var rc2=r.rank_change>0?'<span class="sf high">+'+r.rank_change+'</span>':r.rank_change<0?'<span class="sf low">'+r.rank_change+'</span>':'<span style="color:#9CA3AF">0</span>'
-      return '<tr><td class="tk">'+r.ticker.split('.')[0]+'</td><td style="font-family:monospace;font-size:12px;color:#9CA3AF">#'+r.rank+'</td><td style="font-family:monospace;font-size:12px">'+rc2+'</td><td><span class="badge '+sc+'">'+r.exit_state+'</span></td><td style="font-family:monospace;font-size:11px;color:#9CA3AF">'+r.triggered_rules+'</td><td class="'+rc+'">'+r.rs_20d.toFixed(1)+'%</td><td class="'+rcc+'">'+r.rs_change_20d.toFixed(1)+'%</td><td>'+m50+'</td><td>'+m100+'</td><td class="'+dd+'">'+r.drawdown_from_entry.toFixed(1)+'%</td></tr>'
+      return '<tr><td class="tk tk-click" data-ticker="'+r.ticker.split('.')[0]+'">'+r.ticker.split('.')[0]+'</td><td style="font-family:monospace;font-size:12px;color:#9CA3AF">#'+r.rank+'</td><td style="font-family:monospace;font-size:12px">'+rc2+'</td><td><span class="badge '+sc+'">'+r.exit_state+'</span></td><td style="font-family:monospace;font-size:11px;color:#9CA3AF">'+r.triggered_rules+'</td><td class="'+rc+'">'+r.rs_20d.toFixed(1)+'%</td><td class="'+rcc+'">'+r.rs_change_20d.toFixed(1)+'%</td><td>'+m50+'</td><td>'+m100+'</td><td class="'+dd+'">'+r.drawdown_from_entry.toFixed(1)+'%</td></tr>'
     }}).join('')
   }}
   function refresh(){{render(sortData(filtered(),s))}}
@@ -422,6 +457,108 @@ function makeSortable(id,s,fn){{
 }})();
 
 function st(i){{document.querySelectorAll('.tab-btn').forEach(function(b,j){{b.classList.toggle('active',j===i)}});document.querySelectorAll('.tc').forEach(function(t,j){{t.classList.toggle('active',j===i)}})}}
+
+const PF={profiles_json};
+
+function tickerData(t){{
+  var ld=null,td=null,ed=null
+  L.forEach(function(d){{if(d.ticker===t||d.ticker===t+'.JK')ld=d}})
+  T.forEach(function(d){{if(d.ticker===t||d.ticker===t+'.JK')td=d}})
+  EX.forEach(function(d){{if(d.ticker===t||d.ticker===t+'.JK')ed=d}})
+  return{{leader:ld,turnaround:td,exit:ed,profile:PF[t]||PF[t+'.JK']||null}}
+}}
+
+function aiExplain(leaderData,turnaroundData,exitData){{
+  var lines=[]
+  if(turnaroundData&&turnaroundData.context_match&&turnaroundData.transition_match){{
+    lines.push('<div class="panel-status turnaround"><b>TURNAROUND CANDIDATE</b>')
+    lines.push('<div style="margin-top:6px;font-size:11px;color:#9CA3AF;font-weight:400">')
+    if(turnaroundData.drawdown_252d<-20)lines.push('<span class="panel-bullet">&#8226;</span>Deep drawdown')
+    if(turnaroundData.distance_from_high_252d<-15)lines.push('<span class="panel-bullet">&#8226;</span>Far from previous high')
+    if(turnaroundData.rs_change_60d>0)lines.push('<span class="panel-bullet">&#8226;</span>Improving RS60')
+    if(turnaroundData.volume_ratio>1.3)lines.push('<span class="panel-bullet">&#8226;</span>Elevated volume')
+    if(turnaroundData.recovery_from_60d_low>5)lines.push('<span class="panel-bullet">&#8226;</span>Recovery from lows')
+    lines.push('</div></div>')
+    lines.push('<div style="font-size:11px;color:#64748b;margin-top:6px;line-height:1.5">Stock remains high risk but shows early signs of accumulation.</div>')
+    return lines.join('')
+  }}
+  if(exitData&&exitData.exit_state==='EXIT'){{
+    lines.push('<div class="panel-status exit"><b>EXIT SIGNAL ACTIVE</b>')
+    lines.push('<div style="margin-top:6px;font-size:11px;color:#9CA3AF;font-weight:400">')
+    lines.push('<span class="panel-bullet">&#8226;</span>Exit state: '+exitData.exit_state)
+    lines.push('<span class="panel-bullet">&#8226;</span>Rules: '+exitData.triggered_rules)
+    lines.push('</div></div>')
+    lines.push('<div style="font-size:11px;color:#64748b;margin-top:6px;line-height:1.5">Stock shows sustained weakness across multiple indicators.</div>')
+    return lines.join('')
+  }}
+  if(leaderData&&leaderData.rank<=5){{
+    lines.push('<div class="panel-status portfolio"><b>PORTFOLIO HOLDER</b>')
+    lines.push('<div style="margin-top:6px;font-size:11px;color:#9CA3AF;font-weight:400">')
+    lines.push('<span class="panel-bullet">&#8226;</span>Top 5 in Config B ranking')
+    lines.push('<span class="panel-bullet">&#8226;</span>Currently in portfolio')
+    lines.push('</div></div>')
+    return lines.join('')
+  }}
+  lines.push('<div class="panel-status healthy"><b>MONITORING</b></div>')
+  return lines.join('')
+}}
+
+function openPanel(ticker){{
+  var d=tickerData(ticker)
+  document.getElementById('ptk').textContent=ticker
+  document.getElementById('pname').textContent=d.profile?(d.profile.name+' &middot; '+d.profile.sector):ticker+'.JK'
+  var html=''
+  // Status explanation
+  html+=aiExplain(d.leader,d.turnaround,d.exit)
+  // Company summary
+  if(d.profile&&d.profile.summary){{
+    html+='<div class="panel-section"><div class="panel-section-title">About</div>'
+    html+='<div class="panel-summary">'+d.profile.summary+'</div></div>'
+  }}
+  // Dashboard state
+  html+='<div class="panel-section"><div class="panel-section-title">Dashboard State</div>'
+  if(d.leader)html+='<div class="panel-row"><span class="panel-label">Leader Rank</span><span class="panel-val">#'+d.leader.rank+'</span></div>'
+  if(d.turnaround){{html+='<div class="panel-row"><span class="panel-label">Turnaround</span><span class="panel-val">'+(d.turnaround.context_match?'Context':'—')+(d.turnaround.transition_match?' / Transition':'')+'</span></div>'}}
+  if(d.exit)html+='<div class="panel-row"><span class="panel-label">Exit State</span><span class="panel-val">'+d.exit.exit_state+'</span></div>'
+  html+='</div>'
+  // Price & trend
+  if(d.turnaround||d.exit){{
+    html+='<div class="panel-section"><div class="panel-section-title">Price &amp; Trend</div>'
+    if(d.exit)html+='<div class="panel-row"><span class="panel-label">Current Price</span><span class="panel-val">'+d.exit.close+'</span></div>'
+    if(d.turnaround){{html+='<div class="panel-row"><span class="panel-label">Drawdown</span><span class="panel-val sf low">'+pct(d.turnaround.drawdown_252d)+'</span></div>'}}
+    if(d.turnaround){{html+='<div class="panel-row"><span class="panel-label">Dist From High</span><span class="panel-val sf low">'+pct(d.turnaround.distance_from_high_252d)+'</span></div>'}}
+    if(d.turnaround){{html+='<div class="panel-row"><span class="panel-label">Recovery</span><span class="panel-val sf '+(d.turnaround.recovery_from_60d_low>0?'high':'low')+'">'+pct(d.turnaround.recovery_from_60d_low)+'</span></div>'}}
+    if(d.turnaround){{html+='<div class="panel-row"><span class="panel-label">Volatility 60D</span><span class="panel-val">'+d.turnaround.volatility_60d.toFixed(2)+'%</span></div>'}}
+    html+='</div>'
+  }}
+  // Relative strength
+  if(d.exit||d.turnaround){{
+    html+='<div class="panel-section"><div class="panel-section-title">Relative Strength</div>'
+    if(d.exit){{html+='<div class="panel-row"><span class="panel-label">RS20</span><span class="panel-val sf '+(d.exit.rs_20d>0?'high':'low')+'">'+d.exit.rs_20d.toFixed(1)+'%</span></div>'}}
+    if(d.exit){{html+='<div class="panel-row"><span class="panel-label">RS Change 20D</span><span class="panel-val sf '+(d.exit.rs_change_20d>0?'high':'low')+'">'+d.exit.rs_change_20d.toFixed(1)+'%</span></div>'}}
+    if(d.turnaround){{html+='<div class="panel-row"><span class="panel-label">RS Change 60D</span><span class="panel-val sf '+(d.turnaround.rs_change_60d>0?'high':'low')+'">'+pct(d.turnaround.rs_change_60d)+'</span></div>'}}
+    html+='</div>'
+  }}
+  // Trend status
+  if(d.exit){{
+    html+='<div class="panel-section"><div class="panel-section-title">Moving Averages</div>'
+    html+='<div class="panel-row"><span class="panel-label">vs MA20</span><span class="panel-val">'+(d.exit.ma20!=null?(d.exit.close<d.exit.ma20?'<span style="color:#ef4444">BELOW</span>':'<span style="color:#00c26f">ABOVE</span>'):'—')+'</span></div>'
+    html+='<div class="panel-row"><span class="panel-label">vs MA50</span><span class="panel-val">'+(d.exit.ma50!=null?(d.exit.close<d.exit.ma50?'<span style="color:#ef4444">BELOW</span>':'<span style="color:#00c26f">ABOVE</span>'):'—')+'</span></div>'
+    html+='<div class="panel-row"><span class="panel-label">vs MA100</span><span class="panel-val">'+(d.exit.ma100!=null?(d.exit.close<d.exit.ma100?'<span style="color:#ef4444">BELOW</span>':'<span style="color:#00c26f">ABOVE</span>'):'—')+'</span></div>'
+    html+='</div>'
+  }}
+  document.getElementById('pbody').innerHTML=html
+  document.getElementById('panel').classList.add('show')
+  document.getElementById('overlay').classList.add('show')
+}}
+
+function closePanel(){{
+  document.getElementById('panel').classList.remove('show')
+  document.getElementById('overlay').classList.remove('show')
+}}
+
+document.addEventListener('keydown',function(e){{if(e.key==='Escape')closePanel()}})
+document.addEventListener('click',function(e){{var t=e.target.closest('.tk-click');if(t){{var tkr=t.getAttribute('data-ticker')||t.textContent.trim();e.stopPropagation();openPanel(tkr)}}}})
 </script>
 </body>
 </html>'''
@@ -480,8 +617,14 @@ def main():
                 except (ValueError, TypeError):
                     r[key] = None
     print(f"  Loaded {len(exit_data)} exit watchlist records")
+    profiles = {}
+    if PROFILES_FILE.exists():
+        profiles = read_json(PROFILES_FILE)
+        print(f"  Loaded {len(profiles)} company profiles")
+    else:
+        print("  No company_profiles.json found — skipping")
     print("  Generating HTML...")
-    html = build_html(leaders, turnaround, summary, history, streaks, date_str, exit_data)
+    html = build_html(leaders, turnaround, summary, history, streaks, date_str, exit_data, profiles)
     V2_DIR.mkdir(parents=True, exist_ok=True)
     output_path = V2_DIR / 'index.html'
     with open(output_path, 'w', encoding='utf-8') as f:

@@ -26,6 +26,11 @@ no new research without explicit approval. Focus: data integrity and documentati
 | Dashboard | ACTIVE | Single dashboard, 5 tabs |
 | Turnaround Watchlist | RESEARCH MONITORING | Paper trading only |
 | Exit Monitor V1.1 | ACTIVE | Rule-based, Version C thresholds |
+| AUDIT-003 | COMPLETED | Exit Layer distribution validated — Rule C 97% sensitive in bear market |
+
+### 2.6 Exit Monitor — Sensitivity Note
+
+**AUDIT-003 finding (2026-06-07):** Current distribution: 30% EXIT, 67% EXIT RISK, 3% HEALTHY. Rule C (Close<MA50) triggers on 97% of IDX30 because avg drawdown is -36.9% and 0/30 stocks are above MA20. State WEAKENING and EXIT WATCH are currently dead states — no stock triggers Rule A or B alone without also triggering Rule C. This is driven by broad market weakness, not threshold error, but it means the 5-level state machine collapses to 3 levels during bear markets. Exit Layer is most useful for discriminating within top 10 Config B (3 EXIT, 6 EXIT RISK, 1 HEALTHY).
 | Data Quality Audit | COMPLETED | AUDIT-001 + AUDIT-002: PBV & DY fixes applied |
 | Data Quality Rule | ACTIVE | DATA_QUALITY_RULE_PBV_V1 — auto-flag invalid PBV |
 
@@ -330,6 +335,7 @@ ISI/
 - [x] AUDIT-001 — Data quality audit (PBV fix, DY fix)
 - [x] AUDIT-002 — Yahoo PBV field verification
 - [x] DATA_QUALITY_RULE_PBV_V1 — Formalized and deployed
+- [x] AUDIT-003 — Exit Layer distribution validation (2026-06-07) — found Rule C drives 97% classification; WEAKENING/EXIT WATCH dead states in bear market
 
 ### BACKLOG TEKNIS
 - [ ] Monthly archive restoration — update `research/tools/` to read from `docs/archive/`

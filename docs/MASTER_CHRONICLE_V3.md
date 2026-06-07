@@ -105,7 +105,7 @@ isolates alpha failure.
 | AUDIT-001 | Data quality audit | PBV salah untuk 8 ticker, DY rendering 100x | PBV fix (PE×ROE), DY format fix |
 | AUDIT-002 | Yahoo PBV field verification | bookValue/priceToBook salah, PE×ROE fallback terbaik | DATA_QUALITY_RULE_PBV_V1 formalized |
 | IMPLEMENT-003 | Dashboard regression recovery | Insight Layer V1 caused TDZ crash (PF before init), table disappearance | ENGINEERING RULE-005 established, append-only mandate |
-| RESEARCH-012 | Portfolio Decision Layer | Does EXIT + Rank + Turnaround beat passive Top 5? | P1 complete (EXIT→SELL REJECTED), P2 complete (Drop>10 VALIDATED), P3 complete (Replacement PASSED) |
+| RESEARCH-012 | Portfolio Decision Layer | Does EXIT + Rank + Turnaround beat passive Top 5? | P1 complete (EXIT→SELL REJECTED), P2 complete (Drop>10 VALIDATED), P3 complete (Replacement PASSED), P4 complete (Matrix built) |
 | RESEARCH-012A | EXIT Sell Hypothesis | Does EXIT state justify automatic selling? | REJECTED — EXIT stocks outperform Healthy at 90D (+2.16%, p=0.04) |
 | RESEARCH-012B | Rank Deterioration Validation | Can rank deterioration justify selling? | COMPLETE — Drop > 10 validated: 25.58% CAGR, 16.61% Alpha. Promoted to P3 |
 
@@ -134,9 +134,19 @@ Method: For each rank-drop >10 event, compare HOLD (keep deteriorated stock) vs 
 Result: **PASSED — Replacement consistently outperforms hold.** Portfolio: REPLACE 24.21% CAGR (+4.76% vs HOLD), 0.68 Sharpe (+0.11), 15.40% Alpha (+4.45%), MaxDD -20.7% (vs -29.2%). Event-level (10 events): 6M win rate 70%, avg excess +10.07%. Replaced stocks had negative 1M returns (-1.66%), confirming rank drop >10 is genuine deterioration. Replacements bounced back: +1.91% (1M), +14.60% (3M), +16.00% (6M).
 Gate: **PASSED** — replacement consistently outperforms hold across all metrics.
 
-**Phase 4 — Exit + Rank Matrix**
-Build decision matrix from every EXIT×Rank combination. Backtest empirically. No assumptions.
-Outputs: Decision performance table.
+**Phase 4 — Exit + Rank Decision Matrix** ✅ COMPLETED 2026-06-08
+Build empirical decision matrix from every EXIT state × Rank bucket combination (30D forward returns). Daily warehouse 2022-2026, 31k classified records across 12 cells.
+Result: **Matrix created. Hypothesized rules (EXIT→SELL, EXIT→TRIM) invalidated by data.**
+Key findings:
+  - EXIT RISK (Close < MA50) is the ONLY consistently negative state: -0.23% (Top 10), -0.82% (Rank 11-20), -0.48% (Rank >20) 30D avg
+  - EXIT + Top 10: +1.70% 30D (HOLD, NOT REVIEW) — confirms Phase 1
+  - EXIT + Rank >20: +0.85% 30D (HOLD caution, NOT SELL)
+  - WEAKENING + Rank 11-20: -1.39% 30D (worst cell, 41.3% WR)
+Derived rules:
+  - HOLD: HEALTHY Top 10, EXIT WATCH any, WEAKENING Top 10/>20, EXIT Top 10
+  - REVIEW: EXIT RISK any rank, WEAKENING Rank 11-20
+  - No TRIM/SELL cells found — no combination produces sufficiently negative returns
+Decision Layer implication: EXIT alone cannot justify TRIM or SELL. Only EXIT RISK (technical breakdown below MA50) warrants REVIEW.
 
 **Phase 5 — Turnaround Promotion Test**
 Question: When should Turnaround candidates replace existing holdings?
@@ -168,6 +178,14 @@ Research-supported results. Do NOT modify without new evidence.
 - **EXIT→SELL is invalid** — EXIT stocks outperform Healthy at 90D (+2.16%, p=0.04). EXIT cannot be used as a standalone SELL signal.
 - D1 sub-signal (Close<MA100 + RS20<0 + RS_CHG<0): -0.85% excess at 30D, not significant (p=0.18)
 - D2 sub-signal (drawdown>15% from 252d high): predicts bounceback (+1.33% excess at 30D, p=0.08)
+
+### Exit + Rank Decision Matrix (RESEARCH-012 P4)
+- **EXIT RISK (Close < MA50) is the only consistently bearish state**: -0.23% to -0.82% 30D avg across rank buckets
+- **EXIT + Top 10 = HOLD**: +1.70% 30D (53% WR) — EXIT is NOT a sell signal even in context
+- **EXIT + Rank >20 = HOLD (caution)**: +0.85% 30D (46.9% WR) — not negative enough for SELL
+- **WEAKENING + Rank 11-20** is worst cell: -1.39% 30D (41.3% WR)
+- Hypothesized rules (EXIT→SELL, EXIT→TRIM) all invalidated by data
+- Decision layer signal: only EXIT RISK warrants REVIEW; no cell justifies SELL
 
 ### Replacement (RESEARCH-012 P3)
 - **Replacement consistently beats holding**: REPLACE 24.21% CAGR vs HOLD 19.45% (+4.76%)
@@ -421,6 +439,6 @@ ISI/
   - [x] Phase 1 — Exit Validation ✅ NOT CONFIRMED (EXIT does NOT underperform; +2.16% excess at 90D, p=0.04)
   - [x] Phase 2 — Rank Deterioration Test ✅ PASSED (Drop > 10: 25.58% CAGR, +6.13% vs baseline)
   - [x] Phase 3 — Replacement Test ✅ PASSED (REPLACE 24.21% CAGR vs HOLD 19.45%, +4.76%)
-  - [ ] Phase 4 — Exit + Rank Decision Matrix
+  - [x] Phase 4 — Exit + Rank Decision Matrix ✅ COMPLETE (EXIT RISK only bearish signal; no TRIM/SELL found)
   - [ ] Phase 5 — Turnaround Promotion Test
   - [ ] Production Gate Review — all phases compiled vs passive monthly

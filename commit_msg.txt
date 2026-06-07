@@ -1,18 +1,20 @@
-research: RESEARCH-012 Phase 3 -- Replacement Test complete
+docs: RESEARCH-012 Phase 4 -- Exit + Rank Decision Matrix complete
 
-Phase 3 result: PASSED -- Replacement consistently outperforms
-holding across all metrics.
+Phase 4 result: Decision matrix built from 31k classified records
+(5 states x 3 rank buckets, 12 populated cells).
 
-Portfolio-level:
-  REPLACE: 24.21% CAGR, 0.68 Sharpe, -20.7% DD, 15.40% Alpha
-  HOLD:    19.45% CAGR, 0.58 Sharpe, -29.2% DD, 10.95% Alpha
-  Delta:   +4.76% CAGR, +0.11 Sharpe, +8.5% DD, +4.45% Alpha
+Key findings:
+- EXIT RISK (Close < MA50) is the ONLY bearish state:
+  Top 10: -0.23% | Rank 11-20: -0.82% | Rank >20: -0.48%
+- EXIT + Top 10 = +1.70% (HOLD, NOT REVIEW)
+- EXIT + Rank >20 = +0.85% (HOLD caution, NOT SELL)
+- WEAKENING + Rank 11-20 = worst cell (-1.39%, 41.3%)
 
-Event-level (10 rank-drop >10 events):
-  1M: REPLACE +1.91% vs HOLD -1.66% (diff +3.57%)
-  6M: REPLACE +16.00% vs HOLD +5.93% (diff +10.07%, 70% win rate)
+Hypothesized rules (EXIT->SELL, EXIT->TRIM) ALL invalidated.
+Only EXIT RISK warrants REVIEW; no cell justifies SELL.
 
-Decision rule confirmed: SELL when rank drops >10 from entry,
-replace with highest-ranked eligible stock.
+Decision Layer implication: EXIT alone cannot justify sell/trim.
+Rank + EXIT combined is still not bearish enough. EXIT RISK is
+the only actionable signal.
 
-CHRONICLE: P3 complete, findings added to Proven Findings
+CHRONICLE: P4 complete, Proven Findings updated

@@ -10,6 +10,8 @@ TURNAROUND_FILE = Path("turnaround_latest.csv")
 SUMMARY_FILE = Path("turnaround_summary.json")
 EXIT_FILE = Path("exit_watchlist_latest.csv")
 PROFILES_FILE = Path("company_profiles.json")
+FUND_FILE = Path("output/raw/fundamentals.json")
+GROWTH_FILE = Path("output/raw/growth.json")
 
 def read_csv(filepath):
     if not filepath.exists():
@@ -100,7 +102,7 @@ def file_age(path):
     age = datetime.datetime.now() - mtime
     return f"{age.days}d {age.seconds // 3600}h ago" if age.days < 30 else f"{age.days}d ago"
 
-def build_html(leaders, turnaround, summary, history, streaks, date_str, exit_data=None, profiles=None):
+def build_html(leaders, turnaround, summary, history, streaks, date_str, exit_data=None, profiles=None, fundamentals=None):
     date_short = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
     summary_data = summary if isinstance(summary, dict) else {}
     top_candidates = summary_data.get('top_candidates', [])
@@ -115,6 +117,7 @@ def build_html(leaders, turnaround, summary, history, streaks, date_str, exit_da
     streaks_json = json.dumps(streaks)
     exit_json = json.dumps(exit_data if exit_data else [])
     profiles_json = json.dumps(profiles if profiles else {})
+    fundamentals_json = json.dumps(fundamentals if fundamentals else {})
 
     return f'''<!DOCTYPE html>
 <html lang="en">
@@ -199,6 +202,17 @@ tr:hover td{{background:#1a1e24}}
 .panel-status.exit{{background:#2a1111;border:1px solid #661111;color:#ef4444}}
 .panel-status.portfolio{{background:#052e16;border:1px solid #166534;color:#00c26f}}
 .panel-status.healthy{{background:#171b20;border:1px solid #222830;color:#9CA3AF}}
+.fd-grid{{display:grid;grid-template-columns:1fr 1fr;gap:4px 12px}}
+.fd-item{{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #1a1f26;font-size:11px}}
+.fd-item:nth-last-child(-n+2){{border:none}}
+.fd-label{{color:#9CA3AF}}
+.fd-val{{font-family:'Space Mono',monospace;font-weight:600;color:#F5F7FA}}
+.fd-na{{color:#64748b;font-style:italic}}
+.fi-good{{color:#00c26f}} .fi-warn{{color:#f59e0b}} .fi-bad{{color:#ef4444}}
+.interp-box{{background:#12151a;border:1px solid #1a1f26;border-radius:6px;padding:10px 12px;margin-bottom:8px}}
+.interp-row{{display:flex;justify-content:space-between;font-size:11px;padding:3px 0}}
+.interp-label{{color:#9CA3AF}}
+.interp-conclusion{{font-size:11px;color:#C9D1D9;line-height:1.5;padding:6px 0 0 0}}
 .panel-bullet{{color:#9CA3AF;margin-right:6px}}
 .panel-summary{{font-size:12px;color:#C9D1D9;line-height:1.6;padding:8px 0}}
 </style>
@@ -459,13 +473,14 @@ function makeSortable(id,s,fn){{
 function st(i){{document.querySelectorAll('.tab-btn').forEach(function(b,j){{b.classList.toggle('active',j===i)}});document.querySelectorAll('.tc').forEach(function(t,j){{t.classList.toggle('active',j===i)}})}}
 
 const PF={profiles_json};
+const FD={fundamentals_json};
 
 function tickerData(t){{
   var ld=null,td=null,ed=null
   L.forEach(function(d){{if(d.ticker===t||d.ticker===t+'.JK')ld=d}})
   T.forEach(function(d){{if(d.ticker===t||d.ticker===t+'.JK')td=d}})
   EX.forEach(function(d){{if(d.ticker===t||d.ticker===t+'.JK')ed=d}})
-  return{{leader:ld,turnaround:td,exit:ed,profile:PF[t]||PF[t+'.JK']||null}}
+  return{{leader:ld,turnaround:td,exit:ed,profile:PF[t]||PF[t+'.JK']||null,fundamentals:FD[t+'.JK']||null}}
 }}
 
 function aiExplain(leaderData,turnaroundData,exitData){{
@@ -503,6 +518,61 @@ function aiExplain(leaderData,turnaroundData,exitData){{
   return lines.join('')
 }}
 
+function renderFundamentals(fd){{
+  if(!fd) return ''
+  var html=''
+  html+='<div class="panel-section"><div class="panel-section-title">FUNDAMENTAL SNAPSHOT</div>'
+  html+='<div class="fd-grid">'
+  function fmt(l,v,u){{
+    if(v===null||v===undefined) return '<div class="fd-item"><span class="fd-label">'+l+'</span><span class="fd-na">Tidak tersedia</span></div>'
+    var f=Number(v)
+    if(u==='%') return '<div class="fd-item"><span class="fd-label">'+l+'</span><span class="fd-val">'+(f*100).toFixed(1)+'%</span></div>'
+    if(u==='x') return '<div class="fd-item"><span class="fd-label">'+l+'</span><span class="fd-val">'+f.toFixed(1)+'x</span></div>'
+    return '<div class="fd-item"><span class="fd-label">'+l+'</span><span class="fd-val">'+f.toFixed(1)+'</span></div>'
+  }}
+  html+=fmt('ROE',fd.roe,'%')
+  html+=fmt('ROA',null,'%')
+  html+=fmt('PER',fd.pe_ratio,'x')
+  html+=fmt('PBV',fd.pb_ratio,'x')
+  html+=fmt('EPS Growth',fd.earnings_growth,'%')
+  html+=fmt('Revenue Growth',fd.revenue_growth,'%')
+  html+=fmt('DER',fd.debt_to_equity,'x')
+  html+=fmt('Dividend Yield',fd.dividend_yield,'%')
+  html+='</div></div>'
+  html+='<div class="panel-section"><div class="panel-section-title">INTERPRETASI SEDERHANA</div>'
+  html+='<div class="interp-box">'
+  var roe=fd.roe!==null&&fd.roe!==undefined?fd.roe:null
+  var pl=roe===null?'Tidak tersedia':roe>0.20?'Tinggi':roe>0.10?'Sedang':'Rendah'
+  html+='<div class="interp-row"><span class="interp-label">Profitabilitas</span><span class="fd-val">'+pl+'</span></div>'
+  var pe=fd.pe_ratio!==null&&fd.pe_ratio!==undefined?fd.pe_ratio:null
+  var pb=fd.pb_ratio!==null&&fd.pb_ratio!==undefined?fd.pb_ratio:null
+  var vl=pe===null?'Tidak tersedia':pe<10?'Murah':pe<20?'Sedang':'Mahal'
+  html+='<div class="interp-row"><span class="interp-label">Valuasi</span><span class="fd-val">'+vl+'</span></div>'
+  var rev=fd.revenue_growth!==null&&fd.revenue_growth!==undefined?fd.revenue_growth:null
+  var eps=fd.earnings_growth!==null&&fd.earnings_growth!==undefined?fd.earnings_growth:null
+  if(rev===null&&eps===null) var gl='Tidak tersedia'; else{{
+    var ag=0,ac=0
+    if(rev!==null){{ag+=rev;ac++}}
+    if(eps!==null){{ag+=eps;ac++}}
+    ag/=ac
+    var gl=ag>0.10?'Tinggi':ag>=0?'Sedang':'Negatif'
+  }}
+  html+='<div class="interp-row"><span class="interp-label">Pertumbuhan</span><span class="fd-val">'+gl+'</span></div>'
+  var der=fd.debt_to_equity!==null&&fd.debt_to_equity!==undefined?fd.debt_to_equity:null
+  var dl=der===null?'Tidak tersedia':der<0.5?'Rendah':der<1.5?'Sedang':'Tinggi'
+  html+='<div class="interp-row"><span class="interp-label">Utang</span><span class="fd-val">'+dl+'</span></div>'
+  var cc='Perusahaan ini memiliki '
+  cc+=pl==='Tinggi'?'profitabilitas yang kuat':pl==='Sedang'?'profitabilitas yang cukup baik':'profitabilitas yang rendah'
+  cc+=', '
+  cc+=vl==='Murah'?'valuasi yang relatif murah':vl==='Sedang'?'valuasi yang wajar':'valuasi yang relatif mahal'
+  cc+=', dengan '
+  cc+=gl==='Tinggi'?'pertumbuhan yang tinggi':gl==='Sedang'?'pertumbuhan yang stabil':gl==='Negatif'?'pertumbuhan yang negatif':'data pertumbuhan tidak tersedia'
+  cc+='.'
+  html+='<div class="interp-conclusion">'+cc+'</div>'
+  html+='</div></div>'
+  return html
+}}
+
 function openPanel(ticker){{
   var d=tickerData(ticker)
   document.getElementById('ptk').textContent=ticker
@@ -515,6 +585,8 @@ function openPanel(ticker){{
     html+='<div class="panel-section"><div class="panel-section-title">TENTANG PERUSAHAAN</div>'
     html+='<div class="panel-summary">'+d.profile.summary+'</div></div>'
   }}
+  // Fundamental snapshot
+  html+=renderFundamentals(d.fundamentals)
   // Dashboard state
   html+='<div class="panel-section"><div class="panel-section-title">STATUS DASHBOARD</div>'
   if(d.leader)html+='<div class="panel-row"><span class="panel-label">Peringkat Leader</span><span class="panel-val">#'+d.leader.rank+'</span></div>'
@@ -623,8 +695,20 @@ def main():
         print(f"  Loaded {len(profiles)} company profiles")
     else:
         print("  No company_profiles.json found — skipping")
+    fundamentals = {}
+    if FUND_FILE.exists():
+        raw_fund = read_json(FUND_FILE)
+        raw_growth = read_json(GROWTH_FILE) if GROWTH_FILE.exists() else {}
+        for ticker, data in raw_fund.items():
+            fundamentals[ticker] = dict(data)
+            if ticker in raw_growth:
+                fundamentals[ticker]['revenue_growth'] = raw_growth[ticker].get('revenue_growth')
+                fundamentals[ticker]['earnings_growth'] = raw_growth[ticker].get('earnings_growth')
+        print(f"  Loaded {len(fundamentals)} fundamental records")
+    else:
+        print("  No fundamentals data found — skipping")
     print("  Generating HTML...")
-    html = build_html(leaders, turnaround, summary, history, streaks, date_str, exit_data, profiles)
+    html = build_html(leaders, turnaround, summary, history, streaks, date_str, exit_data, profiles, fundamentals)
     V2_DIR.mkdir(parents=True, exist_ok=True)
     output_path = V2_DIR / 'index.html'
     with open(output_path, 'w', encoding='utf-8') as f:

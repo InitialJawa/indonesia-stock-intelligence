@@ -1,0 +1,62 @@
+{
+  "rule": "DATA_QUALITY_RULE_PBV_V1",
+  "date": "2026-06-07",
+  "flags": {
+    "ADRO.JK": {
+      "field": "pb_ratio",
+      "original_value": 13176.471,
+      "corrected_value": 0.7421,
+      "status": "FIXED",
+      "method": "PE*ROE"
+    },
+    "AMMN.JK": {
+      "field": "pb_ratio",
+      "original_value": 43289.477,
+      "corrected_value": 2.3612,
+      "status": "FIXED",
+      "method": "PE*ROE"
+    },
+    "BRPT.JK": {
+      "field": "pb_ratio",
+      "original_value": 59200.0,
+      "corrected_value": 4.737,
+      "status": "FIXED",
+      "method": "PE*ROE"
+    },
+    "ESSA.JK": {
+      "field": "pb_ratio",
+      "original_value": 21666.666,
+      "corrected_value": 1.3281,
+      "status": "FIXED",
+      "method": "PE*ROE"
+    },
+    "ITMG.JK": {
+      "field": "pb_ratio",
+      "original_value": 12732.558,
+      "corrected_value": 0.712,
+      "status": "FIXED",
+      "method": "PE*ROE"
+    },
+    "MDKA.JK": {
+      "field": "pb_ratio",
+      "original_value": 80312.5,
+      "corrected_value": null,
+      "status": "UNFIXABLE",
+      "reason": "PE=None, ROE=0.0055299997"
+    },
+    "PGAS.JK": {
+      "field": "pb_ratio",
+      "original_value": 12991.453,
+      "corrected_value": 0.8502,
+      "status": "FIXED",
+      "method": "PE*ROE"
+    },
+    "TPIA.JK": {
+      "field": "pb_ratio",
+      "original_value": 30348.836,
+      "corrected_value": 1.4595,
+      "status": "FIXED",
+      "method": "PE*ROE"
+    }
+  }
+}

@@ -29,7 +29,9 @@ def main():
 
         # Jika info bernilai None, fallback ke 0
         pe = info.get("pe_ratio") or 0
-        pb = info.get("pb_ratio") or 0
+        pb_raw = info.get("pb_ratio")
+        # PBV null = missing data (UNFIXABLE) -> sentinel ekstrem -> skor 0 setelah inversi
+        pb = 1e10 if pb_raw is None else pb_raw
         dividend = info.get("dividend_yield") or 0
 
         pe_values.append(pe)

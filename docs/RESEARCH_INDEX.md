@@ -10,3 +10,5 @@
 | R010 | COMPLETE | Can a timing overlay improve Config B? | Timing degraded all metrics. Sharpe: -0.15 to -0.18. CAGR: 0.81% to -0.53%. | NOT PRODUCTION. Timing does not add value. |
 | R011 | COMPLETE | Can Turnaround ranking generate alpha? | Marginal alpha (3.05% CAPM). Negative CAGR (-0.17%). Config B superior in all metrics. | Watchlist tool. Not standalone strategy. |
 | S01 | COMPLETE | Can we predict sell signals? | No. Losers look HEALTHY at T0 (strong RS, above MA20, elevated volume). Shift to rule-based exits. | Exit Layer V1.1 built. Predictive sell abandoned. |
+| AUDIT-001 | COMPLETE | Data quality audit | 2 critical (PBV 8 ticker, DY 100×), 1 medium (AMMN revenue). PBV fix PE×ROE applied. DY format `'dy'` fixed. | DATA_QUALITY_RULE_PBV_V1 formalized. |
+| AUDIT-002 | COMPLETE | Yahoo PBV field verification | bookValue/priceToBook salah untuk 8/30 ticker. bookValuePerShare/totalEquity always None. PE×ROE error <10%. | PE×ROE adopted as canonical fallback. MDKA accepted as data limitation. |

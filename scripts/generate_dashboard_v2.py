@@ -559,6 +559,7 @@ function renderFundamentals(fd){{
     if(v===null||v===undefined) return '<div class="fd-item"><span class="fd-label">'+l+'</span><span class="fd-na">Tidak tersedia</span></div>'
     var f=Number(v)
     if(u==='%') return '<div class="fd-item"><span class="fd-label">'+l+'</span><span class="fd-val">'+(f*100).toFixed(1)+'%</span></div>'
+    if(u==='dy') return '<div class="fd-item"><span class="fd-label">'+l+'</span><span class="fd-val">'+f.toFixed(1)+'%</span></div>'
     if(u==='x') return '<div class="fd-item"><span class="fd-label">'+l+'</span><span class="fd-val">'+f.toFixed(1)+'x</span></div>'
     if(u==='mc') return '<div class="fd-item"><span class="fd-label">'+l+'</span><span class="fd-val">'+fmtMarketCap(f)+'</span></div>'
     return '<div class="fd-item"><span class="fd-label">'+l+'</span><span class="fd-val">'+f.toFixed(1)+'</span></div>'
@@ -570,7 +571,7 @@ function renderFundamentals(fd){{
   html+=fmt('EPS Growth',fd.earnings_growth,'%')
   html+=fmt('Revenue Growth',fd.revenue_growth,'%')
   html+=fmt('DER',fd.debt_to_equity,'x')
-  html+=fmt('Dividend Yield',fd.dividend_yield,'%')
+  html+=fmt('Dividend Yield',fd.dividend_yield,'dy')
   html+=fmt('Market Cap',fd.market_cap,'mc')
   html+='</div></div>'
   html+='<div class="panel-section"><div class="panel-section-title">INTERPRETASI SEDERHANA</div>'

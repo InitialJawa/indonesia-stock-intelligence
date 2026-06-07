@@ -15,6 +15,8 @@ stocks using a multi-factor model (Config B) with supporting turnaround and exit
 No machine learning. No predictive models. Rule-based exits only.
 
 **Status:** PRODUCTION (paper trading + dashboard monitoring)
+**Mode:** STABILIZATION — no production strategy changes, no Config B modifications,
+no new research without explicit approval. Focus: data integrity and documentation.
 
 | Component | Status | Notes |
 |-----------|--------|-------|
@@ -24,6 +26,8 @@ No machine learning. No predictive models. Rule-based exits only.
 | Dashboard | ACTIVE | Single dashboard, 6 tabs |
 | Turnaround Watchlist | RESEARCH MONITORING | Paper trading only |
 | Exit Monitor V1.1 | ACTIVE | Rule-based, Version C thresholds |
+| Data Quality Audit | COMPLETED | AUDIT-001 + AUDIT-002: PBV & DY fixes applied |
+| Data Quality Rule | ACTIVE | DATA_QUALITY_RULE_PBV_V1 — auto-flag invalid PBV |
 
 ---
 
@@ -94,6 +98,8 @@ isolates alpha failure.
 | R010 | Timing overlay on Config B | Timing degrades all metrics | Abandoned — not production |
 | R011 | Turnaround standalone alpha? | Marginal alpha, negative CAGR | Watchlist tool, not strategy |
 | S01 | Predictive sell signal? | Not viable — losers look healthy at T0 | Rule-based exits built |
+| AUDIT-001 | Data quality audit | PBV salah untuk 8 ticker, DY rendering 100x | PBV fix (PE×ROE), DY format fix |
+| AUDIT-002 | Yahoo PBV field verification | bookValue/priceToBook salah, PE×ROE fallback terbaik | DATA_QUALITY_RULE_PBV_V1 formalized |
 
 ---
 
@@ -143,7 +149,53 @@ Research-supported results. Do NOT modify without new evidence.
 
 ---
 
-## 6. LESSONS LEARNED
+## 6. DATA QUALITY FINDINGS
+
+### AUDIT-001: Data Quality Audit (2026-06-07)
+**Lingkup:** Seluruh 30 anggota IDX30 — Yahoo Finance single source.
+
+**Masalah Kritis:**
+
+1. **PBV Yahoo salah untuk 8 ticker** — Yahoo `priceToBook` mengembalikan nilai
+   12.731–59.200× untuk saham yang seharusnya 0,7–4,7×. Semua terdampak adalah
+   perusahaan komoditas/mining/energi.
+   - **Fix:** PBV = PE × ROE (terbukti matematis, error <10%)
+   - **7 ticker diperbaiki** (ADRO, AMMN, TPIA, BRPT, PGAS, ESSA, ITMG)
+   - **1 ticker unfixable** (MDKA — PE=null karena rugi)
+
+2. **Dividend Yield rendering 100×** — Dashboard mengalikan DY dengan 100,
+   menampilkan BBCA 662% (seharusnya 6,62%).
+   - **Fix:** Format `'dy'` — tidak dikali 100. Yahoo return DY sebagai persen.
+
+**Masalah Sedang:**
+- **AMMN revenue_growth = 37.937%** — data error Yahoo (seharusnya ~minor).
+  Tidak pengaruh scoring (earnings-only growth), hanya tampilan dashboard.
+
+**Dampak Scoring:** Value score 7 ticker naik signifikan (+1,38 s.d. +22,42).
+Final ranking Config B tidak berubah material (value weight hanya 10%).
+
+### AUDIT-002: Verifikasi Field Yahoo untuk PBV (2026-06-07)
+**Kesimpulan:**
+- `bookValue` dan `priceToBook` dari Yahoo tidak reliable untuk 8/30 ticker
+- `bookValuePerShare` dan `totalEquity` selalu `None`
+- `sharesOutstanding` akurat untuk semua ticker
+- PE×ROE adalah fallback terbaik — error <10% vs PBV normal
+
+**Pola:** Hanya saham komoditas/mining/energi yang terdampak (8 ticker).
+Perbankan, konsumen, dan infrastruktur normal.
+
+### DATA_QUALITY_RULE_PBV_V1
+**Rule:** Jika `pb_ratio > 100` atau `< 0` → INVALID.
+- Jika PE dan ROE tersedia → PBV = PE × ROE (status: FIXED)
+- Jika PE=null → PBV = null (status: UNFIXABLE)
+- Flag dicatat di `data/state/data_quality_flags.json`
+- Never use extreme PBV in scoring
+
+**Null PBV handling:** Null → sentinel 1e10 → worst percentile after inversion → score 0.
+
+---
+
+## 7. LESSONS LEARNED
 
 1. **Future Winner != Current Leader** — Stocks with highest forward returns look distressed at entry.
 2. **RS Acceleration precedes Price** — RS_CHANGE_60D > 0 precedes price recovery by 10-20 days.
@@ -158,7 +210,7 @@ Research-supported results. Do NOT modify without new evidence.
 
 ---
 
-## 7. CURRENT ARCHITECTURE
+## 8. CURRENT ARCHITECTURE
 
 ```
 ISI/
@@ -227,6 +279,10 @@ ISI/
 │   ├── RESEARCH_INDEX.md           Research summary table
 │   ├── LESSONS_LEARNED.md          Mistakes catalog
 │   ├── PROJECT_STATUS.md           Current state
+│   ├── AUDIT_DATA_QUALITY_REPORT.md  AUDIT-001 full report
+│   ├── AUDIT-002_KETERSEDIAAN_DATA_YAHOO_PBV.md  AUDIT-002 full report
+│   ├── PBV_FIX_REPORT.md           PBV fix details (7 fixed, 1 unfixable)
+│   ├── REPOSITORY_REFACTOR_REPORT.md  Phase 1+2 report
 │   ├── ADR-002/003/004             Architectural Decision Records
 │   ├── findings/                   Key research findings
 │   └── archive/                    Phase 1 & 2 archived directories
@@ -243,11 +299,12 @@ ISI/
 | Exit Summary | `data/state/exit_summary.json` | `scripts/generate_exit_watchlist.py` |
 | Entry Prices | `data/state/exit_entry_prices.json` | `scripts/generate_exit_watchlist.py` |
 | Company Profiles | `data/state/company_profiles.json` | Manual / external |
+| Data Quality Flags | `data/state/data_quality_flags.json` | `collectors/fundamentals.py` |
 | Dashboard | `dashboard/index.html` | `scripts/generate_dashboard_v2.py` |
 
 ---
 
-## 8. ACTIVE WORKFLOWS
+## 9. ACTIVE WORKFLOWS
 
 | Workflow | Schedule | Actions | Outputs |
 |----------|----------|---------|---------|
@@ -256,7 +313,7 @@ ISI/
 
 ---
 
-## 9. OPEN QUESTIONS
+## 10. OPEN QUESTIONS
 
 1. **Config F vs Config B** — Config F (Q25/G10-earnings/V30/M35) shows higher CAGR in standalone tests. Should Config B be replaced? BLOCKED: requires Historical Factor Warehouse V2 for proper OOS validation.
 2. **Exit Rule D threshold** — Current Version C uses (Close<MA100 AND RS20<0 AND RS_CHANGE_20D<0) OR DD>15%. Is OR DD>15% too aggressive? Under review.
@@ -266,15 +323,26 @@ ISI/
 
 ---
 
-## 10. FUTURE BACKLOG
+## 11. BACKLOG
 
+### ✓ Completed
 - [x] Repository Phase 1 — Documentation consolidation & archival
 - [x] Repository Phase 2 — Root directory simplification
+- [x] AUDIT-001 — Data quality audit (PBV fix, DY fix)
+- [x] AUDIT-002 — Yahoo PBV field verification
+- [x] DATA_QUALITY_RULE_PBV_V1 — Formalized and deployed
+
+### BACKLOG TEKNIS
+- [ ] Monthly archive restoration — update `research/tools/` to read from `docs/archive/`
+- [ ] Dashboard maintenance — AMMN revenue_growth display cap, cosmetic issues
+- [ ] Data quality monitoring — automated flag review at monthly pipeline
+- [ ] Automated daily exit watchlist execution (paper trading)
+- [ ] Sector exposure monitoring for Config B portfolio
+- [ ] Gemini AI narrative to paid tier (if quota critical)
+
+### ANTRIAN RISET
 - [ ] Build Historical Factor Warehouse V2 (2021-present factor scores)
 - [ ] Re-run OOS weight validation with real factor data
 - [ ] Config B vs Config F comparison on real historical data
 - [ ] Turnaround-Config B blended portfolio correlation study
-- [ ] Gemini AI narrative to paid tier (if quota critical)
 - [ ] Exit Rule D threshold backtest (V1.1 vs alternatives)
-- [ ] Automated daily exit watchlist execution (paper trading)
-- [ ] Sector exposure monitoring for Config B portfolio

@@ -74,3 +74,8 @@
 **Reality:** Synthetic proxy was volume-adjusted momentum, not real foreign transaction data. Validity score: 10/100. Dropped CAGR from 6.62% to 3.11%.
 **Source:** RESEARCH-008 audit
 **Impact:** Foreign flow factor parked indefinitely. Needs real institutional flow data.
+
+## LESSON-004: Jangan Menganggap Data Vendor Selalu Benar
+**Temuan:** Yahoo Finance menghasilkan data PBV yang salah untuk 8 ticker IDX30. Nilai `priceToBook` berkisar 12.731–59.200× untuk saham yang seharusnya 0,7–4,7×. Pola: semua perusahaan komoditas/mining/energi. Perbankan dan konsumen tidak terdampak.
+**Dampak:** Value score 7 ticker terdistorsi (terlalu rendah). Ranking akhir tidak berubah material karena value weight hanya 10%.
+**Keputusan:** DATA_QUALITY_RULE_PBV_V1 — validasi PBV > 100 atau < 0. Jika invalid, fallback ke PE×ROE. Jika tidak bisa (PE null), set null → sentinel 1e10 → skor terendah. Flag dicatat di `data/state/data_quality_flags.json`.

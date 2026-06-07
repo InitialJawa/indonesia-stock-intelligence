@@ -61,7 +61,8 @@ indonesia-stock-intelligence/
 │       ├── [P] turnaround_summary.json   Turnaround summary
 │       ├── [P] exit_summary.json         Exit summary
 │       ├── [P] exit_entry_prices.json    Entry prices for exit monitor
-│       └── [P] company_profiles.json     Company descriptions
+│       ├── [P] company_profiles.json     Company descriptions
+│       └── [P] data_quality_flags.json   DATA_QUALITY_RULE_PBV_V1 flags
 │
 ├── [P] database/
 │   ├── [P] monthly/                     Monthly prices (64 tickers, 2018-2026)
@@ -161,6 +162,9 @@ indonesia-stock-intelligence/
 │   ├── [P] RESEARCH_INDEX.md            Research summary table
 │   ├── [P] LESSONS_LEARNED.md           Mistakes catalog
 │   ├── [P] PROJECT_STATUS.md            Current state
+│   ├── [P] AUDIT_DATA_QUALITY_REPORT.md AUDIT-001 full report
+│   ├── [P] AUDIT-002_KETERSEDIAAN_DATA_YAHOO_PBV.md AUDIT-002 full report
+│   ├── [P] PBV_FIX_REPORT.md            PBV fix details
 │   ├── [P] REPOSITORY_REFACTOR_REPORT.md
 │   ├── [P] ROOT_FILE_CLASSIFICATION.md  Phase 2 classification
 │   ├── [P] ROOT_SIMPLIFICATION_REPORT.md Phase 2 report
@@ -187,3 +191,5 @@ indonesia-stock-intelligence/
 - `warehouse_historical/` dan `database/historical/` menyimpan tipe data berbeda — keduanya dipertahankan
 - `research/out_of_sample_validation.py` — masih di `research/`, diblokir oleh Historical Factor Warehouse V2
 - Root level hanya berisi 6 file operasional (target tercapai ✅)
+- AUDIT-001 + AUDIT-002 selesai — data quality rule PBV aktif di `collectors/fundamentals.py`
+- Mode status: STABILIZATION (no new features, no ranking changes, no research without approval)

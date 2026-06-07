@@ -160,6 +160,11 @@ tr:hover td{background:#1a1e24}
   .conc-list li{font-size:10px;padding:1px 0 1px 10px}
   .section-title::after{display:none}
   #t2 .card-grid:first-of-type{grid-template-columns:1fr}
+  #t2 .card-grid:nth-of-type(2){gap:4px}
+  #t2 .card-grid:nth-of-type(2) .card{padding:6px 8px;display:flex;flex-direction:column;justify-content:center;min-height:64px}
+  #t2 .card-grid:nth-of-type(2) .card-label{font-size:7px;margin-bottom:1px}
+  #t2 .card-grid:nth-of-type(2) .card-val{font-size:16px;line-height:1.2}
+  #t2 .card-grid:nth-of-type(2) .card-sub{font-size:7px;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#64748b}
   .help-modal{width:90vw;max-height:70vh}
   .help-title{font-size:11px}
   .help-body li{font-size:10px}
@@ -245,12 +250,12 @@ tr:hover td{background:#1a1e24}
   </div>
   <div class="section-title">Signal Diagnostics</div>
   <div class="card-grid">
-    <div class="card"><div class="card-label">KEKUATAN MULAI NAIK<span class="tip" onclick="showHelp('kekuatan_mulai_naik')">?</span></div><div class="card-val g">20</div><div class="card-sub">Saham yang mulai outperform pasar</div></div>
-    <div class="card"><div class="card-label">MINAT BELI MENINGKAT<span class="tip" onclick="showHelp('minat_beli_meningkat')">?</span></div><div class="card-val y">11</div><div class="card-sub">Aktivitas perdagangan di atas normal</div></div>
-    <div class="card"><div class="card-label">DI ATAS TREND PENDEK<span class="tip" onclick="showHelp('di_atas_trend_pendek')">?</span></div><div class="card-val">0</div><div class="card-sub">Harga di atas rata-rata 20 hari</div></div>
-    <div class="card"><div class="card-label">PANTUL DARI DASAR<span class="tip" onclick="showHelp('pantul_dari_dasar')">?</span></div><div class="card-val g">4</div><div class="card-sub">Memantul &gt;10% dari level terendah 60 hari</div></div>
-    <div class="card"><div class="card-label">RATA-RATA PENURUNAN<span class="tip" onclick="showHelp('rata_penurunan')">?</span></div><div class="card-val r">-36.89%</div><div class="card-sub">Rata-rata penurunan dari harga tertinggi</div></div>
-    <div class="card"><div class="card-label">RATA-RATA GEJOLAK<span class="tip" onclick="showHelp('rata_gejolak')">?</span></div><div class="card-val y">3.14%</div><div class="card-sub">Intensitas pergerakan harga rata-rata</div></div>
+    <div class="card"><div class="card-label">KEKUATAN MULAI NAIK<span class="tip" onclick="showHelp('kekuatan_mulai_naik')">?</span></div><div class="card-val g">20</div><div class="card-sub">Mulai outperform pasar</div></div>
+    <div class="card"><div class="card-label">MINAT BELI MENINGKAT<span class="tip" onclick="showHelp('minat_beli_meningkat')">?</span></div><div class="card-val y">11</div><div class="card-sub">Volume perdagangan tinggi</div></div>
+    <div class="card"><div class="card-label">DI ATAS TREND PENDEK<span class="tip" onclick="showHelp('di_atas_trend_pendek')">?</span></div><div class="card-val">0</div><div class="card-sub">Harga di atas MA20</div></div>
+    <div class="card"><div class="card-label">PANTUL DARI DASAR<span class="tip" onclick="showHelp('pantul_dari_dasar')">?</span></div><div class="card-val g">4</div><div class="card-sub">Pantul &gt;10% dari dasar 60d</div></div>
+    <div class="card"><div class="card-label">RATA-RATA PENURUNAN<span class="tip" onclick="showHelp('rata_penurunan')">?</span></div><div class="card-val r">-36.89%</div><div class="card-sub">Penurunan dari puncak 1th</div></div>
+    <div class="card"><div class="card-label">RATA-RATA GEJOLAK<span class="tip" onclick="showHelp('rata_gejolak')">?</span></div><div class="card-val y">3.14%</div><div class="card-sub">Volatilitas rata-rata 60d</div></div>
   </div>
   <div class="section-title">Top Candidates</div>
   <table>

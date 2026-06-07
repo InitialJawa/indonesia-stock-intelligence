@@ -1,0 +1,2 @@
+severity,category,issue,impact,resolution
+MEDIUM,Data Continuity,30 tickers have gaps > 10 days,Snapshot selection may fail,Handle date gaps gracefully in research script

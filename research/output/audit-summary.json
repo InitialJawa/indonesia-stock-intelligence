@@ -1,0 +1,45 @@
+{
+  "timestamp": "2026-06-07T14:15:14.439270",
+  "warehouse_file": "C:\\Users\\BedilGaib\\.gemini\\antigravity\\scratch\\indonesia-stock-intelligence\\database\\historical\\warehouse_daily_v4.parquet",
+  "audit_status": "READY TO RUN AUDIT",
+  "dataset": {
+    "shape": {
+      "rows": 59303,
+      "columns": 44
+    },
+    "date_range": {
+      "min": "2018-01-01 00:00:00",
+      "max": "2026-05-29 00:00:00",
+      "days_span": 3070
+    },
+    "unique_tickers": 30,
+    "total_records": 59303,
+    "longest_ticker": "AKRA.JK",
+    "max_records": 2062
+  },
+  "features": {
+    "total_expected": 25,
+    "found": 25,
+    "missing": 0,
+    "coverage_pct": 100.0
+  },
+  "issues": {
+    "total": 1,
+    "critical": 0,
+    "high": 0,
+    "medium": 1,
+    "info": 0
+  },
+  "quality": {
+    "look_ahead_bias_suspects": 4,
+    "look_ahead_bias_note": "Column names only - not comprehensive",
+    "duplicate_features": 0,
+    "abnormal_gaps": 30,
+    "coverage_calculation_note": "Relative to longest ticker history (not adjusted for listing age)"
+  },
+  "data_quality": {
+    "min_coverage_pct": 33.5,
+    "avg_coverage_pct": 95.9,
+    "max_gap_days": 12
+  }
+}

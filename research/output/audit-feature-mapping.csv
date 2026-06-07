@@ -1,0 +1,26 @@
+expected_feature,candidates_tested,actual_column,matched_candidate,fuzzy_match_score,found,category
+RS_20d,"rs20, rs_20, rs_20d",rs_20d,rs_20d,1.0,True,Relative Strength
+RS_60d,"rs60, rs_60, rs_60d",rs_60d,rs_60d,1.0,True,Relative Strength
+RS_120d,"rs120, rs_120, rs_120d",rs_120d,rs_120d,1.0,True,Relative Strength
+RS_252d,"rs252, rs_252, rs_252d",rs_252d,rs_252d,1.0,True,Relative Strength
+RS_CHANGE_20d,"rs_change_20, rs_change_20d, rs_delta_20",rs_change_20d,rs_change_20d,1.0,True,Relative Strength Delta
+RS_CHANGE_60d,"rs_change_60, rs_change_60d, rs_delta_60",rs_change_60d,rs_change_60d,1.0,True,Relative Strength Delta
+RECOVERY,"recovery, recovery_factor, recovery_60d",recovery_from_60d_low,recovery_from_low,0.909,True,Price Action
+DRAWDOWN,"drawdown, drawdown_252d, max_drawdown",drawdown_252d,drawdown_252d,1.0,True,Price Action
+DISTANCE_FROM_HIGH,"distance_from_high, dist_from_high, distance_from_high_252d",distance_from_high_252d,distance_from_high_252d,1.0,True,Price Action
+VOLATILITY_20d,"volatility_20d, volatility_20, vol_20d",volatility_20d,volatility_20d,1.0,True,Volatility
+VOLATILITY_60d,"volatility_60d, volatility_60, vol_60d",volatility_60d,volatility_60d,1.0,True,Volatility
+VOLUME_RATIO,"volume_ratio, vol_ratio, volume_ma_ratio",volume_ratio,volume_ratio,1.0,True,Volume
+MOMENTUM_SLOPE,"momentum_slope, momentum, slope",momentum_slope,momentum_slope,1.0,True,Momentum
+MA20,"ma20, ma_20, sma20",ma20,ma20,1.0,True,Moving Average
+MA50,"ma50, ma_50, sma50",ma50,ma50,1.0,True,Moving Average
+MA100,"ma100, ma_100, sma100",ma100,ma100,1.0,True,Moving Average
+MA200,"ma200, ma_200, sma200",ma200,ma200,1.0,True,Moving Average
+ABOVE_MA20,"above_ma20, price_above_ma20, close_above_ma20",above_ma20,above_ma20,1.0,True,MA Signal
+ABOVE_MA50,"above_ma50, price_above_ma50, close_above_ma50",above_ma50,above_ma50,1.0,True,MA Signal
+ABOVE_MA100,"above_ma100, price_above_ma100, close_above_ma100",above_ma100,above_ma100,1.0,True,MA Signal
+ABOVE_MA200,"above_ma200, price_above_ma200, close_above_ma200",above_ma200,above_ma200,1.0,True,MA Signal
+GOLDEN_CROSS,"golden_cross, golden_cross_flag, gc_flag",golden_cross,golden_cross,1.0,True,MA Signal
+DEATH_CROSS,"death_cross, death_cross_flag, dc_flag",death_cross,death_cross,1.0,True,MA Signal
+CLOSE,"close, Close, adj_close",Close,close,1.0,True,Price
+VOLUME,"volume, Volume, vol",Volume,volume,1.0,True,Volume

@@ -613,7 +613,7 @@ audit_summary = {
     }
 }
 
-with open(OUTPUT_DIR / "audit-summary.json", "w") as f:
+with open(OUTPUT_DIR / "audit-summary.json", "w", encoding="utf-8") as f:
     json.dump(audit_summary, f, indent=2)
 print(f"✓ audit-summary.json")
 
@@ -770,7 +770,7 @@ report_lines.append("- `audit-summary.json` - Machine-readable summary\n")
 
 report_text = "".join(report_lines)
 
-with open(OUTPUT_DIR / "research-008-audit-report.md", "w") as f:
+with open(OUTPUT_DIR / "research-008-audit-report.md", "w", encoding="utf-8") as f:
     f.write(report_text)
 print(f"✓ research-008-audit-report.md")
 

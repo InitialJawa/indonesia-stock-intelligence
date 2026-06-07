@@ -88,7 +88,7 @@ tr:hover td{background:#1a1e24}
 <body>
 <div class="hdr">
   <div class="logo">ISI <span>·</span> V2 <span>·</span> READ-ONLY DASHBOARD</div>
-  <div class="dt">2026-06-07 16:29 · IDX30</div>
+  <div class="dt">2026-06-07 16:34 · IDX30</div>
 </div>
 <div class="tab-nav">
   <button class="tab-btn active" onclick="st(0)">01 · Leaders</button>
@@ -325,8 +325,8 @@ function makeSortable(id,s,fn){
       var sc=r.exit_state==='EXIT'?'bg-red':r.exit_state==='EXIT RISK'?'bg-yellow':r.exit_state==='WEAKENING'?'bg-yellow':r.exit_state==='EXIT WATCH'?'bg-blue':'bg-green'
       var rc=r.rs_20d>0?'sf high':'sf low'
       var rcc=r.rs_change_20d>0?'sf high':'sf low'
-      var m50=r.close<r.ma50?'<span class="badge bg-red">BELOW</span>':'<span class="badge bg-green">ABOVE</span>'
-      var m100=r.close<r.ma100?'<span class="badge bg-red">BELOW</span>':'<span class="badge bg-green">ABOVE</span>'
+      var m50=r.close<r.ma50?'<span class="badge bg-red">DI BAWAH</span>':'<span class="badge bg-green">DI ATAS</span>'
+      var m100=r.close<r.ma100?'<span class="badge bg-red">DI BAWAH</span>':'<span class="badge bg-green">DI ATAS</span>'
       var dd=r.drawdown_from_entry<-15?'sf low':'sf high'
       var rc2=r.rank_change>0?'<span class="sf high">+'+r.rank_change+'</span>':r.rank_change<0?'<span class="sf low">'+r.rank_change+'</span>':'<span style="color:#9CA3AF">0</span>'
       return '<tr><td class="tk tk-click" data-ticker="'+r.ticker.split('.')[0]+'">'+r.ticker.split('.')[0]+'</td><td style="font-family:monospace;font-size:12px;color:#9CA3AF">#'+r.rank+'</td><td style="font-family:monospace;font-size:12px">'+rc2+'</td><td><span class="badge '+sc+'">'+r.exit_state+'</span></td><td style="font-family:monospace;font-size:11px;color:#9CA3AF">'+r.triggered_rules+'</td><td class="'+rc+'">'+r.rs_20d.toFixed(1)+'%</td><td class="'+rcc+'">'+r.rs_change_20d.toFixed(1)+'%</td><td>'+m50+'</td><td>'+m100+'</td><td class="'+dd+'">'+r.drawdown_from_entry.toFixed(1)+'%</td></tr>'
@@ -353,19 +353,19 @@ function tickerData(t){
 function aiExplain(leaderData,turnaroundData,exitData){
   var lines=[]
   if(turnaroundData&&turnaroundData.context_match&&turnaroundData.transition_match){
-    lines.push('<div class="panel-status turnaround"><b>TURNAROUND CANDIDATE</b>')
+    lines.push('<div class="panel-status turnaround"><b>KANDIDAT TURNAROUND</b>')
     lines.push('<div style="margin-top:6px;font-size:11px;color:#9CA3AF;font-weight:400">')
     if(turnaroundData.drawdown_252d<-20)lines.push('<span class="panel-bullet">&#8226;</span>Deep drawdown')
     if(turnaroundData.distance_from_high_252d<-15)lines.push('<span class="panel-bullet">&#8226;</span>Far from previous high')
     if(turnaroundData.rs_change_60d>0)lines.push('<span class="panel-bullet">&#8226;</span>Improving RS60')
     if(turnaroundData.volume_ratio>1.3)lines.push('<span class="panel-bullet">&#8226;</span>Elevated volume')
-    if(turnaroundData.recovery_from_60d_low>5)lines.push('<span class="panel-bullet">&#8226;</span>Recovery from lows')
+    if(turnaroundData.recovery_from_60d_low>5)lines.push('<span class="panel-bullet">&#8226;</span>Pemulihan dari dasar')
     lines.push('</div></div>')
     lines.push('<div style="font-size:11px;color:#64748b;margin-top:6px;line-height:1.5">Stock remains high risk but shows early signs of accumulation.</div>')
     return lines.join('')
   }
   if(exitData&&exitData.exit_state==='EXIT'){
-    lines.push('<div class="panel-status exit"><b>EXIT SIGNAL ACTIVE</b>')
+    lines.push('<div class="panel-status exit"><b>SINYAL EXIT AKTIF</b>')
     lines.push('<div style="margin-top:6px;font-size:11px;color:#9CA3AF;font-weight:400">')
     lines.push('<span class="panel-bullet">&#8226;</span>Exit state: '+exitData.exit_state)
     lines.push('<span class="panel-bullet">&#8226;</span>Rules: '+exitData.triggered_rules)
@@ -374,14 +374,14 @@ function aiExplain(leaderData,turnaroundData,exitData){
     return lines.join('')
   }
   if(leaderData&&leaderData.rank<=5){
-    lines.push('<div class="panel-status portfolio"><b>PORTFOLIO HOLDER</b>')
+    lines.push('<div class="panel-status portfolio"><b>PORTOFOLIO AKTIF</b>')
     lines.push('<div style="margin-top:6px;font-size:11px;color:#9CA3AF;font-weight:400">')
     lines.push('<span class="panel-bullet">&#8226;</span>Top 5 in Config B ranking')
-    lines.push('<span class="panel-bullet">&#8226;</span>Currently in portfolio')
+    lines.push('<span class="panel-bullet">&#8226;</span>Saat ini masuk portofolio')
     lines.push('</div></div>')
     return lines.join('')
   }
-  lines.push('<div class="panel-status healthy"><b>MONITORING</b></div>')
+    lines.push('<div class="panel-status healthy"><b>PEMANTAUAN</b></div>')
   return lines.join('')
 }
 
@@ -394,28 +394,28 @@ function openPanel(ticker){
   html+=aiExplain(d.leader,d.turnaround,d.exit)
   // Company summary
   if(d.profile&&d.profile.summary){
-    html+='<div class="panel-section"><div class="panel-section-title">About</div>'
+    html+='<div class="panel-section"><div class="panel-section-title">TENTANG PERUSAHAAN</div>'
     html+='<div class="panel-summary">'+d.profile.summary+'</div></div>'
   }
   // Dashboard state
-  html+='<div class="panel-section"><div class="panel-section-title">Dashboard State</div>'
-  if(d.leader)html+='<div class="panel-row"><span class="panel-label">Leader Rank</span><span class="panel-val">#'+d.leader.rank+'</span></div>'
-  if(d.turnaround){html+='<div class="panel-row"><span class="panel-label">Turnaround</span><span class="panel-val">'+(d.turnaround.context_match?'Context':'—')+(d.turnaround.transition_match?' / Transition':'')+'</span></div>'}
-  if(d.exit)html+='<div class="panel-row"><span class="panel-label">Exit State</span><span class="panel-val">'+d.exit.exit_state+'</span></div>'
+  html+='<div class="panel-section"><div class="panel-section-title">STATUS DASHBOARD</div>'
+  if(d.leader)html+='<div class="panel-row"><span class="panel-label">Peringkat Leader</span><span class="panel-val">#'+d.leader.rank+'</span></div>'
+  if(d.turnaround){html+='<div class="panel-row"><span class="panel-label">Status Turnaround</span><span class="panel-val">'+(d.turnaround.context_match?'Context':'—')+(d.turnaround.transition_match?' / Transition':'')+'</span></div>'}
+  if(d.exit)html+='<div class="panel-row"><span class="panel-label">Status Exit</span><span class="panel-val">'+d.exit.exit_state+'</span></div>'
   html+='</div>'
   // Price & trend
   if(d.turnaround||d.exit){
-    html+='<div class="panel-section"><div class="panel-section-title">Price &amp; Trend</div>'
-    if(d.exit)html+='<div class="panel-row"><span class="panel-label">Current Price</span><span class="panel-val">'+d.exit.close+'</span></div>'
-    if(d.turnaround){html+='<div class="panel-row"><span class="panel-label">Drawdown</span><span class="panel-val sf low">'+pct(d.turnaround.drawdown_252d)+'</span></div>'}
-    if(d.turnaround){html+='<div class="panel-row"><span class="panel-label">Dist From High</span><span class="panel-val sf low">'+pct(d.turnaround.distance_from_high_252d)+'</span></div>'}
-    if(d.turnaround){html+='<div class="panel-row"><span class="panel-label">Recovery</span><span class="panel-val sf '+(d.turnaround.recovery_from_60d_low>0?'high':'low')+'">'+pct(d.turnaround.recovery_from_60d_low)+'</span></div>'}
-    if(d.turnaround){html+='<div class="panel-row"><span class="panel-label">Volatility 60D</span><span class="panel-val">'+d.turnaround.volatility_60d.toFixed(2)+'%</span></div>'}
+    html+='<div class="panel-section"><div class="panel-section-title">HARGA &amp; TREN</div>'
+    if(d.exit)html+='<div class="panel-row"><span class="panel-label">Harga Terakhir</span><span class="panel-val">'+d.exit.close+'</span></div>'
+    if(d.turnaround){html+='<div class="panel-row"><span class="panel-label">Penurunan dari Puncak</span><span class="panel-val sf low">'+pct(d.turnaround.drawdown_252d)+'</span></div>'}
+    if(d.turnaround){html+='<div class="panel-row"><span class="panel-label">Jarak dari Harga Tertinggi</span><span class="panel-val sf low">'+pct(d.turnaround.distance_from_high_252d)+'</span></div>'}
+    if(d.turnaround){html+='<div class="panel-row"><span class="panel-label">Pemulihan dari Dasar</span><span class="panel-val sf '+(d.turnaround.recovery_from_60d_low>0?'high':'low')+'">'+pct(d.turnaround.recovery_from_60d_low)+'</span></div>'}
+    if(d.turnaround){html+='<div class="panel-row"><span class="panel-label">Volatilitas 60 Hari</span><span class="panel-val">'+d.turnaround.volatility_60d.toFixed(2)+'%</span></div>'}
     html+='</div>'
   }
   // Relative strength
   if(d.exit||d.turnaround){
-    html+='<div class="panel-section"><div class="panel-section-title">Relative Strength</div>'
+    html+='<div class="panel-section"><div class="panel-section-title">KEKUATAN RELATIF</div>'
     if(d.exit){html+='<div class="panel-row"><span class="panel-label">RS20</span><span class="panel-val sf '+(d.exit.rs_20d>0?'high':'low')+'">'+d.exit.rs_20d.toFixed(1)+'%</span></div>'}
     if(d.exit){html+='<div class="panel-row"><span class="panel-label">RS Change 20D</span><span class="panel-val sf '+(d.exit.rs_change_20d>0?'high':'low')+'">'+d.exit.rs_change_20d.toFixed(1)+'%</span></div>'}
     if(d.turnaround){html+='<div class="panel-row"><span class="panel-label">RS Change 60D</span><span class="panel-val sf '+(d.turnaround.rs_change_60d>0?'high':'low')+'">'+pct(d.turnaround.rs_change_60d)+'</span></div>'}
@@ -423,10 +423,10 @@ function openPanel(ticker){
   }
   // Trend status
   if(d.exit){
-    html+='<div class="panel-section"><div class="panel-section-title">Moving Averages</div>'
-    html+='<div class="panel-row"><span class="panel-label">vs MA20</span><span class="panel-val">'+(d.exit.ma20!=null?(d.exit.close<d.exit.ma20?'<span style="color:#ef4444">BELOW</span>':'<span style="color:#00c26f">ABOVE</span>'):'—')+'</span></div>'
-    html+='<div class="panel-row"><span class="panel-label">vs MA50</span><span class="panel-val">'+(d.exit.ma50!=null?(d.exit.close<d.exit.ma50?'<span style="color:#ef4444">BELOW</span>':'<span style="color:#00c26f">ABOVE</span>'):'—')+'</span></div>'
-    html+='<div class="panel-row"><span class="panel-label">vs MA100</span><span class="panel-val">'+(d.exit.ma100!=null?(d.exit.close<d.exit.ma100?'<span style="color:#ef4444">BELOW</span>':'<span style="color:#00c26f">ABOVE</span>'):'—')+'</span></div>'
+    html+='<div class="panel-section"><div class="panel-section-title">POSISI TERHADAP MA</div>'
+    html+='<div class="panel-row"><span class="panel-label">vs MA20</span><span class="panel-val">'+(d.exit.ma20!=null?(d.exit.close<d.exit.ma20?'<span style="color:#ef4444">DI BAWAH</span>':'<span style="color:#00c26f">DI ATAS</span>'):'—')+'</span></div>'
+    html+='<div class="panel-row"><span class="panel-label">vs MA50</span><span class="panel-val">'+(d.exit.ma50!=null?(d.exit.close<d.exit.ma50?'<span style="color:#ef4444">DI BAWAH</span>':'<span style="color:#00c26f">DI ATAS</span>'):'—')+'</span></div>'
+    html+='<div class="panel-row"><span class="panel-label">vs MA100</span><span class="panel-val">'+(d.exit.ma100!=null?(d.exit.close<d.exit.ma100?'<span style="color:#ef4444">DI BAWAH</span>':'<span style="color:#00c26f">DI ATAS</span>'):'—')+'</span></div>'
     html+='</div>'
   }
   document.getElementById('pbody').innerHTML=html

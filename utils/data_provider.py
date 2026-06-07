@@ -25,7 +25,9 @@ class YahooFinanceProvider:
             "operating_margin": "operatingMargins",
             "free_cash_flow": "freeCashflow",
             "revenue_growth": "revenueGrowth",
-            "earnings_growth": "earningsGrowth"
+            "earnings_growth": "earningsGrowth",
+            "roa": "returnOnAssets",
+            "market_cap": "marketCap"
         }
 
         if metric_name not in yf_metric_map:

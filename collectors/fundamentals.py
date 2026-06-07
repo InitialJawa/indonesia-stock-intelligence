@@ -19,13 +19,17 @@ def process_single_ticker(ticker, provider):
         "free_cash_flow": provider.get_fundamental_metric(ticker, "free_cash_flow"),
         "pe_ratio": provider.get_fundamental_metric(ticker, "pe_ratio"),
         "pb_ratio": provider.get_fundamental_metric(ticker, "pb_ratio"),
-        "dividend_yield": provider.get_fundamental_metric(ticker, "dividend_yield")
+        "dividend_yield": provider.get_fundamental_metric(ticker, "dividend_yield"),
+        "roa": provider.get_fundamental_metric(ticker, "roa"),
+        "market_cap": provider.get_fundamental_metric(ticker, "market_cap")
     }
     print(f"  ✓ Selesai: {ticker}")
     return ticker, data
 
 def collect_fundamentals():
-    print("--- Mengumpulkan Data Fundamental (Multithreading ⚡) ---")
+    import sys, io
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+    print("--- Mengumpulkan Data Fundamental (Multithreading) ---")
     
     with open(UNIVERSE_FILE, "r") as f:
         tickers = json.load(f)

@@ -520,6 +520,13 @@ function aiExplain(leaderData,turnaroundData,exitData){{
 
 function renderFundamentals(fd){{
   if(!fd) return ''
+  function fmtMarketCap(v){{
+    if(v===null||v===undefined) return 'Tidak tersedia'
+    var t=v/1e12
+    if(t<1) return Math.round(v/1e9)+' B'
+    if(t<10) return t.toFixed(1)+' T'
+    return Math.round(t).toLocaleString('id-ID')+' T'
+  }}
   var html=''
   html+='<div class="panel-section"><div class="panel-section-title">FUNDAMENTAL SNAPSHOT</div>'
   html+='<div class="fd-grid">'
@@ -528,16 +535,18 @@ function renderFundamentals(fd){{
     var f=Number(v)
     if(u==='%') return '<div class="fd-item"><span class="fd-label">'+l+'</span><span class="fd-val">'+(f*100).toFixed(1)+'%</span></div>'
     if(u==='x') return '<div class="fd-item"><span class="fd-label">'+l+'</span><span class="fd-val">'+f.toFixed(1)+'x</span></div>'
+    if(u==='mc') return '<div class="fd-item"><span class="fd-label">'+l+'</span><span class="fd-val">'+fmtMarketCap(f)+'</span></div>'
     return '<div class="fd-item"><span class="fd-label">'+l+'</span><span class="fd-val">'+f.toFixed(1)+'</span></div>'
   }}
   html+=fmt('ROE',fd.roe,'%')
-  html+=fmt('ROA',null,'%')
+  html+=fmt('ROA',fd.roa,'%')
   html+=fmt('PER',fd.pe_ratio,'x')
   html+=fmt('PBV',fd.pb_ratio,'x')
   html+=fmt('EPS Growth',fd.earnings_growth,'%')
   html+=fmt('Revenue Growth',fd.revenue_growth,'%')
   html+=fmt('DER',fd.debt_to_equity,'x')
   html+=fmt('Dividend Yield',fd.dividend_yield,'%')
+  html+=fmt('Market Cap',fd.market_cap,'mc')
   html+='</div></div>'
   html+='<div class="panel-section"><div class="panel-section-title">INTERPRETASI SEDERHANA</div>'
   html+='<div class="interp-box">'
@@ -561,13 +570,17 @@ function renderFundamentals(fd){{
   var der=fd.debt_to_equity!==null&&fd.debt_to_equity!==undefined?fd.debt_to_equity:null
   var dl=der===null?'Tidak tersedia':der<0.5?'Rendah':der<1.5?'Sedang':'Tinggi'
   html+='<div class="interp-row"><span class="interp-label">Utang</span><span class="fd-val">'+dl+'</span></div>'
+  var mc=fd.market_cap!==null&&fd.market_cap!==undefined?fd.market_cap:null
+  var szl=mc===null?'Tidak tersedia':mc>=1e14?'Large Cap':mc>=1e13?'Mid Cap':'Small Cap'
+  html+='<div class="interp-row"><span class="interp-label">Ukuran Perusahaan</span><span class="fd-val">'+szl+'</span></div>'
   var cc='Perusahaan ini memiliki '
   cc+=pl==='Tinggi'?'profitabilitas yang kuat':pl==='Sedang'?'profitabilitas yang cukup baik':'profitabilitas yang rendah'
   cc+=', '
   cc+=vl==='Murah'?'valuasi yang relatif murah':vl==='Sedang'?'valuasi yang wajar':'valuasi yang relatif mahal'
   cc+=', dengan '
   cc+=gl==='Tinggi'?'pertumbuhan yang tinggi':gl==='Sedang'?'pertumbuhan yang stabil':gl==='Negatif'?'pertumbuhan yang negatif':'data pertumbuhan tidak tersedia'
-  cc+='.'
+  cc+='. '
+  cc+='Perusahaan ini tergolong '+szl.toLowerCase()+'.'
   html+='<div class="interp-conclusion">'+cc+'</div>'
   html+='</div></div>'
   return html

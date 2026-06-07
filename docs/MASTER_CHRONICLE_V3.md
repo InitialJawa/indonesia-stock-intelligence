@@ -28,18 +28,9 @@ no new research without explicit approval. Focus: data integrity and documentati
 | Exit Monitor V1.1 | ACTIVE | Rule-based, Version C thresholds |
 | AUDIT-003 | COMPLETED | Exit Layer distribution validated — Rule C 97% sensitive in bear market |
 | AUDIT-004 | COMPLETED | Exit Layer value assessment — largely repeats market conditions |
+| DECISION-001 | COMPLETED | Exit Layer frozen — no changes; official interpretation documented |
 
-### 2.6 Exit Monitor — Sensitivity Note
-
-**AUDIT-003 & AUDIT-004 findings (2026-06-07):** Current distribution: 30% EXIT, 67% EXIT RISK, 3% HEALTHY. Rule C (Close<MA50) triggers on 97% of IDX30 because avg drawdown is -36.9% and 0/30 stocks are above MA20. State WEAKENING and EXIT WATCH are currently dead states — no stock triggers Rule A or B alone without also triggering Rule C.
-
-**AUDIT-004 conclusion:** Exit Layer largely repeats market conditions. Distribution is nearly identical between Config B Top 10 and Bottom 20 (both ~30% EXIT). Score averages do not differ between EXIT (50.5) and EXIT RISK (48.7). Without Rule C, 20 EXIT RISK stocks collapse to 6 HEALTHY + 14 EXIT WATCH. The only discriminating value is identifying the 9 specific stocks with B+C+D (confirmed technical damage) — 3 of which are in Config B Top 10.
-| Data Quality Audit | COMPLETED | AUDIT-001 + AUDIT-002: PBV & DY fixes applied |
-| Data Quality Rule | ACTIVE | DATA_QUALITY_RULE_PBV_V1 — auto-flag invalid PBV |
-
----
-
-## 2. PRODUCTION SYSTEMS
+---## 2. PRODUCTION SYSTEMS
 
 ### 2.1 Config B — Core Ranking Engine
 
@@ -91,6 +82,34 @@ stock weakness. Close < MA100 captures beta during selloffs. Adding RS20 AND RS_
 isolates alpha failure.
 
 **Outputs:** `data/current/exit_watchlist_latest.csv`, `data/state/exit_summary.json`, `data/state/exit_entry_prices.json`
+
+### 2.4 AUDIT-003 & AUDIT-004: Exit Layer Validation (2026-06-07)
+
+**Current distribution:** 30% EXIT, 67% EXIT RISK, 3% HEALTHY. Rule C (Close<MA50) triggers on 97% of IDX30 because avg drawdown is -36.9% and 0/30 stocks are above MA20. State WEAKENING and EXIT WATCH are currently dead states — no stock triggers Rule A or B alone without also triggering Rule C.
+
+**AUDIT-004 conclusion:** Exit Layer largely repeats market conditions. Distribution is nearly identical between Config B Top 10 and Bottom 20 (both ~30% EXIT). Score averages do not differ between EXIT (50.5) and EXIT RISK (48.7). Without Rule C, 20 EXIT RISK stocks collapse to 6 HEALTHY + 14 EXIT WATCH. The only discriminating value is identifying the 9 specific stocks with B+C+D (confirmed technical damage) — 3 of which are in Config B Top 10.
+
+### 2.5 DECISION-001: Freeze Exit Layer Interpretation (2026-06-07)
+
+**Status:** FINAL — no changes to Exit Layer thresholds, logic, or pipeline.
+
+**Keputusan:** Exit Layer V1.1 tetap dipertahankan tanpa perubahan.
+
+**Alasan:**
+1. Tidak ditemukan bug logika
+2. Distribusi ekstrem disebabkan kondisi pasar (avg drawdown -36.9%, 0/30 di atas MA20)
+3. Rule C (Close<MA50) berfungsi sebagai indikator rezim pasar — bukan false positive
+4. Rule B + D memberikan informasi risiko individual yang bernilai pada 9 saham EXIT
+
+**Interpretasi resmi per status:**
+
+| Status | Interpretasi |
+|--------|-------------|
+| **EXIT** | Pelemahan individual terkonfirmasi. Saham memiliki momentum rusak (B), trend rusak (C), dan konfirmasi lanjut (D). |
+| **EXIT RISK** | Risiko pasar tinggi, belum tentu kelemahan individual. Saham di bawah MA50 (C) karena tekanan pasar luas. |
+| **HEALTHY** | Saham yang tetap kuat di tengah kondisi pasar saat ini. Tidak ada rule terpicu. |
+
+**Catatan:** WEAKENING dan EXIT WATCH adalah dead states selama tekanan pasar berlangsung. Jika kondisi pasar membaik (avg drawdown > -15%), state ini akan aktif kembali secara alami.
 
 ---
 

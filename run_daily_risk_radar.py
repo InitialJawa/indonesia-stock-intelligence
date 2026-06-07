@@ -336,8 +336,8 @@ def main():
 
     # Otomatis update dashboard HTML agar sinkron dengan status radar harian terbaru
     try:
-        from dashboard.generate_dashboard import generate_dashboard
-        generate_dashboard()
+        import subprocess
+        subprocess.run(["python", "generate_dashboard_v2.py"], check=True)
     except Exception as e:
         print(f"[!] Warning: Gagal memperbarui dashboard HTML: {e}")
 

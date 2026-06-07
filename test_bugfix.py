@@ -133,7 +133,7 @@ new_style_calls = [
     "python -m scoring.momentum_score",
     "python -m scoring.final_score_v3",
     "python -m backtesting.rebalance",
-    "python -m dashboard.generate_dashboard",
+    "python generate_dashboard_v2.py",
 ]
 for new in new_style_calls:
     check(f"Ada '{new}'", new in pipeline_src)

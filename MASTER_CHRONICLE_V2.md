@@ -15,9 +15,10 @@
 | Config B (Q25/G30/V10/M35) | PRODUCTION | Proven via walk-forward 2019–2026 |
 | Top 5 Portfolio | PRODUCTION | Equal weight, monthly rebalance |
 | Daily Pipeline | PRODUCTION | GitHub Actions, runs 16:30 WIB |
-| Dashboard V2 | ACTIVE | 6 tabs: Leaders, Turnaround, Summary, History, Diagnostics, Exit Monitor |
+| Dashboard | ACTIVE | Single dashboard, 6 tabs (Leaders, Turnaround, Summary, History, Diagnostics, Exit Monitor) |
+| Dashboard Consolidation | COMPLETE | V1 retired, single dashboard at dashboard/index.html |
 | Turnaround Watchlist | RESEARCH MONITORING | Paper trading only |
-| Exit Monitor V1.1 | RESEARCH MONITORING | Paper trading only |
+| Exit Monitor V1.1 | ACTIVE | Rule-based exit states, Version C thresholds |
 
 ### Production Configuration
 
@@ -47,15 +48,15 @@ ISI/
 │   └── Monthly Rebalance Pipeline
 │
 ├── Daily Pipeline (daily_radar.yml, 16:30 WIB)
-│   ├── data_fetcher.py          -> dashboard/data.json
+│   ├── data_fetcher.py                -> fetches IDX30 daily prices
 │   ├── generate_turnaround_watchlist.py
 │   │   ├── leaders_latest.csv
 │   │   └── turnaround_latest.csv + summary
 │   ├── generate_exit_watchlist.py
 │   │   ├── exit_watchlist_latest.csv
 │   │   └── exit_summary.json
-│   ├── dashboard.generate_dashboard  -> dashboard/index.html
-│   └── generate_dashboard_v2.py      -> dashboard/v2/index.html
+│   ├── generate_dashboard_v2.py        -> dashboard/index.html
+│   └── (V1: dashboard.generate_dashboard.py — RETIRED)
 │
 ├── Monthly Pipeline (monthly_pipeline.yml, 1st of month)
 │   ├── collectors/*          -> Fetch fundamentals/growth/prices
@@ -63,7 +64,7 @@ ISI/
 │   ├── backtesting/*         -> Archive factors, rebalance portfolio
 │   └── dashboard.*           -> Refresh dashboard
 │
-├── Dashboard V2 (dashboard/v2/index.html)
+├── Dashboard (single, dashboard/index.html)
 │   ├── Tab 01: Leaders       Config B ranking
 │   ├── Tab 02: Turnaround    Context/Transition signals
 │   ├── Tab 03: Daily Summary Signal diagnostics + top candidates
@@ -215,7 +216,7 @@ Low PE at commodity cycle peak is false valuation signal. When cycle reverses, e
 | exit_watchlist_latest.csv | Date, ticker, rank, rank_change, close, rs_20d, rs_change_20d, ma20, ma50, ma100, drawdown_from_entry, exit_state, triggered_rules | generate_exit_watchlist.py |
 | exit_summary.json | date, universe_size, Healthy, Exit Watch, Weakening, Exit Risk, Exit | generate_exit_watchlist.py |
 | exit_entry_prices.json | entry_price, entry_date, current_rank per ticker (top 10 tracked) | generate_exit_watchlist.py |
-| dashboard/v2/index.html | 6-tab dashboard (Leaders, Turnaround, Summary, History, Diagnostics, Exit Monitor) | generate_dashboard_v2.py |
+| dashboard/index.html | 6-tab dashboard (Leaders, Turnaround, Summary, History, Diagnostics, Exit Monitor) | generate_dashboard_v2.py |
 
 ### Exit Monitor Rule Hierarchy (V1.1)
 
@@ -252,10 +253,11 @@ None                                                                  ->  HEALTH
 - Output: exit_watchlist_latest.csv
 - **Paper trading only - no production portfolio changes**
 
-### Dashboard V2 - ACTIVE
-- GitHub Pages: dashboard/v2/index.html
+### Dashboard - ACTIVE
+- Path: dashboard/index.html
 - 6 tabs, filterable tables, real-time data from daily pipeline
 - Diagnostics tab shows pipeline health and file ages
+- Dashboard Consolidation: Complete (V1 retired 2026-06-07)
 
 ### Daily Risk Radar - STABLE
 - Volume shock detection for top 5 portfolio
@@ -290,6 +292,7 @@ None                                                                  ->  HEALTH
 - Foreign Flow Factor - synthetic proxy, needs real data
 - Min-Max Normalization - replaced by percentile
 - FMP Integration - decommissioned permanently
+- Dashboard V1 - retired, use generate_dashboard_v2.py
 
 ### Always Use:
 - **Percentile Normalization** for all factor scoring - never Min-Max
@@ -337,3 +340,8 @@ Why same signal produces 43% precision on BRPT vs 4.5% on BBCA. Root cause: vola
 Forensic analysis of 303 alpha loss events. Key finding: losers appear healthy at T0 (strong RS, above MA20, elevated volume). Predictive sell signals are weak. Shift to rule-based exit.
 - **Files:** research/output/s01_exit_signal_autopsy_report.md
 - **Verdict:** Predictive sell not viable -> Exit Layer V1 built
+
+### Dashboard Consolidation
+Retired Dashboard V1 (`dashboard/generate_dashboard.py`, `dashboard/data.json`) and nested artifacts. Single dashboard at `dashboard/index.html`. Workflow updated to use only `generate_dashboard_v2.py`.
+- **Files:** generate_dashboard_v2.py, .github/workflows/daily_radar.yml
+- **Verdict:** Complete - single dashboard, one workflow, no duplicated code

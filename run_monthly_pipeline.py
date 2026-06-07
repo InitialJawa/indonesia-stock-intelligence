@@ -41,7 +41,7 @@ PIPELINE = [
     # =========================
     # Visual Dashboard
     # =========================
-    "python -m dashboard.generate_dashboard"
+    "python generate_dashboard_v2.py"
 ]
 
 def run():

@@ -717,7 +717,9 @@ function closeAll(){
 document.addEventListener('keydown',function(e){if(e.key==='Escape')closeAll()})
 document.addEventListener('click',function(e){
   var t=e.target.closest('.tk-click')
-  if(t){var tkr=t.getAttribute('data-ticker')||t.textContent.trim();e.stopPropagation();openPanel(tkr)}
+  if(t){var tkr=t.getAttribute('data-ticker')||t.textContent.trim();e.stopPropagation();openPanel(tkr);return}
+  var tip=e.target.closest('.tip')
+  if(tip)return
   var h=e.target.closest('.help-modal')
   var o=e.target.closest('#overlay')
   var p=e.target.closest('#panel')

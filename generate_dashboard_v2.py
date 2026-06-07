@@ -213,6 +213,14 @@ tr:hover td{{background:#1a1e24}}
 .interp-row{{display:flex;justify-content:space-between;font-size:11px;padding:3px 0}}
 .interp-label{{color:#9CA3AF}}
 .interp-conclusion{{font-size:11px;color:#C9D1D9;line-height:1.5;padding:6px 0 0 0}}
+.align-card{{padding:10px 12px;border-radius:6px;margin-bottom:8px;font-size:12px}}
+.align-sejalan{{background:#052e16;border:1px solid #166534}}
+.align-perhatian{{background:#2a2411;border:1px solid #665511}}
+.align-konflik{{background:#2a1711;border:1px solid #663311}}
+.align-turnaround{{background:#0c1929;border:1px solid #1e3a5f}}
+.align-netral{{background:#171b20;border:1px solid #222830}}
+.align-title{{font-weight:700;font-size:12px;margin-bottom:4px}}
+.align-desc{{font-size:11px;color:#9CA3AF;line-height:1.5}}
 .panel-bullet{{color:#9CA3AF;margin-right:6px}}
 .panel-summary{{font-size:12px;color:#C9D1D9;line-height:1.6;padding:8px 0}}
 </style>
@@ -586,6 +594,20 @@ function renderFundamentals(fd){{
   return html
 }}
 
+function renderAlignment(ld,td,ed){{
+  var state='netral',label='NETRAL',icon='&#9898;',cls='align-netral',desc='Tidak ada sinyal dominan dari sistem.'
+  if(ld&&ld.rank<=10&&ed&&ed.exit_state==='HEALTHY'){{state='sejalan';label='SEJALAN';icon='&#128994;';cls='align-sejalan';desc='Fundamental dan tren harga sejalan.'}}
+  else if(ld&&ld.rank<=10&&ed&&ed.exit_state==='EXIT RISK'){{state='perhatian';label='PERLU PERHATIAN';icon='&#128993;';cls='align-perhatian';desc='Fundamental masih kuat dan masuk portofolio, tetapi tren harga belum sepenuhnya pulih.'}}
+  else if(ld&&ld.rank<=10&&ed&&ed.exit_state==='EXIT'){{state='konflik';label='KONFLIK';icon='&#128992;';cls='align-konflik';desc='Perusahaan masih berada di peringkat atas Config B, namun Exit Layer mendeteksi pelemahan momentum. Perlu pemantauan tambahan sebelum mengambil keputusan.'}}
+  else if(td&&td.context_match&&td.transition_match&&(!ed||ed.exit_state!=='EXIT')){{state='turnaround';label='TURNAROUND';icon='&#128309;';cls='align-turnaround';desc='Masuk kandidat turnaround dengan tanda pemulihan yang mulai muncul.'}}
+  var html='<div class="panel-section"><div class="panel-section-title">STATUS KESELARASAN</div>'
+  html+='<div class="align-card '+cls+'">'
+  html+='<div class="align-title">'+icon+' '+label+'</div>'
+  html+='<div class="align-desc">'+desc+'</div>'
+  html+='</div></div>'
+  return html
+}}
+
 function openPanel(ticker){{
   var d=tickerData(ticker)
   document.getElementById('ptk').textContent=ticker
@@ -606,6 +628,8 @@ function openPanel(ticker){{
   if(d.turnaround){{html+='<div class="panel-row"><span class="panel-label">Status Turnaround</span><span class="panel-val">'+(d.turnaround.context_match?'Context':'—')+(d.turnaround.transition_match?' / Transition':'')+'</span></div>'}}
   if(d.exit)html+='<div class="panel-row"><span class="panel-label">Status Exit</span><span class="panel-val">'+d.exit.exit_state+'</span></div>'
   html+='</div>'
+  // Signal alignment
+  html+=renderAlignment(d.leader,d.turnaround,d.exit)
   // Price & trend
   if(d.turnaround||d.exit){{
     html+='<div class="panel-section"><div class="panel-section-title">HARGA &amp; TREN</div>'

@@ -6,58 +6,62 @@
 <title>ISI Dashboard V2 | Read-Only</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'DM Sans','Segoe UI',sans-serif;background:#0f1115;color:#f1f5f9;min-height:100vh}
+body{font-family:'DM Sans','Segoe UI',sans-serif;background:#0f1115;color:#F5F7FA;min-height:100vh}
 .hdr{padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #222830;flex-wrap:wrap;gap:8px}
 .logo{font-family:'Space Mono','Courier New',monospace;font-size:12px;color:#00c26f;letter-spacing:.1em}
-.logo span{color:#475569}
-.dt{font-size:11px;color:#475569;font-family:'Space Mono',monospace}
+.logo span{color:#9CA3AF}
+.dt{font-size:11px;color:#9CA3AF;font-family:'Space Mono',monospace}
 .tab-nav{display:flex;gap:2px;padding:.75rem 1.5rem 0;border-bottom:1px solid #222830;overflow-x:auto}
-.tab-btn{padding:8px 18px;font-size:11px;font-family:'Space Mono',monospace;background:transparent;border:none;color:#64748b;cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;letter-spacing:.05em}
-.tab-btn:hover{color:#94a3b8}
+.tab-btn{padding:8px 18px;font-size:11px;font-family:'Space Mono',monospace;background:transparent;border:none;color:#9CA3AF;cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;letter-spacing:.05em}
+.tab-btn:hover{color:#C9D1D9}
 .tab-btn.active{color:#00c26f;border-bottom-color:#00c26f}
 .tc{display:none;padding:1rem 1.5rem}
 .tc.active{display:block}
 table{width:100%;border-collapse:collapse;font-size:13px}
-th{font-size:10px;font-family:'Space Mono',monospace;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;padding:8px 10px;border-bottom:1px solid #222830;text-align:left;white-space:nowrap;font-weight:600}
+th{font-size:11px;font-family:'Space Mono',monospace;color:#C9D1D9;text-transform:uppercase;letter-spacing:.06em;padding:10px 10px;border-bottom:1px solid #222830;text-align:left;white-space:nowrap;font-weight:700;position:sticky;top:0;background:#0f1115;z-index:1;cursor:pointer;user-select:none}
+th:hover{color:#F5F7FA}
+th .sort-arrow{color:#9CA3AF;font-size:9px;margin-left:2px}
 td{padding:8px 10px;border-bottom:1px solid #1a1f26;vertical-align:middle}
 tr:hover td{background:#1a1e24}
-.tk{font-family:'Space Mono',monospace;font-weight:700;color:#e2e8f0}
+.tk{font-family:'Space Mono',monospace;font-weight:700;color:#F5F7FA}
 .sf{font-family:'Space Mono',monospace;font-weight:700}
 .sf.high{color:#00c26f}.sf.mid{color:#f59e0b}.sf.low{color:#ef4444}
 .badge{font-size:9px;padding:2px 8px;border-radius:3px;font-family:'Space Mono',monospace;display:inline-block}
 .bg-green{background:#052e16;color:#00c26f;border:1px solid #166534}
 .bg-red{background:#2a1111;color:#ef4444;border:1px solid #661111}
 .bg-yellow{background:#2a2411;color:#f59e0b;border:1px solid #665511}
-.bg-gray{background:#171b20;color:#64748b;border:1px solid #222830}
+.bg-gray{background:#171b20;color:#9CA3AF;border:1px solid #222830}
 .bg-blue{background:#0c1929;color:#60a5fa;border:1px solid #1e3a5f}
 .bar{display:flex;align-items:center;gap:6px}
 .bar-track{height:3px;border-radius:2px;background:#222830;width:50px;overflow:hidden}
 .bar-fill{height:100%;border-radius:2px}
-.bv{font-size:10px;color:#94a3b8;font-family:'Space Mono',monospace;min-width:24px;text-align:right}
+.bv{font-size:10px;color:#9CA3AF;font-family:'Space Mono',monospace;min-width:24px;text-align:right}
 .card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:1rem}
 .card{background:#171b20;border:1px solid #222830;border-radius:8px;padding:1rem}
-.card-label{font-size:9px;color:#64748b;font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
-.card-val{font-size:22px;font-weight:700;font-family:'Space Mono',monospace}
+.card-label{font-size:10px;color:#C9D1D9;font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;font-weight:600}
+.card-val{font-size:22px;font-weight:700;font-family:'Space Mono',monospace;color:#F5F7FA}
 .card-val.g{color:#00c26f}.card-val.r{color:#ef4444}.card-val.y{color:#f59e0b}.card-val.b{color:#60a5fa}
-.card-sub{font-size:10px;color:#64748b;margin-top:4px}
+.card-sub{font-size:10px;color:#9CA3AF;margin-top:4px}
 .wide-card{grid-column:1/-1}
 .stat-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #1a1f26;font-size:12px}
 .stat-row:last-child{border:none}
-.stat-label{color:#94a3b8}
-.stat-val{font-family:'Space Mono',monospace;font-weight:600}
+.stat-label{color:#C9D1D9}
+.stat-val{font-family:'Space Mono',monospace;font-weight:600;color:#F5F7FA}
 .ctx-table td{font-size:12px}
-.sig-bull{color:#00c26f}.sig-bear{color:#ef4444}.sig-neu{color:#94a3b8}
+.sig-bull{color:#00c26f}.sig-bear{color:#ef4444}.sig-neu{color:#C9D1D9}
 .streak-bar{display:inline-flex;align-items:center;gap:4px;background:#171b20;padding:2px 8px;border-radius:4px;font-size:10px;font-family:'Space Mono',monospace}
 .streak-bar .n{font-weight:700;color:#00c26f}
-.section-title{font-size:10px;font-family:'Space Mono',monospace;color:#475569;text-transform:uppercase;letter-spacing:.1em;margin:1rem 0 8px;display:flex;align-items:center;gap:8px}
+.section-title{font-size:11px;font-family:'Space Mono',monospace;color:#C9D1D9;text-transform:uppercase;letter-spacing:.1em;margin:1rem 0 8px;display:flex;align-items:center;gap:8px}
 .section-title::after{content:'';flex:1;height:1px;background:#222830}
 .flag{color:#f59e0b;font-size:10px;margin-left:4px}
+.sortable{cursor:pointer}
+.sortable:hover{color:#F5F7FA}
 </style>
 </head>
 <body>
 <div class="hdr">
   <div class="logo">ISI <span>·</span> V2 <span>·</span> READ-ONLY DASHBOARD</div>
-  <div class="dt">2026-06-07 15:57 · IDX30</div>
+  <div class="dt">2026-06-07 16:13 · IDX30</div>
 </div>
 <div class="tab-nav">
   <button class="tab-btn active" onclick="st(0)">01 · Leaders</button>
@@ -72,7 +76,7 @@ tr:hover td{background:#1a1e24}
   <div class="section-title">Config B Leaders · Q25/G30/V10/M35</div>
   <table>
     <thead><tr>
-      <th>#</th><th>Ticker</th><th>Score</th><th>Quality</th><th>Growth</th><th>Value</th><th>Momentum</th><th>Status</th>
+      <th data-key="rank">#</th><th data-key="ticker">Ticker</th><th data-key="final_score">Score</th><th data-key="quality">Quality</th><th data-key="growth">Growth</th><th data-key="value">Value</th><th data-key="momentum">Momentum</th><th>Status</th>
     </tr></thead>
     <tbody id="tbody-leaders"></tbody>
   </table>
@@ -89,7 +93,7 @@ tr:hover td{background:#1a1e24}
   </div>
   <table>
     <thead><tr>
-      <th>#</th><th>Ticker</th><th>Drawdown</th><th>Dist High</th><th>Volatility</th><th>RS Chg 60D</th><th>Vol Ratio</th><th>Recovery</th><th>Ctx</th><th>Trn</th>
+      <th>#</th><th data-key="ticker">Ticker</th><th data-key="drawdown_252d">Drawdown</th><th data-key="distance_from_high_252d">Dist High</th><th data-key="volatility_60d">Volatility</th><th data-key="rs_change_60d">RS Chg 60D</th><th data-key="volume_ratio">Vol Ratio</th><th data-key="recovery_from_60d_low">Recovery</th><th>Ctx</th><th>Trn</th>
     </tr></thead>
     <tbody id="tbody-turnaround"></tbody>
   </table>
@@ -115,7 +119,7 @@ tr:hover td{background:#1a1e24}
   <div class="section-title">Top Candidates</div>
   <table>
     <thead><tr>
-      <th>Ticker</th><th>Score</th><th>Drawdown</th><th>Dist High</th><th>Volatility</th><th>RS Chg 60D</th><th>Vol Ratio</th><th>Recovery</th><th>Match</th>
+      <th data-key="ticker">Ticker</th><th>Score</th><th data-key="drawdown">Drawdown</th><th data-key="distance_from_high">Dist High</th><th data-key="volatility">Volatility</th><th data-key="rs_change_60d">RS Chg 60D</th><th data-key="volume_ratio">Vol Ratio</th><th data-key="recovery">Recovery</th><th>Match</th>
     </tr></thead>
     <tbody id="tbody-top"></tbody>
   </table>
@@ -126,7 +130,7 @@ tr:hover td{background:#1a1e24}
   <p style="font-size:11px;color:#64748b;margin-bottom:10px">Consecutive days each ticker has maintained context/transition match. Sorted by total active streak.</p>
   <table>
     <thead><tr>
-      <th>Ticker</th><th>Context Streak</th><th>Transition Streak</th><th>First Detected (Ctx)</th><th>First Detected (Trn)</th><th>Total Days Tracked</th>
+      <th data-key="ticker">Ticker</th><th data-key="ctx_days">Context Streak</th><th data-key="trn_days">Transition Streak</th><th>First Detected (Ctx)</th><th>First Detected (Trn)</th><th data-key="total_entries">Total Days Tracked</th>
     </tr></thead>
     <tbody id="tbody-history"></tbody>
   </table>
@@ -147,7 +151,7 @@ tr:hover td{background:#1a1e24}
   </div>
   <table>
     <thead><tr>
-      <th>Ticker</th><th>Rank</th><th>Rank Chg</th><th>Exit State</th><th>Rules</th><th>RS20</th><th>RS Chg 20D</th><th>vs MA50</th><th>vs MA100</th><th>DD Entry</th>
+      <th data-key="ticker">Ticker</th><th data-key="rank">Rank</th><th data-key="rank_change">Rank Chg</th><th>Exit State</th><th>Rules</th><th data-key="rs_20d">RS20</th><th data-key="rs_change_20d">RS Chg 20D</th><th>vs MA50</th><th>vs MA100</th><th data-key="drawdown_from_entry">DD Entry</th>
     </tr></thead>
     <tbody id="tbody-exit"></tbody>
   </table>
@@ -164,8 +168,8 @@ tr:hover td{background:#1a1e24}
       </div>
       <div class="card-sub">All systems nominal</div>
     </div>
-    <div class="card"><div class="card-label">Last Leaders Update</div><div class="card-val" style="font-size:14px">0d 0h ago</div><div class="card-sub">leaders_latest.csv</div></div>
-    <div class="card"><div class="card-label">Last Turnaround Update</div><div class="card-val" style="font-size:14px">0d 0h ago</div><div class="card-sub">turnaround_latest.csv</div></div>
+    <div class="card"><div class="card-label">Last Leaders Update</div><div class="card-val" style="font-size:14px">0d 1h ago</div><div class="card-sub">leaders_latest.csv</div></div>
+    <div class="card"><div class="card-label">Last Turnaround Update</div><div class="card-val" style="font-size:14px">0d 1h ago</div><div class="card-sub">turnaround_latest.csv</div></div>
     <div class="card"><div class="card-label">Last Exit Update</div><div class="card-val" style="font-size:14px">0d 0h ago</div><div class="card-sub">exit_watchlist_latest.csv</div></div>
     <div class="card"><div class="card-label">Records Processed</div><div class="card-val g">30</div><div class="card-sub">tickers in latest run</div></div>
     <div class="card"><div class="card-label">Data Freshness</div><div class="card-val g">2026-06-07</div><div class="card-sub">report date</div></div>
@@ -189,63 +193,114 @@ function ctxLabel(r){return r.context_match?'<span class="badge bg-green">YES</s
 function trnLabel(r){return r.transition_match?'<span class="badge bg-yellow">YES</span>':'<span class="badge bg-gray">NO</span>'}
 function fullLabel(r){return (r.context_match&&r.transition_match)?'<span class="badge bg-blue">FULL</span>':r.context_match?'<span class="badge bg-green">CTX</span>':r.transition_match?'<span class="badge bg-yellow">TRN</span>':'<span class="badge bg-gray">—</span>'}
 
-(function(){
-  // Leaders
-  var h=L.map(function(d){
-    return '<tr><td class="tk" style="color:#64748b;font-size:11px">'+d.rank+'</td><td class="tk">'+d.ticker.split('.')[0]+(d.rank<=5?'<span class="flag">★</span>':'')+'</td><td class="sf '+sc(d.final_score)+'">'+d.final_score.toFixed(1)+'</td><td>'+bar(d.quality,'#3b82f6')+'</td><td>'+bar(d.growth,'#10b981')+'</td><td>'+bar(d.value,'#a855f7')+'</td><td>'+bar(d.momentum,'#f59e0b')+'</td><td>'+(d.rank<=5?'<span class="badge bg-green">PORTFOLIO</span>':'<span class="badge bg-gray">WATCH</span>')+'</td></tr>'
-  }).join('')
-  document.getElementById('tbody-leaders').innerHTML=h
-})();
+function sortData(d,s){
+  if(!s.key)return d
+  return d.slice().sort(function(a,b){
+    var va=a[s.key],vb=b[s.key]
+    if(typeof va==='string')return s.dir==='asc'?va.localeCompare(vb):vb.localeCompare(va)
+    va=Number(va)||0;vb=Number(vb)||0
+    return s.dir==='asc'?va-vb:vb-va
+  })
+}
+function makeSortable(id,s,fn){
+  var ths=document.getElementById(id).closest('table').querySelectorAll('th[data-key]')
+  ths.forEach(function(th){
+    th.addEventListener('click',function(){
+      var k=th.getAttribute('data-key')
+      ths.forEach(function(t){t.innerHTML=t.innerHTML.replace(/ ?[▲▼]$/,'')})
+      if(s.key===k){s.dir=s.dir==='asc'?'desc':'asc';if(s.dir==='asc'){s.key=null}}
+      else{s.key=k;s.dir='asc'}
+      if(s.key){th.innerHTML+=s.dir==='asc'?' ▲':' ▼'}
+      fn()
+    })
+  })
+}
 
 (function(){
-  var all=T;
-  var ftAll='all';var btns=document.querySelectorAll('#t1 .tab-btn')
-  function render(filter){
-    var rows=filter==='all'?all:filter==='full'?all.filter(function(d){return d.context_match==true&&d.transition_match==true}):filter==='context'?all.filter(function(d){return d.context_match==true&&d.transition_match==false}):filter==='transition'?all.filter(function(d){return d.context_match==false&&d.transition_match==true}):all.filter(function(d){return d.context_match==false&&d.transition_match==false})
-    document.getElementById('tbody-turnaround').innerHTML=rows.map(function(d,i){
-      return '<tr><td style="color:#64748b;font-size:11px;font-family:monospace">'+(i+1)+'</td><td class="tk">'+d.ticker.split('.')[0]+'</td><td class="sf '+(d.drawdown_252d<-25?'low':d.drawdown_252d<-10?'mid':'high')+'">'+pct(d.drawdown_252d)+'</td><td class="sf '+(d.distance_from_high_252d<-20?'low':d.distance_from_high_252d<-5?'mid':'high')+'">'+pct(d.distance_from_high_252d)+'</td><td>'+d.volatility_60d.toFixed(2)+'%</td><td class="sf '+(d.rs_change_60d>0?'high':'low')+'">'+pct(d.rs_change_60d)+'</td><td>'+d.volume_ratio.toFixed(2)+'x</td><td>'+pct(d.recovery_from_60d_low)+'</td><td>'+ctxLabel(d)+'</td><td>'+trnLabel(d)+'</td></tr>'
+  var full=L;var s={key:null,dir:'asc'}
+  function render(d){
+    document.getElementById('tbody-leaders').innerHTML=d.map(function(r){
+      return '<tr><td class="tk" style="color:#9CA3AF;font-size:11px">'+r.rank+'</td><td class="tk">'+r.ticker.split('.')[0]+(r.rank<=5?'<span class="flag">★</span>':'')+'</td><td class="sf '+sc(r.final_score)+'">'+r.final_score.toFixed(1)+'</td><td>'+bar(r.quality,'#3b82f6')+'</td><td>'+bar(r.growth,'#10b981')+'</td><td>'+bar(r.value,'#a855f7')+'</td><td>'+bar(r.momentum,'#f59e0b')+'</td><td>'+(r.rank<=5?'<span class="badge bg-green">PORTFOLIO</span>':'<span class="badge bg-gray">WATCH</span>')+'</td></tr>'
     }).join('')
   }
-  render('all')
-  window.ft=function(f,b){ftAll=f;document.querySelectorAll('#t1 .tab-btn').forEach(function(x){x.classList.remove('active')});b.classList.add('active');render(f)}
+  function refresh(){render(sortData(full,s))}
+  refresh()
+  makeSortable('tbody-leaders',s,refresh)
 })();
 
 (function(){
-  var top=SM.top_candidates||[];
-  document.getElementById('tbody-top').innerHTML=top.map(function(d){
-    return '<tr><td class="tk">'+d.ticker.split('.')[0]+'</td><td class="sf high">'+(d.full_match?'FULL':d.context_match?'CTX':'TRN')+'</td><td class="sf low">'+pct(d.drawdown)+'</td><td class="sf low">'+pct(d.distance_from_high)+'</td><td>'+d.volatility.toFixed(2)+'%</td><td class="sf '+(d.rs_change_60d>0?'high':'low')+'">'+pct(d.rs_change_60d)+'</td><td>'+d.volume_ratio.toFixed(2)+'x</td><td>'+pct(d.recovery)+'</td><td>'+fullLabel(d)+'</td></tr>'
-  }).join('')
-})();
-
-(function(){
-  var s=Object.keys(SK).sort(function(a,b){return SK[b].ctx_days+SK[b].trn_days-(SK[a].ctx_days+SK[a].trn_days)})
-  document.getElementById('tbody-history').innerHTML=s.map(function(t){
-    var d=SK[t]
-    return '<tr><td class="tk">'+t.split('.')[0]+'</td><td>'+(d.ctx_days>0?'<span class="streak-bar"><span class="n">'+d.ctx_days+'</span>d</span>':'<span class="badge bg-gray">0d</span>')+'</td><td>'+(d.trn_days>0?'<span class="streak-bar"><span class="n" style="color:#f59e0b">'+d.trn_days+'</span>d</span>':'<span class="badge bg-gray">0d</span>')+'</td><td style="font-family:monospace;font-size:11px;color:#94a3b8">'+d.first_ctx+'</td><td style="font-family:monospace;font-size:11px;color:#94a3b8">'+d.first_trn+'</td><td style="font-family:monospace;font-size:11px;color:#94a3b8">'+d.total_entries+' days</td></tr>'
-  }).join('')
-})();
-
-(function(){
-  var allExit=EX;
-  function renderExit(filter){
-    var rows=filter==='all'?allExit:allExit.filter(function(d){return d.exit_state===filter});
-    document.getElementById('tbody-exit').innerHTML=rows.map(function(d){
-      var stateCls=d.exit_state==='EXIT'?'bg-red':d.exit_state==='EXIT RISK'?'bg-yellow':d.exit_state==='WEAKENING'?'bg-yellow':d.exit_state==='EXIT WATCH'?'bg-blue':'bg-green';
-      var rsCls=d.rs_20d>0?'sf high':'sf low';
-      var rscCls=d.rs_change_20d>0?'sf high':'sf low';
-      var ma50Cls=d.close<d.ma50?'<span class="badge bg-red">BELOW</span>':'<span class="badge bg-green">ABOVE</span>';
-      var ma100Cls=d.close<d.ma100?'<span class="badge bg-red">BELOW</span>':'<span class="badge bg-green">ABOVE</span>';
-      var ddCls=d.drawdown_from_entry<-15?'sf low':'sf high';
-      var rankChg=d.rank_change>0?'<span class="sf high">+'+d.rank_change+'</span>':d.rank_change<0?'<span class="sf low">'+d.rank_change+'</span>':'<span style="color:#64748b">0</span>';
-      return '<tr><td class="tk">'+d.ticker.split('.')[0]+'</td><td style="font-family:monospace;font-size:12px;color:#94a3b8">#'+d.rank+'</td><td style="font-family:monospace;font-size:12px">'+rankChg+'</td><td><span class="badge '+stateCls+'">'+d.exit_state+'</span></td><td style="font-family:monospace;font-size:11px;color:#94a3b8">'+d.triggered_rules+'</td><td class="'+rsCls+'">'+d.rs_20d.toFixed(1)+'%</td><td class="'+rscCls+'">'+d.rs_change_20d.toFixed(1)+'%</td><td>'+ma50Cls+'</td><td>'+ma100Cls+'</td><td class="'+ddCls+'">'+d.drawdown_from_entry.toFixed(1)+'%</td></tr>'
+  var full=T;var f='all';var s={key:null,dir:'asc'}
+  function filtered(){
+    if(f==='all')return full
+    if(f==='full')return full.filter(function(d){return d.context_match&&d.transition_match})
+    if(f==='context')return full.filter(function(d){return d.context_match&&!d.transition_match})
+    if(f==='transition')return full.filter(function(d){return !d.context_match&&d.transition_match})
+    return full.filter(function(d){return !d.context_match&&!d.transition_match})
+  }
+  function render(d){
+    document.getElementById('tbody-turnaround').innerHTML=d.map(function(r,i){
+      return '<tr><td style="color:#9CA3AF;font-size:11px;font-family:monospace">'+(i+1)+'</td><td class="tk">'+r.ticker.split('.')[0]+'</td><td class="sf '+(r.drawdown_252d<-25?'low':r.drawdown_252d<-10?'mid':'high')+'">'+pct(r.drawdown_252d)+'</td><td class="sf '+(r.distance_from_high_252d<-20?'low':r.distance_from_high_252d<-5?'mid':'high')+'">'+pct(r.distance_from_high_252d)+'</td><td>'+r.volatility_60d.toFixed(2)+'%</td><td class="sf '+(r.rs_change_60d>0?'high':'low')+'">'+pct(r.rs_change_60d)+'</td><td>'+r.volume_ratio.toFixed(2)+'x</td><td>'+pct(r.recovery_from_60d_low)+'</td><td>'+ctxLabel(r)+'</td><td>'+trnLabel(r)+'</td></tr>'
     }).join('')
   }
-  renderExit('all');
-  window.ef=function(f,b){
-    document.querySelectorAll('#t5 .tab-btn').forEach(function(x){x.classList.remove('active')});
-    b.classList.add('active');
-    renderExit(f)
+  function refresh(){render(sortData(filtered(),s))}
+  refresh()
+  makeSortable('tbody-turnaround',s,refresh)
+  window.ft=function(v,b){f=v;document.querySelectorAll('#t1 .tab-btn').forEach(function(x){x.classList.remove('active')});b.classList.add('active');refresh()}
+})();
+
+(function(){
+  var full=SM.top_candidates||[];var s={key:null,dir:'asc'}
+  function render(d){
+    document.getElementById('tbody-top').innerHTML=d.map(function(r){
+      return '<tr><td class="tk">'+r.ticker.split('.')[0]+'</td><td class="sf high">'+(r.full_match?'FULL':r.context_match?'CTX':'TRN')+'</td><td class="sf low">'+pct(r.drawdown)+'</td><td class="sf low">'+pct(r.distance_from_high)+'</td><td>'+r.volatility.toFixed(2)+'%</td><td class="sf '+(r.rs_change_60d>0?'high':'low')+'">'+pct(r.rs_change_60d)+'</td><td>'+r.volume_ratio.toFixed(2)+'x</td><td>'+pct(r.recovery)+'</td><td>'+fullLabel(r)+'</td></tr>'
+    }).join('')
   }
+  function refresh(){render(sortData(full,s))}
+  refresh()
+  makeSortable('tbody-top',s,refresh)
+})();
+
+(function(){
+  var full=SK;var s={key:null,dir:'asc'}
+  function render(){
+    var keys=Object.keys(full)
+    if(s.key){
+      keys=keys.slice().sort(function(a,b){
+        var va=full[a][s.key],vb=full[b][s.key]
+        if(typeof va==='string')return s.dir==='asc'?va.localeCompare(vb):vb.localeCompare(va)
+        return(Number(va)||0)-(Number(vb)||0)
+      })
+    }else{
+      keys=keys.slice().sort(function(a,b){return(full[b].ctx_days+full[b].trn_days)-(full[a].ctx_days+full[a].trn_days)})
+    }
+    document.getElementById('tbody-history').innerHTML=keys.map(function(t){
+      var d=full[t]
+      return '<tr><td class="tk">'+t.split('.')[0]+'</td><td>'+(d.ctx_days>0?'<span class="streak-bar"><span class="n">'+d.ctx_days+'</span>d</span>':'<span class="badge bg-gray">0d</span>')+'</td><td>'+(d.trn_days>0?'<span class="streak-bar"><span class="n" style="color:#f59e0b">'+d.trn_days+'</span>d</span>':'<span class="badge bg-gray">0d</span>')+'</td><td style="font-family:monospace;font-size:11px;color:#9CA3AF">'+d.first_ctx+'</td><td style="font-family:monospace;font-size:11px;color:#9CA3AF">'+d.first_trn+'</td><td style="font-family:monospace;font-size:11px;color:#9CA3AF">'+d.total_entries+' days</td></tr>'
+    }).join('')
+  }
+  render()
+  makeSortable('tbody-history',s,render)
+})();
+
+(function(){
+  var full=EX;var f='all';var s={key:null,dir:'asc'}
+  function filtered(){return f==='all'?full:full.filter(function(d){return d.exit_state===f})}
+  function render(d){
+    document.getElementById('tbody-exit').innerHTML=d.map(function(r){
+      var sc=r.exit_state==='EXIT'?'bg-red':r.exit_state==='EXIT RISK'?'bg-yellow':r.exit_state==='WEAKENING'?'bg-yellow':r.exit_state==='EXIT WATCH'?'bg-blue':'bg-green'
+      var rc=r.rs_20d>0?'sf high':'sf low'
+      var rcc=r.rs_change_20d>0?'sf high':'sf low'
+      var m50=r.close<r.ma50?'<span class="badge bg-red">BELOW</span>':'<span class="badge bg-green">ABOVE</span>'
+      var m100=r.close<r.ma100?'<span class="badge bg-red">BELOW</span>':'<span class="badge bg-green">ABOVE</span>'
+      var dd=r.drawdown_from_entry<-15?'sf low':'sf high'
+      var rc2=r.rank_change>0?'<span class="sf high">+'+r.rank_change+'</span>':r.rank_change<0?'<span class="sf low">'+r.rank_change+'</span>':'<span style="color:#9CA3AF">0</span>'
+      return '<tr><td class="tk">'+r.ticker.split('.')[0]+'</td><td style="font-family:monospace;font-size:12px;color:#9CA3AF">#'+r.rank+'</td><td style="font-family:monospace;font-size:12px">'+rc2+'</td><td><span class="badge '+sc+'">'+r.exit_state+'</span></td><td style="font-family:monospace;font-size:11px;color:#9CA3AF">'+r.triggered_rules+'</td><td class="'+rc+'">'+r.rs_20d.toFixed(1)+'%</td><td class="'+rcc+'">'+r.rs_change_20d.toFixed(1)+'%</td><td>'+m50+'</td><td>'+m100+'</td><td class="'+dd+'">'+r.drawdown_from_entry.toFixed(1)+'%</td></tr>'
+    }).join('')
+  }
+  function refresh(){render(sortData(filtered(),s))}
+  refresh()
+  makeSortable('tbody-exit',s,refresh)
+  window.ef=function(v,b){f=v;document.querySelectorAll('#t5 .tab-btn').forEach(function(x){x.classList.remove('active')});b.classList.add('active');refresh()}
 })();
 
 function st(i){document.querySelectorAll('.tab-btn').forEach(function(b,j){b.classList.toggle('active',j===i)});document.querySelectorAll('.tc').forEach(function(t,j){t.classList.toggle('active',j===i)})}

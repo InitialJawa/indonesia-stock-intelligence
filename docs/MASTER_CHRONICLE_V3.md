@@ -23,7 +23,7 @@ no new research without explicit approval. Focus: data integrity and documentati
 | Config B (Q25/G30/V10/M35) | PRODUCTION | Locked. Do not modify weights |
 | Top 5 Portfolio | PRODUCTION | Equal weight, monthly rebalance |
 | Daily Pipeline | PRODUCTION | GitHub Actions, runs 16:30 WIB |
-| Dashboard | ACTIVE | Single dashboard, 7 tabs (06 · My Portfolio added) |
+| Dashboard | ACTIVE | Single dashboard, 7 tabs (06 · Portfolio Simulator) |
 | Turnaround Watchlist | RESEARCH MONITORING | Paper trading only |
 | Exit Monitor V1.1 | ACTIVE | Rule-based, Version C thresholds |
 | Data Quality Audit | COMPLETED | AUDIT-001 + AUDIT-002: PBV & DY fixes applied |
@@ -300,7 +300,7 @@ ISI/
 | Entry Prices | `data/state/exit_entry_prices.json` | `scripts/generate_exit_watchlist.py` |
 | Company Profiles | `data/state/company_profiles.json` | Manual / external |
 | Data Quality Flags | `data/state/data_quality_flags.json` | `collectors/fundamentals.py` |
-| My Portfolio Holdings | `data/state/my_portfolio.json` | Manual entry |
+| Portfolio Simulator | `data/state/portfolio_simulator.json` | Manual entry |
 | Dashboard | `dashboard/index.html` | `scripts/generate_dashboard_v2.py` |
 
 ---
@@ -333,6 +333,8 @@ ISI/
 - [x] AUDIT-002 — Yahoo PBV field verification
 - [x] DATA_QUALITY_RULE_PBV_V1 — Formalized and deployed
 - [x] FEATURE-001 — My Portfolio monitoring module (06 · My Portfolio tab)
+- [x] FEATURE-002 — Portfolio Simulator separation + AI Analysis restoration
+- [x] KESIMPULAN HARI INI panel restoration (regression from FEATURE-001)
 
 ### BACKLOG TEKNIS
 - [ ] Monthly archive restoration — update `research/tools/` to read from `docs/archive/`

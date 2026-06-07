@@ -12,7 +12,7 @@ EXIT_FILE = Path("data/current/exit_watchlist_latest.csv")
 PROFILES_FILE = Path("data/state/company_profiles.json")
 FUND_FILE = Path("output/raw/fundamentals.json")
 GROWTH_FILE = Path("output/raw/growth.json")
-PORTFOLIO_FILE = Path("data/state/my_portfolio.json")
+PORTFOLIO_FILE = Path("data/state/portfolio_simulator.json")
 
 def read_csv(filepath):
     if not filepath.exists():
@@ -96,22 +96,7 @@ def compute_streaks(history_rows):
         }
     return streaks
 
-def classify_action(rank, exit_status):
-    if rank <= 10:
-        if exit_status == 'EXIT':
-            return 'REVIEW'
-        return 'STRONG HOLD'
-    elif rank <= 20:
-        if exit_status == 'EXIT':
-            return 'TRIM'
-        return 'HOLD'
-    else:
-        if exit_status == 'EXIT':
-            return 'REPLACE CANDIDATE'
-        return 'HOLD'
-
-def enrich_portfolio(portfolio_raw, leaders, exit_data, profiles):
-    today = datetime.datetime.now().date()
+def calculate_portfolio(portfolio_raw, leaders, exit_data, profiles):
     leader_map = {}
     for l in leaders:
         t = l['ticker'].replace('.JK', '')
@@ -123,52 +108,40 @@ def enrich_portfolio(portfolio_raw, leaders, exit_data, profiles):
     result = []
     for h in portfolio_raw:
         ticker = h['ticker']
-        lot = int(h.get('lot', 0))
-        buy_price = float(h.get('buy_price', 0))
-        buy_date_str = h.get('buy_date', '')
-        try:
-            buy_date = datetime.datetime.strptime(buy_date_str, '%Y-%m-%d').date()
-            days_held = (today - buy_date).days
-        except (ValueError, TypeError):
-            days_held = 0
-        ld = leader_map.get(ticker, {})
+        investment = float(h.get('investment', 0))
+        entry_price = float(h.get('entry_price', 0))
+        estimated_shares = investment / entry_price if entry_price > 0 else 0
         ed = exit_map.get(ticker, {})
-        pf = profiles.get(ticker, {})
-        current_price = buy_price
+        current_price = entry_price
         if ed and 'close' in ed and ed['close']:
             try:
                 current_price = float(ed['close'])
             except (ValueError, TypeError):
                 pass
-        current_value = lot * 100 * current_price
-        cost_basis = lot * 100 * buy_price
-        unrealized_profit = current_value - cost_basis
-        if buy_price > 0:
-            unrealized_percent = (current_price - buy_price) / buy_price * 100
-        else:
-            unrealized_percent = 0.0
+        current_value = estimated_shares * current_price
+        profit_loss = current_value - investment
+        profit_loss_pct = (profit_loss / investment * 100) if investment > 0 else 0.0
+        ld = leader_map.get(ticker, {})
         rank = int(ld.get('rank', 99)) if ld else 99
-        final_score = float(ld.get('final_score', 0)) if ld else 0
         exit_status = ed.get('exit_state', 'HEALTHY') if ed else 'HEALTHY'
-        sector = pf.get('sector', '') if pf else ''
-        action = classify_action(rank, exit_status)
+        sector = (profiles.get(ticker, {})).get('sector', '') if profiles else ''
         result.append({
             'ticker': ticker,
-            'lot': lot,
-            'buy_price': buy_price,
+            'investment': investment,
+            'entry_price': entry_price,
+            'estimated_shares': round(estimated_shares, 2),
             'current_price': current_price,
-            'cost_basis': cost_basis,
-            'current_value': current_value,
-            'unrealized_profit': unrealized_profit,
-            'unrealized_percent': round(unrealized_percent, 2),
-            'days_held': days_held,
+            'current_value': round(current_value, 2),
+            'profit_loss': round(profit_loss, 2),
+            'profit_loss_pct': round(profit_loss_pct, 2),
             'rank': rank if rank <= 30 else 99,
-            'final_score': round(final_score, 2),
             'exit_status': exit_status,
-            'sector': sector,
-            'action': action
+            'sector': sector
         })
-    result.sort(key=lambda x: x['rank'] if x['rank'] > 0 and x['rank'] < 99 else 999)
+    total_value = sum(r['current_value'] for r in result)
+    for r in result:
+        r['weight'] = round((r['current_value'] / total_value * 100), 2) if total_value > 0 else 0
+    result.sort(key=lambda x: x['ticker'])
     return result
 
 def file_age(path):
@@ -290,6 +263,20 @@ tr:hover td{{background:#1a1e24}}
 .interp-row{{display:flex;justify-content:space-between;font-size:11px;padding:3px 0}}
 .interp-label{{color:#9CA3AF}}
 .interp-conclusion{{font-size:11px;color:#C9D1D9;line-height:1.5;padding:6px 0 0 0}}
+.conc{{padding:.75rem 1.5rem 0}}
+.conc-hdr{{display:flex;align-items:center;gap:10px;margin-bottom:8px}}
+.conc-status{{font-size:10px;font-family:'Space Mono',monospace;font-weight:700;padding:3px 10px;border-radius:4px;text-transform:uppercase;letter-spacing:.08em}}
+.conc-status.s-hijau{{background:#052e16;color:#00c26f;border:1px solid #166534}}
+.conc-status.s-kuning{{background:#2a2411;color:#f59e0b;border:1px solid #665511}}
+.conc-status.s-merah{{background:#2a1111;color:#ef4444;border:1px solid #661111}}
+.conc-status.s-biru{{background:#0c1929;color:#60a5fa;border:1px solid #1e3a5f}}
+.conc-label{{font-size:10px;font-family:'Space Mono',monospace;color:#9CA3AF;letter-spacing:.08em;font-weight:600}}
+.conc-body{{display:flex;gap:16px;flex-wrap:wrap}}
+.conc-col{{flex:1;min-width:200px}}
+.conc-sub{{font-size:9px;font-family:'Space Mono',monospace;color:#C9D1D9;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;font-weight:700}}
+.conc-list{{list-style:none;padding:0;margin:0}}
+.conc-list li{{font-size:11px;color:#C9D1D9;padding:2px 0 2px 12px;position:relative;line-height:1.5}}
+.conc-list li::before{{content:'\2022';position:absolute;left:0;color:#00c26f}}
 .align-card{{padding:10px 12px;border-radius:6px;margin-bottom:8px;font-size:12px}}
 .align-sejalan{{background:#052e16;border:1px solid #166534}}
 .align-perhatian{{background:#2a2411;border:1px solid #665511}}
@@ -307,13 +294,14 @@ tr:hover td{{background:#1a1e24}}
   <div class="logo">ISI <span>·</span> V2 <span>·</span> READ-ONLY DASHBOARD</div>
   <div class="dt">{date_short} · IDX30</div>
 </div>
+<div id="conclusion"></div>
 <div class="tab-nav">
   <button class="tab-btn active" onclick="st(0)">01 · Leaders</button>
   <button class="tab-btn" onclick="st(1)">02 · Turnaround</button>
   <button class="tab-btn" onclick="st(2)">03 · Daily Summary</button>
   <button class="tab-btn" onclick="st(3)">04 · History</button>
   <button class="tab-btn" onclick="st(4)">05 · Diagnostics</button>
-  <button class="tab-btn" onclick="st(5)">06 · My Portfolio</button>
+  <button class="tab-btn" onclick="st(5)">06 · Portfolio Simulator</button>
   <button class="tab-btn" onclick="st(6)">07 · Exit Monitor</button>
 </div>
 
@@ -403,11 +391,11 @@ tr:hover td{{background:#1a1e24}}
 </div>
 
 <div class="tc" id="t5">
-  <div class="section-title">My Portfolio · Actual Holdings Monitor</div>
+  <div class="section-title">Portfolio Simulator · Investment Simulation</div>
   <div class="card-grid" id="mp-cards"></div>
   <table>
     <thead><tr>
-      <th data-key="ticker">Ticker</th><th data-key="lot">Lot</th><th data-key="buy_price">Buy Price</th><th data-key="current_price">Current Price</th><th data-key="unrealized_percent">Gain/Loss %</th><th data-key="unrealized_profit">Gain/Loss Rp</th><th data-key="rank">Rank</th><th data-key="exit_status">Exit Status</th><th data-key="sector">Alignment</th><th data-key="days_held">Days Held</th><th data-key="action">Action</th>
+      <th data-key="ticker">Ticker</th><th data-key="investment">Investment</th><th data-key="entry_price">Entry Price</th><th data-key="current_price">Current Price</th><th data-key="estimated_shares">Est. Shares</th><th data-key="current_value">Current Value</th><th data-key="profit_loss">P/L Rp</th><th data-key="profit_loss_pct">P/L %</th><th data-key="weight">Weight</th><th data-key="rank" style="font-size:9px;color:#64748b">Rank</th><th data-key="exit_status" style="font-size:9px;color:#64748b">Exit</th><th data-key="sector" style="font-size:9px;color:#64748b">Sector</th>
     </tr></thead>
     <tbody id="tbody-portfolio"></tbody>
   </table>
@@ -589,33 +577,114 @@ function makeSortable(id,s,fn){{
 (function(){{
   var full=MP;var s={{key:null,dir:'asc'}}
   function render(d){{
-    var totalCost=0,totalValue=0,totalPL=0,exitCount=0,top10Count=0
+    var totalInvested=0,totalValue=0,totalPL=0,holdings=d.length
+    var sectors={{}},sectorList=[]
     d.forEach(function(r){{
-      totalCost+=r.cost_basis
+      totalInvested+=r.investment
       totalValue+=r.current_value
-      totalPL+=r.unrealized_profit
-      if(r.exit_status==='EXIT')exitCount++
-      if(r.rank>=1&&r.rank<=10)top10Count++
+      totalPL+=r.profit_loss
+      var sec=r.sector||'Unknown'
+      if(!sectors[sec]){{sectors[sec]=0;sectorList.push(sec)}}
+      sectors[sec]++
     }})
-    var ret=totalCost>0?((totalValue-totalCost)/totalCost*100):0
+    var ret=totalInvested>0?((totalValue-totalInvested)/totalInvested*100):0
+    var topSector=sectorList.sort(function(a,b){{return sectors[b]-sectors[a]}}).slice(0,3).join(', ')
     document.getElementById('mp-cards').innerHTML=
-      '<div class="card"><div class="card-label">Total Cost Basis</div><div class="card-val">'+fmtRupiah(totalCost)+'</div><div class="card-sub">Modal awal</div></div>'+
-      '<div class="card"><div class="card-label">Total Current Value</div><div class="card-val">'+fmtRupiah(totalValue)+'</div><div class="card-sub">Nilai saat ini</div></div>'+
-      '<div class="card"><div class="card-label">Total Unrealized P/L</div><div class="card-val'+(totalPL>=0?' g':' r')+'">'+(totalPL>=0?'+':'')+fmtRupiah(totalPL)+'</div><div class="card-sub">Laba/rugi belum terealisasi</div></div>'+
-      '<div class="card"><div class="card-label">Portfolio Return</div><div class="card-val'+(ret>=0?' g':' r')+'">'+(ret>=0?'+':'')+ret.toFixed(2)+'%</div><div class="card-sub">Return keseluruhan</div></div>'+
-      '<div class="card"><div class="card-label">Holdings</div><div class="card-val b">'+d.length+'</div><div class="card-sub">Jumlah saham dimiliki</div></div>'+
-      '<div class="card"><div class="card-label">EXIT Holdings</div><div class="card-val'+(exitCount>0?' r':' b')+'">'+exitCount+'</div><div class="card-sub">Saham dengan status EXIT</div></div>'+
-      '<div class="card"><div class="card-label">Top 10 Holdings</div><div class="card-val g">'+top10Count+'</div><div class="card-sub">Saham di rank 1-10</div></div>'
+      '<div class="card"><div class="card-label">Total Invested</div><div class="card-val">'+fmtRupiah(totalInvested)+'</div><div class="card-sub">Total modal dimasukkan</div></div>'+
+      '<div class="card"><div class="card-label">Current Value</div><div class="card-val">'+fmtRupiah(totalValue)+'</div><div class="card-sub">Nilai portofolio saat ini</div></div>'+
+      '<div class="card"><div class="card-label">Profit / Loss</div><div class="card-val'+(totalPL>=0?' g':' r')+'">'+(totalPL>=0?'+':'')+fmtRupiah(totalPL)+'</div><div class="card-sub">Laba/rugi keseluruhan</div></div>'+
+      '<div class="card"><div class="card-label">Portfolio Return</div><div class="card-val'+(ret>=0?' g':' r')+'">'+(ret>=0?'+':'')+ret.toFixed(2)+'%</div><div class="card-sub">Return investasi</div></div>'+
+      '<div class="card"><div class="card-label">Holdings</div><div class="card-val b">'+holdings+'</div><div class="card-sub">Jumlah posisi</div></div>'+
+      '<div class="card"><div class="card-label">Sector Exposure</div><div class="card-val b" style="font-size:14px">'+(topSector||'—')+'</div><div class="card-sub">Sektor dominan</div></div>'
     document.getElementById('tbody-portfolio').innerHTML=d.map(function(r){{
-      var ab=r.action==='STRONG HOLD'?'bg-green':r.action==='REVIEW'?'bg-yellow':r.action==='TRIM'?'bg-yellow':r.action==='REPLACE CANDIDATE'?'bg-red':'bg-gray'
       var eb=r.exit_status==='EXIT'?'bg-red':r.exit_status==='EXIT RISK'?'bg-yellow':r.exit_status==='WEAKENING'?'bg-yellow':r.exit_status==='EXIT WATCH'?'bg-blue':'bg-green'
       var rnk=r.rank>0&&r.rank<99?'#'+r.rank:'—'
-      return '<tr><td class="tk tk-click" data-ticker="'+r.ticker+'">'+r.ticker+'</td><td>'+r.lot+'</td><td style="font-family:Space Mono,monospace;font-weight:600">'+fmtRupiah(r.buy_price)+'</td><td style="font-family:Space Mono,monospace;font-weight:600">'+fmtRupiah(r.current_price)+'</td><td class="sf '+(r.unrealized_percent>=0?'high':'low')+'">'+(r.unrealized_percent>=0?'+':'')+r.unrealized_percent.toFixed(2)+'%</td><td class="sf '+(r.unrealized_profit>=0?'high':'low')+'">'+(r.unrealized_profit>=0?'+':'')+fmtRupiah(r.unrealized_profit)+'</td><td style="font-family:Space Mono,monospace;color:#9CA3AF">'+rnk+'</td><td><span class="badge '+eb+'">'+r.exit_status+'</span></td><td style="font-size:11px;color:#9CA3AF">'+(r.sector||'—')+'</td><td style="font-family:Space Mono,monospace">'+r.days_held+'d</td><td><span class="badge '+ab+'">'+r.action+'</span></td></tr>'
+      var plCls=r.profit_loss>=0?'high':'low'
+      return '<tr><td class="tk tk-click" data-ticker="'+r.ticker+'">'+r.ticker+'</td><td style="font-family:Space Mono,monospace;font-weight:600">'+fmtRupiah(r.investment)+'</td><td style="font-family:Space Mono,monospace;font-weight:600">'+fmtRupiah(r.entry_price)+'</td><td style="font-family:Space Mono,monospace;font-weight:600">'+fmtRupiah(r.current_price)+'</td><td style="font-family:Space Mono,monospace">'+r.estimated_shares.toFixed(0)+'</td><td style="font-family:Space Mono,monospace;font-weight:600">'+fmtRupiah(r.current_value)+'</td><td class="sf '+plCls+'">'+(r.profit_loss>=0?'+':'')+fmtRupiah(r.profit_loss)+'</td><td class="sf '+plCls+'">'+(r.profit_loss_pct>=0?'+':'')+r.profit_loss_pct.toFixed(2)+'%</td><td style="font-family:Space Mono,monospace;color:#9CA3AF">'+r.weight.toFixed(1)+'%</td><td style="font-family:Space Mono,monospace;font-size:10px;color:#64748b">'+rnk+'</td><td style="font-size:10px"><span class="badge '+eb+'" style="font-size:8px">'+r.exit_status+'</span></td><td style="font-size:10px;color:#64748b">'+(r.sector||'—')+'</td></tr>'
     }}).join('')
   }}
   function refresh(){{render(sortData(full,s))}}
   refresh()
   makeSortable('tbody-portfolio',s,refresh)
+}})();
+
+(function(){{
+  var exitCount=0,exitRiskCount=0,weakeningCount=0,exitWatchCount=0,healthyCount=0
+  EX.forEach(function(d){{
+    if(d.exit_state==='EXIT')exitCount++
+    else if(d.exit_state==='EXIT RISK')exitRiskCount++
+    else if(d.exit_state==='WEAKENING')weakeningCount++
+    else if(d.exit_state==='EXIT WATCH')exitWatchCount++
+    else if(d.exit_state==='HEALTHY')healthyCount++
+  }})
+  var top5=[];L.forEach(function(d){{if(d.rank<=5)top5.push(d.ticker)}})
+  var portfolioExit=EX.filter(function(d){{return top5.indexOf(d.ticker)>=0&&d.exit_state!=='HEALTHY'}})
+  var fullMatchCount=SM.full_match_count||0
+  var sd=SM.signal_diagnostics||{{}}
+  var avgDD=sd.avg_drawdown_252d||0
+  var avgVol=sd.avg_volatility_60d||0
+  var aboveMA20=sd.above_ma20_count||0
+  var rsPositive=sd.rs_change_60d_positive_count||0
+  var bigDrops=EX.filter(function(d){{return d.rank_change<=-2}}).length
+  var rankDrops=EX.filter(function(d){{return d.rank_change<0}}).length
+  var status='TIDAK ADA AKSI',cls='s-hijau',reasons=[],focuses=[]
+  if(exitCount>=3){{
+    status='RISIKO MENINGKAT';cls='s-merah'
+    reasons.push(exitCount+' saham dalam status EXIT — tekanan keluar meluas')
+    reasons.push(exitRiskCount+' EXIT RISK, '+weakeningCount+' weakening — sistem dalam tekanan')
+  }}else if(exitCount>=1&&portfolioExit.length>0){{
+    status='REVIEW';cls='s-kuning'
+    reasons.push(exitCount+' saham EXIT, '+portfolioExit.length+' di antaranya dari portofolio 5 besar')
+  }}else if(exitCount>=1||exitRiskCount>=2){{
+    status='REVIEW';cls='s-kuning'
+    if(exitCount>=1)reasons.push(exitCount+' saham EXIT terdeteksi')
+    else reasons.push(exitRiskCount+' saham EXIT RISK — perhatikan perkembangan')
+  }}else if(fullMatchCount>=3||avgDD<-25||avgVol>3.5||aboveMA20===0){{
+    status='TAHAN';cls='s-biru'
+    if(fullMatchCount>=3)reasons.push(fullMatchCount+' kandidat turnaround terdeteksi')
+    if(avgDD<-25)reasons.push('Rata-rata penurunan IDX30 '+avgDD.toFixed(1)+'%')
+    if(avgVol>3.5)reasons.push('Volatilitas '+avgVol.toFixed(2)+'% — fluktuasi di atas normal')
+    if(aboveMA20===0)reasons.push('Seluruh IDX30 di bawah MA20 — tren pendek lemah')
+  }}else{{
+    reasons.push('Tidak ada sinyal exit signifikan')
+    reasons.push('Rata-rata penurunan '+avgDD.toFixed(1)+'% — dalam batas wajar')
+  }}
+  if(reasons.length<2){{
+    if(exitCount>0)reasons.push(exitCount+' saham EXIT, '+exitRiskCount+' EXIT RISK')
+    else if(avgDD>-15)reasons.push('Penurunan pasar minimal ('+avgDD.toFixed(1)+'%)')
+    else if(rsPositive>15)reasons.push(rsPositive+' dari 30 saham mulai menguat')
+    else reasons.push(healthyCount+' dari '+EX.length+' saham dalam kondisi sehat')
+  }}
+  if(portfolioExit.length>0){{
+    var tkr=portfolioExit.map(function(d){{return d.ticker.split('.')[0]}}).join(', ')
+    focuses.push('Portofolio: '+tkr+' masuk sinyal exit — pantau pergerakan')
+  }}else if(exitCount>0){{
+    var ex=EX.filter(function(d){{return d.exit_state==='EXIT'}}).slice(0,3).map(function(d){{return d.ticker.split('.')[0]}}).join(', ')
+    focuses.push('Pantau '+ex+' — saham dengan sinyal EXIT aktif')
+  }}else if(fullMatchCount>=3&&SM.top_candidates){{
+    var tkr=SM.top_candidates.filter(function(d){{return d.full_match}}).slice(0,3).map(function(d){{return d.ticker.split('.')[0]}}).join(', ')
+    if(tkr)focuses.push('Pantau '+tkr+' — kandidat turnaround penuh')
+    else focuses.push(fullMatchCount+' kandidat turnaround — pantau perkembangannya')
+  }}else{{
+    focuses.push('Pantau perubahan ranking harian — '+rankDrops+' saham turun peringkat')
+  }}
+  if(avgDD<-25){{
+    focuses.push('Waspada tekanan pasar — rata-rata penurunan '+avgDD.toFixed(1)+'%')
+  }}else if(aboveMA20===0){{
+    focuses.push('Pasar melemah — 0 saham berhasil bertahan di atas MA20')
+  }}else if(rsPositive>15){{
+    focuses.push(rsPositive+' dari 30 saham menunjukkan penguatan — positif')
+  }}else{{
+    focuses.push(rankDrops+' saham turun peringkat hari ini — perhatikan distribusi')
+  }}
+  if(focuses.length>2)focuses=focuses.slice(0,2)
+  if(reasons.length>3)reasons=reasons.slice(0,3)
+  var h='<div class="conc"><div class="conc-hdr"><span class="conc-status '+cls+'">'+status+'</span><span class="conc-label">KESIMPULAN HARI INI</span></div><div class="conc-body"><div class="conc-col"><div class="conc-sub">Alasan</div><ul class="conc-list">'
+  reasons.forEach(function(r){{h+='<li>'+r+'</li>'}})
+  h+='</ul></div><div class="conc-col"><div class="conc-sub">Fokus Hari Ini</div><ul class="conc-list">'
+  focuses.forEach(function(f){{h+='<li>'+f+'</li>'}})
+  h+='</ul></div></div></div>'
+  document.getElementById('conclusion').innerHTML=h
 }})();
 
 function st(i){{document.querySelectorAll('.tab-btn').forEach(function(b,j){{b.classList.toggle('active',j===i)}});document.querySelectorAll('.tc').forEach(function(t,j){{t.classList.toggle('active',j===i)}})}}
@@ -655,10 +724,10 @@ function aiExplain(leaderData,turnaroundData,exitData){{
     return lines.join('')
   }}
   if(leaderData&&leaderData.rank<=5){{
-    lines.push('<div class="panel-status portfolio"><b>PORTOFOLIO AKTIF</b>')
+    lines.push('<div class="panel-status portfolio"><b>TOP 5 CONFIG B</b>')
     lines.push('<div style="margin-top:6px;font-size:11px;color:#9CA3AF;font-weight:400">')
-    lines.push('<span class="panel-bullet">&#8226;</span>Top 5 in Config B ranking')
-    lines.push('<span class="panel-bullet">&#8226;</span>Saat ini masuk portofolio')
+    lines.push('<span class="panel-bullet">&#8226;</span>Peringkat 5 besar ranking engine')
+    lines.push('<span class="panel-bullet">&#8226;</span>Bukan rekomendasi beli')
     lines.push('</div></div>')
     return lines.join('')
   }}
@@ -889,12 +958,12 @@ def main():
     if PORTFOLIO_FILE.exists():
         portfolio_raw = read_json(PORTFOLIO_FILE)
         if portfolio_raw:
-            portfolio_data = enrich_portfolio(portfolio_raw, leaders, exit_data, profiles)
-            print(f"  Enriched {len(portfolio_data)} portfolio holdings")
+            portfolio_data = calculate_portfolio(portfolio_raw, leaders, exit_data, profiles)
+            print(f"  Calculated {len(portfolio_data)} portfolio positions")
         else:
-            print("  No portfolio holdings found")
+            print("  No portfolio positions found")
     else:
-        print("  No my_portfolio.json found — skipping")
+        print("  No portfolio_simulator.json found — skipping")
     print("  Generating HTML...")
     html = build_html(leaders, turnaround, summary, history, streaks, date_str, exit_data, profiles, fundamentals, portfolio_data)
     V2_DIR.mkdir(parents=True, exist_ok=True)

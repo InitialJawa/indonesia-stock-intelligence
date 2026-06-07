@@ -105,6 +105,7 @@ isolates alpha failure.
 | AUDIT-001 | Data quality audit | PBV salah untuk 8 ticker, DY rendering 100x | PBV fix (PE×ROE), DY format fix |
 | AUDIT-002 | Yahoo PBV field verification | bookValue/priceToBook salah, PE×ROE fallback terbaik | DATA_QUALITY_RULE_PBV_V1 formalized |
 | IMPLEMENT-003 | Dashboard regression recovery | Insight Layer V1 caused TDZ crash (PF before init), table disappearance | ENGINEERING RULE-005 established, append-only mandate |
+| RESEARCH-012 | Portfolio Decision Layer validation | Does EXIT + Rank + Turnaround produce better decisions than Buy Top 5 monthly? | PENDING — requires backtest validation |
 
 ---
 
@@ -329,6 +330,7 @@ ISI/
 3. **Turnaround satellite allocation** — RESEARCH-011 suggests 10-20% satellite. What is the optimal blend with Config B? Requires correlation analysis.
 4. **Gemini AI narrative** — Daily radar narrative generates 429 errors on free tier. Worth upgrading to paid tier?
 5. **Historical Factor Warehouse V2** — Full OOS weight optimization blocked. What is the minimal viable dataset?
+6. **RESEARCH-012: Portfolio Decision Layer** — Can Exit state + Rank change + Turnaround signals produce better portfolio decisions than passive Top 5 monthly? What are the HOLD/TRIM/SELL/REPLACE rules?
 
 ---
 
@@ -359,3 +361,4 @@ ISI/
 - [ ] Config B vs Config F comparison on real historical data
 - [ ] Turnaround-Config B blended portfolio correlation study
 - [ ] Exit Rule D threshold backtest (V1.1 vs alternatives)
+- [ ] RESEARCH-012: Portfolio Decision Layer — validate EXIT/Rank/Turnaround decision rules against passive Top 5 monthly

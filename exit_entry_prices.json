@@ -1,0 +1,52 @@
+{
+  "ADRO.JK": {
+    "entry_price": 2240.0,
+    "entry_date": "2026-06-07",
+    "current_rank": 1
+  },
+  "ESSA.JK": {
+    "entry_price": 585.0,
+    "entry_date": "2026-06-07",
+    "current_rank": 2
+  },
+  "MAPI.JK": {
+    "entry_price": 1485.0,
+    "entry_date": "2026-06-07",
+    "current_rank": 3
+  },
+  "PTBA.JK": {
+    "entry_price": 2590.0,
+    "entry_date": "2026-06-07",
+    "current_rank": 4
+  },
+  "AKRA.JK": {
+    "entry_price": 1220.0,
+    "entry_date": "2026-06-07",
+    "current_rank": 5
+  },
+  "CPIN.JK": {
+    "entry_price": 3380.0,
+    "entry_date": "2026-06-07",
+    "current_rank": 6
+  },
+  "ANTM.JK": {
+    "entry_price": 2750.0,
+    "entry_date": "2026-06-07",
+    "current_rank": 7
+  },
+  "EXCL.JK": {
+    "entry_price": 2650.0,
+    "entry_date": "2026-06-07",
+    "current_rank": 8
+  },
+  "BBRI.JK": {
+    "entry_price": 2740.0,
+    "entry_date": "2026-06-07",
+    "current_rank": 9
+  },
+  "BMRI.JK": {
+    "entry_price": 3840.0,
+    "entry_date": "2026-06-07",
+    "current_rank": 10
+  }
+}

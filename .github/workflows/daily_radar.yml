@@ -31,19 +31,31 @@ jobs:
         run: |
           python data_fetcher.py
 
-      - name: Generate HTML Dashboard
+      - name: Generate Turnaround Watchlist
+        run: |
+          python generate_turnaround_watchlist.py
+
+      - name: Generate Exit Watchlist
+        run: |
+          python generate_exit_watchlist.py
+
+      - name: Generate HTML Dashboard (V1)
         run: |
           python -m dashboard.generate_dashboard
+
+      - name: Generate HTML Dashboard V2 (Read-Only)
+        run: |
+          python generate_dashboard_v2.py
 
       - name: Commit and Push Changes
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add dashboard/data.json data_fetcher.py dashboard/generate_dashboard.py dashboard/index.html
+          git add dashboard/data.json data_fetcher.py generate_turnaround_watchlist.py generate_exit_watchlist.py generate_dashboard_v2.py dashboard/generate_dashboard.py dashboard/index.html dashboard/v2/index.html leaders_latest.csv turnaround_latest.csv turnaround_summary.json exit_watchlist_latest.csv exit_summary.json exit_entry_prices.json database/historical/turnaround_history.csv
           if git diff --staged --quiet; then
             echo "No changes to commit."
           else
-            git commit -m "feat: automated data pipeline with safe_float sanitization"
+            git commit -m "feat: daily turnaround watchlist + Dashboard V2 read-only"
             git pull --rebase origin main
             git push
           fi

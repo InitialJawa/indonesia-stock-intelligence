@@ -1,0 +1,436 @@
+import json
+import csv
+import datetime
+from pathlib import Path
+
+HISTORY_FILE = Path("database/historical/turnaround_history.csv")
+V2_DIR = Path("dashboard/v2")
+LEADERS_FILE = Path("leaders_latest.csv")
+TURNAROUND_FILE = Path("turnaround_latest.csv")
+SUMMARY_FILE = Path("turnaround_summary.json")
+EXIT_FILE = Path("exit_watchlist_latest.csv")
+
+def read_csv(filepath):
+    if not filepath.exists():
+        return []
+    with open(filepath, 'r') as f:
+        return list(csv.DictReader(f))
+
+def read_json(filepath):
+    if not filepath.exists():
+        return {}
+    with open(filepath) as f:
+        return json.load(f)
+
+def update_history(turnaround_rows, date_str):
+    existing = []
+    if HISTORY_FILE.exists():
+        with open(HISTORY_FILE, 'r') as f:
+            reader = csv.DictReader(f)
+            existing = [r for r in reader]
+    new_keys = set()
+    new_rows = []
+    for r in turnaround_rows:
+        key = f"{date_str}|{r['ticker']}"
+        if key not in new_keys:
+            new_keys.add(key)
+            new_rows.append({
+                'date': date_str,
+                'ticker': r['ticker'],
+                'context_match': r['context_match'],
+                'transition_match': r['transition_match']
+            })
+    seen = set()
+    deduped = []
+    for r in existing + new_rows:
+        key = f"{r['date']}|{r['ticker']}"
+        if key not in seen:
+            seen.add(key)
+            deduped.append(r)
+    HISTORY_FILE.parent.mkdir(parents=True, exist_ok=True)
+    with open(HISTORY_FILE, 'w', newline='') as f:
+        writer = csv.DictWriter(f, fieldnames=['date', 'ticker', 'context_match', 'transition_match'])
+        writer.writeheader()
+        writer.writerows(deduped)
+    return deduped
+
+def compute_streaks(history_rows):
+    by_ticker = {}
+    for r in history_rows:
+        t = r['ticker']
+        if t not in by_ticker:
+            by_ticker[t] = []
+        by_ticker[t].append(r)
+    streaks = {}
+    for ticker, entries in by_ticker.items():
+        entries.sort(key=lambda x: x['date'], reverse=True)
+        ctx_streak = 0
+        trn_streak = 0
+        for e in entries:
+            if e['context_match'] == 'True':
+                ctx_streak += 1
+            else:
+                break
+        for e in entries:
+            if e['transition_match'] == 'True':
+                trn_streak += 1
+            else:
+                break
+        first_ctx = None
+        first_trn = None
+        for e in reversed(entries):
+            if e['context_match'] == 'True' and first_ctx is None:
+                first_ctx = e['date']
+            if e['transition_match'] == 'True' and first_trn is None:
+                first_trn = e['date']
+        streaks[ticker] = {
+            'ctx_days': ctx_streak,
+            'trn_days': trn_streak,
+            'first_ctx': first_ctx or '-',
+            'first_trn': first_trn or '-',
+            'total_entries': len(entries)
+        }
+    return streaks
+
+def file_age(path):
+    if not path.exists():
+        return 'N/A'
+    mtime = datetime.datetime.fromtimestamp(path.stat().st_mtime)
+    age = datetime.datetime.now() - mtime
+    return f"{age.days}d {age.seconds // 3600}h ago" if age.days < 30 else f"{age.days}d ago"
+
+def build_html(leaders, turnaround, summary, history, streaks, date_str, exit_data=None):
+    date_short = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
+    summary_data = summary if isinstance(summary, dict) else {}
+    top_candidates = summary_data.get('top_candidates', [])
+    ctx_count = summary_data.get('context_match_count', 0)
+    trn_count = summary_data.get('transition_match_count', 0)
+    full_count = summary_data.get('full_match_count', 0)
+    sig = summary_data.get('signal_diagnostics', {})
+
+    leaders_json = json.dumps(leaders)
+    turnaround_json = json.dumps(turnaround)
+    summary_json = json.dumps(summary_data)
+    streaks_json = json.dumps(streaks)
+    exit_json = json.dumps(exit_data if exit_data else [])
+
+    return f'''<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ISI Dashboard V2 | Read-Only</title>
+<style>
+*{{box-sizing:border-box;margin:0;padding:0}}
+body{{font-family:'DM Sans','Segoe UI',sans-serif;background:#0f1115;color:#f1f5f9;min-height:100vh}}
+.hdr{{padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #222830;flex-wrap:wrap;gap:8px}}
+.logo{{font-family:'Space Mono','Courier New',monospace;font-size:12px;color:#00c26f;letter-spacing:.1em}}
+.logo span{{color:#475569}}
+.dt{{font-size:11px;color:#475569;font-family:'Space Mono',monospace}}
+.tab-nav{{display:flex;gap:2px;padding:.75rem 1.5rem 0;border-bottom:1px solid #222830;overflow-x:auto}}
+.tab-btn{{padding:8px 18px;font-size:11px;font-family:'Space Mono',monospace;background:transparent;border:none;color:#64748b;cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;letter-spacing:.05em}}
+.tab-btn:hover{{color:#94a3b8}}
+.tab-btn.active{{color:#00c26f;border-bottom-color:#00c26f}}
+.tc{{display:none;padding:1rem 1.5rem}}
+.tc.active{{display:block}}
+table{{width:100%;border-collapse:collapse;font-size:13px}}
+th{{font-size:10px;font-family:'Space Mono',monospace;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;padding:8px 10px;border-bottom:1px solid #222830;text-align:left;white-space:nowrap;font-weight:600}}
+td{{padding:8px 10px;border-bottom:1px solid #1a1f26;vertical-align:middle}}
+tr:hover td{{background:#1a1e24}}
+.tk{{font-family:'Space Mono',monospace;font-weight:700;color:#e2e8f0}}
+.sf{{font-family:'Space Mono',monospace;font-weight:700}}
+.sf.high{{color:#00c26f}}.sf.mid{{color:#f59e0b}}.sf.low{{color:#ef4444}}
+.badge{{font-size:9px;padding:2px 8px;border-radius:3px;font-family:'Space Mono',monospace;display:inline-block}}
+.bg-green{{background:#052e16;color:#00c26f;border:1px solid #166534}}
+.bg-red{{background:#2a1111;color:#ef4444;border:1px solid #661111}}
+.bg-yellow{{background:#2a2411;color:#f59e0b;border:1px solid #665511}}
+.bg-gray{{background:#171b20;color:#64748b;border:1px solid #222830}}
+.bg-blue{{background:#0c1929;color:#60a5fa;border:1px solid #1e3a5f}}
+.bar{{display:flex;align-items:center;gap:6px}}
+.bar-track{{height:3px;border-radius:2px;background:#222830;width:50px;overflow:hidden}}
+.bar-fill{{height:100%;border-radius:2px}}
+.bv{{font-size:10px;color:#94a3b8;font-family:'Space Mono',monospace;min-width:24px;text-align:right}}
+.card-grid{{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:1rem}}
+.card{{background:#171b20;border:1px solid #222830;border-radius:8px;padding:1rem}}
+.card-label{{font-size:9px;color:#64748b;font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}}
+.card-val{{font-size:22px;font-weight:700;font-family:'Space Mono',monospace}}
+.card-val.g{{color:#00c26f}}.card-val.r{{color:#ef4444}}.card-val.y{{color:#f59e0b}}.card-val.b{{color:#60a5fa}}
+.card-sub{{font-size:10px;color:#64748b;margin-top:4px}}
+.wide-card{{grid-column:1/-1}}
+.stat-row{{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #1a1f26;font-size:12px}}
+.stat-row:last-child{{border:none}}
+.stat-label{{color:#94a3b8}}
+.stat-val{{font-family:'Space Mono',monospace;font-weight:600}}
+.ctx-table td{{font-size:12px}}
+.sig-bull{{color:#00c26f}}.sig-bear{{color:#ef4444}}.sig-neu{{color:#94a3b8}}
+.streak-bar{{display:inline-flex;align-items:center;gap:4px;background:#171b20;padding:2px 8px;border-radius:4px;font-size:10px;font-family:'Space Mono',monospace}}
+.streak-bar .n{{font-weight:700;color:#00c26f}}
+.section-title{{font-size:10px;font-family:'Space Mono',monospace;color:#475569;text-transform:uppercase;letter-spacing:.1em;margin:1rem 0 8px;display:flex;align-items:center;gap:8px}}
+.section-title::after{{content:'';flex:1;height:1px;background:#222830}}
+.flag{{color:#f59e0b;font-size:10px;margin-left:4px}}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div class="logo">ISI <span>·</span> V2 <span>·</span> READ-ONLY DASHBOARD</div>
+  <div class="dt">{date_short} · IDX30</div>
+</div>
+<div class="tab-nav">
+  <button class="tab-btn active" onclick="st(0)">01 · Leaders</button>
+  <button class="tab-btn" onclick="st(1)">02 · Turnaround</button>
+  <button class="tab-btn" onclick="st(2)">03 · Daily Summary</button>
+  <button class="tab-btn" onclick="st(3)">04 · History</button>
+  <button class="tab-btn" onclick="st(4)">05 · Diagnostics</button>
+  <button class="tab-btn" onclick="st(5)">06 · Exit Monitor</button>
+</div>
+
+<div class="tc active" id="t0">
+  <div class="section-title">Config B Leaders · Q25/G30/V10/M35</div>
+  <table>
+    <thead><tr>
+      <th>#</th><th>Ticker</th><th>Score</th><th>Quality</th><th>Growth</th><th>Value</th><th>Momentum</th><th>Status</th>
+    </tr></thead>
+    <tbody id="tbody-leaders"></tbody>
+  </table>
+</div>
+
+<div class="tc" id="t1">
+  <div class="section-title">Turnaround Watchlist · Context + Transition Signals</div>
+  <div style="margin-bottom:10px;display:flex;gap:6px;flex-wrap:wrap">
+    <button class="tab-btn active" onclick="ft('all',this)" style="font-size:10px;padding:4px 12px">All</button>
+    <button class="tab-btn" onclick="ft('full',this)" style="font-size:10px;padding:4px 12px">Full Match</button>
+    <button class="tab-btn" onclick="ft('context',this)" style="font-size:10px;padding:4px 12px">Context Only</button>
+    <button class="tab-btn" onclick="ft('transition',this)" style="font-size:10px;padding:4px 12px">Transition Only</button>
+    <button class="tab-btn" onclick="ft('none',this)" style="font-size:10px;padding:4px 12px">No Signal</button>
+  </div>
+  <table>
+    <thead><tr>
+      <th>#</th><th>Ticker</th><th>Drawdown</th><th>Dist High</th><th>Volatility</th><th>RS Chg 60D</th><th>Vol Ratio</th><th>Recovery</th><th>Ctx</th><th>Trn</th>
+    </tr></thead>
+    <tbody id="tbody-turnaround"></tbody>
+  </table>
+</div>
+
+<div class="tc" id="t2">
+  <div class="section-title">Today's Snapshot</div>
+  <div class="card-grid">
+    <div class="card"><div class="card-label">Context Match</div><div class="card-val g">{ctx_count}</div><div class="card-sub">deep drawdown + far from high + high vol</div></div>
+    <div class="card"><div class="card-label">Transition Match</div><div class="card-val y">{trn_count}</div><div class="card-sub">rs_change_60d improving</div></div>
+    <div class="card"><div class="card-label">Full Match</div><div class="card-val b">{full_count}</div><div class="card-sub">context + transition</div></div>
+    <div class="card"><div class="card-label">Universe</div><div class="card-val">{summary_data.get('universe_size', 0)}</div><div class="card-sub">IDX30 tickers</div></div>
+  </div>
+  <div class="section-title">Signal Diagnostics</div>
+  <div class="card-grid">
+    <div class="card"><div class="card-label">RS Change 60D+</div><div class="card-val g">{sig.get('rs_change_60d_positive_count', 0)}</div><div class="card-sub">tickers with improving RS</div></div>
+    <div class="card"><div class="card-label">Volume High</div><div class="card-val y">{sig.get('volume_ratio_high_count', 0)}</div><div class="card-sub">vol ratio > 1.3x</div></div>
+    <div class="card"><div class="card-label">Above MA20</div><div class="card-val">{sig.get('above_ma20_count', 0)}</div><div class="card-sub">price above 20-day MA</div></div>
+    <div class="card"><div class="card-label">Recovery >10%</div><div class="card-val g">{sig.get('recovery_gt_10pct_count', 0)}</div><div class="card-sub">recovered from 60d low</div></div>
+    <div class="card"><div class="card-label">Avg Drawdown</div><div class="card-val r">{sig.get('avg_drawdown_252d', 0)}%</div><div class="card-sub">universe average</div></div>
+    <div class="card"><div class="card-label">Avg Volatility</div><div class="card-val y">{sig.get('avg_volatility_60d', 0)}%</div><div class="card-sub">universe average</div></div>
+  </div>
+  <div class="section-title">Top Candidates</div>
+  <table>
+    <thead><tr>
+      <th>Ticker</th><th>Score</th><th>Drawdown</th><th>Dist High</th><th>Volatility</th><th>RS Chg 60D</th><th>Vol Ratio</th><th>Recovery</th><th>Match</th>
+    </tr></thead>
+    <tbody id="tbody-top"></tbody>
+  </table>
+</div>
+
+<div class="tc" id="t3">
+  <div class="section-title">Candidate Persistence Tracking</div>
+  <p style="font-size:11px;color:#64748b;margin-bottom:10px">Consecutive days each ticker has maintained context/transition match. Sorted by total active streak.</p>
+  <table>
+    <thead><tr>
+      <th>Ticker</th><th>Context Streak</th><th>Transition Streak</th><th>First Detected (Ctx)</th><th>First Detected (Trn)</th><th>Total Days Tracked</th>
+    </tr></thead>
+    <tbody id="tbody-history"></tbody>
+  </table>
+</div>
+
+<div class="tc" id="t5">
+  <div class="section-title">Exit Monitor · Rule-Based Exit Signals</div>
+  <p style="font-size:11px;color:#64748b;margin-bottom:10px">
+    Rules: A=Rank Exit (&gt;Top10) &middot; B=Momentum (RS&lt;0 &amp; RS Chg&lt;0) &middot; C=Trend (Close&lt;MA50) &middot; D=Confirmed (Close&lt;MA100 or DD&gt;15%)
+  </p>
+  <div style="margin-bottom:10px;display:flex;gap:6px;flex-wrap:wrap">
+    <button class="tab-btn active" onclick="ef('all',this)" style="font-size:10px;padding:4px 12px">All</button>
+    <button class="tab-btn" onclick="ef('EXIT',this)" style="font-size:10px;padding:4px 12px;color:#ef4444">Exit</button>
+    <button class="tab-btn" onclick="ef('EXIT RISK',this)" style="font-size:10px;padding:4px 12px;color:#f59e0b">Exit Risk</button>
+    <button class="tab-btn" onclick="ef('WEAKENING',this)" style="font-size:10px;padding:4px 12px;color:#f97316">Weakening</button>
+    <button class="tab-btn" onclick="ef('EXIT WATCH',this)" style="font-size:10px;padding:4px 12px;color:#60a5fa">Exit Watch</button>
+    <button class="tab-btn" onclick="ef('HEALTHY',this)" style="font-size:10px;padding:4px 12px;color:#00c26f">Healthy</button>
+  </div>
+  <table>
+    <thead><tr>
+      <th>Ticker</th><th>Rank</th><th>Rank Chg</th><th>Exit State</th><th>Rules</th><th>RS20</th><th>RS Chg 20D</th><th>vs MA50</th><th>vs MA100</th><th>DD Entry</th>
+    </tr></thead>
+    <tbody id="tbody-exit"></tbody>
+  </table>
+</div>
+
+<div class="tc" id="t4">
+  <div class="section-title">Pipeline Diagnostics</div>
+  <div class="card-grid">
+    <div class="card wide-card">
+      <div class="card-label">Pipeline Status</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-top:4px">
+        <span style="width:8px;height:8px;border-radius:50%;background:#00c26f;display:inline-block"></span>
+        <span style="font-size:14px;font-weight:600">OPERATIONAL</span>
+      </div>
+      <div class="card-sub">All systems nominal</div>
+    </div>
+    <div class="card"><div class="card-label">Last Leaders Update</div><div class="card-val" style="font-size:14px">{file_age(LEADERS_FILE)}</div><div class="card-sub">leaders_latest.csv</div></div>
+    <div class="card"><div class="card-label">Last Turnaround Update</div><div class="card-val" style="font-size:14px">{file_age(TURNAROUND_FILE)}</div><div class="card-sub">turnaround_latest.csv</div></div>
+    <div class="card"><div class="card-label">Last Exit Update</div><div class="card-val" style="font-size:14px">{file_age(EXIT_FILE)}</div><div class="card-sub">exit_watchlist_latest.csv</div></div>
+    <div class="card"><div class="card-label">Records Processed</div><div class="card-val g">{summary_data.get('universe_size', 0)}</div><div class="card-sub">tickers in latest run</div></div>
+    <div class="card"><div class="card-label">Data Freshness</div><div class="card-val g">{summary_data.get('date', 'N/A')}</div><div class="card-sub">report date</div></div>
+    <div class="card"><div class="card-label">History Records</div><div class="card-val b">{len(history)}</div><div class="card-sub">turnaround_history.csv</div></div>
+    <div class="card"><div class="card-label">Workflow</div><div class="card-val" style="font-size:13px">daily_radar.yml</div><div class="card-sub">cron: 30 9 * * * (16:30 WIB)</div></div>
+  </div>
+</div>
+
+<script>
+const L={leaders_json};
+const T={turnaround_json};
+const SM={summary_json};
+const SK={streaks_json};
+const EX={exit_json};
+
+function sc(v){{return v>=60?'high':v>=40?'mid':'low'}}
+function bar(v,k){{return '<div class="bar"><div class="bar-track"><div class="bar-fill" style="width:'+Math.min(v,100)+'%;background:'+k+'"></div></div><span class="bv">'+v.toFixed(1)+'</span></div>'}}
+function badge(v,t){{return v?'<span class="badge '+t+'">Yes</span>':'<span class="badge bg-gray">No</span>'}}
+function pct(v){{return (v>0?'+':'')+v.toFixed(1)+'%'}}
+function ctxLabel(r){{return r.context_match?'<span class="badge bg-green">YES</span>':'<span class="badge bg-gray">NO</span>'}}
+function trnLabel(r){{return r.transition_match?'<span class="badge bg-yellow">YES</span>':'<span class="badge bg-gray">NO</span>'}}
+function fullLabel(r){{return (r.context_match&&r.transition_match)?'<span class="badge bg-blue">FULL</span>':r.context_match?'<span class="badge bg-green">CTX</span>':r.transition_match?'<span class="badge bg-yellow">TRN</span>':'<span class="badge bg-gray">—</span>'}}
+
+(function(){{
+  // Leaders
+  var h=L.map(function(d){{
+    return '<tr><td class="tk" style="color:#64748b;font-size:11px">'+d.rank+'</td><td class="tk">'+d.ticker.split('.')[0]+(d.rank<=5?'<span class="flag">★</span>':'')+'</td><td class="sf '+sc(d.final_score)+'">'+d.final_score.toFixed(1)+'</td><td>'+bar(d.quality,'#3b82f6')+'</td><td>'+bar(d.growth,'#10b981')+'</td><td>'+bar(d.value,'#a855f7')+'</td><td>'+bar(d.momentum,'#f59e0b')+'</td><td>'+(d.rank<=5?'<span class="badge bg-green">PORTFOLIO</span>':'<span class="badge bg-gray">WATCH</span>')+'</td></tr>'
+  }}).join('')
+  document.getElementById('tbody-leaders').innerHTML=h
+}})();
+
+(function(){{
+  var all=T;
+  var ftAll='all';var btns=document.querySelectorAll('#t1 .tab-btn')
+  function render(filter){{
+    var rows=filter==='all'?all:filter==='full'?all.filter(function(d){{return d.context_match==true&&d.transition_match==true}}):filter==='context'?all.filter(function(d){{return d.context_match==true&&d.transition_match==false}}):filter==='transition'?all.filter(function(d){{return d.context_match==false&&d.transition_match==true}}):all.filter(function(d){{return d.context_match==false&&d.transition_match==false}})
+    document.getElementById('tbody-turnaround').innerHTML=rows.map(function(d,i){{
+      return '<tr><td style="color:#64748b;font-size:11px;font-family:monospace">'+(i+1)+'</td><td class="tk">'+d.ticker.split('.')[0]+'</td><td class="sf '+(d.drawdown_252d<-25?'low':d.drawdown_252d<-10?'mid':'high')+'">'+pct(d.drawdown_252d)+'</td><td class="sf '+(d.distance_from_high_252d<-20?'low':d.distance_from_high_252d<-5?'mid':'high')+'">'+pct(d.distance_from_high_252d)+'</td><td>'+d.volatility_60d.toFixed(2)+'%</td><td class="sf '+(d.rs_change_60d>0?'high':'low')+'">'+pct(d.rs_change_60d)+'</td><td>'+d.volume_ratio.toFixed(2)+'x</td><td>'+pct(d.recovery_from_60d_low)+'</td><td>'+ctxLabel(d)+'</td><td>'+trnLabel(d)+'</td></tr>'
+    }}).join('')
+  }}
+  render('all')
+  window.ft=function(f,b){{ftAll=f;document.querySelectorAll('#t1 .tab-btn').forEach(function(x){{x.classList.remove('active')}});b.classList.add('active');render(f)}}
+}})();
+
+(function(){{
+  var top=SM.top_candidates||[];
+  document.getElementById('tbody-top').innerHTML=top.map(function(d){{
+    return '<tr><td class="tk">'+d.ticker.split('.')[0]+'</td><td class="sf high">'+(d.full_match?'FULL':d.context_match?'CTX':'TRN')+'</td><td class="sf low">'+pct(d.drawdown)+'</td><td class="sf low">'+pct(d.distance_from_high)+'</td><td>'+d.volatility.toFixed(2)+'%</td><td class="sf '+(d.rs_change_60d>0?'high':'low')+'">'+pct(d.rs_change_60d)+'</td><td>'+d.volume_ratio.toFixed(2)+'x</td><td>'+pct(d.recovery)+'</td><td>'+fullLabel(d)+'</td></tr>'
+  }}).join('')
+}})();
+
+(function(){{
+  var s=Object.keys(SK).sort(function(a,b){{return SK[b].ctx_days+SK[b].trn_days-(SK[a].ctx_days+SK[a].trn_days)}})
+  document.getElementById('tbody-history').innerHTML=s.map(function(t){{
+    var d=SK[t]
+    return '<tr><td class="tk">'+t.split('.')[0]+'</td><td>'+(d.ctx_days>0?'<span class="streak-bar"><span class="n">'+d.ctx_days+'</span>d</span>':'<span class="badge bg-gray">0d</span>')+'</td><td>'+(d.trn_days>0?'<span class="streak-bar"><span class="n" style="color:#f59e0b">'+d.trn_days+'</span>d</span>':'<span class="badge bg-gray">0d</span>')+'</td><td style="font-family:monospace;font-size:11px;color:#94a3b8">'+d.first_ctx+'</td><td style="font-family:monospace;font-size:11px;color:#94a3b8">'+d.first_trn+'</td><td style="font-family:monospace;font-size:11px;color:#94a3b8">'+d.total_entries+' days</td></tr>'
+  }}).join('')
+}})();
+
+(function(){{
+  var allExit=EX;
+  function renderExit(filter){{
+    var rows=filter==='all'?allExit:allExit.filter(function(d){{return d.exit_state===filter}});
+    document.getElementById('tbody-exit').innerHTML=rows.map(function(d){{
+      var stateCls=d.exit_state==='EXIT'?'bg-red':d.exit_state==='EXIT RISK'?'bg-yellow':d.exit_state==='WEAKENING'?'bg-yellow':d.exit_state==='EXIT WATCH'?'bg-blue':'bg-green';
+      var rsCls=d.rs_20d>0?'sf high':'sf low';
+      var rscCls=d.rs_change_20d>0?'sf high':'sf low';
+      var ma50Cls=d.close<d.ma50?'<span class="badge bg-red">BELOW</span>':'<span class="badge bg-green">ABOVE</span>';
+      var ma100Cls=d.close<d.ma100?'<span class="badge bg-red">BELOW</span>':'<span class="badge bg-green">ABOVE</span>';
+      var ddCls=d.drawdown_from_entry<-15?'sf low':'sf high';
+      var rankChg=d.rank_change>0?'<span class="sf high">+'+d.rank_change+'</span>':d.rank_change<0?'<span class="sf low">'+d.rank_change+'</span>':'<span style="color:#64748b">0</span>';
+      return '<tr><td class="tk">'+d.ticker.split('.')[0]+'</td><td style="font-family:monospace;font-size:12px;color:#94a3b8">#'+d.rank+'</td><td style="font-family:monospace;font-size:12px">'+rankChg+'</td><td><span class="badge '+stateCls+'">'+d.exit_state+'</span></td><td style="font-family:monospace;font-size:11px;color:#94a3b8">'+d.triggered_rules+'</td><td class="'+rsCls+'">'+d.rs_20d.toFixed(1)+'%</td><td class="'+rscCls+'">'+d.rs_change_20d.toFixed(1)+'%</td><td>'+ma50Cls+'</td><td>'+ma100Cls+'</td><td class="'+ddCls+'">'+d.drawdown_from_entry.toFixed(1)+'%</td></tr>'
+    }}).join('')
+  }}
+  renderExit('all');
+  window.ef=function(f,b){{
+    document.querySelectorAll('#t5 .tab-btn').forEach(function(x){{x.classList.remove('active')}});
+    b.classList.add('active');
+    renderExit(f)
+  }}
+}})();
+
+function st(i){{document.querySelectorAll('.tab-btn').forEach(function(b,j){{b.classList.toggle('active',j===i)}});document.querySelectorAll('.tc').forEach(function(t,j){{t.classList.toggle('active',j===i)}})}}
+</script>
+</body>
+</html>'''
+
+def main():
+    date_str = datetime.datetime.now().strftime('%Y-%m-%d')
+    print("=== Dashboard V2 Generator ===")
+    print(f"Date: {date_str}")
+    leaders = read_csv(LEADERS_FILE)
+    turnaround = read_csv(TURNAROUND_FILE)
+    summary = read_json(SUMMARY_FILE)
+    print(f"  Loaded: {len(leaders)} leaders, {len(turnaround)} turnaround, summary")
+    for r in turnaround:
+        r['context_match'] = r.get('context_match', 'False').strip() == 'True'
+        r['transition_match'] = r.get('transition_match', 'False').strip() == 'True'
+        for key in ['drawdown_252d', 'distance_from_high_252d', 'volatility_60d', 'rs_change_60d', 'volume_ratio', 'recovery_from_60d_low']:
+            try:
+                r[key] = float(r.get(key, 0))
+            except (ValueError, TypeError):
+                r[key] = 0.0
+    for l in leaders:
+        for key in ['quality', 'growth', 'value', 'momentum', 'final_score']:
+            try:
+                l[key] = float(l.get(key, 0))
+            except (ValueError, TypeError):
+                l[key] = 0.0
+    print("  Updating history archive...")
+    history = []
+    if turnaround:
+        history_rows_for_csv = [
+            {'date': date_str, 'ticker': r['ticker'],
+             'context_match': str(r['context_match']),
+             'transition_match': str(r['transition_match'])}
+            for r in turnaround
+        ]
+        history = update_history(history_rows_for_csv, date_str)
+    print(f"  History records: {len(history)}")
+    streaks = compute_streaks(history)
+    print(f"  Computing streak data for {len(streaks)} tickers")
+    exit_data = read_csv(EXIT_FILE)
+    for r in exit_data:
+        r['rank'] = int(r.get('rank', 0))
+        r['rank_change'] = int(r.get('rank_change', 0))
+        for key in ['rs_20d', 'rs_change_20d', 'close', 'drawdown_from_entry']:
+            try:
+                r[key] = float(r.get(key, 0))
+            except (ValueError, TypeError):
+                r[key] = 0.0
+        for key in ['ma20', 'ma50', 'ma100']:
+            val = r.get(key)
+            if val is None or val == '' or val == 'None':
+                r[key] = None
+            else:
+                try:
+                    r[key] = float(val)
+                except (ValueError, TypeError):
+                    r[key] = None
+    print(f"  Loaded {len(exit_data)} exit watchlist records")
+    print("  Generating HTML...")
+    html = build_html(leaders, turnaround, summary, history, streaks, date_str, exit_data)
+    V2_DIR.mkdir(parents=True, exist_ok=True)
+    output_path = V2_DIR / 'index.html'
+    with open(output_path, 'w', encoding='utf-8') as f:
+        f.write(html)
+    print(f"  Written: {output_path.resolve()}")
+    print("=== Dashboard V2 Complete ===")
+
+if __name__ == '__main__':
+    main()

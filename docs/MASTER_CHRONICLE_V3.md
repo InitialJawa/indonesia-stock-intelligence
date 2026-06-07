@@ -1,6 +1,6 @@
 # MASTER_CHRONICLE_V3 — Indonesia Stock Intelligence
 
-**Generated:** 2026-06-07
+**Generated:** 2026-06-08
 **Previous:** `docs/archive/MASTER_CHRONICLE_V2.md`, `docs/archive/master_chronicle.txt`
 **Purpose:** Single source of truth — read this first before any code changes
 
@@ -17,13 +17,17 @@ No machine learning. No predictive models. Rule-based exits only.
 **Status:** PRODUCTION (paper trading + dashboard monitoring)
 **Mode:** STABILIZATION — no production strategy changes, no Config B modifications,
 no new research without explicit approval. Focus: data integrity and documentation.
+**ENGINEERING RULE-005:** Chronicle First Development — document before implementing.
+**Dashboard Rule:** All enhancements must be append-only. Never modify existing render paths
+or DOM elements. Core interactivity (ticker click, help, AI Analysis) has higher priority
+than new panels.
 
 | Component | Status | Notes |
 |-----------|--------|-------|
 | Config B (Q25/G30/V10/M35) | PRODUCTION | Locked. Do not modify weights |
 | Top 5 Portfolio | PRODUCTION | Equal weight, monthly rebalance |
 | Daily Pipeline | PRODUCTION | GitHub Actions, runs 16:30 WIB |
-| Dashboard | ACTIVE | Single dashboard, 7 tabs (06 · Portfolio Simulator) |
+| Dashboard | ACTIVE | 6 tabs + Kesimpulan Hari Ini + Insight panels (append-only) |
 | Turnaround Watchlist | RESEARCH MONITORING | Paper trading only |
 | Exit Monitor V1.1 | ACTIVE | Rule-based, Version C thresholds |
 | Data Quality Audit | COMPLETED | AUDIT-001 + AUDIT-002: PBV & DY fixes applied |
@@ -100,6 +104,7 @@ isolates alpha failure.
 | S01 | Predictive sell signal? | Not viable — losers look healthy at T0 | Rule-based exits built |
 | AUDIT-001 | Data quality audit | PBV salah untuk 8 ticker, DY rendering 100x | PBV fix (PE×ROE), DY format fix |
 | AUDIT-002 | Yahoo PBV field verification | bookValue/priceToBook salah, PE×ROE fallback terbaik | DATA_QUALITY_RULE_PBV_V1 formalized |
+| IMPLEMENT-003 | Dashboard regression recovery | Insight Layer V1 caused TDZ crash (PF before init), table disappearance | ENGINEERING RULE-005 established, append-only mandate |
 
 ---
 
@@ -207,6 +212,8 @@ Perbankan, konsumen, dan infrastruktur normal.
 8. **Commodities at cycle peak are value traps** — Low PE at peak is false signal.
 9. **Turnaround is a watchlist, not a strategy** — RESEARCH-011 confirmed negative absolute CAGR.
 10. **Timing overlays don't work on momentum portfolios** — RESEARCH-010 confirmed degradation.
+11. **Dashboard enhancements must be append-only** — Insight Layer V1 introduced TDZ crash (PF before init) and table disappearance by modifying render order. All future dashboard work must: (a) insert new DOM elements only, never modify existing ones, (b) place new JS IIFEs after all data constants, (c) preserve core interactivity (ticker click, help, panel) as highest priority.
+12. **const declarations create Temporal Dead Zone** — `typeof` guard does NOT prevent ReferenceError for `const`. Variables in TDZ throw on ANY reference. Place all consumers after declarations or use `var` for cross-IIFE data.
 
 ---
 
@@ -249,12 +256,13 @@ ISI/
 │   └── output/                     Raw data, scores, history prices
 │
 ├── Dashboard (dashboard/index.html)
-│   ├── Tab 01: Leaders            Config B ranking with color-coded alignment
-│   ├── Tab 02: Turnaround         Context/Transition signals
+│   ├── Tab 01: Leaders            Config B ranking with color-coded alignment + Insight panels
+│   ├── Tab 02: Turnaround         Context/Transition signals + Turnaround analysis
 │   ├── Tab 03: Daily Summary      Signal diagnostics + top candidates
 │   ├── Tab 04: History            Streak tracking
 │   ├── Tab 05: Diagnostics        Pipeline health
-│   └── Tab 06: Exit Monitor       Rule-based exit states with legend
+│   ├── Tab 06: Exit Monitor       Rule-based exit states with legend + Exit analysis
+│   └── Kesimpulan Hari Ini       Narrative analysis (Leaders, Turnaround, Exit) above tabs
 │
 ├── Core Data
 │   ├── database/historical/        Daily warehouse, ticker metadata, backtest curves
@@ -335,6 +343,7 @@ ISI/
 - [x] FEATURE-001 — My Portfolio monitoring module (06 · My Portfolio tab)
 - [x] FEATURE-002 — Portfolio Simulator separation + AI Analysis restoration
 - [x] KESIMPULAN HARI INI panel restoration (regression from FEATURE-001)
+- [x] IMPLEMENT-003 — Dashboard regression recovery (Insight Layer V1 TDZ crash, append-only mandate, ENGINEERING RULE-005)
 
 ### BACKLOG TEKNIS
 - [ ] Monthly archive restoration — update `research/tools/` to read from `docs/archive/`

@@ -444,12 +444,6 @@ const EX=[{"Date": "2026-06-07", "ticker": "ESSA.JK", "rank": 2, "rank_change": 
   var trnOnly=T.filter(function(d){return !d.context_match&&d.transition_match})
   var rsPosT=T.filter(function(d){return d.rs_change_60d>0}).length
   var avgRec=T.reduce(function(s,d){return s+d.recovery_from_60d_low},0)/T.length
-  var sectors={}
-  top10.forEach(function(d){
-    var p=PF[d.ticker.split('.')[0]]
-    if(p){var sec=p.sector;sectors[sec]=(sectors[sec]||0)+1}
-  })
-  var secList=Object.keys(sectors).sort(function(a,b){return sectors[b]-sectors[a]})
   var strongestFactor=factors.map(function(f){return{name:f,val:avg(top5,f)}}).sort(function(a,b){return b.val-a.val})[0]
   var weakestFactor=factors.map(function(f){return{name:f,val:avg(bot5,f)}}).sort(function(a,b){return a.val-b.val})[0]
   var top5score=avg(top5,'final_score')
@@ -457,14 +451,6 @@ const EX=[{"Date": "2026-06-07", "ticker": "ESSA.JK", "rank": 2, "rank_change": 
   var rankUp=EX.filter(function(d){return d.rank_change>0}).length
   var rankDown=EX.filter(function(d){return d.rank_change<0}).length
   var portfolioExit=EX.filter(function(d){return top5.some(function(t){return t.ticker===d.ticker})&&d.exit_state!=='HEALTHY'})
-  var sectors={}
-  if(typeof PF!=='undefined'){
-    top10.forEach(function(d){
-      var p=PF[d.ticker.split('.')[0]]
-      if(p){var sec=p.sector;sectors[sec]=(sectors[sec]||0)+1}
-    })
-  }
-  var secList=Object.keys(sectors).sort(function(a,b){return sectors[b]-sectors[a]})
   var status='TIDAK ADA AKSI',cls='s-hijau'
   if(exitCount>=3){status='RISIKO MENINGKAT';cls='s-merah'}
   else if(exitCount>=1&&portfolioExit.length>0){status='REVIEW';cls='s-kuning'}
@@ -473,9 +459,6 @@ const EX=[{"Date": "2026-06-07", "ticker": "ESSA.JK", "rank": 2, "rank_change": 
   var sections=[]
   var ldr='Peringkat atas dikuasai '+top5.map(function(d){return d.ticker.split('.')[0]}).join(', ')+' dengan rerata skor '+top5score.toFixed(1)+'. '
   ldr+='Faktor '+strongestFactor.name.charAt(0).toUpperCase()+strongestFactor.name.slice(1)+' menjadi pendorong utama (rata-rata '+strongestFactor.val.toFixed(1)+'), sementara '+weakestFactor.name+' tertinggal di kelompok bawah ('+weakestFactor.val.toFixed(1)+'). '
-  if(secList.length>0){
-    ldr+='Konsentrasi sektor di 10 besar: '+secList.map(function(s){return s+' ('+sectors[s]+')'}).join(', ')+'. '
-  }
   if(rankDown>rankUp){
     ldr+=rankDown+' saham turun peringkat hari ini — tekanan rotasi terlihat di beberapa sektor.'
   }else if(rankUp>0){

@@ -170,6 +170,8 @@ tr:hover td{{background:#1a1e24}}
 .section-title{{font-size:11px;font-family:'Space Mono',monospace;color:#C9D1D9;text-transform:uppercase;letter-spacing:.1em;margin:1rem 0 8px;display:flex;align-items:center;gap:8px}}
 .section-title::after{{content:'';flex:1;height:1px;background:#222830}}
 .flag{{color:#f59e0b;font-size:10px;margin-left:4px}}
+.tip{{display:inline-flex;align-items:center;justify-content:center;width:13px;height:13px;border-radius:50%;background:#222830;color:#9CA3AF;font-size:8px;cursor:help;margin-left:5px;font-family:sans-serif;font-weight:400;vertical-align:middle;line-height:1;font-style:normal;letter-spacing:0}}
+.tip:hover{{background:#333a44;color:#F5F7FA}}
 .sortable{{cursor:pointer}}
 .sortable:hover{{color:#F5F7FA}}
 </style>
@@ -218,19 +220,19 @@ tr:hover td{{background:#1a1e24}}
 <div class="tc" id="t2">
   <div class="section-title">Today's Snapshot</div>
   <div class="card-grid">
-    <div class="card"><div class="card-label">Context Match</div><div class="card-val g">{ctx_count}</div><div class="card-sub">deep drawdown + far from high + high vol</div></div>
-    <div class="card"><div class="card-label">Transition Match</div><div class="card-val y">{trn_count}</div><div class="card-sub">rs_change_60d improving</div></div>
-    <div class="card"><div class="card-label">Full Match</div><div class="card-val b">{full_count}</div><div class="card-sub">context + transition</div></div>
+    <div class="card"><div class="card-label">SAHAM TERTEKAN<span class="tip" title="Saham yang sudah jatuh dalam dan masih tertekan.&#10;&#10;(Perhitungan:&#10;Drawdown &lt; -25%&#10;Distance From High &lt; -20%&#10;Volatility = Top 33%&#10;Research: Research-008B / 009B)">?</span></div><div class="card-val g">{ctx_count}</div><div class="card-sub">Saham yang jatuh berat dan masih dalam kondisi tertekan</div></div>
+    <div class="card"><div class="card-label">MULAI MEMBAIK<span class="tip" title="Saham yang menunjukkan perbaikan kekuatan relatif.&#10;&#10;(Perhitungan:&#10;RS_CHANGE_60D &gt; 0&#10;Research: Research-008B / 009B)">?</span></div><div class="card-val y">{trn_count}</div><div class="card-sub">Saham dengan kekuatan relatif yang mulai meningkat</div></div>
+    <div class="card"><div class="card-label">KANDIDAT TURNAROUND<span class="tip" title="Saham tertekan yang mulai pulih — terdeteksi oleh dua sinyal sekaligus.&#10;&#10;(Perhitungan:&#10;Context Match = True&#10;+&#10;Transition Match = True&#10;Research: Research-008B / 009B)">?</span></div><div class="card-val b">{full_count}</div><div class="card-sub">Saham tertekan yang mulai menunjukkan pemulihan</div></div>
     <div class="card"><div class="card-label">Universe</div><div class="card-val">{summary_data.get('universe_size', 0)}</div><div class="card-sub">IDX30 tickers</div></div>
   </div>
   <div class="section-title">Signal Diagnostics</div>
   <div class="card-grid">
-    <div class="card"><div class="card-label">RS Change 60D+</div><div class="card-val g">{sig.get('rs_change_60d_positive_count', 0)}</div><div class="card-sub">tickers with improving RS</div></div>
-    <div class="card"><div class="card-label">Volume High</div><div class="card-val y">{sig.get('volume_ratio_high_count', 0)}</div><div class="card-sub">vol ratio > 1.3x</div></div>
-    <div class="card"><div class="card-label">Above MA20</div><div class="card-val">{sig.get('above_ma20_count', 0)}</div><div class="card-sub">price above 20-day MA</div></div>
-    <div class="card"><div class="card-label">Recovery >10%</div><div class="card-val g">{sig.get('recovery_gt_10pct_count', 0)}</div><div class="card-sub">recovered from 60d low</div></div>
-    <div class="card"><div class="card-label">Avg Drawdown</div><div class="card-val r">{sig.get('avg_drawdown_252d', 0)}%</div><div class="card-sub">universe average</div></div>
-    <div class="card"><div class="card-label">Avg Volatility</div><div class="card-val y">{sig.get('avg_volatility_60d', 0)}%</div><div class="card-sub">universe average</div></div>
+    <div class="card"><div class="card-label">KEKUATAN MULAI NAIK<span class="tip" title="Saham yang mulai mengungguli pasar secara relatif.&#10;&#10;(Perhitungan:&#10;RS_CHANGE_60D &gt; 0&#10;Research: Research-009)">?</span></div><div class="card-val g">{sig.get('rs_change_60d_positive_count', 0)}</div><div class="card-sub">Saham yang mulai outperform pasar</div></div>
+    <div class="card"><div class="card-label">MINAT BELI MENINGKAT<span class="tip" title="Volume perdagangan di atas normal — menandakan minat pasar.&#10;&#10;(Perhitungan:&#10;Volume Ratio &gt; 1.3x&#10;Research: Research-008B)">?</span></div><div class="card-val y">{sig.get('volume_ratio_high_count', 0)}</div><div class="card-sub">Aktivitas perdagangan di atas normal</div></div>
+    <div class="card"><div class="card-label">DI ATAS TREND PENDEK<span class="tip" title="Harga di atas rata-rata pergerakan 20 hari — tren jangka pendek positif.&#10;&#10;(Perhitungan:&#10;Close &gt; MA20&#10;Research: Research-009B)">?</span></div><div class="card-val">{sig.get('above_ma20_count', 0)}</div><div class="card-sub">Harga di atas rata-rata 20 hari</div></div>
+    <div class="card"><div class="card-label">PANTUL DARI DASAR<span class="tip" title="Saham yang memantul lebih dari 10% dari titik terendah 60 hari.&#10;&#10;(Perhitungan:&#10;Recovery From 60D Low &gt; 10%&#10;Research: Research-008B)">?</span></div><div class="card-val g">{sig.get('recovery_gt_10pct_count', 0)}</div><div class="card-sub">Memantul &gt;10% dari level terendah 60 hari</div></div>
+    <div class="card"><div class="card-label">RATA-RATA PENURUNAN<span class="tip" title="Rata-rata penurunan semua saham dari harga tertinggi masing-masing.&#10;&#10;(Perhitungan:&#10;Mean Drawdown_252D&#10;— seluruh universe IDX30)">?</span></div><div class="card-val r">{sig.get('avg_drawdown_252d', 0)}%</div><div class="card-sub">Rata-rata penurunan dari harga tertinggi</div></div>
+    <div class="card"><div class="card-label">RATA-RATA GEJOLAK<span class="tip" title="Intensitas pergerakan harga rata-rata — semakin tinggi semakin berisiko.&#10;&#10;(Perhitungan:&#10;Mean Volatility_60D&#10;— seluruh universe IDX30)">?</span></div><div class="card-val y">{sig.get('avg_volatility_60d', 0)}%</div><div class="card-sub">Intensitas pergerakan harga rata-rata</div></div>
   </div>
   <div class="section-title">Top Candidates</div>
   <table>

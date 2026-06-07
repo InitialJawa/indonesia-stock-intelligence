@@ -115,6 +115,21 @@ tr:hover td{background:#1a1e24}
 .help-body ul{list-style:none;padding:0;margin:0}
 .help-body li{font-size:11px;color:#C9D1D9;padding:3px 0 3px 12px;position:relative;line-height:1.5}
 .help-body li::before{content:'\2022';position:absolute;left:0;color:#9CA3AF}
+
+.conc{margin:0 1.5rem 4px;padding:12px 14px;background:#171b20;border:1px solid #222830;border-radius:8px}
+.conc-hdr{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.conc-status{font-size:10px;font-family:'Space Mono',monospace;font-weight:700;padding:3px 10px;border-radius:4px;text-transform:uppercase;letter-spacing:.08em}
+.conc-status.s-hijau{background:#052e16;color:#00c26f;border:1px solid #166534}
+.conc-status.s-kuning{background:#2a2411;color:#f59e0b;border:1px solid #665511}
+.conc-status.s-merah{background:#2a1111;color:#ef4444;border:1px solid #661111}
+.conc-status.s-biru{background:#0c1929;color:#60a5fa;border:1px solid #1e3a5f}
+.conc-label{font-size:10px;font-family:'Space Mono',monospace;color:#9CA3AF;letter-spacing:.08em;font-weight:600}
+.conc-body{display:flex;gap:16px;flex-wrap:wrap}
+.conc-col{flex:1;min-width:200px}
+.conc-sub{font-size:9px;font-family:'Space Mono',monospace;color:#C9D1D9;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;font-weight:700}
+.conc-list{list-style:none;padding:0;margin:0}
+.conc-list li{font-size:11px;color:#C9D1D9;padding:2px 0 2px 12px;position:relative;line-height:1.5}
+.conc-list li::before{content:'\2022';position:absolute;left:0;color:#00c26f}
 </style>
 </head>
 <body>
@@ -122,6 +137,7 @@ tr:hover td{background:#1a1e24}
   <div class="logo">ISI <span>·</span> V2 <span>·</span> READ-ONLY DASHBOARD</div>
   <div class="dt">2026-06-07 11:22 · IDX30</div>
 </div>
+<div id="conclusion"></div>
 <div class="tab-nav">
   <button class="tab-btn active" onclick="st(0)">01 · Leaders</button>
   <button class="tab-btn" onclick="st(1)">02 · Turnaround</button>
@@ -281,6 +297,85 @@ const T=[{"rank": "1", "ticker": "CPIN.JK", "drawdown_252d": -32.31, "distance_f
 const SM={"date": "2026-06-07", "universe_size": 30, "context_match_count": 9, "transition_match_count": 20, "full_match_count": 4, "context_classification": {"deep_drawdown": ["CPIN.JK", "BRPT.JK", "ASII.JK", "EXCL.JK", "MDKA.JK", "ANTM.JK", "AMMN.JK", "TPIA.JK", "ESSA.JK", "ICBP.JK", "INTP.JK", "BBCA.JK", "BBRI.JK", "INDF.JK", "GOTO.JK", "TLKM.JK", "SIDO.JK", "MIKA.JK", "HEAL.JK", "KLBF.JK", "PGAS.JK", "UNTR.JK", "SMGR.JK"], "far_from_high": ["CPIN.JK", "BRPT.JK", "ASII.JK", "EXCL.JK", "MDKA.JK", "ANTM.JK", "AMMN.JK", "TPIA.JK", "ESSA.JK", "AKRA.JK", "BMRI.JK", "ITMG.JK", "BBNI.JK", "ICBP.JK", "INTP.JK", "BBCA.JK", "BBRI.JK", "INDF.JK", "GOTO.JK", "TLKM.JK", "SIDO.JK", "MIKA.JK", "HEAL.JK", "KLBF.JK", "PGAS.JK", "UNTR.JK", "SMGR.JK"], "high_volatility": ["CPIN.JK", "BRPT.JK", "ASII.JK", "EXCL.JK", "MDKA.JK", "ANTM.JK", "AMMN.JK", "TPIA.JK", "ESSA.JK", "MAPI.JK"]}, "signal_diagnostics": {"rs_change_60d_positive_count": 20, "volume_ratio_high_count": 11, "above_ma20_count": 0, "recovery_gt_10pct_count": 4, "avg_drawdown_252d": -36.89, "avg_volatility_60d": 3.14}, "top_candidates": [{"ticker": "CPIN.JK", "drawdown": -32.31, "distance_from_high": -32.31, "volatility": 3.09, "rs_change_60d": 31.91, "volume_ratio": 1.53, "recovery": 1.05, "context_match": true, "transition_match": true, "full_match": true, "confirmation_count": 1}, {"ticker": "BRPT.JK", "drawdown": -65.42, "distance_from_high": -65.42, "volatility": 8.09, "rs_change_60d": 63.3, "volume_ratio": 0.8, "recovery": 18.4, "context_match": true, "transition_match": true, "full_match": true, "confirmation_count": 1}, {"ticker": "ASII.JK", "drawdown": -35.12, "distance_from_high": -35.12, "volatility": 3.3, "rs_change_60d": 10.58, "volume_ratio": 0.87, "recovery": 0.0, "context_match": true, "transition_match": true, "full_match": true, "confirmation_count": 0}, {"ticker": "EXCL.JK", "drawdown": -40.98, "distance_from_high": -40.98, "volatility": 4.0, "rs_change_60d": 12.97, "volume_ratio": 0.67, "recovery": 3.52, "context_match": true, "transition_match": true, "full_match": true, "confirmation_count": 0}, {"ticker": "MDKA.JK", "drawdown": -34.77, "distance_from_high": -34.77, "volatility": 5.32, "rs_change_60d": -60.43, "volume_ratio": 1.23, "recovery": 17.89, "context_match": true, "transition_match": false, "full_match": false, "confirmation_count": 1}, {"ticker": "ANTM.JK", "drawdown": -42.23, "distance_from_high": -42.23, "volatility": 3.59, "rs_change_60d": -59.31, "volume_ratio": 1.38, "recovery": 5.36, "context_match": true, "transition_match": false, "full_match": false, "confirmation_count": 1}, {"ticker": "AMMN.JK", "drawdown": -62.61, "distance_from_high": -62.61, "volatility": 5.89, "rs_change_60d": -25.32, "volume_ratio": 1.13, "recovery": 13.45, "context_match": true, "transition_match": false, "full_match": false, "confirmation_count": 1}, {"ticker": "TPIA.JK", "drawdown": -87.54, "distance_from_high": -87.54, "volatility": 8.0, "rs_change_60d": -26.36, "volume_ratio": 5.66, "recovery": 0.0, "context_match": true, "transition_match": false, "full_match": false, "confirmation_count": 1}, {"ticker": "ESSA.JK", "drawdown": -39.06, "distance_from_high": -39.06, "volatility": 4.24, "rs_change_60d": -13.09, "volume_ratio": 0.68, "recovery": 0.0, "context_match": true, "transition_match": false, "full_match": false, "confirmation_count": 0}, {"ticker": "MAPI.JK", "drawdown": -1.33, "distance_from_high": -1.33, "volatility": 3.46, "rs_change_60d": 53.32, "volume_ratio": 0.98, "recovery": 37.5, "context_match": false, "transition_match": true, "full_match": false, "confirmation_count": 1}]};
 const SK={"CPIN.JK": {"ctx_days": 1, "trn_days": 1, "first_ctx": "2026-06-07", "first_trn": "2026-06-07", "total_entries": 1}, "BRPT.JK": {"ctx_days": 1, "trn_days": 1, "first_ctx": "2026-06-07", "first_trn": "2026-06-07", "total_entries": 1}, "ASII.JK": {"ctx_days": 1, "trn_days": 1, "first_ctx": "2026-06-07", "first_trn": "2026-06-07", "total_entries": 1}, "EXCL.JK": {"ctx_days": 1, "trn_days": 1, "first_ctx": "2026-06-07", "first_trn": "2026-06-07", "total_entries": 1}, "MDKA.JK": {"ctx_days": 1, "trn_days": 0, "first_ctx": "2026-06-07", "first_trn": "-", "total_entries": 1}, "ANTM.JK": {"ctx_days": 1, "trn_days": 0, "first_ctx": "2026-06-07", "first_trn": "-", "total_entries": 1}, "AMMN.JK": {"ctx_days": 1, "trn_days": 0, "first_ctx": "2026-06-07", "first_trn": "-", "total_entries": 1}, "TPIA.JK": {"ctx_days": 1, "trn_days": 0, "first_ctx": "2026-06-07", "first_trn": "-", "total_entries": 1}, "ESSA.JK": {"ctx_days": 1, "trn_days": 0, "first_ctx": "2026-06-07", "first_trn": "-", "total_entries": 1}, "MAPI.JK": {"ctx_days": 0, "trn_days": 1, "first_ctx": "-", "first_trn": "2026-06-07", "total_entries": 1}, "AKRA.JK": {"ctx_days": 0, "trn_days": 1, "first_ctx": "-", "first_trn": "2026-06-07", "total_entries": 1}, "BMRI.JK": {"ctx_days": 0, "trn_days": 1, "first_ctx": "-", "first_trn": "2026-06-07", "total_entries": 1}, "ITMG.JK": {"ctx_days": 0, "trn_days": 1, "first_ctx": "-", "first_trn": "2026-06-07", "total_entries": 1}, "BBNI.JK": {"ctx_days": 0, "trn_days": 1, "first_ctx": "-", "first_trn": "2026-06-07", "total_entries": 1}, "ICBP.JK": {"ctx_days": 0, "trn_days": 1, "first_ctx": "-", "first_trn": "2026-06-07", "total_entries": 1}, "INTP.JK": {"ctx_days": 0, "trn_days": 1, "first_ctx": "-", "first_trn": "2026-06-07", "total_entries": 1}, "BBCA.JK": {"ctx_days": 0, "trn_days": 1, "first_ctx": "-", "first_trn": "2026-06-07", "total_entries": 1}, "BBRI.JK": {"ctx_days": 0, "trn_days": 1, "first_ctx": "-", "first_trn": "2026-06-07", "total_entries": 1}, "INDF.JK": {"ctx_days": 0, "trn_days": 1, "first_ctx": "-", "first_trn": "2026-06-07", "total_entries": 1}, "GOTO.JK": {"ctx_days": 0, "trn_days": 1, "first_ctx": "-", "first_trn": "2026-06-07", "total_entries": 1}, "TLKM.JK": {"ctx_days": 0, "trn_days": 1, "first_ctx": "-", "first_trn": "2026-06-07", "total_entries": 1}, "SIDO.JK": {"ctx_days": 0, "trn_days": 1, "first_ctx": "-", "first_trn": "2026-06-07", "total_entries": 1}, "MIKA.JK": {"ctx_days": 0, "trn_days": 1, "first_ctx": "-", "first_trn": "2026-06-07", "total_entries": 1}, "HEAL.JK": {"ctx_days": 0, "trn_days": 1, "first_ctx": "-", "first_trn": "2026-06-07", "total_entries": 1}, "KLBF.JK": {"ctx_days": 0, "trn_days": 1, "first_ctx": "-", "first_trn": "2026-06-07", "total_entries": 1}, "PGAS.JK": {"ctx_days": 0, "trn_days": 0, "first_ctx": "-", "first_trn": "-", "total_entries": 1}, "ADRO.JK": {"ctx_days": 0, "trn_days": 0, "first_ctx": "-", "first_trn": "-", "total_entries": 1}, "PTBA.JK": {"ctx_days": 0, "trn_days": 0, "first_ctx": "-", "first_trn": "-", "total_entries": 1}, "UNTR.JK": {"ctx_days": 0, "trn_days": 0, "first_ctx": "-", "first_trn": "-", "total_entries": 1}, "SMGR.JK": {"ctx_days": 0, "trn_days": 0, "first_ctx": "-", "first_trn": "-", "total_entries": 1}};
 const EX=[{"Date": "2026-06-07", "ticker": "ESSA.JK", "rank": 2, "rank_change": 0, "close": 585.0, "rs_20d": -9.51, "rs_change_20d": -27.26, "ma20": 719.75, "ma50": 769.9, "ma100": 718.55, "drawdown_from_entry": 0.0, "exit_state": "EXIT", "triggered_rules": "B, C, D"}, {"Date": "2026-06-07", "ticker": "ANTM.JK", "rank": 8, "rank_change": -1, "close": 2750.0, "rs_20d": -9.55, "rs_change_20d": -16.46, "ma20": 3135.5, "ma50": 3536.2, "ma100": 3786.4, "drawdown_from_entry": 0.0, "exit_state": "EXIT", "triggered_rules": "B, C, D"}, {"Date": "2026-06-07", "ticker": "AKRA.JK", "rank": 9, "rank_change": -4, "close": 1220.0, "rs_20d": -1.2, "rs_change_20d": -17.21, "ma20": 1356.5, "ma50": 1386.48, "ma100": 1313.02, "drawdown_from_entry": 0.0, "exit_state": "EXIT", "triggered_rules": "B, C, D"}, {"Date": "2026-06-07", "ticker": "BRPT.JK", "rank": 11, "rank_change": 0, "close": 1480.0, "rs_20d": -11.9, "rs_change_20d": -37.45, "ma20": 1813.5, "ma50": 1858.1, "ma100": 2043.65, "drawdown_from_entry": 0.0, "exit_state": "EXIT", "triggered_rules": "A, B, C, D"}, {"Date": "2026-06-07", "ticker": "MDKA.JK", "rank": 16, "rank_change": 0, "close": 2570.0, "rs_20d": -0.11, "rs_change_20d": -0.25, "ma20": 2637.0, "ma50": 3016.2, "ma100": 3114.9, "drawdown_from_entry": 0.0, "exit_state": "EXIT", "triggered_rules": "A, B, C, D"}, {"Date": "2026-06-07", "ticker": "ASII.JK", "rank": 18, "rank_change": 0, "close": 4570.0, "rs_20d": -2.3, "rs_change_20d": -4.59, "ma20": 5440.75, "ma50": 5723.35, "ma100": 5998.77, "drawdown_from_entry": 0.0, "exit_state": "EXIT", "triggered_rules": "A, B, C, D"}, {"Date": "2026-06-07", "ticker": "UNTR.JK", "rank": 23, "rank_change": 0, "close": 21250.0, "rs_20d": -8.51, "rs_change_20d": -10.08, "ma20": 24703.75, "ma50": 27875.7, "ma100": 27992.24, "drawdown_from_entry": 0.0, "exit_state": "EXIT", "triggered_rules": "A, B, C, D"}, {"Date": "2026-06-07", "ticker": "SIDO.JK", "rank": 25, "rank_change": 0, "close": 364.0, "rs_20d": -4.59, "rs_change_20d": -2.83, "ma20": 413.4, "ma50": 464.55, "ma100": 489.22, "drawdown_from_entry": 0.0, "exit_state": "EXIT", "triggered_rules": "A, B, C, D"}, {"Date": "2026-06-07", "ticker": "TPIA.JK", "rank": 28, "rank_change": 0, "close": 1305.0, "rs_20d": -57.55, "rs_change_20d": -88.51, "ma20": 2875.18, "ma50": 4439.02, "ma100": 5491.96, "drawdown_from_entry": 0.0, "exit_state": "EXIT", "triggered_rules": "A, B, C, D"}, {"Date": "2026-06-07", "ticker": "ADRO.JK", "rank": 1, "rank_change": 0, "close": 2240.0, "rs_20d": 9.18, "rs_change_20d": -2.4, "ma20": 2357.5, "ma50": 2391.4, "ma100": 2267.36, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "C"}, {"Date": "2026-06-07", "ticker": "PTBA.JK", "rank": 3, "rank_change": 1, "close": 2590.0, "rs_20d": 9.51, "rs_change_20d": 5.64, "ma20": 2778.0, "ma50": 2883.2, "ma100": 2745.3, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "C"}, {"Date": "2026-06-07", "ticker": "BMRI.JK", "rank": 5, "rank_change": 5, "close": 3840.0, "rs_20d": 9.67, "rs_change_20d": 7.15, "ma20": 4142.15, "ma50": 4201.71, "ma100": 4382.24, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "C"}, {"Date": "2026-06-07", "ticker": "CPIN.JK", "rank": 6, "rank_change": 0, "close": 3380.0, "rs_20d": 3.39, "rs_change_20d": 6.23, "ma20": 3961.93, "ma50": 4012.35, "ma100": 4045.47, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "C"}, {"Date": "2026-06-07", "ticker": "PGAS.JK", "rank": 7, "rank_change": 0, "close": 1520.0, "rs_20d": 4.76, "rs_change_20d": -3.6, "ma20": 1697.04, "ma50": 1722.12, "ma100": 1852.04, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "C"}, {"Date": "2026-06-07", "ticker": "BBRI.JK", "rank": 10, "rank_change": -1, "close": 2740.0, "rs_20d": 2.36, "rs_change_20d": -6.32, "ma20": 3053.5, "ma50": 3116.44, "ma100": 3319.86, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "C"}, {"Date": "2026-06-07", "ticker": "BBNI.JK", "rank": 12, "rank_change": 0, "close": 3210.0, "rs_20d": 0.23, "rs_change_20d": -8.23, "ma20": 3763.0, "ma50": 3771.4, "ma100": 3915.57, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-07", "ticker": "INDF.JK", "rank": 13, "rank_change": 0, "close": 6050.0, "rs_20d": 4.49, "rs_change_20d": -5.82, "ma20": 6713.75, "ma50": 6710.5, "ma100": 6660.25, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-07", "ticker": "EXCL.JK", "rank": 14, "rank_change": -6, "close": 2650.0, "rs_20d": 1.62, "rs_change_20d": -5.07, "ma20": 2875.0, "ma50": 2984.6, "ma100": 3176.7, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-07", "ticker": "INTP.JK", "rank": 15, "rank_change": 0, "close": 4050.0, "rs_20d": 5.18, "rs_change_20d": 1.53, "ma20": 4471.76, "ma50": 4650.39, "ma100": 5263.85, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-07", "ticker": "ITMG.JK", "rank": 17, "rank_change": 0, "close": 21900.0, "rs_20d": 5.46, "rs_change_20d": 0.92, "ma20": 23122.5, "ma50": 25017.9, "ma100": 23702.69, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-07", "ticker": "BBCA.JK", "rank": 19, "rank_change": 0, "close": 5075.0, "rs_20d": 1.1, "rs_change_20d": 5.71, "ma20": 5911.25, "ma50": 6185.83, "ma100": 6668.39, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-07", "ticker": "TLKM.JK", "rank": 20, "rank_change": 0, "close": 2760.0, "rs_20d": 13.78, "rs_change_20d": 17.89, "ma20": 2981.0, "ma50": 3013.8, "ma100": 3230.9, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-07", "ticker": "SMGR.JK", "rank": 21, "rank_change": 0, "close": 1555.0, "rs_20d": -6.96, "rs_change_20d": 0.29, "ma20": 1845.2, "ma50": 2110.56, "ma100": 2382.07, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-07", "ticker": "MIKA.JK", "rank": 22, "rank_change": 0, "close": 1525.0, "rs_20d": -0.58, "rs_change_20d": 5.73, "ma20": 1728.25, "ma50": 1928.0, "ma100": 2116.8, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-07", "ticker": "ICBP.JK", "rank": 24, "rank_change": 0, "close": 6450.0, "rs_20d": 9.47, "rs_change_20d": 10.96, "ma20": 6828.75, "ma50": 7017.5, "ma100": 7470.0, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-07", "ticker": "GOTO.JK", "rank": 26, "rank_change": 0, "close": 50.0, "rs_20d": 19.58, "rs_change_20d": 20.26, "ma20": 50.0, "ma50": 51.42, "ma100": 56.32, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-07", "ticker": "KLBF.JK", "rank": 27, "rank_change": 0, "close": 695.0, "rs_20d": -1.02, "rs_change_20d": 4.44, "ma20": 789.75, "ma50": 862.99, "ma100": 972.89, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-07", "ticker": "AMMN.JK", "rank": 29, "rank_change": 0, "close": 3290.0, "rs_20d": -9.52, "rs_change_20d": 3.33, "ma20": 3440.5, "ma50": 4495.4, "ma100": 5811.35, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-07", "ticker": "HEAL.JK", "rank": 30, "rank_change": 0, "close": 800.0, "rs_20d": -2.37, "rs_change_20d": 11.12, "ma20": 959.25, "ma50": 1094.12, "ma100": 1210.2, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-07", "ticker": "MAPI.JK", "rank": 4, "rank_change": -1, "close": 1485.0, "rs_20d": 34.25, "rs_change_20d": 32.98, "ma20": 1488.5, "ma50": 1349.6, "ma100": 1281.2, "drawdown_from_entry": 0.0, "exit_state": "HEALTHY", "triggered_rules": "NONE"}];
+
+(function(){
+  var exitCount=0,exitRiskCount=0,weakeningCount=0,exitWatchCount=0,healthyCount=0
+  EX.forEach(function(d){
+    if(d.exit_state==='EXIT')exitCount++
+    else if(d.exit_state==='EXIT RISK')exitRiskCount++
+    else if(d.exit_state==='WEAKENING')weakeningCount++
+    else if(d.exit_state==='EXIT WATCH')exitWatchCount++
+    else if(d.exit_state==='HEALTHY')healthyCount++
+  })
+  var top5=[];L.forEach(function(d){if(d.rank<=5)top5.push(d.ticker)})
+  var portfolioExit=EX.filter(function(d){return top5.indexOf(d.ticker)>=0&&d.exit_state!=='HEALTHY'})
+  var fullMatchCount=SM.full_match_count||0
+  var sd=SM.signal_diagnostics||{}
+  var avgDD=sd.avg_drawdown_252d||0
+  var avgVol=sd.avg_volatility_60d||0
+  var aboveMA20=sd.above_ma20_count||0
+  var rsPositive=sd.rs_change_60d_positive_count||0
+  var bigDrops=EX.filter(function(d){return d.rank_change<=-2}).length
+  var rankDrops=EX.filter(function(d){return d.rank_change<0}).length
+  var status='TIDAK ADA AKSI',cls='s-hijau',reasons=[],focuses=[]
+  if(exitCount>=3){
+    status='RISIKO MENINGKAT';cls='s-merah'
+    reasons.push(exitCount+' saham dalam status EXIT — tekanan keluar meluas')
+    reasons.push(exitRiskCount+' EXIT RISK, '+weakeningCount+' weakening — sistem dalam tekanan')
+  }else if(exitCount>=1&&portfolioExit.length>0){
+    status='REVIEW';cls='s-kuning'
+    reasons.push(exitCount+' saham EXIT, '+portfolioExit.length+' di antaranya dari portofolio 5 besar')
+  }else if(exitCount>=1||exitRiskCount>=2){
+    status='REVIEW';cls='s-kuning'
+    if(exitCount>=1)reasons.push(exitCount+' saham EXIT terdeteksi')
+    else reasons.push(exitRiskCount+' saham EXIT RISK — perhatikan perkembangan')
+  }else if(fullMatchCount>=3||avgDD<-25||avgVol>3.5||aboveMA20===0){
+    status='TAHAN';cls='s-biru'
+    if(fullMatchCount>=3)reasons.push(fullMatchCount+' kandidat turnaround terdeteksi')
+    if(avgDD<-25)reasons.push('Rata-rata penurunan IDX30 '+avgDD.toFixed(1)+'%')
+    if(avgVol>3.5)reasons.push('Volatilitas '+avgVol.toFixed(2)+'% — fluktuasi di atas normal')
+    if(aboveMA20===0)reasons.push('Seluruh IDX30 di bawah MA20 — tren pendek lemah')
+  }else{
+    reasons.push('Tidak ada sinyal exit signifikan')
+    reasons.push('Rata-rata penurunan '+avgDD.toFixed(1)+'% — dalam batas wajar')
+  }
+  if(reasons.length<2){
+    if(exitCount>0)reasons.push(exitCount+' saham EXIT, '+exitRiskCount+' EXIT RISK')
+    else if(avgDD>-15)reasons.push('Penurunan pasar minimal ('+avgDD.toFixed(1)+'%)')
+    else if(rsPositive>15)reasons.push(rsPositive+' dari 30 saham mulai menguat')
+    else reasons.push(healthyCount+' dari '+EX.length+' saham dalam kondisi sehat')
+  }
+  if(portfolioExit.length>0){
+    var tkr=portfolioExit.map(function(d){return d.ticker.split('.')[0]}).join(', ')
+    focuses.push('Portofolio: '+tkr+' masuk sinyal exit — pantau pergerakan')
+  }else if(exitCount>0){
+    var ex=EX.filter(function(d){return d.exit_state==='EXIT'}).slice(0,3).map(function(d){return d.ticker.split('.')[0]}).join(', ')
+    focuses.push('Pantau '+ex+' — saham dengan sinyal EXIT aktif')
+  }else if(fullMatchCount>=3&&SM.top_candidates){
+    var tkr=SM.top_candidates.filter(function(d){return d.full_match}).slice(0,3).map(function(d){return d.ticker.split('.')[0]}).join(', ')
+    if(tkr)focuses.push('Pantau '+tkr+' — kandidat turnaround penuh')
+    else focuses.push(fullMatchCount+' kandidat turnaround — pantau perkembangannya')
+  }else{
+    focuses.push('Pantau perubahan ranking harian — '+rankDrops+' saham turun peringkat')
+  }
+  if(avgDD<-25){
+    focuses.push('Waspada tekanan pasar — rata-rata penurunan '+avgDD.toFixed(1)+'%')
+  }else if(aboveMA20===0){
+    focuses.push('Pasar melemah — 0 saham berhasil bertahan di atas MA20')
+  }else if(rsPositive>15){
+    focuses.push(rsPositive+' dari 30 saham menunjukkan penguatan — positif')
+  }else{
+    focuses.push(rankDrops+' saham turun peringkat hari ini — perhatikan distribusi')
+  }
+  if(focuses.length>2)focuses=focuses.slice(0,2)
+  if(reasons.length>3)reasons=reasons.slice(0,3)
+  var h='<div class="conc"><div class="conc-hdr"><span class="conc-status '+cls+'">'+status+'</span><span class="conc-label">KESIMPULAN HARI INI</span></div><div class="conc-body"><div class="conc-col"><div class="conc-sub">Alasan</div><ul class="conc-list">'
+  reasons.forEach(function(r){h+='<li>'+r+'</li>'})
+  h+='</ul></div><div class="conc-col"><div class="conc-sub">Fokus Hari Ini</div><ul class="conc-list">'
+  focuses.forEach(function(f){h+='<li>'+f+'</li>'})
+  h+='</ul></div></div></div>'
+  document.getElementById('conclusion').innerHTML=h
+})();
 
 function sc(v){return v>=60?'high':v>=40?'mid':'low'}
 function bar(v,k){return '<div class="bar"><div class="bar-track"><div class="bar-fill" style="width:'+Math.min(v,100)+'%;background:'+k+'"></div></div><span class="bv">'+v.toFixed(1)+'</span></div>'}

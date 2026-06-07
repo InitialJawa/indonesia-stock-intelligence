@@ -1,5 +1,14 @@
 # MASTER_CHRONICLE_V3 — Indonesia Stock Intelligence
 
+## RESEARCH-013A Baseline Reproducibility Audit (PASS)
+- **Result:** Config B baseline successfully reproduced from raw inputs.
+- **CAGR difference:** 0.11%
+- **Sharpe difference:** 0.70%
+- **Alpha difference:** 0.14%
+- **Conclusion:** Baseline metrics are reproducible and suitable for further robustness audits.
+
+
+
 **Generated:** 2026-06-08
 **Previous:** `docs/archive/MASTER_CHRONICLE_V2.md`, `docs/archive/master_chronicle.txt`
 **Purpose:** Single source of truth — read this first before any code changes

@@ -1,0 +1,7 @@
+dimension,best_context,best_precision,best_n,worst_context,worst_precision,worst_n
+Distance Bucket,Far (<-20%),0.3076,725,Mid (-5% to -20%),0.1451,820
+Drawdown Bucket,Deep (<-25%),0.3416,524,Shallow (>-10%),0.1415,622
+Mcap Bucket,Small (<1k),0.2651,298,Large (>5k),0.1339,545
+Sector,Chemicals & Conglomerate,0.4286,63,Consumer Goods,0.0985,203
+Trend Bucket,"Mixed (above MA50, below MA200)",0.2997,307,Bull Trend (above MA50+200),0.1656,930
+Volatility Bucket,High Vol,0.2815,650,Low Vol,0.1149,592

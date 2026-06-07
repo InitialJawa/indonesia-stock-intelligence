@@ -1,0 +1,7 @@
+- [x] Verify working tree clean
+- [x] Stage required files (run_daily_risk_radar.py, daily_radar.yml, model_audit_report.md, root_cause_report.md, task.md)
+- [x] Commit with message "fix: restore Gemini narrative generation and add forensic audit reports"
+- [x] Pull remote changes (rebase)
+- [x] Push to origin HEAD
+- [ ] Wait for GitHub Actions to complete
+- [ ] Verify workflow success and dashboard

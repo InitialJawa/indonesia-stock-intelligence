@@ -10,7 +10,6 @@ PIPELINE = [
     "python -m collectors.growth",
     "python -m collectors.prices",
     "python -m collectors.historical_foreign_flow",
-    "python -m backtesting.merge_foreign_flow",
 
     # =========================
     # Factor Scores
@@ -26,22 +25,9 @@ PIPELINE = [
     "python -m scoring.final_score_v3",
 
     # =========================
-    # Archives & Warehouse
-    # =========================
-    "python -m backtesting.archive_current_state",
-    "python -m backtesting.archive_fundamentals",
-    "python -m backtesting.archive_growth",
-    "python -m backtesting.archive_factors",
-
-    # =========================
-    # Portfolio Rebalance
-    # =========================
-    "python -m backtesting.rebalance",
-
-    # =========================
     # Visual Dashboard
     # =========================
-    "python generate_dashboard_v2.py"
+    "python scripts/generate_dashboard_v2.py"
 ]
 
 def run():

@@ -1,0 +1,27 @@
+[
+    {
+        "ticker": "ADRO.JK",
+        "weight": 20.0,
+        "final_score": 69.62
+    },
+    {
+        "ticker": "BBRI.JK",
+        "weight": 20.0,
+        "final_score": 68.05
+    },
+    {
+        "ticker": "BMRI.JK",
+        "weight": 20.0,
+        "final_score": 67.64
+    },
+    {
+        "ticker": "ESSA.JK",
+        "weight": 20.0,
+        "final_score": 67.22
+    },
+    {
+        "ticker": "MAPI.JK",
+        "weight": 20.0,
+        "final_score": 63.43
+    }
+]

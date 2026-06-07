@@ -1,0 +1,6 @@
+signal_id,signal_name,n_signals,n_positive,n_false,precision
+A,rs_change_60d > 0,1884,396,1488,0.2102
+B,rs_change_60d > 0 AND volume_ratio > 1.2,1471,296,1175,0.2012
+C,rs_change_60d > 0 AND above_ma20,1566,306,1260,0.1954
+D,rs_change_60d > 0 AND momentum_slope > 0,1259,269,990,0.2137
+E,rs_change_60d > 0 AND volume_ratio > 1.2 AND above_ma20,1173,230,943,0.1961

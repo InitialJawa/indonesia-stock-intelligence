@@ -29,25 +29,25 @@ jobs:
 
       - name: Run Data Fetcher
         run: |
-          python data_fetcher.py
+          python scripts/data_fetcher.py
 
       - name: Generate Turnaround Watchlist
         run: |
-          python generate_turnaround_watchlist.py
+          python scripts/generate_turnaround_watchlist.py
 
       - name: Generate Exit Watchlist
         run: |
-          python generate_exit_watchlist.py
+          python scripts/generate_exit_watchlist.py
 
       - name: Generate HTML Dashboard
         run: |
-          python generate_dashboard_v2.py
+          python scripts/generate_dashboard_v2.py
 
       - name: Commit and Push Changes
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add dashboard/index.html data_fetcher.py generate_turnaround_watchlist.py generate_exit_watchlist.py generate_dashboard_v2.py leaders_latest.csv turnaround_latest.csv turnaround_summary.json exit_watchlist_latest.csv exit_summary.json exit_entry_prices.json database/historical/turnaround_history.csv
+          git add dashboard/index.html scripts/data_fetcher.py scripts/generate_turnaround_watchlist.py scripts/generate_exit_watchlist.py scripts/generate_dashboard_v2.py data/current/ data/state/ database/historical/turnaround_history.csv
           if git diff --staged --quiet; then
             echo "No changes to commit."
           else

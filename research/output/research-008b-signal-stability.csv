@@ -1,0 +1,5 @@
+candidate,candidate_name,n_raw_signals,n_raw_non_overlap,n_validated,occurrence_per_ticker_year,precision,recall,false_positive_rate,lift,avg_fwd_20d,avg_fwd_40d
+A,MA20 Cross After 20D Below,436,436,103,172.9088,0.2362,0.1092,0.005615,14.8565,0.1646,0.2319
+B,RS20 Negative->Positive,3028,1493,301,1200.8436,0.2016,0.3192,0.0201,12.6786,0.1512,0.2347
+C,Volume >1.3 + Above MA20,7089,1724,368,2811.3542,0.2135,0.3902,0.022866,13.4238,0.1584,0.2343
+D,Momentum Slope Negative->Positive,755,717,171,299.4178,0.2385,0.1813,0.009207,14.9983,0.1436,0.2282

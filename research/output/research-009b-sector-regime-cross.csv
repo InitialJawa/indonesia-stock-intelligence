@@ -1,0 +1,85 @@
+sector,regime_60d,n_signals,n_positive,precision
+Chemicals & Conglomerate,bull,9,7,0.7778
+Mining (State-owned),bull,7,5,0.7143
+Pharmaceutical,bull,7,5,0.7143
+Energy (Oil & Gas),unknown,3,2,0.6667
+Mining (Gold),bull,6,4,0.6667
+Retail,unknown,3,2,0.6667
+Chemicals (Petrochemical),bull,8,5,0.625
+Telecom,bull,13,7,0.5385
+Chemicals (Petrochemical),unknown,2,1,0.5
+Technology,bull,2,1,0.5
+Mining (State-owned),unknown,2,1,0.5
+Mining (Gold),unknown,2,1,0.5
+Energy (Gas),bull,6,3,0.5
+Chemicals & Conglomerate,unknown,2,1,0.5
+Automotive & Conglomerate,bull,6,3,0.5
+Cement,bull,17,8,0.4706
+Banking,bull,27,12,0.4444
+Heavy Equipment & Mining,bull,7,3,0.4286
+Mining (Gold/Copper),sideways,7,3,0.4286
+Energy (Oil & Gas),bull,5,2,0.4
+Coal Mining,bull,15,6,0.4
+Energy & Logistics,bull,5,2,0.4
+Mining (Gold),sideways,46,18,0.3913
+Chemicals & Conglomerate,sideways,44,17,0.3864
+Chemicals (Petrochemical),sideways,42,16,0.381
+Energy (Oil & Gas),sideways,48,18,0.375
+Healthcare,bull,17,6,0.3529
+Energy & Logistics,unknown,3,1,0.3333
+Retail,bull,6,2,0.3333
+Poultry & Feed,unknown,3,1,0.3333
+Mining (Gold/Copper),bear,6,2,0.3333
+Coal Mining (State-owned),bear,12,4,0.3333
+Energy & Logistics,sideways,49,15,0.3061
+Technology,bear,7,2,0.2857
+Energy (Gas),sideways,47,13,0.2766
+Mining (State-owned),sideways,44,12,0.2727
+Coal Mining,bear,26,7,0.2692
+Heavy Equipment & Mining,sideways,43,11,0.2558
+Chemicals & Conglomerate,bear,8,2,0.25
+Coal Mining (State-owned),sideways,48,12,0.25
+Healthcare,bear,17,4,0.2353
+Mining (State-owned),bear,13,3,0.2308
+Mining (Gold),bear,13,3,0.2308
+Retail,sideways,45,10,0.2222
+Energy (Gas),bear,9,2,0.2222
+Coal Mining,sideways,89,18,0.2022
+Energy (Oil & Gas),bear,10,2,0.2
+Pharmaceutical,sideways,44,8,0.1818
+Technology,sideways,17,3,0.1765
+Healthcare,sideways,89,15,0.1685
+Retail,bear,12,2,0.1667
+Coal Mining (State-owned),bull,6,1,0.1667
+Coal Mining,unknown,6,1,0.1667
+Poultry & Feed,sideways,45,7,0.1556
+Telecom,sideways,93,14,0.1505
+Poultry & Feed,bear,7,1,0.1429
+Poultry & Feed,bull,7,1,0.1429
+Automotive & Conglomerate,sideways,48,6,0.125
+Cement,sideways,88,11,0.125
+Pharmaceutical,bear,8,1,0.125
+Consumer Goods,bear,33,4,0.1212
+Consumer Goods,sideways,134,14,0.1045
+Chemicals (Petrochemical),bear,10,1,0.1
+Banking,sideways,176,16,0.0909
+Consumer Goods,bull,25,2,0.08
+Cement,bear,20,1,0.05
+Telecom,bear,24,1,0.0417
+Banking,bear,42,1,0.0238
+Banking,unknown,13,0,0.0
+Cement,unknown,4,0,0.0
+Automotive & Conglomerate,bear,11,0,0.0
+Automotive & Conglomerate,unknown,3,0,0.0
+Consumer Goods,unknown,11,0,0.0
+Coal Mining (State-owned),unknown,3,0,0.0
+Energy & Logistics,bear,12,0,0.0
+Energy (Gas),unknown,2,0,0.0
+Heavy Equipment & Mining,unknown,3,0,0.0
+Heavy Equipment & Mining,bear,12,0,0.0
+Healthcare,unknown,6,0,0.0
+Mining (Gold/Copper),bull,2,0,0.0
+Pharmaceutical,unknown,3,0,0.0
+Mining (Gold/Copper),unknown,2,0,0.0
+Technology,unknown,3,0,0.0
+Telecom,unknown,4,0,0.0

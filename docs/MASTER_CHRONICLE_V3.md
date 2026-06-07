@@ -113,11 +113,11 @@ isolates alpha failure.
 
 Convert Config B + Exit Layer + Turnaround into actionable portfolio decisions (HOLD/REVIEW/TRIM/SELL/REPLACE). No production decision layer until all phases pass statistical validation.
 
-**Phase 1 — Exit Validation**
+**Phase 1 — Exit Validation** ✅ COMPLETED 2026-06-08
 Question: Do EXIT stocks underperform after the signal?
-Method: Collect historical EXIT signals, measure 30/60/90D forward returns vs Non-EXIT.
-Outputs: Avg Return, Median Return, Win Rate, Excess Return.
-Gate: EXIT confirmed as candidate SELL signal only if significant underperformance.
+Method: Reconstruct historical EXIT signals from warehouse_daily_v4 (2022-2026, 30 IDX30 tickers) using Rule D (Close<MA100 + RS20<0 + RS_CHG<0 / drawdown>15%). Event-based: first-entry only (832 EXIT, 446 HEALTHY events). Forward returns 30/60/90D.
+Result: **NOT CONFIRMED** — EXIT stocks do NOT underperform. 30D: +0.53% excess vs Healthy (p=0.39). 90D: +2.16% excess — significantly *outperform* (p=0.04). Sub-signal D1 (technical breakdown) only: -0.13% avg, -0.85% excess vs Healthy (p=0.18, NS). D2 (drawdown>15%): +2.05% avg, predicts bounceback.
+Gate: NOT passed — EXIT is NOT a candidate SELL signal standalone. Decision matrix (Phase 4) required to combine EXIT with Rank for useful signals.
 
 **Phase 2 — Rank Deterioration Test**
 Question: Does leaving Top 10 justify selling?
@@ -398,7 +398,7 @@ ISI/
 - [ ] Turnaround-Config B blended portfolio correlation study
 - [ ] Exit Rule D threshold backtest (V1.1 vs alternatives)
 - [ ] RESEARCH-012: Portfolio Decision Layer
-  - [ ] Phase 1 — Exit Validation (forward returns after EXIT signal)
+  - [x] Phase 1 — Exit Validation ✅ NOT CONFIRMED (EXIT does NOT underperform; +2.16% excess at 90D, p=0.04)
   - [ ] Phase 2 — Rank Deterioration Test (sell thresholds)
   - [ ] Phase 3 — Replacement Test (replace vs hold)
   - [ ] Phase 4 — Exit + Rank Decision Matrix

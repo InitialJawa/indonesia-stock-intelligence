@@ -1,0 +1,4 @@
+horizon,exit_n,healthy_n,exit_avg_return,healthy_avg_return,exit_median_return,healthy_median_return,exit_win_rate,healthy_win_rate,excess_return,p_value,significant_5pct
+30D,818,441,1.25%,0.72%,0.78%,0.54%,52.6%,52.6%,0.53%,0.390805,NO
+60D,806,437,1.70%,0.90%,0.11%,0.00%,50.1%,49.9%,0.80%,0.340456,NO
+90D,792,425,3.53%,1.37%,1.18%,0.00%,53.5%,49.9%,2.16%,0.040235,YES

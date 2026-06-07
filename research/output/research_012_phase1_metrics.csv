@@ -1,0 +1,4 @@
+horizon,exit_n,non_exit_n,exit_avg_return,non_exit_avg_return,exit_median_return,non_exit_median_return,exit_win_rate,non_exit_win_rate,excess_return,excess_return_bp,t_stat,p_value,significant_5pct
+30D,17474,13045,0.77%,1.02%,0.00%,0.28%,48.4%,50.7%,-0.25%,-25,-1.9433,0.051991,NO
+60D,17004,12885,1.86%,1.74%,0.45%,0.04%,51.0%,50.1%,0.12%,12,0.6506,0.515308,NO
+90D,16617,12642,2.81%,2.46%,1.22%,0.36%,52.9%,50.7%,0.34%,34,1.4571,0.145112,NO

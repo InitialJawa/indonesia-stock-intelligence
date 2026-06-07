@@ -428,73 +428,137 @@ const EX=[{"Date": "2026-06-07", "ticker": "ESSA.JK", "rank": 2, "rank_change": 
     else if(d.exit_state==='EXIT WATCH')exitWatchCount++
     else if(d.exit_state==='HEALTHY')healthyCount++
   })
-  var top5=[];L.forEach(function(d){if(d.rank<=5)top5.push(d.ticker)})
-  var portfolioExit=EX.filter(function(d){return top5.indexOf(d.ticker)>=0&&d.exit_state!=='HEALTHY'})
-  var fullMatchCount=SM.full_match_count||0
   var sd=SM.signal_diagnostics||{}
   var avgDD=sd.avg_drawdown_252d||0
   var avgVol=sd.avg_volatility_60d||0
   var aboveMA20=sd.above_ma20_count||0
-  var rsPositive=sd.rs_change_60d_positive_count||0
-  var bigDrops=EX.filter(function(d){return d.rank_change<=-2}).length
-  var rankDrops=EX.filter(function(d){return d.rank_change<0}).length
-  var status='TIDAK ADA AKSI',cls='s-hijau',reasons=[],focuses=[]
+  var rsPositive=sd.rs_change_60d_positive_count||20
+  var top5=L.filter(function(d){return d.rank<=5})
+  var top10=L.filter(function(d){return d.rank<=10})
+  var bot5=L.filter(function(d){return d.rank>25})
+  var factors=['quality','growth','value','momentum']
+  var avg=function(arr,k){return arr.reduce(function(s,d){return s+d[k]},0)/arr.length}
+  var fullMatch=T.filter(function(d){return d.context_match&&d.transition_match})
+  var fullMatchCount=fullMatch.length
+  var ctxOnly=T.filter(function(d){return d.context_match&&!d.transition_match})
+  var trnOnly=T.filter(function(d){return !d.context_match&&d.transition_match})
+  var rsPosT=T.filter(function(d){return d.rs_change_60d>0}).length
+  var avgRec=T.reduce(function(s,d){return s+d.recovery_from_60d_low},0)/T.length
+  var sectors={}
+  top10.forEach(function(d){
+    var p=PF[d.ticker.split('.')[0]]
+    if(p){var sec=p.sector;sectors[sec]=(sectors[sec]||0)+1}
+  })
+  var secList=Object.keys(sectors).sort(function(a,b){return sectors[b]-sectors[a]})
+  var strongestFactor=factors.map(function(f){return{name:f,val:avg(top5,f)}}).sort(function(a,b){return b.val-a.val})[0]
+  var weakestFactor=factors.map(function(f){return{name:f,val:avg(bot5,f)}}).sort(function(a,b){return a.val-b.val})[0]
+  var top5score=avg(top5,'final_score')
+  var bot5score=avg(bot5,'final_score')
+  var rankUp=EX.filter(function(d){return d.rank_change>0}).length
+  var rankDown=EX.filter(function(d){return d.rank_change<0}).length
+  var portfolioExit=EX.filter(function(d){return top5.some(function(t){return t.ticker===d.ticker})&&d.exit_state!=='HEALTHY'})
+  var sectors={}
+  if(typeof PF!=='undefined'){
+    top10.forEach(function(d){
+      var p=PF[d.ticker.split('.')[0]]
+      if(p){var sec=p.sector;sectors[sec]=(sectors[sec]||0)+1}
+    })
+  }
+  var secList=Object.keys(sectors).sort(function(a,b){return sectors[b]-sectors[a]})
+  var status='TIDAK ADA AKSI',cls='s-hijau'
+  if(exitCount>=3){status='RISIKO MENINGKAT';cls='s-merah'}
+  else if(exitCount>=1&&portfolioExit.length>0){status='REVIEW';cls='s-kuning'}
+  else if(exitCount>=1||exitRiskCount>=2){status='REVIEW';cls='s-kuning'}
+  else if(fullMatchCount>=3||avgDD<-25||avgVol>3.5||aboveMA20===0){status='TAHAN';cls='s-biru'}
+  var sections=[]
+  var ldr='Peringkat atas dikuasai '+top5.map(function(d){return d.ticker.split('.')[0]}).join(', ')+' dengan rerata skor '+top5score.toFixed(1)+'. '
+  ldr+='Faktor '+strongestFactor.name.charAt(0).toUpperCase()+strongestFactor.name.slice(1)+' menjadi pendorong utama (rata-rata '+strongestFactor.val.toFixed(1)+'), sementara '+weakestFactor.name+' tertinggal di kelompok bawah ('+weakestFactor.val.toFixed(1)+'). '
+  if(secList.length>0){
+    ldr+='Konsentrasi sektor di 10 besar: '+secList.map(function(s){return s+' ('+sectors[s]+')'}).join(', ')+'. '
+  }
+  if(rankDown>rankUp){
+    ldr+=rankDown+' saham turun peringkat hari ini — tekanan rotasi terlihat di beberapa sektor.'
+  }else if(rankUp>0){
+    ldr+=rankUp+' saham naik peringkat — distribusi kekuatan mulai meluas.'
+  }else{
+    ldr+='Peringkat relatif stabil hari ini.'
+  }
+  sections.push({title:'Pimpinan Pasar',text:ldr})
+  var ta=''
+  if(fullMatchCount>0){
+    var fn=fullMatch.map(function(d){return d.ticker.split('.')[0]+' (RS Change '+d.rs_change_60d.toFixed(0)+'%)'}).join(', ')
+    ta+=fullMatchCount+' kandidat turnaround penuh: '+fn+'. '
+    var sr=fullMatch.filter(function(d){return d.recovery_from_60d_low>5})
+    if(sr.length>0)ta+=sr.map(function(d){return d.ticker.split('.')[0]}).join(' dan ')+' sudah memulih '+sr[0].recovery_from_60d_low.toFixed(1)+'% dari dasar 60 hari — sinyal pemulihan awal. '
+  }
+  ta+='Total '+rsPosT+'/'+T.length+' saham menunjukkan kekuatan relatif positif. '
+  if(avgRec>5){
+    ta+='Rata-rata pemulihan '+avgRec.toFixed(1)+'% — momentum pemulihan mulai terbentuk.'
+  }else if(avgRec>0){
+    ta+='Pemulihan rata-rata '+avgRec.toFixed(1)+'% — masih tahap awal, perlu konfirmasi volume.'
+  }else{
+    ta+='Rata-rata pemulihan '+avgRec.toFixed(1)+'% — tekanan masih dominan, pemuluhan belum terkonfirmasi.'
+  }
+  sections.push({title:'Kandidat Turnaround',text:ta})
+  var exs=''
   if(exitCount>=3){
-    status='RISIKO MENINGKAT';cls='s-merah'
-    reasons.push(exitCount+' saham dalam status EXIT — tekanan keluar meluas')
-    reasons.push(exitRiskCount+' EXIT RISK, '+weakeningCount+' weakening — sistem dalam tekanan')
-  }else if(exitCount>=1&&portfolioExit.length>0){
-    status='REVIEW';cls='s-kuning'
-    reasons.push(exitCount+' saham EXIT, '+portfolioExit.length+' di antaranya dari portofolio 5 besar')
-  }else if(exitCount>=1||exitRiskCount>=2){
-    status='REVIEW';cls='s-kuning'
-    if(exitCount>=1)reasons.push(exitCount+' saham EXIT terdeteksi')
-    else reasons.push(exitRiskCount+' saham EXIT RISK — perhatikan perkembangan')
-  }else if(fullMatchCount>=3||avgDD<-25||avgVol>3.5||aboveMA20===0){
-    status='TAHAN';cls='s-biru'
-    if(fullMatchCount>=3)reasons.push(fullMatchCount+' kandidat turnaround terdeteksi')
-    if(avgDD<-25)reasons.push('Rata-rata penurunan IDX30 '+avgDD.toFixed(1)+'%')
-    if(avgVol>3.5)reasons.push('Volatilitas '+avgVol.toFixed(2)+'% — fluktuasi di atas normal')
-    if(aboveMA20===0)reasons.push('Seluruh IDX30 di bawah MA20 — tren pendek lemah')
-  }else{
-    reasons.push('Tidak ada sinyal exit signifikan')
-    reasons.push('Rata-rata penurunan '+avgDD.toFixed(1)+'% — dalam batas wajar')
-  }
-  if(reasons.length<2){
-    if(exitCount>0)reasons.push(exitCount+' saham EXIT, '+exitRiskCount+' EXIT RISK')
-    else if(avgDD>-15)reasons.push('Penurunan pasar minimal ('+avgDD.toFixed(1)+'%)')
-    else if(rsPositive>15)reasons.push(rsPositive+' dari 30 saham mulai menguat')
-    else reasons.push(healthyCount+' dari '+EX.length+' saham dalam kondisi sehat')
-  }
-  if(portfolioExit.length>0){
-    var tkr=portfolioExit.map(function(d){return d.ticker.split('.')[0]}).join(', ')
-    focuses.push('Portofolio: '+tkr+' masuk sinyal exit — pantau pergerakan')
+    exs+='Tekanan keluar meluas — '+exitCount+' saham EXIT, '+exitRiskCount+' EXIT RISK, '+weakeningCount+' weakening. '
   }else if(exitCount>0){
-    var ex=EX.filter(function(d){return d.exit_state==='EXIT'}).slice(0,3).map(function(d){return d.ticker.split('.')[0]}).join(', ')
-    focuses.push('Pantau '+ex+' — saham dengan sinyal EXIT aktif')
-  }else if(fullMatchCount>=3&&SM.top_candidates){
-    var tkr=SM.top_candidates.filter(function(d){return d.full_match}).slice(0,3).map(function(d){return d.ticker.split('.')[0]}).join(', ')
-    if(tkr)focuses.push('Pantau '+tkr+' — kandidat turnaround penuh')
-    else focuses.push(fullMatchCount+' kandidat turnaround — pantau perkembangannya')
+    exs+=exitCount+' saham EXIT dan '+exitRiskCount+' EXIT RISK. '
   }else{
-    focuses.push('Pantau perubahan ranking harian — '+rankDrops+' saham turun peringkat')
+    exs+='Tidak ada saham dalam status EXIT. '
+  }
+  var exTickers=EX.filter(function(d){return d.exit_state==='EXIT'})
+  if(exTickers.length>0){
+    var worst=exTickers.slice().sort(function(a,b){return a.rs_20d-b.rs_20d})[0]
+    exs+=exTickers.length+' saham dengan EXIT aktif — '+worst.ticker.split('.')[0]+' paling tertekan dengan RS20 '+worst.rs_20d.toFixed(1)+'%. '
+  }
+  if(avgDD<-30){
+    exs+='Pasar dalam tekanan luas: rata-rata penurunan '+avgDD.toFixed(1)+'% dari puncak 1 tahun. '
+  }else if(avgDD<-20){
+    exs+='Rata-rata penurunan IDX30 '+avgDD.toFixed(1)+'% — waspada pelemahan lanjutan. '
+  }else{
+    exs+='Rata-rata penurunan '+avgDD.toFixed(1)+'% — dalam batas wajar. '
+  }
+  if(aboveMA20===0){
+    exs+='Seluruh IDX30 di bawah MA20 — tren pendek sangat lemah, tidak ada satu pun saham yang bertahan.'
+  }else if(aboveMA20<5){
+    exs+='Hanya '+aboveMA20+' saham di atas MA20 — pasar bearish jangka pendek.'
+  }
+  if(avgVol>4){
+    exs+='Volatilitas tinggi ('+avgVol.toFixed(2)+'%) — fluktuasi ekstrem meningkatkan risiko.'
+  }
+  sections.push({title:'Tekanan Pasar',text:exs})
+  var focuses=[]
+  if(portfolioExit.length>0){
+    focuses.push('Portofolio: '+portfolioExit.map(function(d){return d.ticker.split('.')[0]}).join(', ')+' masuk sinyal EXIT')
+  }else if(exitCount>0){
+    focuses.push('EXIT: '+EX.filter(function(d){return d.exit_state==='EXIT'}).slice(0,3).map(function(d){return d.ticker.split('.')[0]}).join(', '))
+  }
+  if(fullMatchCount>0){
+    focuses.push('Turnaround: '+fullMatch.slice(0,2).map(function(d){return d.ticker.split('.')[0]}).join(', '))
   }
   if(avgDD<-25){
-    focuses.push('Waspada tekanan pasar — rata-rata penurunan '+avgDD.toFixed(1)+'%')
+    focuses.push('Waspada tekanan pasar ('+avgDD.toFixed(1)+'%)')
   }else if(aboveMA20===0){
-    focuses.push('Pasar melemah — 0 saham berhasil bertahan di atas MA20')
+    focuses.push('Pasar melemah — 0 di atas MA20')
   }else if(rsPositive>15){
-    focuses.push(rsPositive+' dari 30 saham menunjukkan penguatan — positif')
-  }else{
-    focuses.push(rankDrops+' saham turun peringkat hari ini — perhatikan distribusi')
+    focuses.push(rsPositive+'/30 menguat')
   }
-  if(focuses.length>2)focuses=focuses.slice(0,2)
-  if(reasons.length>3)reasons=reasons.slice(0,3)
-  var h='<div class="conc"><div class="conc-hdr"><span class="conc-status '+cls+'">'+status+'</span><span class="conc-label">KESIMPULAN HARI INI</span></div><div class="conc-body"><div class="conc-col"><div class="conc-sub">Alasan</div><ul class="conc-list">'
-  reasons.forEach(function(r){h+='<li>'+r+'</li>'})
-  h+='</ul></div><div class="conc-col"><div class="conc-sub">Fokus Hari Ini</div><ul class="conc-list">'
-  focuses.forEach(function(f){h+='<li>'+f+'</li>'})
-  h+='</ul></div></div></div>'
+  if(focuses.length>3)focuses=focuses.slice(0,3)
+  var h='<div class="conc"><div class="conc-hdr"><span class="conc-status '+cls+'">'+status+'</span><span class="conc-label">KESIMPULAN HARI INI</span></div><div class="conc-body">'
+  sections.forEach(function(s){
+    h+='<div class="conc-col"><div class="conc-sub">'+s.title+'</div><p style="font-size:11px;color:#C9D1D9;line-height:1.6;margin:4px 0 0">'+s.text+'</p></div>'
+  })
+  h+='</div>'
+  if(focuses.length>0){
+    h+='<div style="margin-top:10px;padding-top:8px;border-top:1px solid #1a1f26;display:flex;gap:8px;flex-wrap:wrap">'
+    focuses.forEach(function(f){
+      h+='<span style="font-size:10px;font-family:\'Space Mono\',monospace;color:#f59e0b;background:#2a2411;border:1px solid #665511;padding:2px 8px;border-radius:4px">'+f+'</span>'
+    })
+    h+='</div>'
+  }
+  h+='</div>'
   document.getElementById('conclusion').innerHTML=h
 })();
 

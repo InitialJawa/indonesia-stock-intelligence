@@ -4,7 +4,7 @@ import datetime
 from pathlib import Path
 
 HISTORY_FILE = Path("database/historical/turnaround_history.csv")
-V2_DIR = Path("dashboard/v2")
+V2_DIR = Path("dashboard")
 LEADERS_FILE = Path("leaders_latest.csv")
 TURNAROUND_FILE = Path("turnaround_latest.csv")
 SUMMARY_FILE = Path("turnaround_summary.json")

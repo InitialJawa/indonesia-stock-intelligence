@@ -39,11 +39,7 @@ jobs:
         run: |
           python generate_exit_watchlist.py
 
-      - name: Generate HTML Dashboard (V1)
-        run: |
-          python -m dashboard.generate_dashboard
-
-      - name: Generate HTML Dashboard V2 (Read-Only)
+      - name: Generate HTML Dashboard
         run: |
           python generate_dashboard_v2.py
 
@@ -51,7 +47,7 @@ jobs:
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add dashboard/data.json data_fetcher.py generate_turnaround_watchlist.py generate_exit_watchlist.py generate_dashboard_v2.py dashboard/generate_dashboard.py dashboard/index.html dashboard/v2/index.html leaders_latest.csv turnaround_latest.csv turnaround_summary.json exit_watchlist_latest.csv exit_summary.json exit_entry_prices.json database/historical/turnaround_history.csv
+          git add dashboard/index.html data_fetcher.py generate_turnaround_watchlist.py generate_exit_watchlist.py generate_dashboard_v2.py leaders_latest.csv turnaround_latest.csv turnaround_summary.json exit_watchlist_latest.csv exit_summary.json exit_entry_prices.json database/historical/turnaround_history.csv
           if git diff --staged --quiet; then
             echo "No changes to commit."
           else

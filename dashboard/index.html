@@ -137,61 +137,88 @@ tr:hover td{background:#1a1e24}
   .logo{font-size:10px}
   .dt{font-size:9px}
   .tab-nav{padding:.3rem .5rem 0;position:sticky;top:0;z-index:50;background:#0f1115}
-  .tab-btn{padding:6px 8px;font-size:9px}
-  .tc{padding:.5rem .5rem}
-  .section-title{margin:.6rem 0 6px;font-size:9px}
-  .tip{width:28px;height:28px;font-size:12px;margin-left:4px}
-  th{top:32px;font-size:9px;padding:6px 4px}
-  td{padding:5px 4px;font-size:11px}
+  .tab-btn{padding:14px 8px;font-size:10px;min-height:44px}
+  .tc{padding:.5rem .5rem;overflow-x:auto}
+  .section-title{margin:.6rem 0 6px;font-size:10px}
+  .tip{width:44px;height:44px;font-size:16px;margin-left:6px}
+  .tk-click{padding:10px 4px}
+  th{top:50px;font-size:10px;padding:8px 5px}
+  td{padding:6px 4px;font-size:12px}
   .card-grid{grid-template-columns:1fr 1fr;gap:6px;margin-bottom:.5rem}
-  .card{padding:.6rem}
-  .card-label{font-size:9px;margin-bottom:2px}
-  .card-val{font-size:18px}
-  .card-sub{font-size:9px;margin-top:2px}
-  .badge{font-size:8px;padding:1px 5px}
+  .card{padding:.75rem}
+  .card-label{font-size:10px;margin-bottom:3px}
+  .card-val{font-size:24px}
+  .card-sub{font-size:10px;margin-top:3px}
+  .badge{font-size:10px;padding:3px 8px;min-height:28px;display:inline-flex;align-items:center}
   .bar{gap:4px}
   .bv{font-size:9px;min-width:20px}
-  .conc{margin:0 .5rem 2px;padding:8px 10px}
-  .conc-hdr{gap:6px;margin-bottom:4px}
-  .conc-status{font-size:8px;padding:2px 8px}
-  .conc-label{font-size:8px}
-  .conc-body{gap:8px}
+  .conc{margin:0 .5rem 2px;padding:12px 14px}
+  .conc-hdr{gap:8px;margin-bottom:6px}
+  .conc-status{font-size:10px;padding:4px 10px}
+  .conc-label{font-size:10px}
+  .conc-body{gap:10px}
   .conc-col{min-width:140px}
-  .conc-sub{font-size:8px;margin-bottom:2px}
-  .conc-list li{font-size:10px;padding:1px 0 1px 10px}
+  .conc-sub{font-size:10px;margin-bottom:3px}
+  .conc-list li{font-size:12px;padding:3px 0 3px 14px}
   .section-title::after{display:none}
   #t2 .card-grid:nth-of-type(2){gap:4px}
-  #t2 .card-grid:nth-of-type(2) .card{padding:6px 8px;display:flex;flex-direction:column;justify-content:center;min-height:64px}
-  #t2 .card-grid:nth-of-type(2) .card-label{font-size:7px;margin-bottom:1px}
-  #t2 .card-grid:nth-of-type(2) .card-val{font-size:16px;line-height:1.2}
-  #t2 .card-grid:nth-of-type(2) .card-sub{font-size:7px;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#64748b}
+  #t2 .card-grid:nth-of-type(2) .card{padding:10px 12px;display:flex;flex-direction:column;justify-content:center;min-height:72px}
+  #t2 .card-grid:nth-of-type(2) .card-label{font-size:8px;margin-bottom:2px}
+  #t2 .card-grid:nth-of-type(2) .card-val{font-size:20px;line-height:1.2}
+  #t2 .card-grid:nth-of-type(2) .card-sub{font-size:8px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#64748b}
+  .panel-hdr{padding:1rem 1rem}
+  .panel-hdr .tk{font-size:20px}
+  .panel-hdr .name{font-size:13px}
+  .panel-close{min-width:44px;min-height:44px;font-size:22px;display:flex;align-items:center;justify-content:center}
+  .panel-body{padding:1rem 1rem}
+  .panel-section-title{font-size:10px;margin-bottom:8px}
+  .panel-row{font-size:13px;padding:8px 0}
+  .panel-status{font-size:12px;padding:10px 14px}
+  .panel-summary{font-size:13px}
+  .fd-item{font-size:12px;padding:6px 0}
+  .interp-row{font-size:12px;padding:5px 0}
+  .interp-conclusion{font-size:12px}
+  .align-card{font-size:13px;padding:12px 14px}
+  .align-title{font-size:13px}
+  .align-desc{font-size:12px}
   .help-modal{width:90vw;max-height:70vh}
-  .help-title{font-size:11px}
-  .help-body li{font-size:10px}
+  .help-title{font-size:12px}
+  .help-section-title{font-size:11px}
+  .help-body li{font-size:12px}
 }
 @media(max-width:430px){
   .hdr{padding:.5rem .5rem}
-  .tab-nav{gap:1px;padding:.15rem .25rem 0}
-  .tab-btn{padding:4px 3px;font-size:7px}
-  .tc{padding:.3rem .4rem}
+  .tab-nav{gap:2px;padding:.15rem .3rem 0}
+  .tab-btn{padding:12px 5px;font-size:9px;min-height:44px}
+  .tc{padding:.4rem .4rem;overflow-x:auto}
   .card-grid{grid-template-columns:1fr 1fr;gap:4px}
   #t2 .card-grid:nth-of-type(2){grid-template-columns:1fr 1fr;gap:3px}
-  .card-val{font-size:18px}
-  .card{padding:.4rem}
-  .section-title{margin:.4rem 0 4px;font-size:8px}
-  .conc{padding:5px 6px;margin:0 .4rem 1px}
+  .card-val{font-size:22px}
+  .card{padding:.5rem}
+  .section-title{margin:.4rem 0 6px;font-size:10px}
+  .badge{font-size:9px;padding:2px 6px;min-height:24px}
+  .conc{padding:6px 8px;margin:0 .4rem 2px}
+  .conc-status{font-size:9px}
+  .conc-label{font-size:9px}
   .conc-col{min-width:100%}
-  table{font-size:10px}
-  th{top:26px;font-size:7px;padding:3px 2px}
-  td{padding:3px 2px;font-size:9px}
+  .conc-sub{font-size:9px}
+  .conc-list li{font-size:11px;padding:2px 0 2px 12px}
+  table{font-size:11px}
+  th{top:47px;font-size:9px;padding:6px 3px}
+  td{padding:5px 3px;font-size:10px}
   .panel{width:100%;border-left:none;touch-action:pan-y}
+  .panel-body{padding:.75rem}
+  .panel-row{font-size:12px;padding:6px 0}
+  .panel-section-title{font-size:9px}
+  .fd-item{font-size:11px}
+  .interp-row{font-size:11px}
   #t0 th:nth-child(n+4):nth-child(-n+7),#t0 td:nth-child(n+4):nth-child(-n+7),
-  #t1 th:nth-child(4),#t1 td:nth-child(4),#t1 th:nth-child(n+5):nth-child(-n+8),#t1 td:nth-child(n+5):nth-child(-n+8),
-  #t2 table th:nth-child(n+4):nth-child(-n+8),#t2 table td:nth-child(n+4):nth-child(-n+8),
+  #t1 th:nth-child(n+4):nth-child(-n+7),#t1 td:nth-child(n+4):nth-child(-n+7),
+  #t2 table th:nth-child(n+4):nth-child(-n+7),#t2 table td:nth-child(n+4):nth-child(-n+7),
   #t3 th:nth-child(n+4):nth-child(-n+5),#t3 td:nth-child(n+4):nth-child(-n+5),
-  #t5 th:nth-child(3),#t5 td:nth-child(3),#t5 th:nth-child(n+6),#t5 td:nth-child(n+6){display:none}
+  #t5 th:nth-child(3),#t5 td:nth-child(3),#t5 th:nth-child(n+8):nth-child(-n+10),#t5 td:nth-child(n+8):nth-child(-n+10){display:none}
   .bar-track{width:30px}
-  .streak-bar{font-size:8px;padding:1px 5px}
+  .streak-bar{font-size:9px;padding:2px 6px}
 }
 @media(min-width:601px) and (max-width:1024px){
   .tc{padding:.6rem 1rem}
@@ -228,11 +255,11 @@ tr:hover td{background:#1a1e24}
 <div class="tc" id="t1">
   <div class="section-title">Turnaround Watchlist<span class="tip" onclick="showHelp('turnaround')">?</span></div>
   <div style="margin-bottom:10px;display:flex;gap:6px;flex-wrap:wrap">
-    <button class="tab-btn active" onclick="ft('all',this)" style="font-size:10px;padding:4px 12px">All</button>
-    <button class="tab-btn" onclick="ft('full',this)" style="font-size:10px;padding:4px 12px">Full Match</button>
-    <button class="tab-btn" onclick="ft('context',this)" style="font-size:10px;padding:4px 12px">Context Only</button>
-    <button class="tab-btn" onclick="ft('transition',this)" style="font-size:10px;padding:4px 12px">Transition Only</button>
-    <button class="tab-btn" onclick="ft('none',this)" style="font-size:10px;padding:4px 12px">No Signal</button>
+    <button class="tab-btn active" onclick="ft('all',this)">All</button>
+    <button class="tab-btn" onclick="ft('full',this)">Full Match</button>
+    <button class="tab-btn" onclick="ft('context',this)">Context Only</button>
+    <button class="tab-btn" onclick="ft('transition',this)">Transition Only</button>
+    <button class="tab-btn" onclick="ft('none',this)">No Signal</button>
   </div>
   <table>
     <thead><tr>
@@ -291,12 +318,12 @@ tr:hover td{background:#1a1e24}
     </div>
   </div>
   <div style="margin-bottom:10px;display:flex;gap:6px;flex-wrap:wrap">
-    <button class="tab-btn active" onclick="ef('all',this)" style="font-size:10px;padding:4px 12px">All</button>
-    <button class="tab-btn" onclick="ef('EXIT',this)" style="font-size:10px;padding:4px 12px;color:#ef4444">Exit</button>
-    <button class="tab-btn" onclick="ef('EXIT RISK',this)" style="font-size:10px;padding:4px 12px;color:#f59e0b">Exit Risk</button>
-    <button class="tab-btn" onclick="ef('WEAKENING',this)" style="font-size:10px;padding:4px 12px;color:#f97316">Weakening</button>
-    <button class="tab-btn" onclick="ef('EXIT WATCH',this)" style="font-size:10px;padding:4px 12px;color:#60a5fa">Exit Watch</button>
-    <button class="tab-btn" onclick="ef('HEALTHY',this)" style="font-size:10px;padding:4px 12px;color:#00c26f">Healthy</button>
+    <button class="tab-btn active" onclick="ef('all',this)">All</button>
+    <button class="tab-btn" onclick="ef('EXIT',this)" style="color:#ef4444">Exit</button>
+    <button class="tab-btn" onclick="ef('EXIT RISK',this)" style="color:#f59e0b">Exit Risk</button>
+    <button class="tab-btn" onclick="ef('WEAKENING',this)" style="color:#f97316">Weakening</button>
+    <button class="tab-btn" onclick="ef('EXIT WATCH',this)" style="color:#60a5fa">Exit Watch</button>
+    <button class="tab-btn" onclick="ef('HEALTHY',this)" style="color:#00c26f">Healthy</button>
   </div>
   <table>
     <thead><tr>

@@ -27,10 +27,13 @@ no new research without explicit approval. Focus: data integrity and documentati
 | Turnaround Watchlist | RESEARCH MONITORING | Paper trading only |
 | Exit Monitor V1.1 | ACTIVE | Rule-based, Version C thresholds |
 | AUDIT-003 | COMPLETED | Exit Layer distribution validated — Rule C 97% sensitive in bear market |
+| AUDIT-004 | COMPLETED | Exit Layer value assessment — largely repeats market conditions |
 
 ### 2.6 Exit Monitor — Sensitivity Note
 
-**AUDIT-003 finding (2026-06-07):** Current distribution: 30% EXIT, 67% EXIT RISK, 3% HEALTHY. Rule C (Close<MA50) triggers on 97% of IDX30 because avg drawdown is -36.9% and 0/30 stocks are above MA20. State WEAKENING and EXIT WATCH are currently dead states — no stock triggers Rule A or B alone without also triggering Rule C. This is driven by broad market weakness, not threshold error, but it means the 5-level state machine collapses to 3 levels during bear markets. Exit Layer is most useful for discriminating within top 10 Config B (3 EXIT, 6 EXIT RISK, 1 HEALTHY).
+**AUDIT-003 & AUDIT-004 findings (2026-06-07):** Current distribution: 30% EXIT, 67% EXIT RISK, 3% HEALTHY. Rule C (Close<MA50) triggers on 97% of IDX30 because avg drawdown is -36.9% and 0/30 stocks are above MA20. State WEAKENING and EXIT WATCH are currently dead states — no stock triggers Rule A or B alone without also triggering Rule C.
+
+**AUDIT-004 conclusion:** Exit Layer largely repeats market conditions. Distribution is nearly identical between Config B Top 10 and Bottom 20 (both ~30% EXIT). Score averages do not differ between EXIT (50.5) and EXIT RISK (48.7). Without Rule C, 20 EXIT RISK stocks collapse to 6 HEALTHY + 14 EXIT WATCH. The only discriminating value is identifying the 9 specific stocks with B+C+D (confirmed technical damage) — 3 of which are in Config B Top 10.
 | Data Quality Audit | COMPLETED | AUDIT-001 + AUDIT-002: PBV & DY fixes applied |
 | Data Quality Rule | ACTIVE | DATA_QUALITY_RULE_PBV_V1 — auto-flag invalid PBV |
 
@@ -320,7 +323,7 @@ ISI/
 ## 10. OPEN QUESTIONS
 
 1. **Config F vs Config B** — Config F (Q25/G10-earnings/V30/M35) shows higher CAGR in standalone tests. Should Config B be replaced? BLOCKED: requires Historical Factor Warehouse V2 for proper OOS validation.
-2. **Exit Rule D threshold** — Current Version C uses (Close<MA100 AND RS20<0 AND RS_CHANGE_20D<0) OR DD>15%. Is OR DD>15% too aggressive? Under review.
+2. **Exit Layer value** — AUDIT-004 found Exit Layer largely repeats market conditions (30% EXIT rate identical in Top 10 vs Bottom 20; avg scores 50.5 vs 48.7). Rule C (Close<MA50) drives 67% of classification but is a market-level indicator in bear markets. Does Exit Layer provide enough discriminating value to justify its complexity? Under review.
 3. **Turnaround satellite allocation** — RESEARCH-011 suggests 10-20% satellite. What is the optimal blend with Config B? Requires correlation analysis.
 4. **Gemini AI narrative** — Daily radar narrative generates 429 errors on free tier. Worth upgrading to paid tier?
 5. **Historical Factor Warehouse V2** — Full OOS weight optimization blocked. What is the minimal viable dataset?
@@ -336,6 +339,7 @@ ISI/
 - [x] AUDIT-002 — Yahoo PBV field verification
 - [x] DATA_QUALITY_RULE_PBV_V1 — Formalized and deployed
 - [x] AUDIT-003 — Exit Layer distribution validation (2026-06-07) — found Rule C drives 97% classification; WEAKENING/EXIT WATCH dead states in bear market
+- [x] AUDIT-004 — Exit Layer value assessment (2026-06-07) — found Exit Layer largely repeats market conditions; distribution identical Top 10 vs Bottom 20; scores do not differ by exit state
 
 ### BACKLOG TEKNIS
 - [ ] Monthly archive restoration — update `research/tools/` to read from `docs/archive/`

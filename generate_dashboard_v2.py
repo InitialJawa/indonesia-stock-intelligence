@@ -179,7 +179,7 @@ tr:hover td{{background:#1a1e24}}
 .tip:hover{{background:#333a44;color:#F5F7FA}}
 .sortable{{cursor:pointer}}
 .sortable:hover{{color:#F5F7FA}}
-.tk-click{{cursor:pointer;color:#60a5fa!important;transition:color .15s}}
+.tk-click{{cursor:pointer;color:inherit;transition:color .15s}}
 .tk-click:hover{{color:#93c5fd!important;text-decoration:underline}}
 .overlay{{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:99;display:none}}
 .overlay.show{{display:block}}

@@ -13,6 +13,7 @@ PROFILES_FILE = Path("data/state/company_profiles.json")
 FUND_FILE = Path("output/raw/fundamentals.json")
 GROWTH_FILE = Path("output/raw/growth.json")
 PORTFOLIO_FILE = Path("data/state/portfolio_simulator.json")
+RADAR_STATUS_FILE = Path("output/daily_radar_status.json")
 
 def read_csv(filepath):
     if not filepath.exists():
@@ -151,7 +152,7 @@ def file_age(path):
     age = datetime.datetime.now() - mtime
     return f"{age.days}d {age.seconds // 3600}h ago" if age.days < 30 else f"{age.days}d ago"
 
-def build_html(leaders, turnaround, summary, history, streaks, date_str, exit_data=None, profiles=None, fundamentals=None, portfolio_data=None):
+def build_html(leaders, turnaround, summary, history, streaks, date_str, exit_data=None, profiles=None, fundamentals=None, portfolio_data=None, radar_status=None):
     date_short = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
     summary_data = summary if isinstance(summary, dict) else {}
     top_candidates = summary_data.get('top_candidates', [])
@@ -184,6 +185,8 @@ def build_html(leaders, turnaround, summary, history, streaks, date_str, exit_da
         'rata_gejolak': '<div class="help-section"><div class="help-section-title">Apa Artinya?</div><ul><li>Rata-rata intensitas pergerakan harga seluruh IDX30 dalam 60 hari</li><li>Mengukur tingkat ketidakpastian pasar</li></ul></div><div class="help-section"><div class="help-section-title">Mengapa Penting?</div><ul><li>Volatilitas tinggi = pergerakan harga lebih ekstrem</li><li>Membantu menyesuaikan strategi dan ekspektasi risiko</li></ul></div><div class="help-section"><div class="help-section-title">Cara Membaca?</div><ul><li>Di bawah 2% = pasar tenang</li><li>2% hingga 4% = normal</li><li>Di atas 4% = volatilitas tinggi, risiko meningkat</li></ul></div>',
     }
     hlp_json = json.dumps(hlp_dict)
+    radar_status_data = radar_status if isinstance(radar_status, dict) and radar_status else {}
+    radar_status_json = json.dumps(radar_status_data)
 
     return f'''<!DOCTYPE html>
 <html lang="en">
@@ -294,6 +297,12 @@ tr:hover td{{background:#1a1e24}}
 .conc-list{{list-style:none;padding:0;margin:0}}
 .conc-list li{{font-size:11px;color:#C9D1D9;padding:2px 0 2px 12px;position:relative;line-height:1.5}}
 .conc-list li::before{{content:'\2022';position:absolute;left:0;color:#00c26f}}
+.ai-section{{background:#171b20;border:1px solid #222830;border-radius:8px;margin:.5rem 1.5rem;padding:1rem}}
+.ai-hdr{{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}}
+.ai-label{{font-size:10px;font-family:'Space Mono',monospace;color:#00c26f;text-transform:uppercase;letter-spacing:.08em;font-weight:600}}
+.ai-date{{font-size:9px;font-family:'Space Mono',monospace;color:#64748b}}
+.ai-body{{font-size:12px;color:#C9D1D9;line-height:1.6}}
+.ai-body strong{{color:#F5F7FA}}
 .align-card{{padding:10px 12px;border-radius:6px;margin-bottom:8px;font-size:12px}}
 .align-sejalan{{background:#052e16;border:1px solid #166534}}
 .align-perhatian{{background:#2a2411;border:1px solid #665511}}
@@ -331,6 +340,13 @@ tr:hover td{{background:#1a1e24}}
   <div class="dt">{date_short} · IDX30</div>
 </div>
 <div id="conclusion"></div>
+<div class="ai-section" id="ai-section" style="display:none">
+  <div class="ai-hdr">
+    <span class="ai-label">Analisis AI</span>
+    <span class="ai-date" id="ai-date"></span>
+  </div>
+  <div class="ai-body" id="ai-body"></div>
+</div>
 <div class="tab-nav">
   <button class="tab-btn active" onclick="st(0)">01 · Leaders</button>
   <button class="tab-btn" onclick="st(1)">02 · Turnaround</button>
@@ -495,6 +511,14 @@ const SK={streaks_json};
 const EX={exit_json};
 const MP={portfolio_json};
 const HLP={hlp_json};
+const RS={radar_status_json};
+
+(function(){{
+  if(!RS||!RS.detail_message)return
+  document.getElementById('ai-date').textContent='Terakhir: '+(RS.last_update||'—')
+  document.getElementById('ai-body').innerHTML=RS.detail_message
+  document.getElementById('ai-section').style.display=''
+}})();
 
 function fmtRupiah(v){{return (v>=0?'':'−')+'Rp '+Math.abs(v).toLocaleString('id-ID')}}
 function sc(v){{return v>=60?'high':v>=40?'mid':'low'}}
@@ -1107,8 +1131,17 @@ def main():
             print("  No portfolio positions found")
     else:
         print("  No portfolio_simulator.json found — skipping")
+    radar_status = {}
+    if RADAR_STATUS_FILE.exists():
+        radar_status = read_json(RADAR_STATUS_FILE)
+        if radar_status.get('detail_message'):
+            print(f"  Radar status: {radar_status.get('status', 'N/A')} ({len(radar_status.get('detail_message', ''))} chars narrative)")
+        else:
+            print("  Radar status file found but no narrative")
+    else:
+        print("  No daily_radar_status.json found — skipping AI narrative")
     print("  Generating HTML...")
-    html = build_html(leaders, turnaround, summary, history, streaks, date_str, exit_data, profiles, fundamentals, portfolio_data)
+    html = build_html(leaders, turnaround, summary, history, streaks, date_str, exit_data, profiles, fundamentals, portfolio_data, radar_status)
     V2_DIR.mkdir(parents=True, exist_ok=True)
     output_path = V2_DIR / 'index.html'
     with open(output_path, 'w', encoding='utf-8') as f:

@@ -64,6 +64,7 @@ tr:hover td{background:#1a1e24}
 .overlay.show{display:block}
 .panel{position:fixed;top:0;right:0;width:400px;height:100vh;background:#161a20;border-left:1px solid #222830;z-index:100;overflow-y:auto;padding:0;transform:translateX(100%);transition:transform .25s ease}
 .panel.show{transform:translateX(0)}
+.panel-dragging{transition:none!important}
 .panel-hdr{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem;border-bottom:1px solid #222830;position:sticky;top:0;background:#161a20;z-index:2}
 .panel-hdr .tk{font-size:16px;font-weight:700}
 .panel-hdr .name{font-size:11px;color:#9CA3AF;font-family:'DM Sans',sans-serif;margin-top:2px}
@@ -183,7 +184,7 @@ tr:hover td{background:#1a1e24}
   table{font-size:10px}
   th{top:26px;font-size:7px;padding:3px 2px}
   td{padding:3px 2px;font-size:9px}
-  .panel{width:100%;border-left:none}
+  .panel{width:100%;border-left:none;touch-action:pan-y}
   #t0 th:nth-child(n+4):nth-child(-n+7),#t0 td:nth-child(n+4):nth-child(-n+7),
   #t1 th:nth-child(4),#t1 td:nth-child(4),#t1 th:nth-child(n+5):nth-child(-n+8),#t1 td:nth-child(n+5):nth-child(-n+8),
   #t2 table th:nth-child(n+4):nth-child(-n+8),#t2 table td:nth-child(n+4):nth-child(-n+8),
@@ -793,6 +794,37 @@ document.addEventListener('click',function(e){
   if(o){closePanel();if(!h)closeHelp()}
   if(!h&&document.getElementById('help').classList.contains('show'))closeHelp()
 })
+;(function(){
+  var p=document.getElementById('panel'),o=document.getElementById('overlay')
+  var sx=0,sy=0,dx=0,dragging=false,th=80
+  p.addEventListener('touchstart',function(e){
+    if(!p.classList.contains('show'))return
+    var t=e.touches[0];sx=t.clientX;sy=t.clientY;dx=0;dragging=false
+  },{passive:true})
+  p.addEventListener('touchmove',function(e){
+    if(!p.classList.contains('show')||sx===0)return
+    var cx=e.touches[0].clientX-sx,cy=e.touches[0].clientY-sy
+    if(!dragging){
+      if(Math.abs(cx)<10&&Math.abs(cy)<10)return
+      if(Math.abs(cx)<Math.abs(cy))return
+      if(cx<0)return
+      dragging=true;p.classList.add('panel-dragging')
+    }
+    dx=cx
+    if(dx>window.innerWidth)dx=window.innerWidth
+    p.style.transform='translateX('+dx+'px)'
+    o.style.opacity=Math.max(0,.5*(1-dx/window.innerWidth))
+  },{passive:false})
+  p.addEventListener('touchend',function(){
+    if(sx===0)return
+    if(dragging){
+      p.classList.remove('panel-dragging')
+      if(dx>th){p.style.transform='';o.style.opacity='';closePanel()}
+      else{p.style.transform='';o.style.opacity=''}
+    }
+    sx=0;dragging=false
+  },{passive:true})
+})()
 </script>
 </body>
 </html>

@@ -78,7 +78,7 @@ None                                                                  ->  HEALTH
 stock weakness. Close < MA100 captures beta during selloffs. Adding RS20 AND RS_CHANGE_20D
 isolates alpha failure.
 
-**Outputs:** `exit_watchlist_latest.csv`, `exit_summary.json`, `exit_entry_prices.json`
+**Outputs:** `data/current/exit_watchlist_latest.csv`, `data/state/exit_summary.json`, `data/state/exit_entry_prices.json`
 
 ---
 
@@ -162,21 +162,39 @@ Research-supported results. Do NOT modify without new evidence.
 
 ```
 ISI/
-├── Production Systems
-│   ├── Config B Ranking          scoring/final_score_v3.py
-│   ├── Turnaround Watchlist      generate_turnaround_watchlist.py
-│   ├── Exit Monitor              generate_exit_watchlist.py
-│   └── Dashboard                 generate_dashboard_v2.py -> dashboard/index.html
+├── Entry Points (root)
+│   ├── run_daily_risk_radar.py     Daily pipeline (16:30 WIB)
+│   └── run_monthly_pipeline.py     Monthly pipeline (1st)
 │
-├── Data Pipeline
-│   ├── Daily (16:30 WIB)         .github/workflows/daily_radar.yml
-│   └── Monthly (1st)             .github/workflows/monthly_pipeline.yml
+├── Production Scripts (scripts/)
+│   ├── data_fetcher.py             Daily price fetcher
+│   ├── generate_turnaround_watchlist.py   Turnaround signal generator
+│   ├── generate_exit_watchlist.py         Exit state machine
+│   └── generate_dashboard_v2.py           Dashboard HTML generator
 │
-├── Core Data
-│   ├── warehouse_daily_v4.parquet  Daily OHLCV + 44 indicators, 30 tickers, 2018-2026
-│   ├── warehouse_historical/       Monthly factor scores (V3, 2022-2025)
-│   ├── database/monthly/           Monthly prices for 64 tickers, 2018-2026
-│   └── benchmarks/IHSG.csv         Daily IHSG benchmark
+├── Factor Scoring (scoring/)
+│   ├── quality_score.py            Quality factor
+│   ├── growth_score.py             Growth factor
+│   ├── value_score.py              Value factor
+│   ├── momentum_score.py           Momentum factor
+│   └── final_score_v3.py           Config B composite (Q25/G30/V10/M35)
+│
+├── Data Collectors (collectors/)
+│   ├── fundamentals.py             Financial ratios from Yahoo
+│   ├── growth.py                   Revenue/Earnings growth
+│   └── prices.py                   Price data
+│
+├── Shared Utilities (utils/)
+│   ├── data_provider.py            Yahoo Finance interface
+│   ├── config_loader.py            Configuration loader
+│   ├── universe_manager.py         Historical universe definitions
+│   ├── telegram_notifier.py        Telegram alerts
+│   └── email_notifier.py           Email alerts
+│
+├── Live Data
+│   ├── data/current/               Latest CSVs (leaders, turnaround, exit)
+│   ├── data/state/                 Latest JSONs (summaries, profiles, entry prices)
+│   └── output/                     Raw data, scores, history prices
 │
 ├── Dashboard (dashboard/index.html)
 │   ├── Tab 01: Leaders            Config B ranking with color-coded alignment
@@ -186,9 +204,46 @@ ISI/
 │   ├── Tab 05: Diagnostics        Pipeline health
 │   └── Tab 06: Exit Monitor       Rule-based exit states with legend
 │
-└── Research Archive
-    └── research/                    Individual research projects (see RESEARCH_INDEX.md)
+├── Core Data
+│   ├── database/historical/        Daily warehouse, ticker metadata, backtest curves
+│   ├── database/monthly/           Monthly prices for 64 tickers, 2018-2026
+│   ├── database/historical_universe/  Semi-annual IDX30 snapshots
+│   ├── database/historical_foreign_flow/  Daily foreign flow (64 tickers)
+│   ├── warehouse_historical/       Monthly factor scores (V3, 2022-2025)
+│   └── benchmarks/                 IHSG benchmark
+│
+├── Research (research/)
+│   ├── research/                   Individual research projects (40+ scripts)
+│   ├── research/tools/             Backtest engines & historical builders
+│   └── research/output/            Research output files
+│
+├── Automation (automation/)
+│   ├── monthly_job.sh              Shell script for monthly pipeline
+│   └── .github/workflows/          CI/CD pipeline definitions
+│
+├── Documentation (docs/)
+│   ├── MASTER_CHRONICLE_V3.md      ← CANONICAL (read this first)
+│   ├── ARCHITECTURE_TREE.md        Full repository tree
+│   ├── RESEARCH_INDEX.md           Research summary table
+│   ├── LESSONS_LEARNED.md          Mistakes catalog
+│   ├── PROJECT_STATUS.md           Current state
+│   ├── ADR-002/003/004             Architectural Decision Records
+│   ├── findings/                   Key research findings
+│   └── archive/                    Phase 1 & 2 archived directories
 ```
+
+### Produced Data Locations
+
+| File | Location | Produced By |
+|------|----------|-------------|
+| Config B Leaders | `data/current/leaders_latest.csv` | `scripts/generate_turnaround_watchlist.py` |
+| Turnaround Signals | `data/current/turnaround_latest.csv` | `scripts/generate_turnaround_watchlist.py` |
+| Exit Watchlist | `data/current/exit_watchlist_latest.csv` | `scripts/generate_exit_watchlist.py` |
+| Turnaround Summary | `data/state/turnaround_summary.json` | `scripts/generate_turnaround_watchlist.py` |
+| Exit Summary | `data/state/exit_summary.json` | `scripts/generate_exit_watchlist.py` |
+| Entry Prices | `data/state/exit_entry_prices.json` | `scripts/generate_exit_watchlist.py` |
+| Company Profiles | `data/state/company_profiles.json` | Manual / external |
+| Dashboard | `dashboard/index.html` | `scripts/generate_dashboard_v2.py` |
 
 ---
 
@@ -196,8 +251,8 @@ ISI/
 
 | Workflow | Schedule | Actions | Outputs |
 |----------|----------|---------|---------|
-| `daily_radar.yml` | 16:30 WIB daily | Fetch prices, compute turnaround, compute exits, generate dashboard | dashboard/index.html, leaders/exit/turnaround CSVs |
-| `monthly_pipeline.yml` | 1st of month | Fetch fundamentals, score all factors, rebalance portfolio, archive snapshots | output/raw/*.json, output/scores/*.json, warehouse/ |
+| `daily_radar.yml` | 16:30 WIB daily | Fetch prices, compute turnaround, compute exits, generate dashboard | `dashboard/index.html`, `data/current/`, `data/state/` |
+| `monthly_pipeline.yml` | 1st of month | Fetch fundamentals, score all factors, generate dashboard | `output/raw/*.json`, `output/scores/*.json`, `dashboard/index.html`, `data/` |
 
 ---
 
@@ -213,6 +268,8 @@ ISI/
 
 ## 10. FUTURE BACKLOG
 
+- [x] Repository Phase 1 — Documentation consolidation & archival
+- [x] Repository Phase 2 — Root directory simplification
 - [ ] Build Historical Factor Warehouse V2 (2021-present factor scores)
 - [ ] Re-run OOS weight validation with real factor data
 - [ ] Config B vs Config F comparison on real historical data

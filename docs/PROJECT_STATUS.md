@@ -1,4 +1,4 @@
-# PROJECT STATUS — 2026-06-07
+# PROJECT STATUS — 2026-06-07 (setelah Phase 2 refactor)
 
 ## What Works Today
 
@@ -11,7 +11,7 @@
 
 ### Turnaround Watchlist — RESEARCH MONITORING ✅
 - 5-stage filter: deep drawdown → far from high → high volatility → RS improving → confirmation
-- Output: `turnaround_latest.csv`, `turnaround_summary.json`
+- Output: `data/current/turnaround_latest.csv`, `data/state/turnaround_summary.json`
 - Dashboard Tab 02 visualizes all signals
 - Paper trading only — not a production overlay
 - RESEARCH-011 confirmed: useful as watchlist, not standalone strategy
@@ -19,7 +19,7 @@
 ### Exit Monitor V1.1 — ACTIVE ✅
 - Rule-based state machine (A/B/C/D) for all 30 tickers
 - Key rule: Market weakness != stock weakness — RS20 differentiates alpha failure from beta
-- Output: `exit_watchlist_latest.csv`, `exit_summary.json`, `exit_entry_prices.json`
+- Output: `data/current/exit_watchlist_latest.csv`, `data/state/exit_summary.json`, `data/state/exit_entry_prices.json`
 - Dashboard Tab 06 with color-coded exit states and rule legend
 - Paper trading only — no automated execution
 
@@ -35,9 +35,16 @@
 - Localized in Bahasa Indonesia
 
 ### Automation — STABLE ✅
-- Daily pipeline (16:30 WIB): fetches data, computes turnaround/exits, generates dashboard, commits
-- Monthly pipeline (1st): refreshes fundamentals, scores all factors, archives snapshots
-- GitHub Actions: `daily_radar.yml`, `monthly_pipeline.yml`
+- Daily pipeline (16:30 WIB): fetches data from `scripts/`, computes turnaround/exits, generates dashboard, commits
+- Monthly pipeline (1st): refreshes fundamentals, scores all factors, generates dashboard
+- GitHub Actions: `.github/workflows/daily_radar.yml`, `.github/workflows/monthly_pipeline.yml`
+
+### Repository Structure — CLEAN ✅
+- Root hanya 6 file operasional (Phase 2 target tercapai)
+- Production scripts di `scripts/`
+- Research tools di `research/tools/`
+- Live data di `data/current/` dan `data/state/`
+- Semua artifact lama diarsipkan di `docs/archive/`
 
 ## Key Numbers
 

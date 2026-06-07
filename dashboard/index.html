@@ -159,7 +159,6 @@ tr:hover td{background:#1a1e24}
   .conc-sub{font-size:8px;margin-bottom:2px}
   .conc-list li{font-size:10px;padding:1px 0 1px 10px}
   .section-title::after{display:none}
-  #t2 .card-grid:first-of-type{grid-template-columns:1fr}
   #t2 .card-grid:nth-of-type(2){gap:4px}
   #t2 .card-grid:nth-of-type(2) .card{padding:6px 8px;display:flex;flex-direction:column;justify-content:center;min-height:64px}
   #t2 .card-grid:nth-of-type(2) .card-label{font-size:7px;margin-bottom:1px}
@@ -171,22 +170,24 @@ tr:hover td{background:#1a1e24}
 }
 @media(max-width:430px){
   .hdr{padding:.5rem .5rem}
-  .tab-btn{padding:5px 6px;font-size:8px}
-  .tc{padding:.4rem .4rem}
-  .card-grid{grid-template-columns:1fr;gap:5px}
-  #t2 .card-grid:first-of-type{grid-template-columns:1fr}
-  #t2 .card-grid:nth-of-type(2){grid-template-columns:1fr 1fr}
-  .card-val{font-size:20px}
-  .card{padding:.5rem}
-  .conc{padding:6px 8px;margin:0 .4rem 2px}
+  .tab-nav{gap:1px;padding:.15rem .25rem 0}
+  .tab-btn{padding:4px 3px;font-size:7px}
+  .tc{padding:.3rem .4rem}
+  .card-grid{grid-template-columns:1fr 1fr;gap:4px}
+  #t2 .card-grid:nth-of-type(2){grid-template-columns:1fr 1fr;gap:3px}
+  .card-val{font-size:18px}
+  .card{padding:.4rem}
+  .section-title{margin:.4rem 0 4px;font-size:8px}
+  .conc{padding:5px 6px;margin:0 .4rem 1px}
   .conc-col{min-width:100%}
-  table{font-size:11px}
-  th{font-size:8px;padding:4px 3px}
-  td{padding:4px 3px;font-size:10px}
+  table{font-size:10px}
+  th{top:26px;font-size:7px;padding:3px 2px}
+  td{padding:3px 2px;font-size:9px}
   .panel{width:100%;border-left:none}
   #t0 th:nth-child(n+4):nth-child(-n+7),#t0 td:nth-child(n+4):nth-child(-n+7),
   #t1 th:nth-child(4),#t1 td:nth-child(4),#t1 th:nth-child(n+5):nth-child(-n+8),#t1 td:nth-child(n+5):nth-child(-n+8),
   #t2 table th:nth-child(n+4):nth-child(-n+8),#t2 table td:nth-child(n+4):nth-child(-n+8),
+  #t3 th:nth-child(n+4):nth-child(-n+5),#t3 td:nth-child(n+4):nth-child(-n+5),
   #t5 th:nth-child(3),#t5 td:nth-child(3),#t5 th:nth-child(n+6),#t5 td:nth-child(n+6){display:none}
   .bar-track{width:30px}
   .streak-bar{font-size:8px;padding:1px 5px}
@@ -243,10 +244,10 @@ tr:hover td{background:#1a1e24}
 <div class="tc" id="t2">
   <div class="section-title">Today's Snapshot</div>
   <div class="card-grid">
-    <div class="card"><div class="card-label">SAHAM TERTEKAN<span class="tip" onclick="showHelp('saham_tertekan')">?</span></div><div class="card-val g">9</div><div class="card-sub">Saham yang jatuh berat dan masih dalam kondisi tertekan</div></div>
-    <div class="card"><div class="card-label">MULAI MEMBAIK<span class="tip" onclick="showHelp('mulai_membaik')">?</span></div><div class="card-val y">20</div><div class="card-sub">Saham dengan kekuatan relatif yang mulai meningkat</div></div>
-    <div class="card"><div class="card-label">KANDIDAT TURNAROUND<span class="tip" onclick="showHelp('kandidat_turnaround')">?</span></div><div class="card-val b">4</div><div class="card-sub">Saham tertekan yang mulai menunjukkan pemulihan</div></div>
-    <div class="card"><div class="card-label">Universe</div><div class="card-val">30</div><div class="card-sub">IDX30 tickers</div></div>
+    <div class="card"><div class="card-label">SAHAM TERTEKAN<span class="tip" onclick="showHelp('saham_tertekan')">?</span></div><div class="card-val g">9</div><div class="card-sub">Masih dalam tekanan</div></div>
+    <div class="card"><div class="card-label">MULAI MEMBAIK<span class="tip" onclick="showHelp('mulai_membaik')">?</span></div><div class="card-val y">20</div><div class="card-sub">Kekuatan mulai naik</div></div>
+    <div class="card"><div class="card-label">KANDIDAT TURNAROUND<span class="tip" onclick="showHelp('kandidat_turnaround')">?</span></div><div class="card-val b">4</div><div class="card-sub">Tekanan + pemulihan</div></div>
+    <div class="card"><div class="card-label">Universe</div><div class="card-val">30</div><div class="card-sub">IDX30</div></div>
   </div>
   <div class="section-title">Signal Diagnostics</div>
   <div class="card-grid">
@@ -268,7 +269,7 @@ tr:hover td{background:#1a1e24}
 
 <div class="tc" id="t3">
   <div class="section-title">Candidate Persistence Tracking</div>
-  <p style="font-size:11px;color:#64748b;margin-bottom:10px">Consecutive days each ticker has maintained context/transition match. Sorted by total active streak.</p>
+  <p style="font-size:11px;color:#64748b;margin-bottom:10px">Riwayat hari berturut-turut setiap saham dalam status tekanan/pemulihan. Diurutkan berdasarkan total hari aktif.</p>
   <table>
     <thead><tr>
       <th data-key="ticker">Ticker</th><th data-key="ctx_days">Context Streak</th><th data-key="trn_days">Transition Streak</th><th>First Detected (Ctx)</th><th>First Detected (Trn)</th><th data-key="total_entries">Total Days Tracked</th>

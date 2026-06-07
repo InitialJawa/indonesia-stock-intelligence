@@ -105,7 +105,43 @@ isolates alpha failure.
 | AUDIT-001 | Data quality audit | PBV salah untuk 8 ticker, DY rendering 100x | PBV fix (PE×ROE), DY format fix |
 | AUDIT-002 | Yahoo PBV field verification | bookValue/priceToBook salah, PE×ROE fallback terbaik | DATA_QUALITY_RULE_PBV_V1 formalized |
 | IMPLEMENT-003 | Dashboard regression recovery | Insight Layer V1 caused TDZ crash (PF before init), table disappearance | ENGINEERING RULE-005 established, append-only mandate |
-| RESEARCH-012 | Portfolio Decision Layer validation | Does EXIT + Rank + Turnaround produce better decisions than Buy Top 5 monthly? | PENDING — requires backtest validation |
+| RESEARCH-012 | Portfolio Decision Layer validation | Does EXIT + Rank + Turnaround produce better decisions than Buy Top 5 monthly? | APPROVED — 5-phase research plan documented below |
+
+### RESEARCH-012: Portfolio Decision Layer V1
+
+**Status:** APPROVED | **Priority:** HIGH | **Date:** 2026-06-08
+
+Convert Config B + Exit Layer + Turnaround into actionable portfolio decisions (HOLD/REVIEW/TRIM/SELL/REPLACE). No production decision layer until all phases pass statistical validation.
+
+**Phase 1 — Exit Validation**
+Question: Do EXIT stocks underperform after the signal?
+Method: Collect historical EXIT signals, measure 30/60/90D forward returns vs Non-EXIT.
+Outputs: Avg Return, Median Return, Win Rate, Excess Return.
+Gate: EXIT confirmed as candidate SELL signal only if significant underperformance.
+
+**Phase 2 — Rank Deterioration Test**
+Question: Does leaving Top 10 justify selling?
+Scenarios: (A) Hold regardless, (B) Sell when rank < 10, (C) Sell when rank < 20.
+Compare: CAGR, Sharpe, Max DD, Turnover.
+Gate: One rule must materially improve outcomes.
+
+**Phase 3 — Replacement Test**
+Question: Is replacing weak holdings better than holding? (e.g. ESSA #2 EXIT vs ADRO #1 HEALTHY)
+Method: When holding triggers candidate exit, compare HOLD vs SELL+REPLACE with highest ranked eligible.
+Outputs: CAGR, Alpha, Win Rate, Drawdown.
+Gate: Replacement must consistently outperform hold.
+
+**Phase 4 — Exit + Rank Matrix**
+Build decision matrix from every EXIT×Rank combination. Backtest empirically. No assumptions.
+Outputs: Decision performance table.
+
+**Phase 5 — Turnaround Promotion Test**
+Question: When should Turnaround candidates replace existing holdings?
+Compare: Keep holding vs Replace with full-match Turnaround candidate.
+Outputs: Return Differential, Hit Rate, Alpha.
+Gate: Turnaround replacement creates measurable improvement.
+
+**Production Gate:** All 5 phases completed, results documented in Chronicle, decision rules statistically outperform passive monthly rebalance. Until then: Config B is sole production engine, Exit remains monitoring, Turnaround remains watchlist.
 
 ---
 
@@ -361,4 +397,10 @@ ISI/
 - [ ] Config B vs Config F comparison on real historical data
 - [ ] Turnaround-Config B blended portfolio correlation study
 - [ ] Exit Rule D threshold backtest (V1.1 vs alternatives)
-- [ ] RESEARCH-012: Portfolio Decision Layer — validate EXIT/Rank/Turnaround decision rules against passive Top 5 monthly
+- [ ] RESEARCH-012: Portfolio Decision Layer
+  - [ ] Phase 1 — Exit Validation (forward returns after EXIT signal)
+  - [ ] Phase 2 — Rank Deterioration Test (sell thresholds)
+  - [ ] Phase 3 — Replacement Test (replace vs hold)
+  - [ ] Phase 4 — Exit + Rank Decision Matrix
+  - [ ] Phase 5 — Turnaround Promotion Test
+  - [ ] Production Gate Review — all phases compiled vs passive monthly

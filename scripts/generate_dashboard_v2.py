@@ -12,8 +12,7 @@ EXIT_FILE = Path("data/current/exit_watchlist_latest.csv")
 PROFILES_FILE = Path("data/state/company_profiles.json")
 FUND_FILE = Path("output/raw/fundamentals.json")
 GROWTH_FILE = Path("output/raw/growth.json")
-PORTFOLIO_FILE = Path("data/state/portfolio_simulator.json")
-RADAR_STATUS_FILE = Path("output/daily_radar_status.json")
+PORTFOLIO_FILE = Path("data/state/my_portfolio.json")
 
 def read_csv(filepath):
     if not filepath.exists():
@@ -97,7 +96,22 @@ def compute_streaks(history_rows):
         }
     return streaks
 
-def calculate_portfolio(portfolio_raw, leaders, exit_data, profiles):
+def classify_action(rank, exit_status):
+    if rank <= 10:
+        if exit_status == 'EXIT':
+            return 'REVIEW'
+        return 'STRONG HOLD'
+    elif rank <= 20:
+        if exit_status == 'EXIT':
+            return 'TRIM'
+        return 'HOLD'
+    else:
+        if exit_status == 'EXIT':
+            return 'REPLACE CANDIDATE'
+        return 'HOLD'
+
+def enrich_portfolio(portfolio_raw, leaders, exit_data, profiles):
+    today = datetime.datetime.now().date()
     leader_map = {}
     for l in leaders:
         t = l['ticker'].replace('.JK', '')
@@ -109,40 +123,52 @@ def calculate_portfolio(portfolio_raw, leaders, exit_data, profiles):
     result = []
     for h in portfolio_raw:
         ticker = h['ticker']
-        investment = float(h.get('investment', 0))
-        entry_price = float(h.get('entry_price', 0))
-        estimated_shares = investment / entry_price if entry_price > 0 else 0
+        lot = int(h.get('lot', 0))
+        buy_price = float(h.get('buy_price', 0))
+        buy_date_str = h.get('buy_date', '')
+        try:
+            buy_date = datetime.datetime.strptime(buy_date_str, '%Y-%m-%d').date()
+            days_held = (today - buy_date).days
+        except (ValueError, TypeError):
+            days_held = 0
+        ld = leader_map.get(ticker, {})
         ed = exit_map.get(ticker, {})
-        current_price = entry_price
+        pf = profiles.get(ticker, {})
+        current_price = buy_price
         if ed and 'close' in ed and ed['close']:
             try:
                 current_price = float(ed['close'])
             except (ValueError, TypeError):
                 pass
-        current_value = estimated_shares * current_price
-        profit_loss = current_value - investment
-        profit_loss_pct = (profit_loss / investment * 100) if investment > 0 else 0.0
-        ld = leader_map.get(ticker, {})
+        current_value = lot * 100 * current_price
+        cost_basis = lot * 100 * buy_price
+        unrealized_profit = current_value - cost_basis
+        if buy_price > 0:
+            unrealized_percent = (current_price - buy_price) / buy_price * 100
+        else:
+            unrealized_percent = 0.0
         rank = int(ld.get('rank', 99)) if ld else 99
+        final_score = float(ld.get('final_score', 0)) if ld else 0
         exit_status = ed.get('exit_state', 'HEALTHY') if ed else 'HEALTHY'
-        sector = (profiles.get(ticker, {})).get('sector', '') if profiles else ''
+        sector = pf.get('sector', '') if pf else ''
+        action = classify_action(rank, exit_status)
         result.append({
             'ticker': ticker,
-            'investment': investment,
-            'entry_price': entry_price,
-            'estimated_shares': round(estimated_shares, 2),
+            'lot': lot,
+            'buy_price': buy_price,
             'current_price': current_price,
-            'current_value': round(current_value, 2),
-            'profit_loss': round(profit_loss, 2),
-            'profit_loss_pct': round(profit_loss_pct, 2),
+            'cost_basis': cost_basis,
+            'current_value': current_value,
+            'unrealized_profit': unrealized_profit,
+            'unrealized_percent': round(unrealized_percent, 2),
+            'days_held': days_held,
             'rank': rank if rank <= 30 else 99,
+            'final_score': round(final_score, 2),
             'exit_status': exit_status,
-            'sector': sector
+            'sector': sector,
+            'action': action
         })
-    total_value = sum(r['current_value'] for r in result)
-    for r in result:
-        r['weight'] = round((r['current_value'] / total_value * 100), 2) if total_value > 0 else 0
-    result.sort(key=lambda x: x['ticker'])
+    result.sort(key=lambda x: x['rank'] if x['rank'] > 0 and x['rank'] < 99 else 999)
     return result
 
 def file_age(path):
@@ -152,7 +178,7 @@ def file_age(path):
     age = datetime.datetime.now() - mtime
     return f"{age.days}d {age.seconds // 3600}h ago" if age.days < 30 else f"{age.days}d ago"
 
-def build_html(leaders, turnaround, summary, history, streaks, date_str, exit_data=None, profiles=None, fundamentals=None, portfolio_data=None, radar_status=None):
+def build_html(leaders, turnaround, summary, history, streaks, date_str, exit_data=None, profiles=None, fundamentals=None, portfolio_data=None):
     date_short = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
     summary_data = summary if isinstance(summary, dict) else {}
     top_candidates = summary_data.get('top_candidates', [])
@@ -169,24 +195,6 @@ def build_html(leaders, turnaround, summary, history, streaks, date_str, exit_da
     profiles_json = json.dumps(profiles if profiles else {})
     fundamentals_json = json.dumps(fundamentals if fundamentals else {})
     portfolio_json = json.dumps(portfolio_data if portfolio_data else [])
-    hlp_dict = {
-        'leaders': '<div class="help-section"><div class="help-section-title">Apa Artinya?</div><ul><li>Peringkat 30 saham IDX30 berdasarkan 4 faktor nilai: Kualitas, Pertumbuhan, Nilai, dan Momentum</li><li>Setiap faktor dihitung secara persentil (0-100) lalu digabung dengan bobot tetap</li></ul></div><div class="help-section"><div class="help-section-title">Mengapa Penting?</div><ul><li>Membantu memilih 5 saham terbaik setiap bulan untuk portofolio</li><li>Sistem ini sudah melalui riset dan pengujian sejak 2019</li></ul></div><div class="help-section"><div class="help-section-title">Cara Membaca?</div><ul><li>Semakin tinggi skor, semakin baik peringkatnya</li><li>Top 5 (label PORTFOLIO) adalah posisi yang saat ini ditempati</li><li>Skor setiap faktor menunjukkan kekuatan di area tersebut</li></ul></div>',
-        'turnaround': '<div class="help-section"><div class="help-section-title">Apa Artinya?</div><ul><li>Mendeteksi saham yang mungkin berbalik arah dari tekanan menuju pemulihan</li><li>Saham diperiksa dari dua sisi: apakah masih tertekan dan apakah sudah mulai pulih</li></ul></div><div class="help-section"><div class="help-section-title">Mengapa Penting?</div><ul><li>Menangkap peluang pemulihan lebih awal sebelum harga naik signifikan</li><li>Membantu mengidentifikasi saham yang mungkin akan masuk peringkat teratas</li></ul></div><div class="help-section"><div class="help-section-title">Cara Membaca?</div><ul><li>Status Ctx (tekanan) = YES berarti saham masih dalam tekanan besar</li><li>Status Trn (pemulihan) = YES berarti mulai menunjukkan perbaikan</li><li>Keduanya YES = kandidat terkuat untuk dipantau</li><li>Gunakan filter untuk memfilter berdasarkan status</li></ul></div>',
-        'diagnostics': '<div class="help-section"><div class="help-section-title">Apa Artinya?</div><ul><li>Menampilkan status kesehatan sistem dan kesegaran data</li><li>Memastikan pipeline berjalan sesuai jadwal</li></ul></div><div class="help-section"><div class="help-section-title">Mengapa Penting?</div><ul><li>Data yang basi dapat menghasilkan sinyal yang menyesatkan</li><li>Memantau apakah pipeline harian dan bulanan berjalan normal</li></ul></div><div class="help-section"><div class="help-section-title">Cara Membaca?</div><ul><li>Operational = pipeline berjalan normal</li><li>File ages menunjukkan waktu sejak data terakhir diperbarui</li><li>Jika lebih dari 24 jam (harian) atau 35 hari (bulanan), ada masalah</li></ul></div>',
-        'exit': '<div class="help-section"><div class="help-section-title">Apa Artinya?</div><ul><li>Sistem aturan untuk mendeteksi saham yang perlu diwaspadai atau dikeluarkan dari portofolio</li><li>Menggunakan 4 tingkat peringatan: A (awal) hingga D (keluar)</li></ul></div><div class="help-section"><div class="help-section-title">Mengapa Penting?</div><ul><li>Melindungi portofolio dari penurunan lebih dalam</li><li>Memberikan sinyal objektif kapan harus waspada, bukan keputusan emosional</li></ul></div><div class="help-section"><div class="help-section-title">Cara Membaca?</div><ul><li>HEALTHY = tidak ada masalah</li><li>EXIT WATCH (A) = peringkat turun di luar 10 besar, waspada</li><li>WEAKENING (B) = momentum melemah, perlu perhatian</li><li>EXIT RISK (C) = trend rusak, risiko meningkat</li><li>EXIT (D) = pelemahan terkonfirmasi, sinyal keluar</li></ul></div>',
-        'saham_tertekan': '<div class="help-section"><div class="help-section-title">Apa Artinya?</div><ul><li>Saham masih berada dalam tekanan besar</li><li>Jauh dari harga tertinggi sebelumnya</li><li>Belum menunjukkan pemulihan yang kuat</li></ul></div><div class="help-section"><div class="help-section-title">Mengapa Penting?</div><ul><li>Menjadi sumber kandidat turnaround</li><li>Menunjukkan area pasar yang masih lemah</li></ul></div><div class="help-section"><div class="help-section-title">Cara Membaca?</div><ul><li>Angka lebih tinggi = lebih banyak saham tertekan</li><li>Angka lebih rendah = tekanan pasar berkurang</li></ul></div>',
-        'mulai_membaik': '<div class="help-section"><div class="help-section-title">Apa Artinya?</div><ul><li>Saham yang kekuatan relatifnya mulai meningkat</li><li>Dibanding dua bulan sebelumnya, performa saham ini membaik</li></ul></div><div class="help-section"><div class="help-section-title">Mengapa Penting?</div><ul><li>Bisa menjadi sinyal awal pemulihan pasar</li><li>Menunjukkan minat investor mulai kembali</li></ul></div><div class="help-section"><div class="help-section-title">Cara Membaca?</div><ul><li>Angka lebih tinggi = semakin banyak saham pulih</li><li>Jika angka terus meningkat, pasar memasuki fase pemulihan</li></ul></div>',
-        'kandidat_turnaround': '<div class="help-section"><div class="help-section-title">Apa Artinya?</div><ul><li>Saham yang memenuhi dua syarat: masih tertekan dan mulai menunjukkan pemulihan</li><li>Ini adalah kandidat yang berpotensi berbalik arah</li></ul></div><div class="help-section"><div class="help-section-title">Mengapa Penting?</div><ul><li>Menangkap peluang pemulihan lebih awal</li><li>Bisa menjadi tambahan portofolio jika pemulihan berlanjut</li></ul></div><div class="help-section"><div class="help-section-title">Cara Membaca?</div><ul><li>Bukan sinyal beli otomatis, tetapi radar untuk dipantau</li><li>Semakin tinggi angka, semakin banyak peluang potensial</li></ul></div>',
-        'kekuatan_mulai_naik': '<div class="help-section"><div class="help-section-title">Apa Artinya?</div><ul><li>Jumlah saham yang mulai mengungguli pergerakan pasar</li><li>Menunjukkan perubahan momentum secara luas</li></ul></div><div class="help-section"><div class="help-section-title">Mengapa Penting?</div><ul><li>Mendeteksi pemulihan pasar lebih awal</li><li>Jika jumlahnya meningkat, pasar sedang menguat</li></ul></div><div class="help-section"><div class="help-section-title">Cara Membaca?</div><ul><li>Angka lebih tinggi = pemulihan semakin meluas</li><li>Angka rendah = hanya sedikit saham yang menguat</li></ul></div>',
-        'minat_beli_meningkat': '<div class="help-section"><div class="help-section-title">Apa Artinya?</div><ul><li>Volume perdagangan minimal 30% lebih tinggi dari normal</li><li>Menunjukkan aktivitas investor di atas rata-rata</li></ul></div><div class="help-section"><div class="help-section-title">Mengapa Penting?</div><ul><li>Volume tinggi bisa memperkuat sinyal pergerakan harga</li><li>Volume tinggi + harga naik = minat beli nyata</li><li>Volume tinggi + harga turun = bisa distribusi</li></ul></div><div class="help-section"><div class="help-section-title">Cara Membaca?</div><ul><li>Angka lebih tinggi = semakin banyak saham dengan volume tinggi</li><li>Perhatikan arah harga saat volume meningkat</li></ul></div>',
-        'di_atas_trend_pendek': '<div class="help-section"><div class="help-section-title">Apa Artinya?</div><ul><li>Harga saham di atas rata-rata 20 hari terakhir</li><li>Menunjukkan tren jangka pendek yang positif</li></ul></div><div class="help-section"><div class="help-section-title">Mengapa Penting?</div><ul><li>Mengonfirmasi momentum naik jangka pendek</li><li>Saham yang konsisten di atas MA20 biasanya sehat</li></ul></div><div class="help-section"><div class="help-section-title">Cara Membaca?</div><ul><li>Angka lebih tinggi = semakin banyak saham di atas MA20</li><li>Jika mendekati 0, pasar sedang lemah</li><li>Ini indikator jangka pendek, kombinasikan dengan indikator lain</li></ul></div>',
-        'pantul_dari_dasar': '<div class="help-section"><div class="help-section-title">Apa Artinya?</div><ul><li>Saham yang naik lebih dari 10% dari titik terendah 60 hari</li><li>Menunjukkan usaha pemulihan setelah penurunan</li></ul></div><div class="help-section"><div class="help-section-title">Mengapa Penting?</div><ul><li>Mengonfirmasi bahwa saham mulai bangkit</li><li>Semakin banyak yang memantul, semakin besar potensi pemulihan pasar</li></ul></div><div class="help-section"><div class="help-section-title">Cara Membaca?</div><ul><li>Angka lebih tinggi = semakin banyak saham pulih</li><li>Gunakan bersama indikator volume dan kekuatan relatif</li></ul></div>',
-        'rata_penurunan': '<div class="help-section"><div class="help-section-title">Apa Artinya?</div><ul><li>Rata-rata penurunan semua saham IDX30 dari harga tertinggi 1 tahun</li><li>Gambaran kesehatan pasar secara keseluruhan</li></ul></div><div class="help-section"><div class="help-section-title">Mengapa Penting?</div><ul><li>Mengetahui apakah pasar sedang dalam tekanan luas</li><li>Membantu mengatur ekspektasi risiko</li></ul></div><div class="help-section"><div class="help-section-title">Cara Membaca?</div><ul><li>Di atas -15% = pasar relatif sehat</li><li>-15% hingga -30% = waspada</li><li>Di bawah -30% = tekanan luas</li></ul></div>',
-        'rata_gejolak': '<div class="help-section"><div class="help-section-title">Apa Artinya?</div><ul><li>Rata-rata intensitas pergerakan harga seluruh IDX30 dalam 60 hari</li><li>Mengukur tingkat ketidakpastian pasar</li></ul></div><div class="help-section"><div class="help-section-title">Mengapa Penting?</div><ul><li>Volatilitas tinggi = pergerakan harga lebih ekstrem</li><li>Membantu menyesuaikan strategi dan ekspektasi risiko</li></ul></div><div class="help-section"><div class="help-section-title">Cara Membaca?</div><ul><li>Di bawah 2% = pasar tenang</li><li>2% hingga 4% = normal</li><li>Di atas 4% = volatilitas tinggi, risiko meningkat</li></ul></div>',
-    }
-    hlp_json = json.dumps(hlp_dict)
-    radar_status_data = radar_status if isinstance(radar_status, dict) and radar_status else {}
-    radar_status_json = json.dumps(radar_status_data)
 
     return f'''<!DOCTYPE html>
 <html lang="en">
@@ -244,7 +252,7 @@ tr:hover td{{background:#1a1e24}}
 .section-title{{font-size:11px;font-family:'Space Mono',monospace;color:#C9D1D9;text-transform:uppercase;letter-spacing:.1em;margin:1rem 0 8px;display:flex;align-items:center;gap:8px}}
 .section-title::after{{content:'';flex:1;height:1px;background:#222830}}
 .flag{{color:#f59e0b;font-size:10px;margin-left:4px}}
-.tip{{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:#222830;color:#9CA3AF;font-size:9px;cursor:pointer;margin-left:5px;font-family:sans-serif;font-weight:400;vertical-align:middle;line-height:1;font-style:normal;letter-spacing:0;transition:all .15s}}
+.tip{{display:inline-flex;align-items:center;justify-content:center;width:13px;height:13px;border-radius:50%;background:#222830;color:#9CA3AF;font-size:8px;cursor:help;margin-left:5px;font-family:sans-serif;font-weight:400;vertical-align:middle;line-height:1;font-style:normal;letter-spacing:0}}
 .tip:hover{{background:#333a44;color:#F5F7FA}}
 .sortable{{cursor:pointer}}
 .sortable:hover{{color:#F5F7FA}}
@@ -252,9 +260,8 @@ tr:hover td{{background:#1a1e24}}
 .tk-click:hover{{color:#93c5fd!important;text-decoration:underline}}
 .overlay{{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:99;display:none}}
 .overlay.show{{display:block}}
-.panel{{position:fixed;top:0;right:-420px;width:400px;height:100vh;background:#161a20;border-left:1px solid #222830;z-index:100;overflow-y:auto;transition:right .25s ease;padding:0;touch-action:pan-y}}
+.panel{{position:fixed;top:0;right:-420px;width:400px;height:100vh;background:#161a20;border-left:1px solid #222830;z-index:100;overflow-y:auto;transition:right .25s ease;padding:0}}
 .panel.show{{right:0}}
-.panel-dragging{{transition:none!important}}
 .panel-hdr{{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem;border-bottom:1px solid #222830;position:sticky;top:0;background:#161a20;z-index:2}}
 .panel-hdr .tk{{font-size:16px;font-weight:700}}
 .panel-hdr .name{{font-size:11px;color:#9CA3AF;font-family:'DM Sans',sans-serif;margin-top:2px}}
@@ -283,26 +290,6 @@ tr:hover td{{background:#1a1e24}}
 .interp-row{{display:flex;justify-content:space-between;font-size:11px;padding:3px 0}}
 .interp-label{{color:#9CA3AF}}
 .interp-conclusion{{font-size:11px;color:#C9D1D9;line-height:1.5;padding:6px 0 0 0}}
-.conc{{padding:.75rem 1.5rem 0}}
-.conc-hdr{{display:flex;align-items:center;gap:10px;margin-bottom:8px}}
-.conc-status{{font-size:10px;font-family:'Space Mono',monospace;font-weight:700;padding:3px 10px;border-radius:4px;text-transform:uppercase;letter-spacing:.08em}}
-.conc-status.s-hijau{{background:#052e16;color:#00c26f;border:1px solid #166534}}
-.conc-status.s-kuning{{background:#2a2411;color:#f59e0b;border:1px solid #665511}}
-.conc-status.s-merah{{background:#2a1111;color:#ef4444;border:1px solid #661111}}
-.conc-status.s-biru{{background:#0c1929;color:#60a5fa;border:1px solid #1e3a5f}}
-.conc-label{{font-size:10px;font-family:'Space Mono',monospace;color:#9CA3AF;letter-spacing:.08em;font-weight:600}}
-.conc-body{{display:flex;gap:16px;flex-wrap:wrap}}
-.conc-col{{flex:1;min-width:200px}}
-.conc-sub{{font-size:9px;font-family:'Space Mono',monospace;color:#C9D1D9;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;font-weight:700}}
-.conc-list{{list-style:none;padding:0;margin:0}}
-.conc-list li{{font-size:11px;color:#C9D1D9;padding:2px 0 2px 12px;position:relative;line-height:1.5}}
-.conc-list li::before{{content:'\2022';position:absolute;left:0;color:#00c26f}}
-.ai-section{{background:#171b20;border:1px solid #222830;border-radius:8px;margin:.5rem 1.5rem;padding:1rem}}
-.ai-hdr{{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}}
-.ai-label{{font-size:10px;font-family:'Space Mono',monospace;color:#00c26f;text-transform:uppercase;letter-spacing:.08em;font-weight:600}}
-.ai-date{{font-size:9px;font-family:'Space Mono',monospace;color:#64748b}}
-.ai-body{{font-size:12px;color:#C9D1D9;line-height:1.6}}
-.ai-body strong{{color:#F5F7FA}}
 .align-card{{padding:10px 12px;border-radius:6px;margin-bottom:8px;font-size:12px}}
 .align-sejalan{{background:#052e16;border:1px solid #166534}}
 .align-perhatian{{background:#2a2411;border:1px solid #665511}}
@@ -313,25 +300,6 @@ tr:hover td{{background:#1a1e24}}
 .align-desc{{font-size:11px;color:#9CA3AF;line-height:1.5}}
 .panel-bullet{{color:#9CA3AF;margin-right:6px}}
 .panel-summary{{font-size:12px;color:#C9D1D9;line-height:1.6;padding:8px 0}}
-.pi-input{{background:#0f1115;border:1px solid #222830;border-radius:4px;padding:6px 10px;color:#F5F7FA;font-size:12px;font-family:'Space Mono',monospace;outline:none;transition:border-color .15s}}
-.pi-input:focus{{border-color:#00c26f}}
-.pi-input::placeholder{{color:#64748b}}
-.pi-add{{background:#00c26f;border:none;border-radius:4px;padding:6px 14px;color:#0f1115;font-size:12px;font-weight:700;cursor:pointer;font-family:'Space Mono',monospace;transition:background .15s}}
-.pi-add:hover{{background:#00e67a}}
-.del-btn{{background:transparent;border:none;color:#ef4444;cursor:pointer;font-size:14px;padding:2px 6px;border-radius:3px;opacity:.6;transition:opacity .15s;font-family:sans-serif;line-height:1}}
-.del-btn:hover{{opacity:1;background:#2a1111}}
-.help-modal{{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:380px;max-width:90vw;max-height:80vh;background:#161a20;border:1px solid #222830;border-radius:8px;z-index:101;padding:0;display:none;overflow-y:auto}}
-.help-modal.show{{display:block}}
-.help-hdr{{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid #222830;position:sticky;top:0;background:#161a20;z-index:2}}
-.help-title{{font-size:12px;font-weight:700;color:#F5F7FA;font-family:'Space Mono',monospace}}
-.help-close{{background:transparent;border:none;color:#9CA3AF;font-size:18px;cursor:pointer;padding:2px 8px;border-radius:4px;font-family:'Space Mono',monospace}}
-.help-close:hover{{background:#222830;color:#F5F7FA}}
-.help-body{{padding:12px 16px}}
-.help-section{{margin-bottom:12px}}
-.help-section-title{{font-size:10px;font-family:'Space Mono',monospace;color:#00c26f;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;font-weight:600}}
-.help-body ul{{list-style:none;padding:0;margin:0}}
-.help-body li{{font-size:11px;color:#C9D1D9;padding:3px 0 3px 12px;position:relative;line-height:1.5}}
-.help-body li::before{{content:'\2022';position:absolute;left:0;color:#9CA3AF}}
 </style>
 </head>
 <body>
@@ -339,26 +307,18 @@ tr:hover td{{background:#1a1e24}}
   <div class="logo">ISI <span>·</span> V2 <span>·</span> READ-ONLY DASHBOARD</div>
   <div class="dt">{date_short} · IDX30</div>
 </div>
-<div id="conclusion"></div>
-<div class="ai-section" id="ai-section" style="display:none">
-  <div class="ai-hdr">
-    <span class="ai-label">Analisis AI</span>
-    <span class="ai-date" id="ai-date"></span>
-  </div>
-  <div class="ai-body" id="ai-body"></div>
-</div>
 <div class="tab-nav">
   <button class="tab-btn active" onclick="st(0)">01 · Leaders</button>
   <button class="tab-btn" onclick="st(1)">02 · Turnaround</button>
   <button class="tab-btn" onclick="st(2)">03 · Daily Summary</button>
   <button class="tab-btn" onclick="st(3)">04 · History</button>
   <button class="tab-btn" onclick="st(4)">05 · Diagnostics</button>
-  <button class="tab-btn" onclick="st(5)">06 · Portfolio Simulator</button>
+  <button class="tab-btn" onclick="st(5)">06 · My Portfolio</button>
   <button class="tab-btn" onclick="st(6)">07 · Exit Monitor</button>
 </div>
 
 <div class="tc active" id="t0">
-  <div class="section-title">Config B Leaders · Q25/G30/V10/M35<span class="tip" onclick="showHelp('leaders')">?</span></div>
+  <div class="section-title">Config B Leaders · Q25/G30/V10/M35</div>
   <table>
     <thead><tr>
       <th data-key="rank">#</th><th data-key="ticker">Ticker</th><th data-key="final_score">Score</th><th data-key="quality">Quality</th><th data-key="growth">Growth</th><th data-key="value">Value</th><th data-key="momentum">Momentum</th><th>Status</th>
@@ -368,7 +328,7 @@ tr:hover td{{background:#1a1e24}}
 </div>
 
 <div class="tc" id="t1">
-  <div class="section-title">Turnaround Watchlist<span class="tip" onclick="showHelp('turnaround')">?</span></div>
+  <div class="section-title">Turnaround Watchlist · Context + Transition Signals</div>
   <div style="margin-bottom:10px;display:flex;gap:6px;flex-wrap:wrap">
     <button class="tab-btn active" onclick="ft('all',this)" style="font-size:10px;padding:4px 12px">All</button>
     <button class="tab-btn" onclick="ft('full',this)" style="font-size:10px;padding:4px 12px">Full Match</button>
@@ -387,19 +347,19 @@ tr:hover td{{background:#1a1e24}}
 <div class="tc" id="t2">
   <div class="section-title">Today's Snapshot</div>
   <div class="card-grid">
-    <div class="card"><div class="card-label">SAHAM TERTEKAN<span class="tip" onclick="showHelp('saham_tertekan')">?</span></div><div class="card-val g">{ctx_count}</div><div class="card-sub">Saham yang jatuh berat dan masih dalam kondisi tertekan</div></div>
-    <div class="card"><div class="card-label">MULAI MEMBAIK<span class="tip" onclick="showHelp('mulai_membaik')">?</span></div><div class="card-val y">{trn_count}</div><div class="card-sub">Saham dengan kekuatan relatif yang mulai meningkat</div></div>
-    <div class="card"><div class="card-label">KANDIDAT TURNAROUND<span class="tip" onclick="showHelp('kandidat_turnaround')">?</span></div><div class="card-val b">{full_count}</div><div class="card-sub">Saham tertekan yang mulai menunjukkan pemulihan</div></div>
+    <div class="card"><div class="card-label">SAHAM TERTEKAN<span class="tip" title="What does this mean?&#10;Stock is still under heavy pressure.&#10;&#10;How is it calculated?&#10;Price is far below previous highs&#10;and volatility remains elevated.&#10;&#10;Research Source:&#10;Research-009B">?</span></div><div class="card-val g">{ctx_count}</div><div class="card-sub">Saham yang jatuh berat dan masih dalam kondisi tertekan</div></div>
+    <div class="card"><div class="card-label">MULAI MEMBAIK<span class="tip" title="What does this mean?&#10;Stock is starting to recover.&#10;&#10;How is it calculated?&#10;Current strength is better than it was&#10;during the previous two months.&#10;&#10;Research Source:&#10;Research-008B / Research-009B">?</span></div><div class="card-val y">{trn_count}</div><div class="card-sub">Saham dengan kekuatan relatif yang mulai meningkat</div></div>
+    <div class="card"><div class="card-label">KANDIDAT TURNAROUND<span class="tip" title="What does this mean?&#10;Distressed stocks that are beginning&#10;to show signs of recovery.&#10;&#10;How is it calculated?&#10;Stock meets BOTH conditions:&#10;1. Under heavy pressure (Context Match)&#10;2. Improving relative strength (Transition Match)&#10;&#10;Research Source:&#10;Research-008B / Research-009B">?</span></div><div class="card-val b">{full_count}</div><div class="card-sub">Saham tertekan yang mulai menunjukkan pemulihan</div></div>
     <div class="card"><div class="card-label">Universe</div><div class="card-val">{summary_data.get('universe_size', 0)}</div><div class="card-sub">IDX30 tickers</div></div>
   </div>
   <div class="section-title">Signal Diagnostics</div>
   <div class="card-grid">
-    <div class="card"><div class="card-label">KEKUATAN MULAI NAIK<span class="tip" onclick="showHelp('kekuatan_mulai_naik')">?</span></div><div class="card-val g">{sig.get('rs_change_60d_positive_count', 0)}</div><div class="card-sub">Saham yang mulai outperform pasar</div></div>
-    <div class="card"><div class="card-label">MINAT BELI MENINGKAT<span class="tip" onclick="showHelp('minat_beli_meningkat')">?</span></div><div class="card-val y">{sig.get('volume_ratio_high_count', 0)}</div><div class="card-sub">Aktivitas perdagangan di atas normal</div></div>
-    <div class="card"><div class="card-label">DI ATAS TREND PENDEK<span class="tip" onclick="showHelp('di_atas_trend_pendek')">?</span></div><div class="card-val">{sig.get('above_ma20_count', 0)}</div><div class="card-sub">Harga di atas rata-rata 20 hari</div></div>
-    <div class="card"><div class="card-label">PANTUL DARI DASAR<span class="tip" onclick="showHelp('pantul_dari_dasar')">?</span></div><div class="card-val g">{sig.get('recovery_gt_10pct_count', 0)}</div><div class="card-sub">Memantul &gt;10% dari level terendah 60 hari</div></div>
-    <div class="card"><div class="card-label">RATA-RATA PENURUNAN<span class="tip" onclick="showHelp('rata_penurunan')">?</span></div><div class="card-val r">{sig.get('avg_drawdown_252d', 0)}%</div><div class="card-sub">Rata-rata penurunan dari harga tertinggi</div></div>
-    <div class="card"><div class="card-label">RATA-RATA GEJOLAK<span class="tip" onclick="showHelp('rata_gejolak')">?</span></div><div class="card-val y">{sig.get('avg_volatility_60d', 0)}%</div><div class="card-sub">Intensitas pergerakan harga rata-rata</div></div>
+    <div class="card"><div class="card-label">KEKUATAN MULAI NAIK<span class="tip" title="What does this mean?&#10;Stocks starting to outperform the market.&#10;&#10;How is it calculated?&#10;RS_CHANGE_60D &gt; 0&#10;Relative strength improved over 60 days.&#10;&#10;Research Source:&#10;Research-009">?</span></div><div class="card-val g">{sig.get('rs_change_60d_positive_count', 0)}</div><div class="card-sub">Saham yang mulai outperform pasar</div></div>
+    <div class="card"><div class="card-label">MINAT BELI MENINGKAT<span class="tip" title="What does this mean?&#10;Trading activity is increasing.&#10;&#10;How is it calculated?&#10;Current volume is at least&#10;30% higher than normal.&#10;&#10;Research Source:&#10;Research-008B">?</span></div><div class="card-val y">{sig.get('volume_ratio_high_count', 0)}</div><div class="card-sub">Aktivitas perdagangan di atas normal</div></div>
+    <div class="card"><div class="card-label">DI ATAS TREND PENDEK<span class="tip" title="What does this mean?&#10;Price has moved above&#10;its short-term trend.&#10;&#10;How is it calculated?&#10;Current price is above&#10;its average price over&#10;the last 20 trading days.&#10;&#10;Research Source:&#10;Research-009B">?</span></div><div class="card-val">{sig.get('above_ma20_count', 0)}</div><div class="card-sub">Harga di atas rata-rata 20 hari</div></div>
+    <div class="card"><div class="card-label">PANTUL DARI DASAR<span class="tip" title="What does this mean?&#10;Stock has rebounded from&#10;a recent low.&#10;&#10;How is it calculated?&#10;Price is more than 10%&#10;above the lowest point&#10;of the last 60 trading days.&#10;&#10;Research Source:&#10;Research-008B">?</span></div><div class="card-val g">{sig.get('recovery_gt_10pct_count', 0)}</div><div class="card-sub">Memantul &gt;10% dari level terendah 60 hari</div></div>
+    <div class="card"><div class="card-label">RATA-RATA PENURUNAN<span class="tip" title="Rata-rata penurunan semua saham dari harga tertinggi masing-masing.&#10;&#10;(Perhitungan:&#10;Mean Drawdown_252D&#10;— seluruh universe IDX30)">?</span></div><div class="card-val r">{sig.get('avg_drawdown_252d', 0)}%</div><div class="card-sub">Rata-rata penurunan dari harga tertinggi</div></div>
+    <div class="card"><div class="card-label">RATA-RATA GEJOLAK<span class="tip" title="Intensitas pergerakan harga rata-rata — semakin tinggi semakin berisiko.&#10;&#10;(Perhitungan:&#10;Mean Volatility_60D&#10;— seluruh universe IDX30)">?</span></div><div class="card-val y">{sig.get('avg_volatility_60d', 0)}%</div><div class="card-sub">Intensitas pergerakan harga rata-rata</div></div>
   </div>
   <div class="section-title">Top Candidates</div>
   <table>
@@ -422,7 +382,7 @@ tr:hover td{{background:#1a1e24}}
 </div>
 
 <div class="tc" id="t4">
-  <div class="section-title">Pipeline Diagnostics<span class="tip" onclick="showHelp('diagnostics')">?</span></div>
+  <div class="section-title">Pipeline Diagnostics</div>
   <div class="card-grid">
     <div class="card wide-card">
       <div class="card-label">Pipeline Status</div>
@@ -443,24 +403,18 @@ tr:hover td{{background:#1a1e24}}
 </div>
 
 <div class="tc" id="t5">
-  <div class="section-title">Portfolio Simulator · Investment Simulation</div>
-  <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:center">
-    <input type="text" id="pi-ticker" class="pi-input" placeholder="Ticker" style="width:100px">
-    <input type="number" id="pi-investment" class="pi-input" placeholder="Investment (Rp)" style="width:140px">
-    <input type="number" id="pi-entry" class="pi-input" placeholder="Entry Price" style="width:120px">
-    <button class="pi-add" onclick="addPosition()">+ Add</button>
-  </div>
+  <div class="section-title">My Portfolio · Actual Holdings Monitor</div>
   <div class="card-grid" id="mp-cards"></div>
   <table>
     <thead><tr>
-      <th data-key="ticker">Ticker</th><th data-key="investment">Investment</th><th data-key="entry_price">Entry Price</th><th data-key="current_price">Current Price</th><th data-key="estimated_shares">Est. Shares</th><th data-key="current_value">Current Value</th><th data-key="profit_loss">P/L Rp</th><th data-key="profit_loss_pct">P/L %</th><th data-key="weight">Weight</th><th data-key="rank" style="font-size:9px;color:#64748b">Rank</th><th data-key="exit_status" style="font-size:9px;color:#64748b">Exit</th><th data-key="sector" style="font-size:9px;color:#64748b">Sector</th><th style="width:30px"></th>
+      <th data-key="ticker">Ticker</th><th data-key="lot">Lot</th><th data-key="buy_price">Buy Price</th><th data-key="current_price">Current Price</th><th data-key="unrealized_percent">Gain/Loss %</th><th data-key="unrealized_profit">Gain/Loss Rp</th><th data-key="rank">Rank</th><th data-key="exit_status">Exit Status</th><th data-key="sector">Alignment</th><th data-key="days_held">Days Held</th><th data-key="action">Action</th>
     </tr></thead>
     <tbody id="tbody-portfolio"></tbody>
   </table>
 </div>
 
 <div class="tc" id="t6">
-  <div class="section-title">Exit Monitor<span class="tip" onclick="showHelp('exit')">?</span></div>
+  <div class="section-title">Exit Monitor · Rule-Based Exit Signals</div>
   <div style="margin-bottom:12px;background:#171b20;border:1px solid #222830;border-radius:6px;padding:10px 12px">
     <div style="font-size:9px;font-family:'Space Mono',monospace;color:#9CA3AF;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;font-weight:600">LEGENDA RULE EXIT</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 12px">
@@ -486,7 +440,7 @@ tr:hover td{{background:#1a1e24}}
   </table>
 </div>
 
-<div class="overlay" id="overlay"></div>
+<div class="overlay" id="overlay" onclick="closePanel()"></div>
 <div class="panel" id="panel">
   <div class="panel-hdr">
     <div><div class="tk" id="ptk"></div><div class="name" id="pname"></div></div>
@@ -494,15 +448,6 @@ tr:hover td{{background:#1a1e24}}
   </div>
   <div class="panel-body" id="pbody"></div>
 </div>
-
-<div class="help-modal" id="help">
-  <div class="help-hdr">
-    <div class="help-title" id="htitle"></div>
-    <button class="help-close" onclick="closeHelp()">✕</button>
-  </div>
-  <div class="help-body" id="hbody"></div>
-</div>
-
 <script>
 const L={leaders_json};
 const T={turnaround_json};
@@ -510,15 +455,6 @@ const SM={summary_json};
 const SK={streaks_json};
 const EX={exit_json};
 const MP={portfolio_json};
-const HLP={hlp_json};
-const RS={radar_status_json};
-
-(function(){{
-  if(!RS||!RS.detail_message)return
-  document.getElementById('ai-date').textContent='Terakhir: '+(RS.last_update||'—')
-  document.getElementById('ai-body').innerHTML=RS.detail_message
-  document.getElementById('ai-section').style.display=''
-}})();
 
 function fmtRupiah(v){{return (v>=0?'':'−')+'Rp '+Math.abs(v).toLocaleString('id-ID')}}
 function sc(v){{return v>=60?'high':v>=40?'mid':'low'}}
@@ -651,149 +587,35 @@ function makeSortable(id,s,fn){{
 }})();
 
 (function(){{
-  var DATA=[];var s={{key:null,dir:'asc'}}
-  function loadData(){{
-    var st=localStorage.getItem('isi_portfolio')
-    if(st){{try{{DATA=JSON.parse(st)}}catch(e){{DATA=[]}}}}else if(MP&&MP.length>0){{
-      DATA=MP.map(function(r){{return{{ticker:r.ticker,investment:r.investment,entry_price:r.entry_price}}}})
-      localStorage.setItem('isi_portfolio',JSON.stringify(DATA))
-    }}
-  }}
-  function enrich(item){{
-    var tk=item.ticker.indexOf('.JK')>0?item.ticker:item.ticker+'.JK'
-    var inv=Number(item.investment)||0;var ep=Number(item.entry_price)||0
-    var shares=ep>0?inv/ep:0
-    var ed=null;EX.forEach(function(d){{if(d.ticker===tk)ed=d}})
-    var ld=null;L.forEach(function(d){{if(d.ticker===tk)ld=d}})
-    var cp=ep;if(ed&&ed.close)cp=Number(ed.close)||ep
-    var cv=shares*cp;var pl=cv-inv;var pct=inv>0?(pl/inv*100):0
-    var rank=ld?(Number(ld.rank)<=30?Number(ld.rank):99):99
-    var es=ed?ed.exit_state:'HEALTHY'
-    var tc=tk.replace('.JK','')
-    var sec=(PF[tc]&&PF[tc].sector)||(PF[tk]&&PF[tk].sector)||''
-    return{{ticker:tc,investment:inv,entry_price:ep,estimated_shares:shares,current_price:cp,current_value:cv,profit_loss:pl,profit_loss_pct:pct,rank:rank,exit_status:es,sector:sec}}
-  }}
-  function render(){{
-    var enriched=DATA.map(enrich)
-    var total=enriched.reduce(function(s,r){{return s+r.current_value}},0)
-    enriched.forEach(function(r){{r.weight=total>0?(r.current_value/total*100):0}})
-    enriched.sort(function(a,b){{return a.ticker.localeCompare(b.ticker)}})
-    var ti=enriched.reduce(function(s,r){{return s+r.investment}},0)
-    var tv=enriched.reduce(function(s,r){{return s+r.current_value}},0)
-    var tp=enriched.reduce(function(s,r){{return s+r.profit_loss}},0)
-    var ret=ti>0?((tv-ti)/ti*100):0
-    var secs={{}},sl=[]
-    enriched.forEach(function(r){{var sc=r.sector||'Unknown';if(!secs[sc]){{secs[sc]=0;sl.push(sc)}}secs[sc]++}})
-    var ts=sl.sort(function(a,b){{return secs[b]-secs[a]}}).slice(0,3).join(', ')
+  var full=MP;var s={{key:null,dir:'asc'}}
+  function render(d){{
+    var totalCost=0,totalValue=0,totalPL=0,exitCount=0,top10Count=0
+    d.forEach(function(r){{
+      totalCost+=r.cost_basis
+      totalValue+=r.current_value
+      totalPL+=r.unrealized_profit
+      if(r.exit_status==='EXIT')exitCount++
+      if(r.rank>=1&&r.rank<=10)top10Count++
+    }})
+    var ret=totalCost>0?((totalValue-totalCost)/totalCost*100):0
     document.getElementById('mp-cards').innerHTML=
-      '<div class="card"><div class="card-label">Total Invested</div><div class="card-val">'+fmtRupiah(ti)+'</div><div class="card-sub">Total modal dimasukkan</div></div>'+
-      '<div class="card"><div class="card-label">Current Value</div><div class="card-val">'+fmtRupiah(tv)+'</div><div class="card-sub">Nilai portofolio saat ini</div></div>'+
-      '<div class="card"><div class="card-label">Profit / Loss</div><div class="card-val'+(tp>=0?' g':' r')+'">'+(tp>=0?'+':'')+fmtRupiah(tp)+'</div><div class="card-sub">Laba/rugi keseluruhan</div></div>'+
-      '<div class="card"><div class="card-label">Portfolio Return</div><div class="card-val'+(ret>=0?' g':' r')+'">'+(ret>=0?'+':'')+ret.toFixed(2)+'%</div><div class="card-sub">Return investasi</div></div>'+
-      '<div class="card"><div class="card-label">Holdings</div><div class="card-val b">'+enriched.length+'</div><div class="card-sub">Jumlah posisi</div></div>'+
-      '<div class="card"><div class="card-label">Sector Exposure</div><div class="card-val b" style="font-size:14px">'+(ts||'—')+'</div><div class="card-sub">Sektor dominan</div></div>'
-    document.getElementById('tbody-portfolio').innerHTML=enriched.map(function(r){{
+      '<div class="card"><div class="card-label">Total Cost Basis</div><div class="card-val">'+fmtRupiah(totalCost)+'</div><div class="card-sub">Modal awal</div></div>'+
+      '<div class="card"><div class="card-label">Total Current Value</div><div class="card-val">'+fmtRupiah(totalValue)+'</div><div class="card-sub">Nilai saat ini</div></div>'+
+      '<div class="card"><div class="card-label">Total Unrealized P/L</div><div class="card-val'+(totalPL>=0?' g':' r')+'">'+(totalPL>=0?'+':'')+fmtRupiah(totalPL)+'</div><div class="card-sub">Laba/rugi belum terealisasi</div></div>'+
+      '<div class="card"><div class="card-label">Portfolio Return</div><div class="card-val'+(ret>=0?' g':' r')+'">'+(ret>=0?'+':'')+ret.toFixed(2)+'%</div><div class="card-sub">Return keseluruhan</div></div>'+
+      '<div class="card"><div class="card-label">Holdings</div><div class="card-val b">'+d.length+'</div><div class="card-sub">Jumlah saham dimiliki</div></div>'+
+      '<div class="card"><div class="card-label">EXIT Holdings</div><div class="card-val'+(exitCount>0?' r':' b')+'">'+exitCount+'</div><div class="card-sub">Saham dengan status EXIT</div></div>'+
+      '<div class="card"><div class="card-label">Top 10 Holdings</div><div class="card-val g">'+top10Count+'</div><div class="card-sub">Saham di rank 1-10</div></div>'
+    document.getElementById('tbody-portfolio').innerHTML=d.map(function(r){{
+      var ab=r.action==='STRONG HOLD'?'bg-green':r.action==='REVIEW'?'bg-yellow':r.action==='TRIM'?'bg-yellow':r.action==='REPLACE CANDIDATE'?'bg-red':'bg-gray'
       var eb=r.exit_status==='EXIT'?'bg-red':r.exit_status==='EXIT RISK'?'bg-yellow':r.exit_status==='WEAKENING'?'bg-yellow':r.exit_status==='EXIT WATCH'?'bg-blue':'bg-green'
       var rnk=r.rank>0&&r.rank<99?'#'+r.rank:'—'
-      var plCls=r.profit_loss>=0?'high':'low'
-      return '<tr><td class="tk tk-click" data-ticker="'+r.ticker+'">'+r.ticker+'</td><td style="font-family:Space Mono,monospace;font-weight:600">'+fmtRupiah(r.investment)+'</td><td style="font-family:Space Mono,monospace;font-weight:600">'+fmtRupiah(r.entry_price)+'</td><td style="font-family:Space Mono,monospace;font-weight:600">'+fmtRupiah(r.current_price)+'</td><td style="font-family:Space Mono,monospace">'+r.estimated_shares.toFixed(0)+'</td><td style="font-family:Space Mono,monospace;font-weight:600">'+fmtRupiah(r.current_value)+'</td><td class="sf '+plCls+'">'+(r.profit_loss>=0?'+':'')+fmtRupiah(r.profit_loss)+'</td><td class="sf '+plCls+'">'+(r.profit_loss_pct>=0?'+':'')+r.profit_loss_pct.toFixed(2)+'%</td><td style="font-family:Space Mono,monospace;color:#9CA3AF">'+r.weight.toFixed(1)+'%</td><td style="font-family:Space Mono,monospace;font-size:10px;color:#64748b">'+rnk+'</td><td style="font-size:10px"><span class="badge '+eb+'" style="font-size:8px">'+r.exit_status+'</span></td><td style="font-size:10px;color:#64748b">'+(r.sector||'—')+'</td><td><button class="del-btn" onclick="removePosition(\\''+r.ticker+'\\')">✕</button></td></tr>'
+      return '<tr><td class="tk tk-click" data-ticker="'+r.ticker+'">'+r.ticker+'</td><td>'+r.lot+'</td><td style="font-family:Space Mono,monospace;font-weight:600">'+fmtRupiah(r.buy_price)+'</td><td style="font-family:Space Mono,monospace;font-weight:600">'+fmtRupiah(r.current_price)+'</td><td class="sf '+(r.unrealized_percent>=0?'high':'low')+'">'+(r.unrealized_percent>=0?'+':'')+r.unrealized_percent.toFixed(2)+'%</td><td class="sf '+(r.unrealized_profit>=0?'high':'low')+'">'+(r.unrealized_profit>=0?'+':'')+fmtRupiah(r.unrealized_profit)+'</td><td style="font-family:Space Mono,monospace;color:#9CA3AF">'+rnk+'</td><td><span class="badge '+eb+'">'+r.exit_status+'</span></td><td style="font-size:11px;color:#9CA3AF">'+(r.sector||'—')+'</td><td style="font-family:Space Mono,monospace">'+r.days_held+'d</td><td><span class="badge '+ab+'">'+r.action+'</span></td></tr>'
     }}).join('')
   }}
-  loadData();render()
-  window.addPosition=function(){{
-    var t=document.getElementById('pi-ticker').value.trim().toUpperCase()
-    var i=parseFloat(document.getElementById('pi-investment').value)||0
-    var e=parseFloat(document.getElementById('pi-entry').value)||0
-    if(!t||i<=0||e<=0)return
-    DATA.push({{ticker:t,investment:i,entry_price:e}})
-    localStorage.setItem('isi_portfolio',JSON.stringify(DATA))
-    document.getElementById('pi-ticker').value='';document.getElementById('pi-investment').value='';document.getElementById('pi-entry').value=''
-    render()
-  }}
-  window.removePosition=function(t){{
-    DATA=DATA.filter(function(r){{return r.ticker!==t}})
-    localStorage.setItem('isi_portfolio',JSON.stringify(DATA));render()
-  }}
-}})();
-
-(function(){{
-  try{{
-  EX.forEach(function(d){{
-    if(d.exit_state==='EXIT')exitCount++
-    else if(d.exit_state==='EXIT RISK')exitRiskCount++
-    else if(d.exit_state==='WEAKENING')weakeningCount++
-    else if(d.exit_state==='EXIT WATCH')exitWatchCount++
-    else if(d.exit_state==='HEALTHY')healthyCount++
-  }})
-  var top5=[];L.forEach(function(d){{if(d.rank<=5)top5.push(d.ticker)}})
-  var portfolioExit=EX.filter(function(d){{return top5.indexOf(d.ticker)>=0&&d.exit_state!=='HEALTHY'}})
-  var fullMatchCount=SM.full_match_count||0
-  var sd=SM.signal_diagnostics||{{}}
-  var avgDD=sd.avg_drawdown_252d||0
-  var avgVol=sd.avg_volatility_60d||0
-  var aboveMA20=sd.above_ma20_count||0
-  var rsPositive=sd.rs_change_60d_positive_count||0
-  var bigDrops=EX.filter(function(d){{return d.rank_change<=-2}}).length
-  var rankDrops=EX.filter(function(d){{return d.rank_change<0}}).length
-  var status='TIDAK ADA AKSI',cls='s-hijau',reasons=[],focuses=[]
-  if(exitCount>=3){{
-    status='RISIKO MENINGKAT';cls='s-merah'
-    reasons.push(exitCount+' saham dalam status EXIT — tekanan keluar meluas')
-    reasons.push(exitRiskCount+' EXIT RISK, '+weakeningCount+' weakening — sistem dalam tekanan')
-  }}else if(exitCount>=1&&portfolioExit.length>0){{
-    status='REVIEW';cls='s-kuning'
-    reasons.push(exitCount+' saham EXIT, '+portfolioExit.length+' di antaranya dari portofolio 5 besar')
-  }}else if(exitCount>=1||exitRiskCount>=2){{
-    status='REVIEW';cls='s-kuning'
-    if(exitCount>=1)reasons.push(exitCount+' saham EXIT terdeteksi')
-    else reasons.push(exitRiskCount+' saham EXIT RISK — perhatikan perkembangan')
-  }}else if(fullMatchCount>=3||avgDD<-25||avgVol>3.5||aboveMA20===0){{
-    status='TAHAN';cls='s-biru'
-    if(fullMatchCount>=3)reasons.push(fullMatchCount+' kandidat turnaround terdeteksi')
-    if(avgDD<-25)reasons.push('Rata-rata penurunan IDX30 '+avgDD.toFixed(1)+'%')
-    if(avgVol>3.5)reasons.push('Volatilitas '+avgVol.toFixed(2)+'% — fluktuasi di atas normal')
-    if(aboveMA20===0)reasons.push('Seluruh IDX30 di bawah MA20 — tren pendek lemah')
-  }}else{{
-    reasons.push('Tidak ada sinyal exit signifikan')
-    reasons.push('Rata-rata penurunan '+avgDD.toFixed(1)+'% — dalam batas wajar')
-  }}
-  if(reasons.length<2){{
-    if(exitCount>0)reasons.push(exitCount+' saham EXIT, '+exitRiskCount+' EXIT RISK')
-    else if(avgDD>-15)reasons.push('Penurunan pasar minimal ('+avgDD.toFixed(1)+'%)')
-    else if(rsPositive>15)reasons.push(rsPositive+' dari 30 saham mulai menguat')
-    else reasons.push(healthyCount+' dari '+EX.length+' saham dalam kondisi sehat')
-  }}
-  if(portfolioExit.length>0){{
-    var tkr=portfolioExit.map(function(d){{return d.ticker.split('.')[0]}}).join(', ')
-    focuses.push('Portofolio: '+tkr+' masuk sinyal exit — pantau pergerakan')
-  }}else if(exitCount>0){{
-    var ex=EX.filter(function(d){{return d.exit_state==='EXIT'}}).slice(0,3).map(function(d){{return d.ticker.split('.')[0]}}).join(', ')
-    focuses.push('Pantau '+ex+' — saham dengan sinyal EXIT aktif')
-  }}else if(fullMatchCount>=3&&SM.top_candidates){{
-    var tkr=SM.top_candidates.filter(function(d){{return d.full_match}}).slice(0,3).map(function(d){{return d.ticker.split('.')[0]}}).join(', ')
-    if(tkr)focuses.push('Pantau '+tkr+' — kandidat turnaround penuh')
-    else focuses.push(fullMatchCount+' kandidat turnaround — pantau perkembangannya')
-  }}else{{
-    focuses.push('Pantau perubahan ranking harian — '+rankDrops+' saham turun peringkat')
-  }}
-  if(avgDD<-25){{
-    focuses.push('Waspada tekanan pasar — rata-rata penurunan '+avgDD.toFixed(1)+'%')
-  }}else if(aboveMA20===0){{
-    focuses.push('Pasar melemah — 0 saham berhasil bertahan di atas MA20')
-  }}else if(rsPositive>15){{
-    focuses.push(rsPositive+' dari 30 saham menunjukkan penguatan — positif')
-  }}else{{
-    focuses.push(rankDrops+' saham turun peringkat hari ini — perhatikan distribusi')
-  }}
-  if(focuses.length>2)focuses=focuses.slice(0,2)
-  if(reasons.length>3)reasons=reasons.slice(0,3)
-  var h='<div class="conc"><div class="conc-hdr"><span class="conc-status '+cls+'">'+status+'</span><span class="conc-label">KESIMPULAN HARI INI</span></div><div class="conc-body"><div class="conc-col"><div class="conc-sub">Alasan</div><ul class="conc-list">'
-  reasons.forEach(function(r){{h+='<li>'+r+'</li>'}})
-  h+='</ul></div><div class="conc-col"><div class="conc-sub">Fokus Hari Ini</div><ul class="conc-list">'
-  focuses.forEach(function(f){{h+='<li>'+f+'</li>'}})
-  h+='</ul></div></div></div>'
-  document.getElementById('conclusion').innerHTML=h
-  }}catch(e){{console.error('Conclusion IIFE error:',e);document.getElementById('conclusion').innerHTML='<div class="conc" style="padding:12px;color:#ef4444;font-size:11px">Error loading conclusion: '+e.message+'</div>'}}
+  function refresh(){{render(sortData(full,s))}}
+  refresh()
+  makeSortable('tbody-portfolio',s,refresh)
 }})();
 
 function st(i){{document.querySelectorAll('.tab-btn').forEach(function(b,j){{b.classList.toggle('active',j===i)}});document.querySelectorAll('.tc').forEach(function(t,j){{t.classList.toggle('active',j===i)}})}}
@@ -833,10 +655,10 @@ function aiExplain(leaderData,turnaroundData,exitData){{
     return lines.join('')
   }}
   if(leaderData&&leaderData.rank<=5){{
-    lines.push('<div class="panel-status portfolio"><b>TOP 5 CONFIG B</b>')
+    lines.push('<div class="panel-status portfolio"><b>PORTOFOLIO AKTIF</b>')
     lines.push('<div style="margin-top:6px;font-size:11px;color:#9CA3AF;font-weight:400">')
-    lines.push('<span class="panel-bullet">&#8226;</span>Peringkat 5 besar ranking engine')
-    lines.push('<span class="panel-bullet">&#8226;</span>Bukan rekomendasi beli')
+    lines.push('<span class="panel-bullet">&#8226;</span>Top 5 in Config B ranking')
+    lines.push('<span class="panel-bullet">&#8226;</span>Saat ini masuk portofolio')
     lines.push('</div></div>')
     return lines.join('')
   }}
@@ -985,66 +807,8 @@ function closePanel(){{
   document.getElementById('overlay').classList.remove('show')
 }}
 
-function showHelp(k){{
-  var h=HLP[k]
-  if(!h)return
-  var titles={{leaders:'Config B Leaders',turnaround:'Turnaround Watchlist',diagnostics:'Pipeline Diagnostics',exit:'Exit Monitor',saham_tertekan:'Saham Tertekan',mulai_membaik:'Mulai Membaik',kandidat_turnaround:'Kandidat Turnaround',kekuatan_mulai_naik:'Kekuatan Mulai Naik',minat_beli_meningkat:'Minat Beli Meningkat',di_atas_trend_pendek:'Di Atas Trend Pendek',pantul_dari_dasar:'Pantul Dari Dasar',rata_penurunan:'Rata-Rata Penurunan',rata_gejolak:'Rata-Rata Gejolak'}}
-  document.getElementById('htitle').textContent=titles[k]||k
-  document.getElementById('hbody').innerHTML=h
-  document.getElementById('help').classList.add('show')
-  document.getElementById('overlay').classList.add('show')
-}}
-
-function closeHelp(){{
-  document.getElementById('help').classList.remove('show')
-  document.getElementById('overlay').classList.remove('show')
-}}
-
-function closeAll(){{closePanel();closeHelp()}}
-
-document.addEventListener('keydown',function(e){{if(e.key==='Escape')closeAll()}})
-document.addEventListener('click',function(e){{
-  var t=e.target.closest('.tk-click')
-  if(t){{var tkr=t.getAttribute('data-ticker')||t.textContent.trim();e.stopPropagation();openPanel(tkr);return}}
-  var tip=e.target.closest('.tip')
-  if(tip)return
-  var h=e.target.closest('.help-modal')
-  var o=e.target.closest('#overlay')
-  var p=e.target.closest('#panel')
-  if(o){{closePanel();if(!h)closeHelp()}}
-  if(!h&&document.getElementById('help').classList.contains('show'))closeHelp()
-}})
-;(function(){{
-  var p=document.getElementById('panel'),o=document.getElementById('overlay')
-  var sx=0,sy=0,dx=0,dragging=false,th=80
-  p.addEventListener('touchstart',function(e){{
-    if(!p.classList.contains('show'))return
-    var t=e.touches[0];sx=t.clientX;sy=t.clientY;dx=0;dragging=false
-  }},{{passive:true}})
-  p.addEventListener('touchmove',function(e){{
-    if(!p.classList.contains('show')||sx===0)return
-    var cx=e.touches[0].clientX-sx,cy=e.touches[0].clientY-sy
-    if(!dragging){{
-      if(Math.abs(cx)<10&&Math.abs(cy)<10)return
-      if(Math.abs(cx)<Math.abs(cy))return
-      if(cx<0)return
-      dragging=true;p.classList.add('panel-dragging')
-    }}
-    dx=cx
-    if(dx>window.innerWidth)dx=window.innerWidth
-    p.style.transform='translateX('+dx+'px)'
-    o.style.opacity=Math.max(0,.5*(1-dx/window.innerWidth))
-  }},{{passive:false}})
-  p.addEventListener('touchend',function(){{
-    if(sx===0)return
-    if(dragging){{
-      p.classList.remove('panel-dragging')
-      if(dx>th){{p.style.transform='';o.style.opacity='';closePanel()}}
-      else{{p.style.transform='';o.style.opacity=''}}
-    }}
-    sx=0;dragging=false
-  }},{{passive:true}})
-}})()
+document.addEventListener('keydown',function(e){{if(e.key==='Escape')closePanel()}})
+document.addEventListener('click',function(e){{var t=e.target.closest('.tk-click');if(t){{var tkr=t.getAttribute('data-ticker')||t.textContent.trim();e.stopPropagation();openPanel(tkr)}}}})
 </script>
 </body>
 </html>'''
@@ -1125,23 +889,14 @@ def main():
     if PORTFOLIO_FILE.exists():
         portfolio_raw = read_json(PORTFOLIO_FILE)
         if portfolio_raw:
-            portfolio_data = calculate_portfolio(portfolio_raw, leaders, exit_data, profiles)
-            print(f"  Calculated {len(portfolio_data)} portfolio positions")
+            portfolio_data = enrich_portfolio(portfolio_raw, leaders, exit_data, profiles)
+            print(f"  Enriched {len(portfolio_data)} portfolio holdings")
         else:
-            print("  No portfolio positions found")
+            print("  No portfolio holdings found")
     else:
-        print("  No portfolio_simulator.json found — skipping")
-    radar_status = {}
-    if RADAR_STATUS_FILE.exists():
-        radar_status = read_json(RADAR_STATUS_FILE)
-        if radar_status.get('detail_message'):
-            print(f"  Radar status: {radar_status.get('status', 'N/A')} ({len(radar_status.get('detail_message', ''))} chars narrative)")
-        else:
-            print("  Radar status file found but no narrative")
-    else:
-        print("  No daily_radar_status.json found — skipping AI narrative")
+        print("  No my_portfolio.json found — skipping")
     print("  Generating HTML...")
-    html = build_html(leaders, turnaround, summary, history, streaks, date_str, exit_data, profiles, fundamentals, portfolio_data, radar_status)
+    html = build_html(leaders, turnaround, summary, history, streaks, date_str, exit_data, profiles, fundamentals, portfolio_data)
     V2_DIR.mkdir(parents=True, exist_ok=True)
     output_path = V2_DIR / 'index.html'
     with open(output_path, 'w', encoding='utf-8') as f:

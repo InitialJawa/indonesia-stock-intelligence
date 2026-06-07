@@ -142,6 +142,18 @@ tr:hover td{background:#1a1e24}
 .help-body ul{list-style:none;padding:0;margin:0}
 .help-body li{font-size:11px;color:#C9D1D9;padding:3px 0 3px 12px;position:relative;line-height:1.5}
 .help-body li::before{content:'2';position:absolute;left:0;color:#9CA3AF}
+.collapsible-hdr{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:#1a1e24;border:1px solid #222830;border-radius:6px;cursor:pointer;font-size:12px;font-family:'Space Mono',monospace;color:#00c26f;font-weight:700;transition:background .15s;user-select:none}
+.collapsible-hdr:hover{background:#222830}
+.collapsible-hdr::after{content:'+';font-size:16px;color:#9CA3AF}
+.collapsible-hdr.active::after{content:'−'}
+.collapsible-body{display:none;margin-top:8px;padding:12px;background:#12151a;border:1px solid #222830;border-radius:6px}
+.collapsible-body.show{display:block}
+.pi-quick{background:#0f1115;border:1px solid #222830;border-radius:4px;padding:5px 10px;color:#9CA3AF;font-size:10px;font-family:'Space Mono',monospace;cursor:pointer;transition:all .15s}
+.pi-quick:hover{border-color:#00c26f;color:#00c26f}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#052e16;border:1px solid #166534;color:#00c26f;padding:10px 20px;border-radius:6px;font-size:12px;font-family:'Space Mono',monospace;font-weight:700;z-index:200;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1}
+.pi-refresh{background:transparent;border:1px solid #222830;border-radius:4px;padding:6px 14px;color:#60a5fa;font-size:11px;font-family:'Space Mono',monospace;cursor:pointer;transition:all .15s}
+.pi-refresh:hover{background:#0c1929;border-color:#1e3a5f}
 </style>
 </head>
 <body>
@@ -256,9 +268,11 @@ tr:hover td{background:#1a1e24}
   <div class="section-title">Portfolio Simulator · Investment Simulation</div>
   <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:center">
     <input type="text" id="pi-ticker" class="pi-input" placeholder="Ticker" style="width:100px">
-    <input type="number" id="pi-investment" class="pi-input" placeholder="Investment (Rp)" style="width:140px">
-    <input type="number" id="pi-entry" class="pi-input" placeholder="Entry Price" style="width:120px">
+    <input type="number" id="pi-investment" class="pi-input" placeholder="Modal (Rp)" style="width:130px">
+    <input type="number" id="pi-entry" class="pi-input" placeholder="Entry Price" style="width:110px">
+    <input type="date" id="pi-date" class="pi-input" style="width:140px">
     <button class="pi-add" onclick="addPosition()">+ Add</button>
+    <button class="pi-refresh" onclick="refreshPrices()">🔄 Refresh Harga</button>
   </div>
   <div class="card-grid" id="mp-cards"></div>
   <table>
@@ -461,12 +475,17 @@ function makeSortable(id,s,fn){
 })();
 
 (function(){
-  var DATA=[];var s={key:null,dir:'asc'}
+  var DATA=[];var _priceCache={};var s={key:null,dir:'asc'}
   function loadData(){
-    var st=localStorage.getItem('isi_portfolio')
-    if(st){try{DATA=JSON.parse(st)}catch(e){DATA=[]}}else if(MP&&MP.length>0){
-      DATA=MP.map(function(r){return{ticker:r.ticker,investment:r.investment,entry_price:r.entry_price}})
-      localStorage.setItem('isi_portfolio',JSON.stringify(DATA))
+    var st=localStorage.getItem('isi_portfolio_v1')
+    if(st){try{DATA=JSON.parse(st)}catch(e){DATA=[]}}
+    else{
+      var old=localStorage.getItem('isi_portfolio')
+      if(old){try{DATA=JSON.parse(old)}catch(e){DATA=[]};localStorage.setItem('isi_portfolio_v1',JSON.stringify(DATA));localStorage.removeItem('isi_portfolio')}
+      else if(MP&&MP.length>0){
+        DATA=MP.map(function(r){return{ticker:r.ticker,investment:r.investment,entry_price:r.entry_price,entry_date:''}})
+        localStorage.setItem('isi_portfolio_v1',JSON.stringify(DATA))
+      }
     }
   }
   function enrich(item){
@@ -475,13 +494,15 @@ function makeSortable(id,s,fn){
     var shares=ep>0?inv/ep:0
     var ed=null;EX.forEach(function(d){if(d.ticker===tk)ed=d})
     var ld=null;L.forEach(function(d){if(d.ticker===tk)ld=d})
-    var cp=ep;if(ed&&ed.close)cp=Number(ed.close)||ep
+    var tc=tk.replace('.JK','')
+    var cp=ep
+    if(_priceCache[tc])cp=Number(_priceCache[tc])||ep
+    else if(ed&&ed.close)cp=Number(ed.close)||ep
     var cv=shares*cp;var pl=cv-inv;var pct=inv>0?(pl/inv*100):0
     var rank=ld?(Number(ld.rank)<=30?Number(ld.rank):99):99
     var es=ed?ed.exit_state:'HEALTHY'
-    var tc=tk.replace('.JK','')
     var sec=(PF[tc]&&PF[tc].sector)||(PF[tk]&&PF[tk].sector)||''
-    return{ticker:tc,investment:inv,entry_price:ep,estimated_shares:shares,current_price:cp,current_value:cv,profit_loss:pl,profit_loss_pct:pct,rank:rank,exit_status:es,sector:sec}
+    return{ticker:tc,investment:inv,entry_price:ep,entry_date:item.entry_date||'',estimated_shares:shares,current_price:cp,current_value:cv,profit_loss:pl,profit_loss_pct:pct,rank:rank,exit_status:es,sector:sec}
   }
   function render(){
     var enriched=DATA.map(enrich)
@@ -510,19 +531,42 @@ function makeSortable(id,s,fn){
     }).join('')
   }
   loadData();render()
-  window.addPosition=function(){
+  window.addPosition=function(t,i,e,d){
+    if(t!==undefined&&i!==undefined&&e!==undefined){
+      DATA.push({ticker:t,investment:i,entry_price:e,entry_date:d||new Date().toISOString().split('T')[0]})
+      localStorage.setItem('isi_portfolio_v1',JSON.stringify(DATA))
+      render()
+      return
+    }
     var t=document.getElementById('pi-ticker').value.trim().toUpperCase()
     var i=parseFloat(document.getElementById('pi-investment').value)||0
     var e=parseFloat(document.getElementById('pi-entry').value)||0
+    var d=document.getElementById('pi-date').value||''
     if(!t||i<=0||e<=0)return
-    DATA.push({ticker:t,investment:i,entry_price:e})
-    localStorage.setItem('isi_portfolio',JSON.stringify(DATA))
-    document.getElementById('pi-ticker').value='';document.getElementById('pi-investment').value='';document.getElementById('pi-entry').value=''
+    DATA.push({ticker:t,investment:i,entry_price:e,entry_date:d||new Date().toISOString().split('T')[0]})
+    localStorage.setItem('isi_portfolio_v1',JSON.stringify(DATA))
+    document.getElementById('pi-ticker').value='';document.getElementById('pi-investment').value='';document.getElementById('pi-entry').value='';document.getElementById('pi-date').value=''
     render()
   }
   window.removePosition=function(t){
     DATA=DATA.filter(function(r){return r.ticker!==t})
-    localStorage.setItem('isi_portfolio',JSON.stringify(DATA));render()
+    localStorage.setItem('isi_portfolio_v1',JSON.stringify(DATA));render()
+  }
+  window.refreshPrices=function(){
+    var btn=document.querySelector('.pi-refresh')
+    if(!btn||btn.disabled)return
+    btn.textContent='Memperbarui...';btn.disabled=true
+    _priceCache={}
+    var promises=DATA.map(function(item){
+      return fetchYahooPrice(item.ticker).then(function(price){
+        if(price&&price>0)_priceCache[item.ticker]=price
+      })
+    })
+    Promise.all(promises).then(function(){
+      btn.textContent='🔄 Refresh Harga';btn.disabled=false
+      render()
+      showToast('Harga portofolio diperbarui')
+    })
   }
 })();
 
@@ -785,6 +829,8 @@ function openPanel(ticker){
     html+='<div class="panel-row"><span class="panel-label">vs MA100</span><span class="panel-val">'+(d.exit.ma100!=null?(d.exit.close<d.exit.ma100?'<span style="color:#ef4444">DI BAWAH</span>':'<span style="color:#00c26f">DI ATAS</span>'):'—')+'</span></div>'
     html+='</div>'
   }
+  var tkr=ticker.indexOf('.JK')>0?ticker.replace('.JK',''):ticker
+  html+='<div class="panel-section"><div class="collapsible-hdr" onclick="this.nextElementSibling.classList.toggle(\'show\');this.classList.toggle(\'active\')">➕ Simulasi ke Portofolio</div><div class="collapsible-body"><div class="panel-section-title" style="margin-top:0">Tambah Posisi Baru</div><div style="display:flex;flex-direction:column;gap:8px"><input type="date" id="ps-date" class="pi-input" style="width:100%"><div style="display:flex;gap:4px"><button class="pi-quick" onclick="document.getElementById(\'ps-date\').value=new Date().toISOString().split(\'T\')[0]">Hari Ini</button><button class="pi-quick" onclick="var d=new Date();d.setDate(d.getDate()-7);document.getElementById(\'ps-date\').value=d.toISOString().split(\'T\')[0]">7 Hari Lalu</button></div><input type="number" id="ps-modal" class="pi-input" placeholder="Modal (Rp)" style="width:100%"><button class="pi-add" id="ps-add-btn" onclick="addFromPanel(\''+tkr+'\')" style="width:100%">Tambah ke Simulator</button></div></div></div>'
   document.getElementById('pbody').innerHTML=html
   document.getElementById('panel').classList.add('show')
   document.getElementById('overlay').classList.add('show')
@@ -855,6 +901,48 @@ document.addEventListener('click',function(e){
     sx=0;dragging=false
   },{passive:true})
 })()
+async function fetchYahooPrice(ticker,dateStr){
+  try{
+    var base='https://query1.finance.yahoo.com/v8/finance/chart/'
+    var url
+    if(dateStr){
+      var d=new Date(dateStr+'T12:00:00')
+      var ts=Math.floor(d.getTime()/1000)
+      url=base+ticker+'.JK?period1='+ts+'&period2='+(ts+86400)+'&interval=1d'
+    }else{
+      url=base+ticker+'.JK?interval=1d&range=1mo'
+    }
+    var r=await fetch(url);var j=await r.json()
+    var quotes=j.chart.result[0].indicators.quote[0].close
+    var closes=quotes.filter(function(v){return v!==null})
+    if(closes.length===0)return null
+    return closes[closes.length-1]
+  }catch(e){console.error('Yahoo fetch error:',e);return null}
+}
+function showToast(msg){
+  var t=document.getElementById('toast')
+  if(!t){t=document.createElement('div');t.id='toast';t.className='toast';document.body.appendChild(t)}
+  t.textContent='✅ '+msg;t.classList.add('show')
+  clearTimeout(t._hide);t._hide=setTimeout(function(){t.classList.remove('show')},3000)
+}
+window.addFromPanel=function(ticker){
+  var date=document.getElementById('ps-date').value
+  var modal=parseFloat(document.getElementById('ps-modal').value)||0
+  if(!date||modal<=0){alert('Isi tanggal dan modal');return}
+  var btn=document.getElementById('ps-add-btn')
+  btn.textContent='Mengambil harga...';btn.disabled=true
+  fetchYahooPrice(ticker,date).then(function(price){
+    if(!price||price<=0){
+      btn.textContent='Tambah ke Simulator';btn.disabled=false
+      alert('Gagal mengambil harga Yahoo Finance untuk '+ticker+' pada '+date)
+      return
+    }
+    addPosition(ticker,modal,price,date)
+    closePanel()
+    st(5)
+    showToast(ticker+' ditambahkan ke simulator')
+  })
+}
 </script>
 </body>
 </html>

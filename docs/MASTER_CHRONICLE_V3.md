@@ -105,7 +105,7 @@ isolates alpha failure.
 | AUDIT-001 | Data quality audit | PBV salah untuk 8 ticker, DY rendering 100x | PBV fix (PE×ROE), DY format fix |
 | AUDIT-002 | Yahoo PBV field verification | bookValue/priceToBook salah, PE×ROE fallback terbaik | DATA_QUALITY_RULE_PBV_V1 formalized |
 | IMPLEMENT-003 | Dashboard regression recovery | Insight Layer V1 caused TDZ crash (PF before init), table disappearance | ENGINEERING RULE-005 established, append-only mandate |
-| RESEARCH-012 | Portfolio Decision Layer validation | Does EXIT + Rank + Turnaround produce better decisions than Buy Top 5 monthly? | APPROVED — 5-phase research plan documented below |
+| RESEARCH-012A | EXIT Sell Hypothesis | Does EXIT state justify automatic selling? | REJECTED — EXIT stocks outperform Healthy at 90D (+2.16%, p=0.04). Decision Layer must not use EXIT→SELL without additional conditions. |
 
 ### RESEARCH-012: Portfolio Decision Layer V1
 
@@ -160,6 +160,11 @@ Research-supported results. Do NOT modify without new evidence.
 - RS_CHANGE_60D is the earliest detectable transition signal
 - Context (volatility) matters more than threshold magnitude
 - Precision: 43% on high-volatility stocks vs 4.5% on stable stocks
+
+### Exit Signals
+- **EXIT→SELL is invalid** — EXIT stocks outperform Healthy at 90D (+2.16%, p=0.04). EXIT cannot be used as a standalone SELL signal.
+- D1 sub-signal (Close<MA100 + RS20<0 + RS_CHG<0): -0.85% excess at 30D, not significant (p=0.18)
+- D2 sub-signal (drawdown>15% from 252d high): predicts bounceback (+1.33% excess at 30D, p=0.08)
 
 ### Portfolio Construction
 - Top 5 is optimal portfolio size (diminishing returns after 5)

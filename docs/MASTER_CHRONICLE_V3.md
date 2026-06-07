@@ -13,6 +13,7 @@ stocks using a multi-factor model (Config B) with supporting turnaround and exit
 
 **Core Philosophy:** Factor-based ranking produces alpha. Timing overlays do not add value.
 No machine learning. No predictive models. Rule-based exits only.
+**RESEARCH-012 confirms:** Portfolio-level overlays (rank-drop, Turnaround replacement) reduce returns vs Config B alone.
 
 **Status:** PRODUCTION (paper trading + dashboard monitoring)
 **Mode:** STABILIZATION — no production strategy changes, no Config B modifications,
@@ -54,6 +55,7 @@ than new panels.
 **IMPORTANT:** ADR-004 (docs/ADR-004-SUSPEND-WEIGHT-OPTIMIZATION.md) suspends all
 weight superiority claims. Config B runs because reverting is equally unsupported.
 Do NOT modify weights without Historical Factor Warehouse V2.
+**RESEARCH-012 (GATE-001) confirmed:** Config B Top 5 monthly rebalance (46.33% CAGR, 2022-2025) is the strongest validated production strategy. No overlay tested improved on it.
 
 ### 2.2 Turnaround Watchlist
 
@@ -105,15 +107,16 @@ isolates alpha failure.
 | AUDIT-001 | Data quality audit | PBV salah untuk 8 ticker, DY rendering 100x | PBV fix (PE×ROE), DY format fix |
 | AUDIT-002 | Yahoo PBV field verification | bookValue/priceToBook salah, PE×ROE fallback terbaik | DATA_QUALITY_RULE_PBV_V1 formalized |
 | IMPLEMENT-003 | Dashboard regression recovery | Insight Layer V1 caused TDZ crash (PF before init), table disappearance | ENGINEERING RULE-005 established, append-only mandate |
-| RESEARCH-012 | Portfolio Decision Layer | Does EXIT + Rank + Turnaround beat passive Top 5? | P1 complete (EXIT→SELL REJECTED), P2 complete (Drop>10 VALIDATED), P3 complete (Replacement PASSED), P4 complete (Matrix built) |
+| RESEARCH-012 | Portfolio Decision Layer | Does EXIT + Rank + Turnaround beat passive Top 5? | CLOSED — FAILED. Event-level gains don't translate to portfolio level. Config B remains sole engine. |
 | RESEARCH-012A | EXIT Sell Hypothesis | Does EXIT state justify automatic selling? | REJECTED — EXIT stocks outperform Healthy at 90D (+2.16%, p=0.04) |
 | RESEARCH-012B | Rank Deterioration Validation | Can rank deterioration justify selling? | COMPLETE — Drop > 10 validated: 25.58% CAGR, 16.61% Alpha. Promoted to P3 |
+| RESEARCH-012D | Decision Layer Production Gate Review | Does integrated Decision Layer beat Config B? | FAILED. V1: 34.92% CAGR vs Config B 46.33%. V2: 22.74%. Event-level edge does not survive integration. |
 
 ### RESEARCH-012: Portfolio Decision Layer V1
 
-**Status:** APPROVED | **Priority:** HIGH | **Date:** 2026-06-08
+**Status:** CLOSED — FAILED | **Date:** 2026-06-08
 
-Convert Config B + Exit Layer + Turnaround into actionable portfolio decisions (HOLD/REVIEW/TRIM/SELL/REPLACE). No production decision layer until all phases pass statistical validation.
+**Conclusion:** Event-level improvements from rank-drop (>10) and Turnaround replacement do NOT translate to portfolio-level outperformance vs Config B. Config B monthly rebalance captures leadership rotation efficiently. Additional overlays create friction and reduce CAGR.
 
 **Phase 1 — Exit Validation** ✅ COMPLETED 2026-06-08
 Question: Do EXIT stocks underperform after the signal?
@@ -148,13 +151,23 @@ Derived rules:
   - No TRIM/SELL cells found — no combination produces sufficiently negative returns
 Decision Layer implication: EXIT alone cannot justify TRIM or SELL. Only EXIT RISK (technical breakdown below MA50) warrants REVIEW.
 
-**Phase 5 — Turnaround Promotion Test**
+**Phase 5 — Turnaround Promotion Test** ✅ COMPLETED 2026-06-08
 Question: When should Turnaround candidates replace existing holdings?
-Compare: Keep holding vs Replace with full-match Turnaround candidate.
-Outputs: Return Differential, Hit Rate, Alpha.
-Gate: Turnaround replacement creates measurable improvement.
+Method: For each month (2022-2025) where Top 5 holding is in EXIT state AND Full Match Turnaround candidate exists, compare: HOLD (keep weak stock) vs REPLACE (buy Turnaround). 78 events identified.
+Result: **PASSED — Turnaround replacement creates measurable improvement.** 1M: REPLACE +5.31% vs HOLD -1.65% (diff +6.95%, 68.5% WR). 3M: diff +6.81% (50.7% WR). 6M: diff +8.40% (49.3% WR). Avg diff across horizons: +7.39%. Strongest edge is short-term (1M).
+Interpretation: Turnaround works best as immediate replacement upon EXIT signal in a holding. Edge decays over time (6M WR ~50%). Best used tactically.
+Gate: **PASSED** — measurable improvement confirmed. Avg win rate 56.2% across horizons.
 
-**Production Gate:** All 5 phases completed, results documented in Chronicle, decision rules statistically outperform passive monthly rebalance. Until then: Config B is sole production engine, Exit remains monitoring, Turnaround remains watchlist.
+**Production Gate — GATE-001** ❌ FAILED 2026-06-08
+Integrated backtest (53 months, 2022-2025, daily+warehouse data):
+| Strategy | CAGR | Sharpe | MaxDD | Alpha |
+|----------|------|--------|-------|-------|
+| Config B Top 5 | **46.33%** | 1.43 | -18.3% | 49.03% |
+| DL V1 (rank drop + Turnaround) | 34.92% | 1.07 | -17.7% | 36.16% |
+| DL V2 (rank drop only) | 22.74% | 0.70 | -18.0% | 25.16% |
+**Verdict: FAILED** — No Decision Layer variant beats Config B. Event-level gains do not survive portfolio integration.
+**Decision Layer V1 rejected.** Config B remains sole production engine. Exit Layer stays monitoring-only. Turnaround stays watchlist-only.
+**RESEARCH-012 closed.** Do not re-open unless new evidence emerges.
 
 ---
 
@@ -187,10 +200,27 @@ Research-supported results. Do NOT modify without new evidence.
 - Hypothesized rules (EXIT→SELL, EXIT→TRIM) all invalidated by data
 - Decision layer signal: only EXIT RISK warrants REVIEW; no cell justifies SELL
 
-### Replacement (RESEARCH-012 P3)
-- **Replacement consistently beats holding**: REPLACE 24.21% CAGR vs HOLD 19.45% (+4.76%)
-- Rank drop > 10 events show 70% win rate at 6M with +10.07% average excess return
-- Replaced stocks (-1.66% 1M avg) confirm genuine deterioration; replacements bounce back (+1.91% 1M, +14.60% 3M, +16.00% 6M)
+### Turnaround Promotion (RESEARCH-012 P5)
+- **Turnaround replacement beats holding**: 1M diff +6.95% (68.5% WR), avg across horizons +7.39%
+- Strongest edge is short-term (1M): weak stocks continue declining (-1.65%) while Turnaround bounces (+5.31%)
+- Edge decays over time: 6M win rate 49.3% — best used as immediate tactical replacement
+- 78 events across 2022-2025: actionable when EXIT state holding + Full Match Turnaround coexist
+
+### Production Gate — Decision Layer V1 Assessment
+**GATE-001 RESULT: FAILED** — Decision Layer V1 rejected.
+- Event-level improvements (P2 rank-drop, P3 replacement, P5 Turnaround overlay) do NOT translate to portfolio-level outperformance
+- Config B monthly rebalance captures leadership rotation more efficiently than any decision overlay
+- Additional overlays create friction: turnover, timing lag, inappropriate replacements reduce CAGR
+- Config B remains sole production engine. Exit Layer monitoring-only. Turnaround watchlist-only.
+- **RESEARCH-012 closed.** Do not re-open without new evidence.
+
+### Proven Research Conclusions (RESEARCH-012)
+- **EXIT is not a sell signal** — EXIT stocks outperform Healthy at 90D (+2.16%, p=0.04)
+- **Rank deterioration identifies weakening stocks** — Drop > 10 from entry rank is a valid sell signal (25.58% CAGR standalone)
+- **Replacement improves individual events** — Event-level: +4.76% CAGR, +10.07% avg excess, 70% WR at 6M
+- **Turnaround replacement improves individual events** — 1M diff +6.95%, 68.5% WR
+- **Portfolio-level overlays reduce returns vs Config B** — Integrated Decision Layer fails to beat Config B
+- **Config B is the strongest validated production strategy** — 46.33% CAGR (2022-2025), 1.43 Sharpe, 49.03% Alpha
 
 ### Rank Deterioration (RESEARCH-012 P2)
 - **Rank collapse > 10** is a strong sell signal: 25.58% CAGR (vs 19.45% baseline), 0.76 Sharpe, 16.61% Alpha, -20.2% MaxDD, 4.6% turnover
@@ -226,6 +256,7 @@ Research-supported results. Do NOT modify without new evidence.
 | Weight Optimization (V8.4) | PARTIALLY COMPLETE | Cannot optimize — missing historical factor scores |
 | Turnover Standalone (R011) | NEGATIVE CAGR | -0.17% — not investable as standalone |
 | Timing Overlay on Config B (R010) | FAILED | Degraded all metrics |
+| Decision Layer on Config B (R012) | FAILED | Integrated DL (V1/V2) underperforms Config B — event-level gains do not survive portfolio integration |
 
 ---
 
@@ -404,7 +435,8 @@ ISI/
 3. **Turnaround satellite allocation** — RESEARCH-011 suggests 10-20% satellite. What is the optimal blend with Config B? Requires correlation analysis.
 4. **Gemini AI narrative** — Daily radar narrative generates 429 errors on free tier. Worth upgrading to paid tier?
 5. **Historical Factor Warehouse V2** — Full OOS weight optimization blocked. What is the minimal viable dataset?
-6. **RESEARCH-012: Portfolio Decision Layer** — Can Exit state + Rank change + Turnaround signals produce better portfolio decisions than passive Top 5 monthly? What are the HOLD/TRIM/SELL/REPLACE rules?
+6. **RESEARCH-012: Portfolio Decision Layer** — CLOSED. Integrated Decision Layer FAILS to outperform Config B. Event-level gains do not survive portfolio integration.
+7. **RESEARCH-013: Config B Robustness Validation** — Is 46.33% CAGR (2022-2025) robust? Survivorship bias? Universe bias? Regime dependence? See next research priority.
 
 ---
 
@@ -420,6 +452,7 @@ ISI/
 - [x] FEATURE-002 — Portfolio Simulator separation + AI Analysis restoration
 - [x] KESIMPULAN HARI INI panel restoration (regression from FEATURE-001)
 - [x] IMPLEMENT-003 — Dashboard regression recovery (Insight Layer V1 TDZ crash, append-only mandate, ENGINEERING RULE-005)
+- [x] RESEARCH-012: Portfolio Decision Layer — CLOSED FAILED (event-level gains do not survive portfolio integration)
 
 ### BACKLOG TEKNIS
 - [ ] Monthly archive restoration — update `research/tools/` to read from `docs/archive/`
@@ -430,15 +463,9 @@ ISI/
 - [ ] Gemini AI narrative to paid tier (if quota critical)
 
 ### ANTRIAN RISET
+- [ ] RESEARCH-013: Config B Robustness Validation — Is 46.33% CAGR robust? Check: survivorship bias, universe bias, concentration, regime dependence
 - [ ] Build Historical Factor Warehouse V2 (2021-present factor scores)
 - [ ] Re-run OOS weight validation with real factor data
 - [ ] Config B vs Config F comparison on real historical data
 - [ ] Turnaround-Config B blended portfolio correlation study
-- [ ] Exit Rule D threshold backtest (V1.1 vs alternatives)
-- [ ] RESEARCH-012: Portfolio Decision Layer
-  - [x] Phase 1 — Exit Validation ✅ NOT CONFIRMED (EXIT does NOT underperform; +2.16% excess at 90D, p=0.04)
-  - [x] Phase 2 — Rank Deterioration Test ✅ PASSED (Drop > 10: 25.58% CAGR, +6.13% vs baseline)
-  - [x] Phase 3 — Replacement Test ✅ PASSED (REPLACE 24.21% CAGR vs HOLD 19.45%, +4.76%)
-  - [x] Phase 4 — Exit + Rank Decision Matrix ✅ COMPLETE (EXIT RISK only bearish signal; no TRIM/SELL found)
-  - [ ] Phase 5 — Turnaround Promotion Test
-  - [ ] Production Gate Review — all phases compiled vs passive monthly
+- [ ] RESEARCH-012: Portfolio Decision Layer -- CLOSED -- FAILED (see section 3)

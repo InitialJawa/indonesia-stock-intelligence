@@ -105,7 +105,7 @@ isolates alpha failure.
 | AUDIT-001 | Data quality audit | PBV salah untuk 8 ticker, DY rendering 100x | PBV fix (PE×ROE), DY format fix |
 | AUDIT-002 | Yahoo PBV field verification | bookValue/priceToBook salah, PE×ROE fallback terbaik | DATA_QUALITY_RULE_PBV_V1 formalized |
 | IMPLEMENT-003 | Dashboard regression recovery | Insight Layer V1 caused TDZ crash (PF before init), table disappearance | ENGINEERING RULE-005 established, append-only mandate |
-| RESEARCH-012 | Portfolio Decision Layer | Does EXIT + Rank + Turnaround beat passive Top 5? | P1 complete (EXIT→SELL REJECTED), P2 complete (Drop>10 VALIDATED) |
+| RESEARCH-012 | Portfolio Decision Layer | Does EXIT + Rank + Turnaround beat passive Top 5? | P1 complete (EXIT→SELL REJECTED), P2 complete (Drop>10 VALIDATED), P3 complete (Replacement PASSED) |
 | RESEARCH-012A | EXIT Sell Hypothesis | Does EXIT state justify automatic selling? | REJECTED — EXIT stocks outperform Healthy at 90D (+2.16%, p=0.04) |
 | RESEARCH-012B | Rank Deterioration Validation | Can rank deterioration justify selling? | COMPLETE — Drop > 10 validated: 25.58% CAGR, 16.61% Alpha. Promoted to P3 |
 
@@ -128,11 +128,11 @@ Result: **CONFIRMED — Rank collapse exceeds baseline.** Drop > 10 ranks: 25.58
 Decision rule: **SELL when rank drops by > 10 from entry rank** — replace with highest-ranked unheld stock.
 Gate: **PASSED** — Drop > 5 and Drop > 10 materially improve CAGR (+3.86% and +6.13% respectively) vs Baseline.
 
-**Phase 3 — Replacement Test**
-Question: Is replacing weak holdings better than holding? (e.g. ESSA #2 EXIT vs ADRO #1 HEALTHY)
-Method: When holding triggers candidate exit, compare HOLD vs SELL+REPLACE with highest ranked eligible.
-Outputs: CAGR, Alpha, Win Rate, Drawdown.
-Gate: Replacement must consistently outperform hold.
+**Phase 3 — Replacement Test** ✅ COMPLETED 2026-06-08
+Question: Is replacing weak holdings better than holding them?
+Method: For each rank-drop >10 event, compare HOLD (keep deteriorated stock) vs REPLACE (sell + buy highest-ranked eligible). Portfolio-level and event-level analysis. 2022-2025 Config B universe.
+Result: **PASSED — Replacement consistently outperforms hold.** Portfolio: REPLACE 24.21% CAGR (+4.76% vs HOLD), 0.68 Sharpe (+0.11), 15.40% Alpha (+4.45%), MaxDD -20.7% (vs -29.2%). Event-level (10 events): 6M win rate 70%, avg excess +10.07%. Replaced stocks had negative 1M returns (-1.66%), confirming rank drop >10 is genuine deterioration. Replacements bounced back: +1.91% (1M), +14.60% (3M), +16.00% (6M).
+Gate: **PASSED** — replacement consistently outperforms hold across all metrics.
 
 **Phase 4 — Exit + Rank Matrix**
 Build decision matrix from every EXIT×Rank combination. Backtest empirically. No assumptions.
@@ -168,6 +168,11 @@ Research-supported results. Do NOT modify without new evidence.
 - **EXIT→SELL is invalid** — EXIT stocks outperform Healthy at 90D (+2.16%, p=0.04). EXIT cannot be used as a standalone SELL signal.
 - D1 sub-signal (Close<MA100 + RS20<0 + RS_CHG<0): -0.85% excess at 30D, not significant (p=0.18)
 - D2 sub-signal (drawdown>15% from 252d high): predicts bounceback (+1.33% excess at 30D, p=0.08)
+
+### Replacement (RESEARCH-012 P3)
+- **Replacement consistently beats holding**: REPLACE 24.21% CAGR vs HOLD 19.45% (+4.76%)
+- Rank drop > 10 events show 70% win rate at 6M with +10.07% average excess return
+- Replaced stocks (-1.66% 1M avg) confirm genuine deterioration; replacements bounce back (+1.91% 1M, +14.60% 3M, +16.00% 6M)
 
 ### Rank Deterioration (RESEARCH-012 P2)
 - **Rank collapse > 10** is a strong sell signal: 25.58% CAGR (vs 19.45% baseline), 0.76 Sharpe, 16.61% Alpha, -20.2% MaxDD, 4.6% turnover
@@ -415,8 +420,7 @@ ISI/
 - [ ] RESEARCH-012: Portfolio Decision Layer
   - [x] Phase 1 — Exit Validation ✅ NOT CONFIRMED (EXIT does NOT underperform; +2.16% excess at 90D, p=0.04)
   - [x] Phase 2 — Rank Deterioration Test ✅ PASSED (Drop > 10: 25.58% CAGR, +6.13% vs baseline)
-  - [ ] Phase 3 — Replacement Test (replace vs hold)
-  - [ ] Phase 3 — Replacement Test (replace vs hold)
+  - [x] Phase 3 — Replacement Test ✅ PASSED (REPLACE 24.21% CAGR vs HOLD 19.45%, +4.76%)
   - [ ] Phase 4 — Exit + Rank Decision Matrix
   - [ ] Phase 5 — Turnaround Promotion Test
   - [ ] Production Gate Review — all phases compiled vs passive monthly

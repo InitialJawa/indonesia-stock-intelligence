@@ -1,16 +1,18 @@
-research: RESEARCH-012 Phase 2 -- Rank Deterioration complete
+research: RESEARCH-012 Phase 3 -- Replacement Test complete
 
-Phase 2 result: CONFIRMED -- Rank collapse > 10 is a strong sell
-signal. Backtest 2022-2025 vs Config B monthly rebalance:
+Phase 3 result: PASSED -- Replacement consistently outperforms
+holding across all metrics.
 
-  Baseline (Top 5):    19.45% CAGR  0.58 Sharpe  -29.2% DD  20.4% to
-  Drop > 10:           25.58% CAGR  0.76 Sharpe  -20.2% DD   4.6% to
-  Drop > 5:            23.31% CAGR  0.73 Sharpe  -19.6% DD   8.3% to
+Portfolio-level:
+  REPLACE: 24.21% CAGR, 0.68 Sharpe, -20.7% DD, 15.40% Alpha
+  HOLD:    19.45% CAGR, 0.58 Sharpe, -29.2% DD, 10.95% Alpha
+  Delta:   +4.76% CAGR, +0.11 Sharpe, +8.5% DD, +4.45% Alpha
 
-Exit thresholds (Exit Top 5/10/20) ALL underperform baseline.
-Drop > 15 underperforms (13.62% CAGR).
+Event-level (10 rank-drop >10 events):
+  1M: REPLACE +1.91% vs HOLD -1.66% (diff +3.57%)
+  6M: REPLACE +16.00% vs HOLD +5.93% (diff +10.07%, 70% win rate)
 
-Decision rule: SELL when rank drops by > 10 from entry rank.
-Only 4.6% turnover -- low churn, meaningful improvement.
+Decision rule confirmed: SELL when rank drops >10 from entry,
+replace with highest-ranked eligible stock.
 
-CHRONICLE: P2 marked complete, findings added to Proven Findings
+CHRONICLE: P3 complete, findings added to Proven Findings

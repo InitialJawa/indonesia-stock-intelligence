@@ -23,7 +23,7 @@ no new research without explicit approval. Focus: data integrity and documentati
 | Config B (Q25/G30/V10/M35) | PRODUCTION | Locked. Do not modify weights |
 | Top 5 Portfolio | PRODUCTION | Equal weight, monthly rebalance |
 | Daily Pipeline | PRODUCTION | GitHub Actions, runs 16:30 WIB |
-| Dashboard | ACTIVE | Single dashboard, 6 tabs |
+| Dashboard | ACTIVE | Single dashboard, 5 tabs |
 | Turnaround Watchlist | RESEARCH MONITORING | Paper trading only |
 | Exit Monitor V1.1 | ACTIVE | Rule-based, Version C thresholds |
 | Data Quality Audit | COMPLETED | AUDIT-001 + AUDIT-002: PBV & DY fixes applied |
@@ -253,8 +253,7 @@ ISI/
 │   ├── Tab 02: Turnaround         Context/Transition signals
 │   ├── Tab 03: Daily Summary      Signal diagnostics + top candidates
 │   ├── Tab 04: History            Streak tracking
-│   ├── Tab 05: Diagnostics        Pipeline health
-│   └── Tab 06: Exit Monitor       Rule-based exit states with legend
+│   └── Tab 05: Exit Monitor       Status EXIT saham + Pipeline Diagnostics
 │
 ├── Core Data
 │   ├── database/historical/        Daily warehouse, ticker metadata, backtest curves

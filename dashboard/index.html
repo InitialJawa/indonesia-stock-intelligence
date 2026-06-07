@@ -217,8 +217,7 @@ tr:hover td{background:#1a1e24}
   .interp-row{font-size:11px}
   #t1 th:nth-child(n+4):nth-child(-n+7),#t1 td:nth-child(n+4):nth-child(-n+7),
   #t2 table th:nth-child(n+4):nth-child(-n+7),#t2 table td:nth-child(n+4):nth-child(-n+7),
-  #t3 th:nth-child(n+4):nth-child(-n+5),#t3 td:nth-child(n+4):nth-child(-n+5),
-  #t5 th:nth-child(3),#t5 td:nth-child(3),#t5 th:nth-child(n+8):nth-child(-n+10),#t5 td:nth-child(n+8):nth-child(-n+10){display:none}
+  #t3 th:nth-child(n+4):nth-child(-n+5),#t3 td:nth-child(n+4):nth-child(-n+5){display:none}
   .bar-track{width:24px}
   .bar{gap:2px}
   .bv{font-size:8px;min-width:16px}
@@ -242,8 +241,7 @@ tr:hover td{background:#1a1e24}
   <button class="tab-btn" onclick="st(1)">02 · Turnaround</button>
   <button class="tab-btn" onclick="st(2)">03 · Daily Summary</button>
   <button class="tab-btn" onclick="st(3)">04 · History</button>
-  <button class="tab-btn" onclick="st(4)">05 · Diagnostics</button>
-  <button class="tab-btn" onclick="st(5)">06 · Exit Monitor</button>
+  <button class="tab-btn" onclick="st(4)">05 · Exit Monitor</button>
 </div>
 
 <div class="tc active" id="t0">
@@ -310,8 +308,9 @@ tr:hover td{background:#1a1e24}
   </table>
 </div>
 
-<div class="tc" id="t5">
+<div class="tc" id="t4">
   <div class="section-title">Exit Monitor<span class="tip" onclick="showHelp('exit')">?</span></div>
+  <div id="exit-summary" style="margin-bottom:10px;display:flex;gap:8px;flex-wrap:wrap;font-size:12px;font-weight:600"></div>
   <div style="margin-bottom:12px;background:#171b20;border:1px solid #222830;border-radius:6px;padding:10px 12px">
     <div style="font-size:9px;font-family:'Space Mono',monospace;color:#9CA3AF;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;font-weight:600">LEGENDA RULE EXIT</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 12px">
@@ -322,39 +321,39 @@ tr:hover td{background:#1a1e24}
     </div>
   </div>
   <div style="margin-bottom:10px;display:flex;gap:6px;flex-wrap:wrap">
-    <button class="tab-btn active" onclick="ef('all',this)">All</button>
-    <button class="tab-btn" onclick="ef('EXIT',this)" style="color:#ef4444">Exit</button>
-    <button class="tab-btn" onclick="ef('EXIT RISK',this)" style="color:#f59e0b">Exit Risk</button>
-    <button class="tab-btn" onclick="ef('WEAKENING',this)" style="color:#f97316">Weakening</button>
-    <button class="tab-btn" onclick="ef('EXIT WATCH',this)" style="color:#60a5fa">Exit Watch</button>
-    <button class="tab-btn" onclick="ef('HEALTHY',this)" style="color:#00c26f">Healthy</button>
+    <button class="tab-btn" onclick="ef('kritis',this)" style="color:#ef4444">Kritis</button>
+    <button class="tab-btn" onclick="ef('all',this)">Semua</button>
+    <button class="tab-btn" onclick="ef('EXIT',this)" style="color:#ef4444">EXIT</button>
+    <button class="tab-btn" onclick="ef('EXIT RISK',this)" style="color:#f59e0b">EXIT RISK</button>
+    <button class="tab-btn" onclick="ef('WEAKENING',this)" style="color:#f97316">WEAKENING</button>
+    <button class="tab-btn" onclick="ef('EXIT WATCH',this)" style="color:#60a5fa">EXIT WATCH</button>
+    <button class="tab-btn" onclick="ef('HEALTHY',this)" style="color:#00c26f">HEALTHY</button>
   </div>
   <table>
     <thead><tr>
-      <th data-key="ticker">Ticker</th><th data-key="rank">Rank</th><th data-key="rank_change">Rank Chg</th><th>Exit State</th><th>Rules</th><th data-key="rs_20d">RS20</th><th data-key="rs_change_20d">RS Chg 20D</th><th>vs MA50</th><th>vs MA100</th><th data-key="drawdown_from_entry">DD Entry</th>
+      <th data-key="ticker">Ticker</th><th data-key="exit_state">Exit State</th><th data-key="triggered_rules">Rule</th><th data-key="rank">Rank</th><th data-key="alignment">Alignment</th><th data-key="alasan">Alasan</th>
     </tr></thead>
     <tbody id="tbody-exit"></tbody>
   </table>
-</div>
-
-<div class="tc" id="t4">
-  <div class="section-title">Pipeline Diagnostics<span class="tip" onclick="showHelp('diagnostics')">?</span></div>
-  <div class="card-grid">
-    <div class="card wide-card">
-      <div class="card-label">Pipeline Status</div>
-      <div style="display:flex;align-items:center;gap:8px;margin-top:4px">
-        <span style="width:8px;height:8px;border-radius:50%;background:#00c26f;display:inline-block"></span>
-        <span style="font-size:14px;font-weight:600">OPERATIONAL</span>
+  <div style="margin-top:24px">
+    <div class="section-title">Pipeline Diagnostics<span class="tip" onclick="showHelp('diagnostics')">?</span></div>
+    <div class="card-grid">
+      <div class="card wide-card">
+        <div class="card-label">Pipeline Status</div>
+        <div style="display:flex;align-items:center;gap:8px;margin-top:4px">
+          <span style="width:8px;height:8px;border-radius:50%;background:#00c26f;display:inline-block"></span>
+          <span style="font-size:14px;font-weight:600">OPERATIONAL</span>
+        </div>
+        <div class="card-sub">All systems nominal</div>
       </div>
-      <div class="card-sub">All systems nominal</div>
+      <div class="card"><div class="card-label">Last Leaders Update</div><div class="card-val" style="font-size:14px">0d 0h ago</div><div class="card-sub">leaders_latest.csv</div></div>
+      <div class="card"><div class="card-label">Last Turnaround Update</div><div class="card-val" style="font-size:14px">0d 0h ago</div><div class="card-sub">turnaround_latest.csv</div></div>
+      <div class="card"><div class="card-label">Last Exit Update</div><div class="card-val" style="font-size:14px">0d 0h ago</div><div class="card-sub">exit_watchlist_latest.csv</div></div>
+      <div class="card"><div class="card-label">Records Processed</div><div class="card-val g">30</div><div class="card-sub">tickers in latest run</div></div>
+      <div class="card"><div class="card-label">Data Freshness</div><div class="card-val g">2026-06-07</div><div class="card-sub">report date</div></div>
+      <div class="card"><div class="card-label">History Records</div><div class="card-val b">30</div><div class="card-sub">turnaround_history.csv</div></div>
+      <div class="card"><div class="card-label">Workflow</div><div class="card-val" style="font-size:13px">daily_radar.yml</div><div class="card-sub">cron: 30 9 * * * (16:30 WIB)</div></div>
     </div>
-    <div class="card"><div class="card-label">Last Leaders Update</div><div class="card-val" style="font-size:14px">0d 0h ago</div><div class="card-sub">leaders_latest.csv</div></div>
-    <div class="card"><div class="card-label">Last Turnaround Update</div><div class="card-val" style="font-size:14px">0d 0h ago</div><div class="card-sub">turnaround_latest.csv</div></div>
-    <div class="card"><div class="card-label">Last Exit Update</div><div class="card-val" style="font-size:14px">0d 0h ago</div><div class="card-sub">exit_watchlist_latest.csv</div></div>
-    <div class="card"><div class="card-label">Records Processed</div><div class="card-val g">30</div><div class="card-sub">tickers in latest run</div></div>
-    <div class="card"><div class="card-label">Data Freshness</div><div class="card-val g">2026-06-07</div><div class="card-sub">report date</div></div>
-    <div class="card"><div class="card-label">History Records</div><div class="card-val b">30</div><div class="card-sub">turnaround_history.csv</div></div>
-    <div class="card"><div class="card-label">Workflow</div><div class="card-val" style="font-size:13px">daily_radar.yml</div><div class="card-sub">cron: 30 9 * * * (16:30 WIB)</div></div>
   </div>
 </div>
 
@@ -585,24 +584,80 @@ function makeSortable(id,s,fn){
 })();
 
 (function(){
-  var full=EX;var f='all';var s={key:null,dir:'asc'}
-  function filtered(){return f==='all'?full:full.filter(function(d){return d.exit_state===f})}
+  var full=EX;var f='kritis';var s={key:null,dir:'asc'}
+  var stateOrder={EXIT:0,'EXIT RISK':1,WEAKENING:2,'EXIT WATCH':3,HEALTHY:4}
+  function filtered(){
+    if(f==='all')return full
+    if(f==='kritis')return full.filter(function(d){return d.exit_state==='EXIT'||d.exit_state==='EXIT RISK'})
+    return full.filter(function(d){return d.exit_state===f})
+  }
+  function sortByState(arr){
+    if(s.key){
+      return arr.slice().sort(function(a,b){
+        var va=a[s.key],vb=b[s.key]
+        if(typeof va==='string')return s.dir==='asc'?va.localeCompare(vb):vb.localeCompare(va)
+        return(s.dir==='asc'?(Number(va)||0)-(Number(vb)||0):(Number(vb)||0)-(Number(va)||0))
+      })
+    }
+    return arr.slice().sort(function(a,b){
+      var oa=stateOrder[a.exit_state]!==undefined?stateOrder[a.exit_state]:9
+      var ob=stateOrder[b.exit_state]!==undefined?stateOrder[b.exit_state]:9
+      if(oa!==ob)return oa-ob
+      return(a.rank||99)-(b.rank||99)
+    })
+  }
+  function renderSummary(){
+    var ec=0,erc=0,wc=0,ewc=0,hc=0,tc=0
+    full.forEach(function(r){
+      tc++
+      if(r.exit_state==='EXIT')ec++
+      else if(r.exit_state==='EXIT RISK')erc++
+      else if(r.exit_state==='WEAKENING')wc++
+      else if(r.exit_state==='EXIT WATCH')ewc++
+      else if(r.exit_state==='HEALTHY')hc++
+    })
+    document.getElementById('exit-summary').innerHTML='<span style="color:#ef4444">&#9679; '+ec+' EXIT</span> <span style="color:#f59e0b">&#9679; '+erc+' EXIT RISK</span> <span style="color:#f97316">&#9679; '+wc+' WEAKENING</span> <span style="color:#60a5fa">&#9679; '+ewc+' EXIT WATCH</span> <span style="color:#00c26f">&#9679; '+hc+' HEALTHY</span> <span style="color:#9CA3AF">| '+tc+' total</span>'
+  }
+  function decodeRules(rulesStr){
+    if(!rulesStr||rulesStr==='-')return'—'
+    var parts=rulesStr.split(',').map(function(r){return r.trim()})
+    var reasons=[]
+    parts.forEach(function(r){
+      if(r==='A')reasons.push('Rank>10')
+      else if(r==='B')reasons.push('RS20<0, RSChg<0')
+      else if(r==='C')reasons.push('Close<MA50')
+      else if(r==='D')reasons.push('Close<MA100')
+    })
+    return reasons.join('; ')
+  }
+  function getAlignment(ed){
+    if(!ed)return{label:'—',cls:'#9CA3AF'}
+    var ld=null
+    L.forEach(function(d){if(d.ticker===ed.ticker)ld=d})
+    if(ed.exit_state==='EXIT')return{label:'KONFLIK',cls:'#ef4444'}
+    if(ed.exit_state==='EXIT RISK'&&ld&&ld.rank<=10)return{label:'PERLU PERHATIAN',cls:'#f59e0b'}
+    if(ed.exit_state==='HEALTHY'&&ld&&ld.rank<=10)return{label:'SEJALAN',cls:'#00c26f'}
+    return{label:'NETRAL',cls:'#9CA3AF'}
+  }
   function render(d){
+    renderSummary()
     document.getElementById('tbody-exit').innerHTML=d.map(function(r){
       var sc=r.exit_state==='EXIT'?'bg-red':r.exit_state==='EXIT RISK'?'bg-yellow':r.exit_state==='WEAKENING'?'bg-yellow':r.exit_state==='EXIT WATCH'?'bg-blue':'bg-green'
-      var rc=r.rs_20d>0?'sf high':'sf low'
-      var rcc=r.rs_change_20d>0?'sf high':'sf low'
-      var m50=r.close<r.ma50?'<span class="badge bg-red">DI BAWAH</span>':'<span class="badge bg-green">DI ATAS</span>'
-      var m100=r.close<r.ma100?'<span class="badge bg-red">DI BAWAH</span>':'<span class="badge bg-green">DI ATAS</span>'
-      var dd=r.drawdown_from_entry<-15?'sf low':'sf high'
-      var rc2=r.rank_change>0?'<span class="sf high">+'+r.rank_change+'</span>':r.rank_change<0?'<span class="sf low">'+r.rank_change+'</span>':'<span style="color:#9CA3AF">0</span>'
-      return '<tr><td class="tk tk-click" data-ticker="'+r.ticker.split('.')[0]+'" style="color:'+ac(r.ticker)+'">'+r.ticker.split('.')[0]+'</td><td style="font-family:monospace;font-size:12px;color:#9CA3AF">#'+r.rank+'</td><td style="font-family:monospace;font-size:12px">'+rc2+'</td><td><span class="badge '+sc+'">'+r.exit_state+'</span></td><td style="font-family:monospace;font-size:11px;color:#9CA3AF" title="'+r.triggered_rules.replace(/A/g,'A: Peringkat turun di luar 10 besar').replace(/B/g,'B: Momentum jangka pendek melemah').replace(/C/g,'C: Harga di bawah MA50 — tren rusak').replace(/D/g,'D: Pelemahan terkonfirmasi — keluar')+'">'+r.triggered_rules+'</td><td class="'+rc+'">'+r.rs_20d.toFixed(1)+'%</td><td class="'+rcc+'">'+r.rs_change_20d.toFixed(1)+'%</td><td>'+m50+'</td><td>'+m100+'</td><td class="'+dd+'">'+r.drawdown_from_entry.toFixed(1)+'%</td></tr>'
+      var align=getAlignment(r)
+      var alasan=decodeRules(r.triggered_rules)
+      return '<tr><td class="tk tk-click" data-ticker="'+r.ticker.split('.')[0]+'" style="color:'+ac(r.ticker)+'">'+r.ticker.split('.')[0]+'</td><td><span class="badge '+sc+'">'+r.exit_state+'</span></td><td style="font-family:\'Space Mono\',monospace;font-size:10px;color:#9CA3AF">'+r.triggered_rules+'</td><td style="font-family:monospace;font-size:12px;color:#9CA3AF">#'+r.rank+'</td><td style="color:'+align.cls+';font-weight:600;font-size:11px">'+align.label+'</td><td style="font-size:10px;color:#9CA3AF;font-family:\'Space Mono\',monospace">'+alasan+'</td></tr>'
     }).join('')
   }
-  function refresh(){render(sortData(filtered(),s))}
+  function refresh(){render(sortByState(filtered()))}
   refresh()
   makeSortable('tbody-exit',s,refresh)
-  window.ef=function(v,b){f=v;document.querySelectorAll('#t5 .tab-btn').forEach(function(x){x.classList.remove('active')});b.classList.add('active');refresh()}
+  document.querySelectorAll('#t4 .tab-btn')[0].classList.add('active')
+  window.ef=function(v,b){
+    f=v
+    document.querySelectorAll('#t4 .tab-btn').forEach(function(x){x.classList.remove('active')})
+    if(b)b.classList.add('active')
+    refresh()
+  }
 })();
 
 function st(i){document.querySelectorAll('.tab-btn').forEach(function(b,j){b.classList.toggle('active',j===i)});document.querySelectorAll('.tc').forEach(function(t,j){t.classList.toggle('active',j===i)})}

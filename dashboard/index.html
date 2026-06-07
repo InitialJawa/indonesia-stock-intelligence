@@ -107,7 +107,7 @@ tr:hover td{background:#1a1e24}
 <body>
 <div class="hdr">
   <div class="logo">ISI <span>·</span> V2 <span>·</span> READ-ONLY DASHBOARD</div>
-  <div class="dt">2026-06-07 16:55 · IDX30</div>
+  <div class="dt">2026-06-07 16:58 · IDX30</div>
 </div>
 <div class="tab-nav">
   <button class="tab-btn active" onclick="st(0)">01 · Leaders</button>
@@ -252,6 +252,17 @@ function pct(v){return (v>0?'+':'')+v.toFixed(1)+'%'}
 function ctxLabel(r){return r.context_match?'<span class="badge bg-green">YES</span>':'<span class="badge bg-gray">NO</span>'}
 function trnLabel(r){return r.transition_match?'<span class="badge bg-yellow">YES</span>':'<span class="badge bg-gray">NO</span>'}
 function fullLabel(r){return (r.context_match&&r.transition_match)?'<span class="badge bg-blue">FULL</span>':r.context_match?'<span class="badge bg-green">CTX</span>':r.transition_match?'<span class="badge bg-yellow">TRN</span>':'<span class="badge bg-gray">—</span>'}
+function ac(t){
+  var ld=null,td=null,ed=null,tk=t.indexOf('.JK')>0?t:t+'.JK'
+  L.forEach(function(d){if(d.ticker===tk)ld=d})
+  T.forEach(function(d){if(d.ticker===tk)td=d})
+  EX.forEach(function(d){if(d.ticker===tk)ed=d})
+  if(ld&&ld.rank<=10&&ed&&ed.exit_state==='HEALTHY')return'#00ff88'
+  if(ld&&ld.rank<=10&&ed&&ed.exit_state==='EXIT RISK')return'#ffcc33'
+  if(ld&&ld.rank<=10&&ed&&ed.exit_state==='EXIT')return'#ff5555'
+  if(td&&td.context_match&&td.transition_match&&(!ed||ed.exit_state!=='EXIT'))return'#4da3ff'
+  return'#cccccc'
+}
 
 function sortData(d,s){
   if(!s.key)return d
@@ -280,7 +291,7 @@ function makeSortable(id,s,fn){
   var full=L;var s={key:null,dir:'asc'}
   function render(d){
     document.getElementById('tbody-leaders').innerHTML=d.map(function(r){
-      return '<tr><td class="tk" style="color:#9CA3AF;font-size:11px">'+r.rank+'</td><td class="tk tk-click" data-ticker="'+r.ticker.split('.')[0]+'">'+r.ticker.split('.')[0]+(r.rank<=5?'<span class="flag">★</span>':'')+'</td><td class="sf '+sc(r.final_score)+'">'+r.final_score.toFixed(1)+'</td><td>'+bar(r.quality,'#3b82f6')+'</td><td>'+bar(r.growth,'#10b981')+'</td><td>'+bar(r.value,'#a855f7')+'</td><td>'+bar(r.momentum,'#f59e0b')+'</td><td>'+(r.rank<=5?'<span class="badge bg-green">PORTFOLIO</span>':'<span class="badge bg-gray">WATCH</span>')+'</td></tr>'
+      return '<tr><td class="tk" style="color:#9CA3AF;font-size:11px">'+r.rank+'</td><td class="tk tk-click" data-ticker="'+r.ticker.split('.')[0]+'" style="color:'+ac(r.ticker)+'">'+r.ticker.split('.')[0]+(r.rank<=5?'<span class="flag">★</span>':'')+'</td><td class="sf '+sc(r.final_score)+'">'+r.final_score.toFixed(1)+'</td><td>'+bar(r.quality,'#3b82f6')+'</td><td>'+bar(r.growth,'#10b981')+'</td><td>'+bar(r.value,'#a855f7')+'</td><td>'+bar(r.momentum,'#f59e0b')+'</td><td>'+(r.rank<=5?'<span class="badge bg-green">PORTFOLIO</span>':'<span class="badge bg-gray">WATCH</span>')+'</td></tr>'
     }).join('')
   }
   function refresh(){render(sortData(full,s))}
@@ -299,7 +310,7 @@ function makeSortable(id,s,fn){
   }
   function render(d){
     document.getElementById('tbody-turnaround').innerHTML=d.map(function(r,i){
-      return '<tr><td style="color:#9CA3AF;font-size:11px;font-family:monospace">'+(i+1)+'</td><td class="tk tk-click" data-ticker="'+r.ticker.split('.')[0]+'">'+r.ticker.split('.')[0]+'</td><td class="sf '+(r.drawdown_252d<-25?'low':r.drawdown_252d<-10?'mid':'high')+'">'+pct(r.drawdown_252d)+'</td><td class="sf '+(r.distance_from_high_252d<-20?'low':r.distance_from_high_252d<-5?'mid':'high')+'">'+pct(r.distance_from_high_252d)+'</td><td>'+r.volatility_60d.toFixed(2)+'%</td><td class="sf '+(r.rs_change_60d>0?'high':'low')+'">'+pct(r.rs_change_60d)+'</td><td>'+r.volume_ratio.toFixed(2)+'x</td><td>'+pct(r.recovery_from_60d_low)+'</td><td>'+ctxLabel(r)+'</td><td>'+trnLabel(r)+'</td></tr>'
+      return '<tr><td style="color:#9CA3AF;font-size:11px;font-family:monospace">'+(i+1)+'</td><td class="tk tk-click" data-ticker="'+r.ticker.split('.')[0]+'" style="color:'+ac(r.ticker)+'">'+r.ticker.split('.')[0]+'</td><td class="sf '+(r.drawdown_252d<-25?'low':r.drawdown_252d<-10?'mid':'high')+'">'+pct(r.drawdown_252d)+'</td><td class="sf '+(r.distance_from_high_252d<-20?'low':r.distance_from_high_252d<-5?'mid':'high')+'">'+pct(r.distance_from_high_252d)+'</td><td>'+r.volatility_60d.toFixed(2)+'%</td><td class="sf '+(r.rs_change_60d>0?'high':'low')+'">'+pct(r.rs_change_60d)+'</td><td>'+r.volume_ratio.toFixed(2)+'x</td><td>'+pct(r.recovery_from_60d_low)+'</td><td>'+ctxLabel(r)+'</td><td>'+trnLabel(r)+'</td></tr>'
     }).join('')
   }
   function refresh(){render(sortData(filtered(),s))}
@@ -312,7 +323,7 @@ function makeSortable(id,s,fn){
   var full=SM.top_candidates||[];var s={key:null,dir:'asc'}
   function render(d){
     document.getElementById('tbody-top').innerHTML=d.map(function(r){
-      return '<tr><td class="tk tk-click" data-ticker="'+r.ticker.split('.')[0]+'">'+r.ticker.split('.')[0]+'</td><td class="sf high">'+(r.full_match?'FULL':r.context_match?'CTX':'TRN')+'</td><td class="sf low">'+pct(r.drawdown)+'</td><td class="sf low">'+pct(r.distance_from_high)+'</td><td>'+r.volatility.toFixed(2)+'%</td><td class="sf '+(r.rs_change_60d>0?'high':'low')+'">'+pct(r.rs_change_60d)+'</td><td>'+r.volume_ratio.toFixed(2)+'x</td><td>'+pct(r.recovery)+'</td><td>'+fullLabel(r)+'</td></tr>'
+      return '<tr><td class="tk tk-click" data-ticker="'+r.ticker.split('.')[0]+'" style="color:'+ac(r.ticker)+'">'+r.ticker.split('.')[0]+'</td><td class="sf high">'+(r.full_match?'FULL':r.context_match?'CTX':'TRN')+'</td><td class="sf low">'+pct(r.drawdown)+'</td><td class="sf low">'+pct(r.distance_from_high)+'</td><td>'+r.volatility.toFixed(2)+'%</td><td class="sf '+(r.rs_change_60d>0?'high':'low')+'">'+pct(r.rs_change_60d)+'</td><td>'+r.volume_ratio.toFixed(2)+'x</td><td>'+pct(r.recovery)+'</td><td>'+fullLabel(r)+'</td></tr>'
     }).join('')
   }
   function refresh(){render(sortData(full,s))}
@@ -335,7 +346,7 @@ function makeSortable(id,s,fn){
     }
     document.getElementById('tbody-history').innerHTML=keys.map(function(t){
       var d=full[t]
-      return '<tr><td class="tk tk-click" data-ticker="'+t.split('.')[0]+'">'+t.split('.')[0]+'</td><td>'+(d.ctx_days>0?'<span class="streak-bar"><span class="n">'+d.ctx_days+'</span>d</span>':'<span class="badge bg-gray">0d</span>')+'</td><td>'+(d.trn_days>0?'<span class="streak-bar"><span class="n" style="color:#f59e0b">'+d.trn_days+'</span>d</span>':'<span class="badge bg-gray">0d</span>')+'</td><td style="font-family:monospace;font-size:11px;color:#9CA3AF">'+d.first_ctx+'</td><td style="font-family:monospace;font-size:11px;color:#9CA3AF">'+d.first_trn+'</td><td style="font-family:monospace;font-size:11px;color:#9CA3AF">'+d.total_entries+' days</td></tr>'
+      return '<tr><td class="tk tk-click" data-ticker="'+t.split('.')[0]+'" style="color:'+ac(t)+'">'+t.split('.')[0]+'</td><td>'+(d.ctx_days>0?'<span class="streak-bar"><span class="n">'+d.ctx_days+'</span>d</span>':'<span class="badge bg-gray">0d</span>')+'</td><td>'+(d.trn_days>0?'<span class="streak-bar"><span class="n" style="color:#f59e0b">'+d.trn_days+'</span>d</span>':'<span class="badge bg-gray">0d</span>')+'</td><td style="font-family:monospace;font-size:11px;color:#9CA3AF">'+d.first_ctx+'</td><td style="font-family:monospace;font-size:11px;color:#9CA3AF">'+d.first_trn+'</td><td style="font-family:monospace;font-size:11px;color:#9CA3AF">'+d.total_entries+' days</td></tr>'
     }).join('')
   }
   render()
@@ -354,7 +365,7 @@ function makeSortable(id,s,fn){
       var m100=r.close<r.ma100?'<span class="badge bg-red">DI BAWAH</span>':'<span class="badge bg-green">DI ATAS</span>'
       var dd=r.drawdown_from_entry<-15?'sf low':'sf high'
       var rc2=r.rank_change>0?'<span class="sf high">+'+r.rank_change+'</span>':r.rank_change<0?'<span class="sf low">'+r.rank_change+'</span>':'<span style="color:#9CA3AF">0</span>'
-      return '<tr><td class="tk tk-click" data-ticker="'+r.ticker.split('.')[0]+'">'+r.ticker.split('.')[0]+'</td><td style="font-family:monospace;font-size:12px;color:#9CA3AF">#'+r.rank+'</td><td style="font-family:monospace;font-size:12px">'+rc2+'</td><td><span class="badge '+sc+'">'+r.exit_state+'</span></td><td style="font-family:monospace;font-size:11px;color:#9CA3AF" title="'+r.triggered_rules.replace(/A/g,'A: Peringkat Turun').replace(/B/g,'B: Momentum Melemah').replace(/C/g,'C: Trend MA50 Rusak').replace(/D/g,'D: Pelemahan Terkonfirmasi')+'">'+r.triggered_rules+'</td><td class="'+rc+'">'+r.rs_20d.toFixed(1)+'%</td><td class="'+rcc+'">'+r.rs_change_20d.toFixed(1)+'%</td><td>'+m50+'</td><td>'+m100+'</td><td class="'+dd+'">'+r.drawdown_from_entry.toFixed(1)+'%</td></tr>'
+      return '<tr><td class="tk tk-click" data-ticker="'+r.ticker.split('.')[0]+'" style="color:'+ac(r.ticker)+'">'+r.ticker.split('.')[0]+'</td><td style="font-family:monospace;font-size:12px;color:#9CA3AF">#'+r.rank+'</td><td style="font-family:monospace;font-size:12px">'+rc2+'</td><td><span class="badge '+sc+'">'+r.exit_state+'</span></td><td style="font-family:monospace;font-size:11px;color:#9CA3AF" title="'+r.triggered_rules.replace(/A/g,'A: Peringkat Turun').replace(/B/g,'B: Momentum Melemah').replace(/C/g,'C: Trend MA50 Rusak').replace(/D/g,'D: Pelemahan Terkonfirmasi')+'">'+r.triggered_rules+'</td><td class="'+rc+'">'+r.rs_20d.toFixed(1)+'%</td><td class="'+rcc+'">'+r.rs_change_20d.toFixed(1)+'%</td><td>'+m50+'</td><td>'+m100+'</td><td class="'+dd+'">'+r.drawdown_from_entry.toFixed(1)+'%</td></tr>'
     }).join('')
   }
   function refresh(){render(sortData(filtered(),s))}

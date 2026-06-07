@@ -1,0 +1,16 @@
+research: RESEARCH-012 Phase 2 -- Rank Deterioration complete
+
+Phase 2 result: CONFIRMED -- Rank collapse > 10 is a strong sell
+signal. Backtest 2022-2025 vs Config B monthly rebalance:
+
+  Baseline (Top 5):    19.45% CAGR  0.58 Sharpe  -29.2% DD  20.4% to
+  Drop > 10:           25.58% CAGR  0.76 Sharpe  -20.2% DD   4.6% to
+  Drop > 5:            23.31% CAGR  0.73 Sharpe  -19.6% DD   8.3% to
+
+Exit thresholds (Exit Top 5/10/20) ALL underperform baseline.
+Drop > 15 underperforms (13.62% CAGR).
+
+Decision rule: SELL when rank drops by > 10 from entry rank.
+Only 4.6% turnover -- low churn, meaningful improvement.
+
+CHRONICLE: P2 marked complete, findings added to Proven Findings

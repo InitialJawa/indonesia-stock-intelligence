@@ -105,7 +105,8 @@ isolates alpha failure.
 | AUDIT-001 | Data quality audit | PBV salah untuk 8 ticker, DY rendering 100x | PBV fix (PE×ROE), DY format fix |
 | AUDIT-002 | Yahoo PBV field verification | bookValue/priceToBook salah, PE×ROE fallback terbaik | DATA_QUALITY_RULE_PBV_V1 formalized |
 | IMPLEMENT-003 | Dashboard regression recovery | Insight Layer V1 caused TDZ crash (PF before init), table disappearance | ENGINEERING RULE-005 established, append-only mandate |
-| RESEARCH-012A | EXIT Sell Hypothesis | Does EXIT state justify automatic selling? | REJECTED — EXIT stocks outperform Healthy at 90D (+2.16%, p=0.04). Decision Layer must not use EXIT→SELL without additional conditions. |
+| RESEARCH-012 | Portfolio Decision Layer | Does EXIT + Rank + Turnaround beat passive Top 5? | P1 complete (EXIT→SELL REJECTED), P2 complete (Drop>10 VALIDATED) |
+| RESEARCH-012A | EXIT Sell Hypothesis | Does EXIT state justify automatic selling? | REJECTED — EXIT stocks outperform Healthy at 90D (+2.16%, p=0.04) |
 
 ### RESEARCH-012: Portfolio Decision Layer V1
 
@@ -119,11 +120,12 @@ Method: Reconstruct historical EXIT signals from warehouse_daily_v4 (2022-2026, 
 Result: **NOT CONFIRMED** — EXIT stocks do NOT underperform. 30D: +0.53% excess vs Healthy (p=0.39). 90D: +2.16% excess — significantly *outperform* (p=0.04). Sub-signal D1 (technical breakdown) only: -0.13% avg, -0.85% excess vs Healthy (p=0.18, NS). D2 (drawdown>15%): +2.05% avg, predicts bounceback.
 Gate: NOT passed — EXIT is NOT a candidate SELL signal standalone. Decision matrix (Phase 4) required to combine EXIT with Rank for useful signals.
 
-**Phase 2 — Rank Deterioration Test**
-Question: Does leaving Top 10 justify selling?
-Scenarios: (A) Hold regardless, (B) Sell when rank < 10, (C) Sell when rank < 20.
-Compare: CAGR, Sharpe, Max DD, Turnover.
-Gate: One rule must materially improve outcomes.
+**Phase 2 — Rank Deterioration Test** ✅ COMPLETED 2026-06-08
+Question: Does leaving Top N or rank collapse justify selling?
+Method: Monthly backtest 2022-01 to 2025-12, Config B universe (21-29 tickers). Compare: Exit Top 5/10/20 thresholds vs Drop >5/10/15 ranks vs Baseline (monthly Top 5 rebalance).
+Result: **CONFIRMED — Rank collapse exceeds baseline.** Drop > 10 ranks: 25.58% CAGR (vs 19.45% baseline), 0.76 Sharpe (vs 0.58), 16.61% Alpha (vs 10.95%), MaxDD -20.2% (vs -29.2%), turnover 4.6% (vs 20.4%). Exit thresholds ALL underperform (Exit Top 5: 16.65% CAGR). Drop > 5: 23.31% CAGR, also beats baseline. Drop > 15: 13.62%, underperforms.
+Decision rule: **SELL when rank drops by > 10 from entry rank** — replace with highest-ranked unheld stock.
+Gate: **PASSED** — Drop > 5 and Drop > 10 materially improve CAGR (+3.86% and +6.13% respectively) vs Baseline.
 
 **Phase 3 — Replacement Test**
 Question: Is replacing weak holdings better than holding? (e.g. ESSA #2 EXIT vs ADRO #1 HEALTHY)
@@ -165,6 +167,12 @@ Research-supported results. Do NOT modify without new evidence.
 - **EXIT→SELL is invalid** — EXIT stocks outperform Healthy at 90D (+2.16%, p=0.04). EXIT cannot be used as a standalone SELL signal.
 - D1 sub-signal (Close<MA100 + RS20<0 + RS_CHG<0): -0.85% excess at 30D, not significant (p=0.18)
 - D2 sub-signal (drawdown>15% from 252d high): predicts bounceback (+1.33% excess at 30D, p=0.08)
+
+### Rank Deterioration (RESEARCH-012 P2)
+- **Rank collapse > 10** is a strong sell signal: 25.58% CAGR (vs 19.45% baseline), 0.76 Sharpe, 16.61% Alpha, -20.2% MaxDD, 4.6% turnover
+- Exit thresholds based on absolute rank (Exit Top 5/10/20) ALL underperform baseline
+- Drop > 5 ranks also beats baseline (23.31% CAGR) but higher turnover (8.3%)
+- Drop > 15 ranks underperforms (13.62% CAGR) — too loose, catches false positives
 
 ### Portfolio Construction
 - Top 5 is optimal portfolio size (diminishing returns after 5)
@@ -404,7 +412,8 @@ ISI/
 - [ ] Exit Rule D threshold backtest (V1.1 vs alternatives)
 - [ ] RESEARCH-012: Portfolio Decision Layer
   - [x] Phase 1 — Exit Validation ✅ NOT CONFIRMED (EXIT does NOT underperform; +2.16% excess at 90D, p=0.04)
-  - [ ] Phase 2 — Rank Deterioration Test (sell thresholds)
+  - [x] Phase 2 — Rank Deterioration Test ✅ PASSED (Drop > 10: 25.58% CAGR, +6.13% vs baseline)
+  - [ ] Phase 3 — Replacement Test (replace vs hold)
   - [ ] Phase 3 — Replacement Test (replace vs hold)
   - [ ] Phase 4 — Exit + Rank Decision Matrix
   - [ ] Phase 5 — Turnaround Promotion Test

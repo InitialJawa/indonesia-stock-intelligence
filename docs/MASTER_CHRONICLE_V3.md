@@ -462,6 +462,7 @@ ISI/
 - [x] KESIMPULAN HARI INI panel restoration (regression from FEATURE-001)
 - [x] IMPLEMENT-003 — Dashboard regression recovery (Insight Layer V1 TDZ crash, append-only mandate, ENGINEERING RULE-005)
 - [x] RESEARCH-012: Portfolio Decision Layer — CLOSED FAILED (event-level gains do not survive portfolio integration)
+- [x] BUG-005: Dashboard Timestamp Drift — dashboard now displays `report_date` from pipeline outputs instead of `datetime.now()` UTC build timestamp
 
 ### BACKLOG TEKNIS
 - [ ] Monthly archive restoration — update `research/tools/` to read from `docs/archive/`
@@ -478,3 +479,13 @@ ISI/
 - [ ] Config B vs Config F comparison on real historical data
 - [ ] Turnaround-Config B blended portfolio correlation study
 - [ ] RESEARCH-012: Portfolio Decision Layer -- CLOSED -- FAILED (see section 3)
+
+---
+
+## 12. BUG LOG
+
+### BUG-005: Dashboard Timestamp Drift
+**Status:** FIXED
+**Root Cause:** GitHub Actions runner uses UTC. `datetime.datetime.now()` in `generate_dashboard_v2.py` returned UTC at build time, but the dashboard header displayed it without timezone context, showing a time ~7 hours behind WIB.
+**Resolution:** Dashboard header now reads `report_date` from pipeline-generated `turnaround_summary.json` (fallback: `exit_summary.json`). `file_age()` also uses `report_date` as reference instead of `datetime.datetime.now()`.
+**Files Changed:** `scripts/generate_dashboard_v2.py` (constants, `file_age()`, `build_html()`, `main()`), `docs/MASTER_CHRONICLE_V3.md`

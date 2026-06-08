@@ -13,6 +13,7 @@ PROFILES_FILE = Path("data/state/company_profiles.json")
 FUND_FILE = Path("output/raw/fundamentals.json")
 GROWTH_FILE = Path("output/raw/growth.json")
 PORTFOLIO_FILE = Path("data/state/my_portfolio.json")
+EXIT_SUMMARY_FILE = Path("data/state/exit_summary.json")
 
 def read_csv(filepath):
     if not filepath.exists():
@@ -171,15 +172,24 @@ def enrich_portfolio(portfolio_raw, leaders, exit_data, profiles):
     result.sort(key=lambda x: x['rank'] if x['rank'] > 0 and x['rank'] < 99 else 999)
     return result
 
-def file_age(path):
+def file_age(path, report_date=None):
     if not path.exists():
         return 'N/A'
+    if report_date:
+        try:
+            ref = datetime.datetime.strptime(report_date, '%Y-%m-%d')
+            mtime = datetime.datetime.fromtimestamp(path.stat().st_mtime)
+            if mtime < ref:
+                age = ref - mtime
+                return f"{age.days}d {age.seconds // 3600}h ago" if age.days < 30 else f"{age.days}d ago"
+            return "0d 0h ago"
+        except (ValueError, TypeError):
+            pass
     mtime = datetime.datetime.fromtimestamp(path.stat().st_mtime)
     age = datetime.datetime.now() - mtime
     return f"{age.days}d {age.seconds // 3600}h ago" if age.days < 30 else f"{age.days}d ago"
 
-def build_html(leaders, turnaround, summary, history, streaks, date_str, exit_data=None, profiles=None, fundamentals=None, portfolio_data=None):
-    date_short = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
+def build_html(leaders, turnaround, summary, history, streaks, report_date, exit_data=None, profiles=None, fundamentals=None, portfolio_data=None):
     summary_data = summary if isinstance(summary, dict) else {}
     top_candidates = summary_data.get('top_candidates', [])
     ctx_count = summary_data.get('context_match_count', 0)
@@ -305,7 +315,7 @@ tr:hover td{{background:#1a1e24}}
 <body>
 <div class="hdr">
   <div class="logo">ISI <span>·</span> V2 <span>·</span> READ-ONLY DASHBOARD</div>
-  <div class="dt">{date_short} · IDX30</div>
+  <div class="dt">{report_date} · IDX30</div>
 </div>
 <div class="tab-nav">
   <button class="tab-btn active" onclick="st(0)">01 · Leaders</button>
@@ -392,9 +402,9 @@ tr:hover td{{background:#1a1e24}}
       </div>
       <div class="card-sub">All systems nominal</div>
     </div>
-    <div class="card"><div class="card-label">Last Leaders Update</div><div class="card-val" style="font-size:14px">{file_age(LEADERS_FILE)}</div><div class="card-sub">leaders_latest.csv</div></div>
-    <div class="card"><div class="card-label">Last Turnaround Update</div><div class="card-val" style="font-size:14px">{file_age(TURNAROUND_FILE)}</div><div class="card-sub">turnaround_latest.csv</div></div>
-    <div class="card"><div class="card-label">Last Exit Update</div><div class="card-val" style="font-size:14px">{file_age(EXIT_FILE)}</div><div class="card-sub">exit_watchlist_latest.csv</div></div>
+    <div class="card"><div class="card-label">Last Leaders Update</div><div class="card-val" style="font-size:14px">{file_age(LEADERS_FILE, report_date)}</div><div class="card-sub">leaders_latest.csv</div></div>
+    <div class="card"><div class="card-label">Last Turnaround Update</div><div class="card-val" style="font-size:14px">{file_age(TURNAROUND_FILE, report_date)}</div><div class="card-sub">turnaround_latest.csv</div></div>
+    <div class="card"><div class="card-label">Last Exit Update</div><div class="card-val" style="font-size:14px">{file_age(EXIT_FILE, report_date)}</div><div class="card-sub">exit_watchlist_latest.csv</div></div>
     <div class="card"><div class="card-label">Records Processed</div><div class="card-val g">{summary_data.get('universe_size', 0)}</div><div class="card-sub">tickers in latest run</div></div>
     <div class="card"><div class="card-label">Data Freshness</div><div class="card-val g">{summary_data.get('date', 'N/A')}</div><div class="card-sub">report date</div></div>
     <div class="card"><div class="card-label">History Records</div><div class="card-val b">{len(history)}</div><div class="card-sub">turnaround_history.csv</div></div>
@@ -820,7 +830,14 @@ def main():
     leaders = read_csv(LEADERS_FILE)
     turnaround = read_csv(TURNAROUND_FILE)
     summary = read_json(SUMMARY_FILE)
+    report_date = summary.get('date', '') if isinstance(summary, dict) else ''
+    if not report_date:
+        exit_summary = read_json(EXIT_SUMMARY_FILE)
+        report_date = exit_summary.get('date', '')
+    if not report_date:
+        report_date = date_str
     print(f"  Loaded: {len(leaders)} leaders, {len(turnaround)} turnaround, summary")
+    print(f"  Report date: {report_date}")
     for r in turnaround:
         r['context_match'] = r.get('context_match', 'False').strip() == 'True'
         r['transition_match'] = r.get('transition_match', 'False').strip() == 'True'
@@ -896,7 +913,7 @@ def main():
     else:
         print("  No my_portfolio.json found — skipping")
     print("  Generating HTML...")
-    html = build_html(leaders, turnaround, summary, history, streaks, date_str, exit_data, profiles, fundamentals, portfolio_data)
+    html = build_html(leaders, turnaround, summary, history, streaks, report_date, exit_data, profiles, fundamentals, portfolio_data)
     V2_DIR.mkdir(parents=True, exist_ok=True)
     output_path = V2_DIR / 'index.html'
     with open(output_path, 'w', encoding='utf-8') as f:

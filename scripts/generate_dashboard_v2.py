@@ -167,28 +167,7 @@ tr:hover td{{background:#1a1e24}}
 .bar-track{{height:3px;border-radius:2px;background:#222830;width:50px;overflow:hidden}}
 .bar-fill{{height:100%;border-radius:2px}}
 .bv{{font-size:10px;color:#9CA3AF;font-family:'Space Mono',monospace;min-width:24px;text-align:right}}
-  document.getElementById('conclusion').innerHTML = h;
-})();
-
-(function(){
-  // Leaders Insight renderer
-  document.getElementById('insight-leaders').innerHTML = '<div class="panel-status portfolio"><b>PIMPINAN PASAR</b></div>';
-})();
-
-(function(){
-  // Top10 Insight renderer
-  document.getElementById('insight-top10').innerHTML = '<div class="panel-status healthy"><b>TOP 10 INSIGHT</b></div>';
-})();
-
-(function(){
-  // Turnaround Insight renderer
-  document.getElementById('insight-turnaround').innerHTML = '<div class="panel-status turnaround"><b>KANDIDAT TURNAROUND</b></div>';
-})();
-
-(function(){
-  // Exit Insight renderer
-  document.getElementById('insight-exit').innerHTML = '<div class="panel-status exit"><b>TEKANAN PASAR</b></div>';
-})();gap:10px;margin-bottom:1rem}}
+.card-grid{{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:1rem}}
 .card{{background:#171b20;border:1px solid #222830;border-radius:8px;padding:1rem}}
 .card-label{{font-size:10px;color:#C9D1D9;font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;font-weight:600}}
 .card-val{{font-size:22px;font-weight:700;font-family:'Space Mono',monospace;color:#F5F7FA}}
@@ -254,6 +233,36 @@ tr:hover td{{background:#1a1e24}}
 .align-desc{{font-size:11px;color:#9CA3AF;line-height:1.5}}
 .panel-bullet{{color:#9CA3AF;margin-right:6px}}
 .panel-summary{{font-size:12px;color:#C9D1D9;line-height:1.6;padding:8px 0}}
+.conc{{margin:0 1.5rem 4px;padding:12px 14px;background:#171b20;border:1px solid #222830;border-radius:8px}}
+.conc-hdr{{display:flex;align-items:center;gap:10px;margin-bottom:8px}}
+.conc-status{{font-size:10px;font-family:'Space Mono',monospace;font-weight:700;padding:3px 10px;border-radius:4px;text-transform:uppercase;letter-spacing:.08em}}
+.conc-status.s-hijau{{background:#052e16;color:#00c26f;border:1px solid #166534}}
+.conc-status.s-kuning{{background:#2a2411;color:#f59e0b;border:1px solid #665511}}
+.conc-status.s-merah{{background:#2a1111;color:#ef4444;border:1px solid #661111}}
+.conc-status.s-biru{{background:#0c1929;color:#60a5fa;border:1px solid #1e3a5f}}
+.conc-label{{font-size:10px;font-family:'Space Mono',monospace;color:#9CA3AF;letter-spacing:.08em;font-weight:600}}
+.conc-body{{display:flex;gap:16px;flex-wrap:wrap}}
+.conc-col{{flex:1;min-width:200px}}
+.conc-sub{{font-size:9px;font-family:'Space Mono',monospace;color:#C9D1D9;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;font-weight:700}}
+.conc-list{{list-style:none;padding:0;margin:0}}
+.conc-list li{{font-size:11px;color:#C9D1D9;padding:2px 0 2px 12px;position:relative;line-height:1.5}}
+.conc-list li::before{{content:'\2022';position:absolute;left:0;color:#00c26f}}
+.insight-card{{background:#171b20;border:1px solid #222830;border-radius:8px;padding:10px 12px;margin-bottom:10px}}
+.insight-hdr{{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid #1a1f26}}
+.insight-title{{font-size:9px;font-family:'Space Mono',monospace;color:#C9D1D9;text-transform:uppercase;letter-spacing:.08em;font-weight:600}}
+.insight-grid{{display:grid;grid-template-columns:1fr 1fr;gap:2px 14px}}
+.insight-row{{display:flex;justify-content:space-between;padding:3px 0;font-size:11px;border-bottom:1px solid #1a1f26}}
+.insight-row:last-child{{border:none}}
+.insight-lbl{{color:#9CA3AF}}
+.insight-val{{font-family:'Space Mono',monospace;font-weight:600;color:#F5F7FA}}
+.insight-val.g{{color:#00c26f}}.insight-val.r{{color:#ef4444}}.insight-val.y{{color:#f59e0b}}.insight-val.b{{color:#60a5fa}}.insight-val.n{{color:#9CA3AF}}
+.insight-badge{{font-size:9px;padding:1px 7px;border-radius:3px;font-family:'Space Mono',monospace;display:inline-block}}
+.insight-badge.g{{background:#052e16;color:#00c26f;border:1px solid #166534}}
+.insight-badge.y{{background:#2a2411;color:#f59e0b;border:1px solid #665511}}
+.insight-badge.r{{background:#2a1111;color:#ef4444;border:1px solid #661111}}
+.insight-badge.b{{background:#0c1929;color:#60a5fa;border:1px solid #1e3a5f}}
+.insight-badge.n{{background:#171b20;color:#9CA3AF;border:1px solid #222830}}
+.insight-note{{font-size:10px;color:#64748b;margin-top:5px;line-height:1.4;padding-top:4px;border-top:1px solid #1a1f26}}
 </style>
 </head>
 <body>
@@ -261,6 +270,7 @@ tr:hover td{{background:#1a1e24}}
   <div class="logo">ISI <span>·</span> V2 <span>·</span> READ-ONLY DASHBOARD</div>
   <div class="dt">{report_date} · IDX30</div>
 </div>
+<div id="conclusion"></div>
 <div class="tab-nav">
   <button class="tab-btn active" onclick="st(0)">01 · Leaders</button>
   <button class="tab-btn" onclick="st(1)">02 · Turnaround</button>
@@ -272,6 +282,8 @@ tr:hover td{{background:#1a1e24}}
 
 <div class="tc active" id="t0">
   <div class="section-title">Config B Leaders · Q25/G30/V10/M35</div>
+  <div id="insight-leaders"></div>
+  <div id="insight-top10"></div>
   <table>
     <thead><tr>
       <th data-key="rank">#</th><th data-key="ticker">Ticker</th><th data-key="final_score">Score</th><th data-key="quality">Quality</th><th data-key="growth">Growth</th><th data-key="value">Value</th><th data-key="momentum">Momentum</th><th>Status</th>
@@ -282,6 +294,7 @@ tr:hover td{{background:#1a1e24}}
 
 <div class="tc" id="t1">
   <div class="section-title">Turnaround Watchlist · Context + Transition Signals</div>
+  <div id="insight-turnaround"></div>
   <div style="margin-bottom:10px;display:flex;gap:6px;flex-wrap:wrap">
     <button class="tab-btn active" onclick="ft('all',this)" style="font-size:10px;padding:4px 12px">All</button>
     <button class="tab-btn" onclick="ft('full',this)" style="font-size:10px;padding:4px 12px">Full Match</button>
@@ -366,6 +379,7 @@ tr:hover td{{background:#1a1e24}}
       <div style="font-size:11px"><span style="display:inline-block;background:#222830;color:#F5F7FA;border-radius:3px;padding:1px 5px;font-family:'Space Mono',monospace;font-weight:700;font-size:10px;margin-right:4px">D</span> Pelemahan Terkonfirmasi (Close &lt; MA100 atau DD &gt; 15%)</div>
     </div>
   </div>
+  <div id="insight-exit"></div>
   <div style="margin-bottom:10px;display:flex;gap:6px;flex-wrap:wrap">
     <button class="tab-btn active" onclick="ef('all',this)" style="font-size:10px;padding:4px 12px">All</button>
     <button class="tab-btn" onclick="ef('EXIT',this)" style="font-size:10px;padding:4px 12px;color:#ef4444">Exit</button>
@@ -530,6 +544,187 @@ function st(i){{document.querySelectorAll('.tab-btn').forEach(function(b,j){{b.c
 
 const PF={profiles_json};
 const FD={fundamentals_json};
+
+/* KESIMPULAN HARI INI */
+(function(){{
+  var exitCount=EX.filter(function(d){{return d.exit_state==='EXIT'}}).length
+  var exitRiskCount=EX.filter(function(d){{return d.exit_state==='EXIT RISK'}}).length
+  var weakeningCount=EX.filter(function(d){{return d.exit_state==='WEAKENING'}}).length
+  var healthyCount=EX.filter(function(d){{return d.exit_state==='HEALTHY'}}).length
+  var top5=[];L.forEach(function(d){{if(d.rank<=5)top5.push(d.ticker)}})
+  var portfolioExit=EX.filter(function(d){{return top5.indexOf(d.ticker)>=0&&d.exit_state!=='HEALTHY'}})
+  var fullMatchCount=SM.full_match_count||0
+  var sd=SM.signal_diagnostics||{{}}
+  var avgDD=sd.avg_drawdown_252d||0
+  var avgVol=sd.avg_volatility_60d||0
+  var aboveMA20=sd.above_ma20_count||0
+  var rsPositive=sd.rs_change_60d_positive_count||0
+  var rankDrops=EX.filter(function(d){{return d.rank_change<0}}).length
+  var status='TIDAK ADA AKSI',cls='s-hijau',reasons=[],focuses=[]
+  if(exitCount>=3){{
+    status='RISIKO MENINGKAT';cls='s-merah'
+    reasons.push(exitCount+' saham dalam status EXIT — tekanan keluar meluas')
+    reasons.push(exitRiskCount+' EXIT RISK, '+weakeningCount+' weakening — sistem dalam tekanan')
+  }}else if(exitCount>=1&&portfolioExit.length>0){{
+    status='REVIEW';cls='s-kuning'
+    reasons.push(exitCount+' saham EXIT, '+portfolioExit.length+' di antaranya dari portofolio 5 besar')
+  }}else if(exitCount>=1||exitRiskCount>=2){{
+    status='REVIEW';cls='s-kuning'
+    if(exitCount>=1)reasons.push(exitCount+' saham EXIT terdeteksi')
+    else reasons.push(exitRiskCount+' saham EXIT RISK — perhatikan perkembangan')
+  }}else if(fullMatchCount>=3||avgDD<-25||avgVol>3.5||aboveMA20===0){{
+    status='TAHAN';cls='s-biru'
+    if(fullMatchCount>=3)reasons.push(fullMatchCount+' kandidat turnaround terdeteksi')
+    if(avgDD<-25)reasons.push('Rata-rata penurunan IDX30 '+avgDD.toFixed(1)+'%')
+    if(avgVol>3.5)reasons.push('Volatilitas '+avgVol.toFixed(2)+'% — fluktuasi di atas normal')
+    if(aboveMA20===0)reasons.push('Seluruh IDX30 di bawah MA20 — tren pendek lemah')
+  }}else{{
+    reasons.push('Tidak ada sinyal exit signifikan')
+    reasons.push('Rata-rata penurunan '+avgDD.toFixed(1)+'% — dalam batas wajar')
+  }}
+  if(reasons.length<2){{
+    if(exitCount>0)reasons.push(exitCount+' saham EXIT, '+exitRiskCount+' EXIT RISK')
+    else if(avgDD>-15)reasons.push('Penurunan pasar minimal ('+avgDD.toFixed(1)+'%)')
+    else if(rsPositive>15)reasons.push(rsPositive+' dari 30 saham mulai menguat')
+    else reasons.push(healthyCount+' dari '+EX.length+' saham dalam kondisi sehat')
+  }}
+  if(portfolioExit.length>0){{
+    var tkr=portfolioExit.map(function(d){{return d.ticker.split('.')[0]}}).join(', ')
+    focuses.push('Portofolio: '+tkr+' masuk sinyal exit — pantau pergerakan')
+  }}else if(exitCount>0){{
+    var ex=EX.filter(function(d){{return d.exit_state==='EXIT'}}).slice(0,3).map(function(d){{return d.ticker.split('.')[0]}}).join(', ')
+    focuses.push('Pantau '+ex+' — saham dengan sinyal EXIT aktif')
+  }}else if(fullMatchCount>=3&&SM.top_candidates){{
+    var tkr=SM.top_candidates.filter(function(d){{return d.full_match}}).slice(0,3).map(function(d){{return d.ticker.split('.')[0]}}).join(', ')
+    if(tkr)focuses.push('Pantau '+tkr+' — kandidat turnaround penuh')
+    else focuses.push(fullMatchCount+' kandidat turnaround — pantau perkembangannya')
+  }}else{{
+    focuses.push('Pantau perubahan ranking harian — '+rankDrops+' saham turun peringkat')
+  }}
+  if(avgDD<-25){{
+    focuses.push('Waspada tekanan pasar — rata-rata penurunan '+avgDD.toFixed(1)+'%')
+  }}else if(aboveMA20===0){{
+    focuses.push('Pasar melemah — 0 saham berhasil bertahan di atas MA20')
+  }}else if(rsPositive>15){{
+    focuses.push(rsPositive+' dari 30 saham menunjukkan penguatan — positif')
+  }}else{{
+    focuses.push(rankDrops+' saham turun peringkat hari ini — perhatikan distribusi')
+  }}
+  if(focuses.length>2)focuses=focuses.slice(0,2)
+  if(reasons.length>3)reasons=reasons.slice(0,3)
+  var h='<div class="conc"><div class="conc-hdr"><span class="conc-status '+cls+'">'+status+'</span><span class="conc-label">KESIMPULAN HARI INI</span></div><div class="conc-body"><div class="conc-col"><div class="conc-sub">Alasan</div><ul class="conc-list">'
+  reasons.forEach(function(r){{h+='<li>'+r+'</li>'}})
+  h+='</ul></div><div class="conc-col"><div class="conc-sub">Fokus Hari Ini</div><ul class="conc-list">'
+  focuses.forEach(function(f){{h+='<li>'+f+'</li>'}})
+  h+='</ul></div></div></div>'
+  document.getElementById('conclusion').innerHTML=h
+}})();
+
+/* INSIGHT — Leaders Analysis */
+(function(){{
+  var n=L.length
+  if(n===0){{document.getElementById('insight-leaders').innerHTML='';return}}
+  var top5=L.filter(function(d){{return d.rank<=5}})
+  var bot5=L.filter(function(d){{return d.rank>n-5}})
+  var factors=['quality','growth','value','momentum']
+  var avg=function(arr,k){{return arr.reduce(function(s,d){{return s+d[k]}},0)/arr.length}}
+  var t5=factors.map(function(f){{return{{name:f,val:avg(top5,f)}}}})
+  var allTop5Avg=t5.reduce(function(s,f){{return s+f.val}},0)/4
+  var allBot5Avg=factors.reduce(function(s,f){{return s+avg(bot5,f)}},0)/4
+  var gap=allTop5Avg-allBot5Avg
+  var strongest=t5.slice().sort(function(a,b){{return b.val-a.val}})[0]
+  var weakest=factors.map(function(f){{return{{name:f,val:avg(bot5,f)}}}}).sort(function(a,b){{return a.val-b.val}})[0]
+  var h='<div class="insight-card"><div class="insight-hdr"><span class="insight-title">Analisis Leaders</span><span class="insight-badge '+(gap>30?'r':gap>15?'y':'n')+'">Gap Top5–Bot5: '+gap.toFixed(1)+'</span></div><div class="insight-grid">'
+  h+='<div class="insight-row"><span class="insight-lbl">Rerata Top 5</span><span class="insight-val g">'+allTop5Avg.toFixed(1)+'</span></div>'
+  h+='<div class="insight-row"><span class="insight-lbl">Faktor Terkuat Top5</span><span class="insight-val g">'+strongest.name.charAt(0).toUpperCase()+strongest.name.slice(1)+' ('+strongest.val.toFixed(1)+')</span></div>'
+  h+='<div class="insight-row"><span class="insight-lbl">Rerata Bottom 5</span><span class="insight-val r">'+allBot5Avg.toFixed(1)+'</span></div>'
+  h+='<div class="insight-row"><span class="insight-lbl">Faktor Terlemah Bot5</span><span class="insight-val r">'+weakest.name.charAt(0).toUpperCase()+weakest.name.slice(1)+' ('+weakest.val.toFixed(1)+')</span></div>'
+  h+='</div><div class="insight-note">Kesenjangan '+gap.toFixed(1)+' poin — '+(gap>30?'distribusi sangat timpang, dominasi saham unggulan kuat':gap>15?'distribusi cukup timpang, pemimpin pasar jelas':gap>5?'distribusi moderat, persaingan merata':'pasar relatif homogen, banyak saham setara')+'</div></div>'
+  document.getElementById('insight-leaders').innerHTML=h
+}})();
+
+/* INSIGHT — Top 10 Ringkasan */
+(function(){{
+  var top10=L.filter(function(d){{return d.rank<=10}})
+  var n=top10.length
+  if(n===0){{document.getElementById('insight-top10').innerHTML='';return}}
+  var sectors={{}}
+  top10.forEach(function(d){{
+    var p=PF[d.ticker.split('.')[0]]
+    if(p){{var sec=p.sector;sectors[sec]=(sectors[sec]||0)+1}}
+  }})
+  var secList=Object.keys(sectors).sort(function(a,b){{return sectors[b]-sectors[a]}})
+  var avg=function(k){{return top10.reduce(function(s,d){{return s+d[k]}},0)/n}}
+  var h='<div class="insight-card"><div class="insight-hdr"><span class="insight-title">Top 10 Ringkasan</span><span class="insight-badge b">'+n+' saham</span></div><div class="insight-grid">'
+  h+='<div class="insight-row"><span class="insight-lbl">Rerata Score</span><span class="insight-val">'+avg('final_score').toFixed(1)+'</span></div>'
+  h+='<div class="insight-row"><span class="insight-lbl">Quality / Growth</span><span class="insight-val">'+avg('quality').toFixed(1)+' / '+avg('growth').toFixed(1)+'</span></div>'
+  h+='<div class="insight-row"><span class="insight-lbl">Value / Momentum</span><span class="insight-val">'+avg('value').toFixed(1)+' / '+avg('momentum').toFixed(1)+'</span></div>'
+  h+='<div class="insight-row"><span class="insight-lbl">Sektor Dominan</span><span class="insight-val">'+secList[0]+' ('+sectors[secList[0]]+')</span></div>'
+  h+='</div>'
+  if(secList.length>1){{
+    h+='<div class="insight-note">Sektor: '+secList.map(function(s){{return s+' ('+sectors[s]+')'}}).join(' · ')+'</div>'
+  }}
+  h+='</div>'
+  document.getElementById('insight-top10').innerHTML=h
+}})();
+
+/* INSIGHT — Turnaround Analysis */
+(function(){{
+  var full=T.length
+  if(full===0){{document.getElementById('insight-turnaround').innerHTML='';return}}
+  var fullMatch=T.filter(function(d){{return d.context_match&&d.transition_match}}).length
+  var ctxOnly=T.filter(function(d){{return d.context_match&&!d.transition_match}}).length
+  var trnOnly=T.filter(function(d){{return !d.context_match&&d.transition_match}}).length
+  var none=full-fullMatch-ctxOnly-trnOnly
+  var avgDD=T.reduce(function(s,d){{return s+d.drawdown_252d}},0)/full
+  var avgRec=T.reduce(function(s,d){{return s+d.recovery_from_60d_low}},0)/full
+  var avgVol=T.reduce(function(s,d){{return s+d.volatility_60d}},0)/full
+  var rsPos=T.filter(function(d){{return d.rs_change_60d>0}}).length
+  var h='<div class="insight-card"><div class="insight-hdr"><span class="insight-title">Analisis Turnaround</span><span class="insight-badge b">'+full+' ticker</span></div><div class="insight-grid">'
+  h+='<div class="insight-row"><span class="insight-lbl">Full Match</span><span class="insight-val g">'+fullMatch+'</span></div>'
+  h+='<div class="insight-row"><span class="insight-lbl">Context Only</span><span class="insight-val y">'+ctxOnly+'</span></div>'
+  h+='<div class="insight-row"><span class="insight-lbl">Transition Only</span><span class="insight-val b">'+trnOnly+'</span></div>'
+  h+='<div class="insight-row"><span class="insight-lbl">No Signal</span><span class="insight-val n">'+none+'</span></div>'
+  h+='<div class="insight-row"><span class="insight-lbl">RS Positive</span><span class="insight-val '+(rsPos>full/2?'g':'r')+'">'+rsPos+'/'+full+'</span></div>'
+  h+='<div class="insight-row"><span class="insight-lbl">Rerata DD 252d</span><span class="insight-val r">'+avgDD.toFixed(1)+'%</span></div>'
+  h+='<div class="insight-row"><span class="insight-lbl">Rerata Recovery</span><span class="insight-val '+(avgRec>5?'g':avgRec>0?'y':'r')+'">'+avgRec.toFixed(1)+'%</span></div>'
+  h+='<div class="insight-row"><span class="insight-lbl">Rerata Vol 60d</span><span class="insight-val '+(avgVol>4?'r':avgVol>3?'y':'g')+'">'+avgVol.toFixed(2)+'%</span></div>'
+  h+='</div></div>'
+  document.getElementById('insight-turnaround').innerHTML=h
+}})();
+
+/* INSIGHT — Exit Analysis */
+(function(){{
+  var total=EX.length
+  if(total===0){{document.getElementById('insight-exit').innerHTML='';return}}
+  var exitCount=EX.filter(function(d){{return d.exit_state==='EXIT'}}).length
+  var exitRiskCount=EX.filter(function(d){{return d.exit_state==='EXIT RISK'}}).length
+  var weakenCount=EX.filter(function(d){{return d.exit_state==='WEAKENING'}}).length
+  var watchCount=EX.filter(function(d){{return d.exit_state==='EXIT WATCH'}}).length
+  var healthyCount=EX.filter(function(d){{return d.exit_state==='HEALTHY'}}).length
+  var avgRS20=EX.reduce(function(s,d){{return s+d.rs_20d}},0)/total
+  var avgRSchg=EX.reduce(function(s,d){{return s+d.rs_change_20d}},0)/total
+  var ruleCount={{}}
+  EX.forEach(function(d){{
+    if(d.triggered_rules){{
+      d.triggered_rules.split(', ').forEach(function(r){{
+        ruleCount[r]=(ruleCount[r]||0)+1
+      }})
+    }}
+  }})
+  var ruleList=Object.keys(ruleCount).sort(function(a,b){{return ruleCount[b]-ruleCount[a]}})
+  var topRule=ruleList[0]||'—'
+  var h='<div class="insight-card"><div class="insight-hdr"><span class="insight-title">Analisis Exit</span><span class="insight-badge '+(exitCount>=3?'r':exitCount>0?'y':'g')+'">'+exitCount+' EXIT</span></div><div class="insight-grid">'
+  h+='<div class="insight-row"><span class="insight-lbl">EXIT</span><span class="insight-val r">'+exitCount+'</span></div>'
+  h+='<div class="insight-row"><span class="insight-lbl">EXIT RISK</span><span class="insight-val y">'+exitRiskCount+'</span></div>'
+  h+='<div class="insight-row"><span class="insight-lbl">WEAKENING</span><span class="insight-val y">'+weakenCount+'</span></div>'
+  h+='<div class="insight-row"><span class="insight-lbl">WATCH / HEALTHY</span><span class="insight-val g">'+watchCount+' / '+healthyCount+'</span></div>'
+  h+='<div class="insight-row"><span class="insight-lbl">Rerata RS20</span><span class="insight-val '+(avgRS20>0?'g':'r')+'">'+avgRS20.toFixed(1)+'%</span></div>'
+  h+='<div class="insight-row"><span class="insight-lbl">Rerata RS Chg 20D</span><span class="insight-val '+(avgRSchg>0?'g':'r')+'">'+avgRSchg.toFixed(1)+'%</span></div>'
+  h+='<div class="insight-row"><span class="insight-lbl">Rule Terbanyak</span><span class="insight-val">'+topRule+' ('+ruleCount[topRule]+'x)</span></div>'
+  h+='</div></div>'
+  document.getElementById('insight-exit').innerHTML=h
+}})();
 
 function tickerData(t){{
   var ld=null,td=null,ed=null

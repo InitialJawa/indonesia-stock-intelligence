@@ -1,0 +1,93 @@
+# GENERATE_HANDOVER.md
+
+Tujuan:
+
+Membuat handover proyek terbaru berdasarkan kondisi repository dan dokumentasi saat ini.
+
+---
+
+LANGKAH 1
+
+Baca dokumen berikut:
+
+1. docs/MASTER_CHRONICLE_V3.md
+2. docs/RESEARCH_INDEX.md
+3. docs/LESSONS_LEARNED.md
+4. docs/ARCHITECTURE_TREE.md
+
+Jika tersedia:
+
+5. README.md
+6. REPOSITORY_REFACTOR_REPORT.md
+7. REPOSITORY_STATE_REPORT.md
+
+---
+
+LANGKAH 2
+
+Audit repository saat ini.
+
+Identifikasi:
+
+* Sistem produksi aktif
+* Sistem monitoring aktif
+* Dashboard aktif
+* Pipeline aktif
+* Komponen yang diarsipkan
+* Prioritas proyek saat ini
+
+---
+
+LANGKAH 3
+
+Gabungkan hasil pembacaan dokumentasi dan kondisi repository.
+
+Jika terdapat konflik:
+
+Repository aktual lebih diutamakan.
+
+---
+
+LANGKAH 4
+
+Buat file:
+
+PROJECT_HANDOVER.md
+
+Format:
+
+# Status Proyek Saat Ini
+
+# Sistem Produksi Aktif
+
+# Sistem Monitoring Aktif
+
+# Arsitektur Saat Ini
+
+# Temuan Riset Penting
+
+# Pelajaran Penting
+
+# Yang Sudah Dibatalkan
+
+# Prioritas Saat Ini
+
+# Risiko dan Catatan
+
+# Langkah Berikutnya
+
+---
+
+LANGKAH 5
+
+Buat ringkasan singkat maksimal 1 halaman.
+
+Tujuan:
+
+AI lain dapat memahami proyek dalam waktu kurang dari 2 menit.
+
+---
+
+BAHASA
+
+Seluruh output menggunakan Bahasa Indonesia.

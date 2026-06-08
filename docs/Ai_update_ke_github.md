@@ -24,49 +24,7 @@ Wajib:
 6. Update README (jika ada perubahan alur/cara pakai)
 7. Buat laporan perubahan
 
-## STABILIZATION MODE
 
-V3 FREEZE aktif. Artinya:
-
-- Tidak ada fitur baru (kecuali dashboard UX)
-- Tidak ada perubahan Config B
-- Tidak ada perubahan scoring/ranking/pipeline
-- Tidak ada riset baru tanpa persetujuan eksplisit
-- Yang BOLEH: perbaikan UX, dokumentasi, bugfix, monitoring
-
-## Mobile UX — Pendekatan
-
-Dashboard menggunakan 3 breakpoint CSS (tanpa JS):
-
-| Breakpoint | Target |
-|------------|--------|
-| ≤600px | Tablet kecil / phablet |
-| ≤430px | HP sempit (360-430px) |
-| 601-1024px | Tablet landscape |
-
-Tabel di HP: kolom non-esensial disembunyikan via CSS `nth-child`.
-Panel samping: full-width di HP, 400px di desktop.
-Tab-nav: sticky di HP, normal di desktop.
-Touch target: icon `?` 28×28px (HP), 16×16px (desktop).
-Transisi panel: `transform` (bukan `right`) agar smooth di semua ukuran layar.
-
-## Panel KESIMPULAN HARI INI
-
-Selalu muncul di atas tab navigasi. Tidak perlu data tambahan — dihitung
-client-side dari data arrays L, T, EX, SM yang sudah ada.
-
-Logika status (client-side JS):
-- RISIKO MENINGKAT: ≥3 EXIT
-- REVIEW: ≥1 EXIT atau ≥2 EXIT RISK
-- TAHAN: turnaround ≥3 atau drawdown pasar dalam
-- TIDAK ADA AKSI: tidak ada sinyal
-
-## Help System
-
-Semua tooltip menggunakan click-modal (bukan hover).
-`HLP` object di JS berisi semua konten bantuan.
-Format: Apa Artinya? / Mengapa Penting? / Cara Membaca? — bullet points.
-Tidak ada istilah internal (Research-XXX, Context Match, dll) di teks pengguna.
 
 ## Prioritas
 
@@ -80,5 +38,3 @@ ikuti kondisi repository.
 Jangan membuat riset baru tanpa instruksi eksplisit.
 
 Jangan mengubah kesimpulan riset yang sudah tervalidasi.
-
-Jangan memberikan rekomendasi beli/jual di dashboard.

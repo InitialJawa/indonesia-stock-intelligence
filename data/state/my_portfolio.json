@@ -1,0 +1,14 @@
+[
+  {
+    "ticker": "ESSA",
+    "lot": 10,
+    "buy_price": 1850,
+    "buy_date": "2025-06-01"
+  },
+  {
+    "ticker": "BBCA",
+    "lot": 20,
+    "buy_price": 8900,
+    "buy_date": "2025-01-10"
+  }
+]

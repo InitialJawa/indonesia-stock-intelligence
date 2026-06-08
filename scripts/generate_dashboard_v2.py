@@ -167,7 +167,28 @@ tr:hover td{{background:#1a1e24}}
 .bar-track{{height:3px;border-radius:2px;background:#222830;width:50px;overflow:hidden}}
 .bar-fill{{height:100%;border-radius:2px}}
 .bv{{font-size:10px;color:#9CA3AF;font-family:'Space Mono',monospace;min-width:24px;text-align:right}}
-.card-grid{{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:1rem}}
+  document.getElementById('conclusion').innerHTML = h;
+})();
+
+(function(){
+  // Leaders Insight renderer
+  document.getElementById('insight-leaders').innerHTML = '<div class="panel-status portfolio"><b>PIMPINAN PASAR</b></div>';
+})();
+
+(function(){
+  // Top10 Insight renderer
+  document.getElementById('insight-top10').innerHTML = '<div class="panel-status healthy"><b>TOP 10 INSIGHT</b></div>';
+})();
+
+(function(){
+  // Turnaround Insight renderer
+  document.getElementById('insight-turnaround').innerHTML = '<div class="panel-status turnaround"><b>KANDIDAT TURNAROUND</b></div>';
+})();
+
+(function(){
+  // Exit Insight renderer
+  document.getElementById('insight-exit').innerHTML = '<div class="panel-status exit"><b>TEKANAN PASAR</b></div>';
+})();gap:10px;margin-bottom:1rem}}
 .card{{background:#171b20;border:1px solid #222830;border-radius:8px;padding:1rem}}
 .card-label{{font-size:10px;color:#C9D1D9;font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;font-weight:600}}
 .card-val{{font-size:22px;font-weight:700;font-family:'Space Mono',monospace;color:#F5F7FA}}

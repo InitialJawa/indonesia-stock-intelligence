@@ -12,7 +12,6 @@ EXIT_FILE = Path("data/current/exit_watchlist_latest.csv")
 PROFILES_FILE = Path("data/state/company_profiles.json")
 FUND_FILE = Path("output/raw/fundamentals.json")
 GROWTH_FILE = Path("output/raw/growth.json")
-PORTFOLIO_FILE = Path("data/state/my_portfolio.json")
 EXIT_SUMMARY_FILE = Path("data/state/exit_summary.json")
 
 def read_csv(filepath):
@@ -97,81 +96,6 @@ def compute_streaks(history_rows):
         }
     return streaks
 
-def classify_action(rank, exit_status):
-    if rank <= 10:
-        if exit_status == 'EXIT':
-            return 'REVIEW'
-        return 'STRONG HOLD'
-    elif rank <= 20:
-        if exit_status == 'EXIT':
-            return 'TRIM'
-        return 'HOLD'
-    else:
-        if exit_status == 'EXIT':
-            return 'REPLACE CANDIDATE'
-        return 'HOLD'
-
-def enrich_portfolio(portfolio_raw, leaders, exit_data, profiles):
-    today = datetime.datetime.now().date()
-    leader_map = {}
-    for l in leaders:
-        t = l['ticker'].replace('.JK', '')
-        leader_map[t] = l
-    exit_map = {}
-    for e in exit_data:
-        t = e['ticker'].replace('.JK', '')
-        exit_map[t] = e
-    result = []
-    for h in portfolio_raw:
-        ticker = h['ticker']
-        lot = int(h.get('lot', 0))
-        buy_price = float(h.get('buy_price', 0))
-        buy_date_str = h.get('buy_date', '')
-        try:
-            buy_date = datetime.datetime.strptime(buy_date_str, '%Y-%m-%d').date()
-            days_held = (today - buy_date).days
-        except (ValueError, TypeError):
-            days_held = 0
-        ld = leader_map.get(ticker, {})
-        ed = exit_map.get(ticker, {})
-        pf = profiles.get(ticker, {})
-        current_price = buy_price
-        if ed and 'close' in ed and ed['close']:
-            try:
-                current_price = float(ed['close'])
-            except (ValueError, TypeError):
-                pass
-        current_value = lot * 100 * current_price
-        cost_basis = lot * 100 * buy_price
-        unrealized_profit = current_value - cost_basis
-        if buy_price > 0:
-            unrealized_percent = (current_price - buy_price) / buy_price * 100
-        else:
-            unrealized_percent = 0.0
-        rank = int(ld.get('rank', 99)) if ld else 99
-        final_score = float(ld.get('final_score', 0)) if ld else 0
-        exit_status = ed.get('exit_state', 'HEALTHY') if ed else 'HEALTHY'
-        sector = pf.get('sector', '') if pf else ''
-        action = classify_action(rank, exit_status)
-        result.append({
-            'ticker': ticker,
-            'lot': lot,
-            'buy_price': buy_price,
-            'current_price': current_price,
-            'cost_basis': cost_basis,
-            'current_value': current_value,
-            'unrealized_profit': unrealized_profit,
-            'unrealized_percent': round(unrealized_percent, 2),
-            'days_held': days_held,
-            'rank': rank if rank <= 30 else 99,
-            'final_score': round(final_score, 2),
-            'exit_status': exit_status,
-            'sector': sector,
-            'action': action
-        })
-    result.sort(key=lambda x: x['rank'] if x['rank'] > 0 and x['rank'] < 99 else 999)
-    return result
-
 def file_age(path, report_date=None):
     if not path.exists():
         return 'N/A'
@@ -189,7 +113,7 @@ def file_age(path, report_date=None):
     age = datetime.datetime.now() - mtime
     return f"{age.days}d {age.seconds // 3600}h ago" if age.days < 30 else f"{age.days}d ago"
 
-def build_html(leaders, turnaround, summary, history, streaks, report_date, exit_data=None, profiles=None, fundamentals=None, portfolio_data=None):
+def build_html(leaders, turnaround, summary, history, streaks, report_date, exit_data=None, profiles=None, fundamentals=None):
     summary_data = summary if isinstance(summary, dict) else {}
     top_candidates = summary_data.get('top_candidates', [])
     ctx_count = summary_data.get('context_match_count', 0)
@@ -204,7 +128,6 @@ def build_html(leaders, turnaround, summary, history, streaks, report_date, exit
     exit_json = json.dumps(exit_data if exit_data else [])
     profiles_json = json.dumps(profiles if profiles else {})
     fundamentals_json = json.dumps(fundamentals if fundamentals else {})
-    portfolio_json = json.dumps(portfolio_data if portfolio_data else [])
 
     return f'''<!DOCTYPE html>
 <html lang="en">
@@ -323,8 +246,7 @@ tr:hover td{{background:#1a1e24}}
   <button class="tab-btn" onclick="st(2)">03 · Daily Summary</button>
   <button class="tab-btn" onclick="st(3)">04 · History</button>
   <button class="tab-btn" onclick="st(4)">05 · Diagnostics</button>
-  <button class="tab-btn" onclick="st(5)">06 · My Portfolio</button>
-  <button class="tab-btn" onclick="st(6)">07 · Exit Monitor</button>
+  <button class="tab-btn" onclick="st(5)">06 · Exit Monitor</button>
 </div>
 
 <div class="tc active" id="t0">
@@ -413,17 +335,6 @@ tr:hover td{{background:#1a1e24}}
 </div>
 
 <div class="tc" id="t5">
-  <div class="section-title">My Portfolio · Actual Holdings Monitor</div>
-  <div class="card-grid" id="mp-cards"></div>
-  <table>
-    <thead><tr>
-      <th data-key="ticker">Ticker</th><th data-key="lot">Lot</th><th data-key="buy_price">Buy Price</th><th data-key="current_price">Current Price</th><th data-key="unrealized_percent">Gain/Loss %</th><th data-key="unrealized_profit">Gain/Loss Rp</th><th data-key="rank">Rank</th><th data-key="exit_status">Exit Status</th><th data-key="sector">Alignment</th><th data-key="days_held">Days Held</th><th data-key="action">Action</th>
-    </tr></thead>
-    <tbody id="tbody-portfolio"></tbody>
-  </table>
-</div>
-
-<div class="tc" id="t6">
   <div class="section-title">Exit Monitor · Rule-Based Exit Signals</div>
   <div style="margin-bottom:12px;background:#171b20;border:1px solid #222830;border-radius:6px;padding:10px 12px">
     <div style="font-size:9px;font-family:'Space Mono',monospace;color:#9CA3AF;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;font-weight:600">LEGENDA RULE EXIT</div>
@@ -464,9 +375,7 @@ const T={turnaround_json};
 const SM={summary_json};
 const SK={streaks_json};
 const EX={exit_json};
-const MP={portfolio_json};
 
-function fmtRupiah(v){{return (v>=0?'':'−')+'Rp '+Math.abs(v).toLocaleString('id-ID')}}
 function sc(v){{return v>=60?'high':v>=40?'mid':'low'}}
 function bar(v,k){{return '<div class="bar"><div class="bar-track"><div class="bar-fill" style="width:'+Math.min(v,100)+'%;background:'+k+'"></div></div><span class="bv">'+v.toFixed(1)+'</span></div>'}}
 function badge(v,t){{return v?'<span class="badge '+t+'">Yes</span>':'<span class="badge bg-gray">No</span>'}}
@@ -513,7 +422,7 @@ function makeSortable(id,s,fn){{
   var full=L;var s={{key:null,dir:'asc'}}
   function render(d){{
     document.getElementById('tbody-leaders').innerHTML=d.map(function(r){{
-      return '<tr><td class="tk" style="color:#9CA3AF;font-size:11px">'+r.rank+'</td><td class="tk tk-click" data-ticker="'+r.ticker.split('.')[0]+'" style="color:'+ac(r.ticker)+'">'+r.ticker.split('.')[0]+(r.rank<=5?'<span class="flag">★</span>':'')+'</td><td class="sf '+sc(r.final_score)+'">'+r.final_score.toFixed(1)+'</td><td>'+bar(r.quality,'#3b82f6')+'</td><td>'+bar(r.growth,'#10b981')+'</td><td>'+bar(r.value,'#a855f7')+'</td><td>'+bar(r.momentum,'#f59e0b')+'</td><td>'+(r.rank<=5?'<span class="badge bg-green">PORTFOLIO</span>':'<span class="badge bg-gray">WATCH</span>')+'</td></tr>'
+      return '<tr><td class="tk" style="color:#9CA3AF;font-size:11px">'+r.rank+'</td><td class="tk tk-click" data-ticker="'+r.ticker.split('.')[0]+'" style="color:'+ac(r.ticker)+'">'+r.ticker.split('.')[0]+(r.rank<=5?'<span class="flag">★</span>':'')+'</td><td class="sf '+sc(r.final_score)+'">'+r.final_score.toFixed(1)+'</td><td>'+bar(r.quality,'#3b82f6')+'</td><td>'+bar(r.growth,'#10b981')+'</td><td>'+bar(r.value,'#a855f7')+'</td><td>'+bar(r.momentum,'#f59e0b')+'</td><td></td></tr>'
     }}).join('')
   }}
   function refresh(){{render(sortData(full,s))}}
@@ -593,39 +502,7 @@ function makeSortable(id,s,fn){{
   function refresh(){{render(sortData(filtered(),s))}}
   refresh()
   makeSortable('tbody-exit',s,refresh)
-  window.ef=function(v,b){{f=v;document.querySelectorAll('#t6 .tab-btn').forEach(function(x){{x.classList.remove('active')}});b.classList.add('active');refresh()}}
-}})();
-
-(function(){{
-  var full=MP;var s={{key:null,dir:'asc'}}
-  function render(d){{
-    var totalCost=0,totalValue=0,totalPL=0,exitCount=0,top10Count=0
-    d.forEach(function(r){{
-      totalCost+=r.cost_basis
-      totalValue+=r.current_value
-      totalPL+=r.unrealized_profit
-      if(r.exit_status==='EXIT')exitCount++
-      if(r.rank>=1&&r.rank<=10)top10Count++
-    }})
-    var ret=totalCost>0?((totalValue-totalCost)/totalCost*100):0
-    document.getElementById('mp-cards').innerHTML=
-      '<div class="card"><div class="card-label">Total Cost Basis</div><div class="card-val">'+fmtRupiah(totalCost)+'</div><div class="card-sub">Modal awal</div></div>'+
-      '<div class="card"><div class="card-label">Total Current Value</div><div class="card-val">'+fmtRupiah(totalValue)+'</div><div class="card-sub">Nilai saat ini</div></div>'+
-      '<div class="card"><div class="card-label">Total Unrealized P/L</div><div class="card-val'+(totalPL>=0?' g':' r')+'">'+(totalPL>=0?'+':'')+fmtRupiah(totalPL)+'</div><div class="card-sub">Laba/rugi belum terealisasi</div></div>'+
-      '<div class="card"><div class="card-label">Portfolio Return</div><div class="card-val'+(ret>=0?' g':' r')+'">'+(ret>=0?'+':'')+ret.toFixed(2)+'%</div><div class="card-sub">Return keseluruhan</div></div>'+
-      '<div class="card"><div class="card-label">Holdings</div><div class="card-val b">'+d.length+'</div><div class="card-sub">Jumlah saham dimiliki</div></div>'+
-      '<div class="card"><div class="card-label">EXIT Holdings</div><div class="card-val'+(exitCount>0?' r':' b')+'">'+exitCount+'</div><div class="card-sub">Saham dengan status EXIT</div></div>'+
-      '<div class="card"><div class="card-label">Top 10 Holdings</div><div class="card-val g">'+top10Count+'</div><div class="card-sub">Saham di rank 1-10</div></div>'
-    document.getElementById('tbody-portfolio').innerHTML=d.map(function(r){{
-      var ab=r.action==='STRONG HOLD'?'bg-green':r.action==='REVIEW'?'bg-yellow':r.action==='TRIM'?'bg-yellow':r.action==='REPLACE CANDIDATE'?'bg-red':'bg-gray'
-      var eb=r.exit_status==='EXIT'?'bg-red':r.exit_status==='EXIT RISK'?'bg-yellow':r.exit_status==='WEAKENING'?'bg-yellow':r.exit_status==='EXIT WATCH'?'bg-blue':'bg-green'
-      var rnk=r.rank>0&&r.rank<99?'#'+r.rank:'—'
-      return '<tr><td class="tk tk-click" data-ticker="'+r.ticker+'">'+r.ticker+'</td><td>'+r.lot+'</td><td style="font-family:Space Mono,monospace;font-weight:600">'+fmtRupiah(r.buy_price)+'</td><td style="font-family:Space Mono,monospace;font-weight:600">'+fmtRupiah(r.current_price)+'</td><td class="sf '+(r.unrealized_percent>=0?'high':'low')+'">'+(r.unrealized_percent>=0?'+':'')+r.unrealized_percent.toFixed(2)+'%</td><td class="sf '+(r.unrealized_profit>=0?'high':'low')+'">'+(r.unrealized_profit>=0?'+':'')+fmtRupiah(r.unrealized_profit)+'</td><td style="font-family:Space Mono,monospace;color:#9CA3AF">'+rnk+'</td><td><span class="badge '+eb+'">'+r.exit_status+'</span></td><td style="font-size:11px;color:#9CA3AF">'+(r.sector||'—')+'</td><td style="font-family:Space Mono,monospace">'+r.days_held+'d</td><td><span class="badge '+ab+'">'+r.action+'</span></td></tr>'
-    }}).join('')
-  }}
-  function refresh(){{render(sortData(full,s))}}
-  refresh()
-  makeSortable('tbody-portfolio',s,refresh)
+  window.ef=function(v,b){{f=v;document.querySelectorAll('#t5 .tab-btn').forEach(function(x){{x.classList.remove('active')}});b.classList.add('active');refresh()}}
 }})();
 
 function st(i){{document.querySelectorAll('.tab-btn').forEach(function(b,j){{b.classList.toggle('active',j===i)}});document.querySelectorAll('.tc').forEach(function(t,j){{t.classList.toggle('active',j===i)}})}}
@@ -902,18 +779,8 @@ def main():
         print(f"  Loaded {len(fundamentals)} fundamental records")
     else:
         print("  No fundamentals data found — skipping")
-    portfolio_data = []
-    if PORTFOLIO_FILE.exists():
-        portfolio_raw = read_json(PORTFOLIO_FILE)
-        if portfolio_raw:
-            portfolio_data = enrich_portfolio(portfolio_raw, leaders, exit_data, profiles)
-            print(f"  Enriched {len(portfolio_data)} portfolio holdings")
-        else:
-            print("  No portfolio holdings found")
-    else:
-        print("  No my_portfolio.json found — skipping")
     print("  Generating HTML...")
-    html = build_html(leaders, turnaround, summary, history, streaks, report_date, exit_data, profiles, fundamentals, portfolio_data)
+    html = build_html(leaders, turnaround, summary, history, streaks, report_date, exit_data, profiles, fundamentals)
     V2_DIR.mkdir(parents=True, exist_ok=True)
     output_path = V2_DIR / 'index.html'
     with open(output_path, 'w', encoding='utf-8') as f:

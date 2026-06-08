@@ -39,6 +39,12 @@ jobs:
         run: |
           python scripts/generate_exit_watchlist.py
 
+      - name: Run Daily Risk Radar (AI Narrative)
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          python run_daily_risk_radar.py
+
       - name: Generate HTML Dashboard
         run: |
           python scripts/generate_dashboard_v2.py
@@ -47,11 +53,11 @@ jobs:
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add dashboard/index.html scripts/data_fetcher.py scripts/generate_turnaround_watchlist.py scripts/generate_exit_watchlist.py scripts/generate_dashboard_v2.py data/current/ data/state/ database/historical/turnaround_history.csv
+          git add dashboard/index.html scripts/data_fetcher.py scripts/generate_turnaround_watchlist.py scripts/generate_exit_watchlist.py scripts/generate_dashboard_v2.py run_daily_risk_radar.py data/ current/ database/historical/turnaround_history.csv output/daily_radar_status.json
           if git diff --staged --quiet; then
             echo "No changes to commit."
           else
-            git commit -m "feat: daily turnaround watchlist + Dashboard V2 read-only"
+            git commit -m "feat: daily radar + dashboard V2 update"
             git pull --rebase origin main
             git push
           fi

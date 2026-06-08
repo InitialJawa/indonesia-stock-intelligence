@@ -54,7 +54,7 @@ tr:hover td{background:#1a1e24}
 .section-title{font-size:11px;font-family:'Space Mono',monospace;color:#C9D1D9;text-transform:uppercase;letter-spacing:.1em;margin:1rem 0 8px;display:flex;align-items:center;gap:8px}
 .section-title::after{content:'';flex:1;height:1px;background:#222830}
 .flag{color:#f59e0b;font-size:10px;margin-left:4px}
-.tip{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:#222830;color:#9CA3AF;font-size:9px;cursor:pointer;margin-left:5px;font-family:sans-serif;font-weight:400;vertical-align:middle;line-height:1;font-style:normal;letter-spacing:0;transition:all .15s}
+.tip{display:inline-flex;align-items:center;justify-content:center;width:13px;height:13px;border-radius:50%;background:#222830;color:#9CA3AF;font-size:8px;cursor:help;margin-left:5px;font-family:sans-serif;font-weight:400;vertical-align:middle;line-height:1;font-style:normal;letter-spacing:0}
 .tip:hover{background:#333a44;color:#F5F7FA}
 .sortable{cursor:pointer}
 .sortable:hover{color:#F5F7FA}
@@ -62,9 +62,8 @@ tr:hover td{background:#1a1e24}
 .tk-click:hover{color:#93c5fd!important;text-decoration:underline}
 .overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:99;display:none}
 .overlay.show{display:block}
-.panel{position:fixed;top:0;right:0;width:400px;height:100vh;background:#161a20;border-left:1px solid #222830;z-index:100;overflow-y:auto;padding:0;transform:translateX(100%);transition:transform .25s ease}
-.panel.show{transform:translateX(0)}
-.panel-dragging{transition:none!important}
+.panel{position:fixed;top:0;right:-420px;width:400px;height:100vh;background:#161a20;border-left:1px solid #222830;z-index:100;overflow-y:auto;transition:right .25s ease;padding:0}
+.panel.show{right:0}
 .panel-hdr{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem;border-bottom:1px solid #222830;position:sticky;top:0;background:#161a20;z-index:2}
 .panel-hdr .tk{font-size:16px;font-weight:700}
 .panel-hdr .name{font-size:11px;color:#9CA3AF;font-family:'DM Sans',sans-serif;margin-top:2px}
@@ -103,171 +102,25 @@ tr:hover td{background:#1a1e24}
 .align-desc{font-size:11px;color:#9CA3AF;line-height:1.5}
 .panel-bullet{color:#9CA3AF;margin-right:6px}
 .panel-summary{font-size:12px;color:#C9D1D9;line-height:1.6;padding:8px 0}
-
-.help-modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:380px;max-width:90vw;max-height:80vh;background:#161a20;border:1px solid #222830;border-radius:8px;z-index:101;padding:0;display:none;overflow-y:auto}
-.help-modal.show{display:block}
-.help-hdr{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid #222830;position:sticky;top:0;background:#161a20;z-index:2}
-.help-title{font-size:12px;font-weight:700;color:#F5F7FA;font-family:'Space Mono',monospace}
-.help-close{background:transparent;border:none;color:#9CA3AF;font-size:18px;cursor:pointer;padding:2px 8px;border-radius:4px;font-family:'Space Mono',monospace}
-.help-close:hover{background:#222830;color:#F5F7FA}
-.help-body{padding:12px 16px}
-.help-section{margin-bottom:12px}
-.help-section-title{font-size:10px;font-family:'Space Mono',monospace;color:#00c26f;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;font-weight:600}
-.help-body ul{list-style:none;padding:0;margin:0}
-.help-body li{font-size:11px;color:#C9D1D9;padding:3px 0 3px 12px;position:relative;line-height:1.5}
-.help-body li::before{content:'\2022';position:absolute;left:0;color:#9CA3AF}
-
-.conc{margin:0 1.5rem 4px;padding:12px 14px;background:#171b20;border:1px solid #222830;border-radius:8px}
-.conc-hdr{display:flex;align-items:center;gap:10px;margin-bottom:8px}
-.conc-status{font-size:10px;font-family:'Space Mono',monospace;font-weight:700;padding:3px 10px;border-radius:4px;text-transform:uppercase;letter-spacing:.08em}
-.conc-status.s-hijau{background:#052e16;color:#00c26f;border:1px solid #166534}
-.conc-status.s-kuning{background:#2a2411;color:#f59e0b;border:1px solid #665511}
-.conc-status.s-merah{background:#2a1111;color:#ef4444;border:1px solid #661111}
-.conc-status.s-biru{background:#0c1929;color:#60a5fa;border:1px solid #1e3a5f}
-.conc-label{font-size:10px;font-family:'Space Mono',monospace;color:#9CA3AF;letter-spacing:.08em;font-weight:600}
-.conc-body{display:flex;gap:16px;flex-wrap:wrap}
-.conc-col{flex:1;min-width:200px}
-.conc-sub{font-size:9px;font-family:'Space Mono',monospace;color:#C9D1D9;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;font-weight:700}
-.conc-list{list-style:none;padding:0;margin:0}
-.conc-list li{font-size:11px;color:#C9D1D9;padding:2px 0 2px 12px;position:relative;line-height:1.5}
-.conc-list li::before{content:'\2022';position:absolute;left:0;color:#00c26f}
-
-@media(max-width:600px){
-  .hdr{padding:.6rem .75rem;gap:4px}
-  .logo{font-size:10px}
-  .dt{font-size:9px}
-  .tab-nav{padding:.3rem .5rem 0;position:sticky;top:0;z-index:50;background:#0f1115}
-  .tab-btn{padding:14px 8px;font-size:10px;min-height:44px}
-  .tc{padding:.5rem .5rem;overflow-x:auto}
-  .section-title{margin:.6rem 0 6px;font-size:10px}
-  .tip{width:28px;height:28px;font-size:12px;margin-left:6px;position:relative}
-  .tip::before{content:'';position:absolute;top:-8px;left:-8px;right:-8px;bottom:-8px}
-  .card{position:relative}
-  .card .tip{position:absolute;top:6px;right:6px;margin:0}
-  .tk-click{padding:10px 4px}
-  th{top:50px;font-size:10px;padding:8px 5px}
-  td{padding:6px 4px;font-size:12px}
-  .card-grid{grid-template-columns:1fr 1fr;gap:6px;margin-bottom:.5rem}
-  .card{padding:.75rem}
-  .card-label{font-size:10px;margin-bottom:3px}
-  .card-val{font-size:24px}
-  .card-sub{font-size:10px;margin-top:3px}
-  .badge{font-size:10px;padding:3px 8px;min-height:28px;display:inline-flex;align-items:center}
-  .bar{gap:4px}
-  .bv{font-size:9px;min-width:20px}
-  .conc{margin:0 .5rem 2px;padding:12px 14px}
-  .conc-hdr{gap:8px;margin-bottom:6px}
-  .conc-status{font-size:10px;padding:4px 10px}
-  .conc-label{font-size:10px}
-  .conc-body{gap:10px}
-  .conc-col{min-width:140px}
-  .conc-sub{font-size:10px;margin-bottom:3px}
-  .conc-list li{font-size:12px;padding:3px 0 3px 14px}
-  .section-title::after{display:none}
-  #t2 .card-grid:nth-of-type(2){gap:4px}
-  #t2 .card-grid:nth-of-type(2) .card{padding:10px 12px;display:flex;flex-direction:column;justify-content:center;min-height:72px}
-  #t2 .card-grid:nth-of-type(2) .card-label{font-size:8px;margin-bottom:2px}
-  #t2 .card-grid:nth-of-type(2) .card-val{font-size:20px;line-height:1.2}
-  #t2 .card-grid:nth-of-type(2) .card-sub{font-size:8px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#64748b}
-  .panel-hdr{padding:1rem 1rem}
-  .panel-hdr .tk{font-size:20px}
-  .panel-hdr .name{font-size:13px}
-  .panel-close{min-width:44px;min-height:44px;font-size:22px;display:flex;align-items:center;justify-content:center}
-  .panel-body{padding:1rem 1rem}
-  .panel-section-title{font-size:10px;margin-bottom:8px}
-  .panel-row{font-size:13px;padding:8px 0}
-  .panel-status{font-size:12px;padding:10px 14px}
-  .panel-summary{font-size:13px}
-  .fd-item{font-size:12px;padding:6px 0}
-  .interp-row{font-size:12px;padding:5px 0}
-  .interp-conclusion{font-size:12px}
-  .align-card{font-size:13px;padding:12px 14px}
-  .align-title{font-size:13px}
-  .align-desc{font-size:12px}
-  .help-modal{width:90vw;max-height:70vh}
-  .help-title{font-size:12px}
-  .help-section-title{font-size:11px}
-  .help-body li{font-size:12px}
-}
-@media(max-width:430px){
-  .hdr{padding:.5rem .5rem}
-  .tab-nav{gap:2px;padding:.15rem .3rem 0}
-  .tab-btn{padding:12px 5px;font-size:9px;min-height:44px}
-  .tc{padding:.4rem .4rem;overflow-x:auto}
-  .card-grid{grid-template-columns:1fr 1fr;gap:4px}
-  #t2 .card-grid:nth-of-type(2){grid-template-columns:1fr 1fr;gap:3px}
-  .card-val{font-size:22px}
-  .card{padding:.5rem}
-  .section-title{margin:.4rem 0 6px;font-size:10px}
-  .badge{font-size:9px;padding:2px 6px;min-height:24px}
-  .conc{padding:6px 8px;margin:0 .4rem 2px}
-  .conc-status{font-size:9px}
-  .conc-label{font-size:9px}
-  .conc-col{min-width:100%}
-  .conc-sub{font-size:9px}
-  .conc-list li{font-size:11px;padding:2px 0 2px 12px}
-  table{font-size:11px}
-  th{top:47px;font-size:9px;padding:6px 3px}
-  td{padding:5px 3px;font-size:10px}
-  .panel{width:100%;border-left:none;touch-action:pan-y}
-  .panel-body{padding:.75rem}
-  .panel-row{font-size:12px;padding:6px 0}
-  .panel-section-title{font-size:9px}
-  .fd-item{font-size:11px}
-  .interp-row{font-size:11px}
-  #t1 th:nth-child(n+4):nth-child(-n+7),#t1 td:nth-child(n+4):nth-child(-n+7),
-  #t2 table th:nth-child(n+4):nth-child(-n+7),#t2 table td:nth-child(n+4):nth-child(-n+7),
-  #t3 th:nth-child(n+4):nth-child(-n+5),#t3 td:nth-child(n+4):nth-child(-n+5),
-  #t5 th:nth-child(3),#t5 td:nth-child(3),#t5 th:nth-child(n+8):nth-child(-n+10),#t5 td:nth-child(n+8):nth-child(-n+10){display:none}
-  .bar-track{width:24px}
-  .bar{gap:2px}
-  .bv{font-size:8px;min-width:16px}
-  .streak-bar{font-size:9px;padding:2px 6px}
-}
-@media(min-width:601px) and (max-width:1024px){
-  .tc{padding:.6rem 1rem}
-  .card-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}
-  .hdr{padding:.8rem 1rem}
-}
-
-/* Insight Layer */
-.insight-card{background:#171b20;border:1px solid #222830;border-radius:8px;padding:10px 12px;margin-bottom:10px}
-.insight-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid #1a1f26}
-.insight-title{font-size:9px;font-family:'Space Mono',monospace;color:#C9D1D9;text-transform:uppercase;letter-spacing:.08em;font-weight:600}
-.insight-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px 14px}
-.insight-row{display:flex;justify-content:space-between;padding:3px 0;font-size:11px;border-bottom:1px solid #1a1f26}
-.insight-row:last-child{border:none}
-.insight-lbl{color:#9CA3AF}
-.insight-val{font-family:'Space Mono',monospace;font-weight:600;color:#F5F7FA}
-.insight-val.g{color:#00c26f}.insight-val.r{color:#ef4444}.insight-val.y{color:#f59e0b}.insight-val.b{color:#60a5fa}.insight-val.n{color:#9CA3AF}
-.insight-badge{font-size:9px;padding:1px 7px;border-radius:3px;font-family:'Space Mono',monospace;display:inline-block}
-.insight-badge.g{background:#052e16;color:#00c26f;border:1px solid #166534}
-.insight-badge.y{background:#2a2411;color:#f59e0b;border:1px solid #665511}
-.insight-badge.r{background:#2a1111;color:#ef4444;border:1px solid #661111}
-.insight-badge.b{background:#0c1929;color:#60a5fa;border:1px solid #1e3a5f}
-.insight-badge.n{background:#171b20;color:#9CA3AF;border:1px solid #222830}
-.insight-note{font-size:10px;color:#64748b;margin-top:5px;line-height:1.4;padding-top:4px;border-top:1px solid #1a1f26}
 </style>
 </head>
 <body>
 <div class="hdr">
   <div class="logo">ISI <span>·</span> V2 <span>·</span> READ-ONLY DASHBOARD</div>
-  <div class="dt">2026-06-07 11:22 · IDX30</div>
+  <div class="dt">2026-06-08 10:48 · IDX30</div>
 </div>
-<div id="conclusion"></div>
 <div class="tab-nav">
   <button class="tab-btn active" onclick="st(0)">01 · Leaders</button>
   <button class="tab-btn" onclick="st(1)">02 · Turnaround</button>
   <button class="tab-btn" onclick="st(2)">03 · Daily Summary</button>
   <button class="tab-btn" onclick="st(3)">04 · History</button>
   <button class="tab-btn" onclick="st(4)">05 · Diagnostics</button>
-  <button class="tab-btn" onclick="st(5)">06 · Exit Monitor</button>
+  <button class="tab-btn" onclick="st(5)">06 · My Portfolio</button>
+  <button class="tab-btn" onclick="st(6)">07 · Exit Monitor</button>
 </div>
 
 <div class="tc active" id="t0">
-  <div class="section-title">Config B Leaders · Q25/G30/V10/M35<span class="tip" onclick="showHelp('leaders')">?</span></div>
-  <div id="insight-leaders"></div>
-  <div id="insight-top10"></div>
+  <div class="section-title">Config B Leaders · Q25/G30/V10/M35</div>
   <table>
     <thead><tr>
       <th data-key="rank">#</th><th data-key="ticker">Ticker</th><th data-key="final_score">Score</th><th data-key="quality">Quality</th><th data-key="growth">Growth</th><th data-key="value">Value</th><th data-key="momentum">Momentum</th><th>Status</th>
@@ -277,14 +130,13 @@ tr:hover td{background:#1a1e24}
 </div>
 
 <div class="tc" id="t1">
-  <div class="section-title">Turnaround Watchlist<span class="tip" onclick="showHelp('turnaround')">?</span></div>
-  <div id="insight-turnaround"></div>
+  <div class="section-title">Turnaround Watchlist · Context + Transition Signals</div>
   <div style="margin-bottom:10px;display:flex;gap:6px;flex-wrap:wrap">
-    <button class="tab-btn active" onclick="ft('all',this)">All</button>
-    <button class="tab-btn" onclick="ft('full',this)">Full Match</button>
-    <button class="tab-btn" onclick="ft('context',this)">Context Only</button>
-    <button class="tab-btn" onclick="ft('transition',this)">Transition Only</button>
-    <button class="tab-btn" onclick="ft('none',this)">No Signal</button>
+    <button class="tab-btn active" onclick="ft('all',this)" style="font-size:10px;padding:4px 12px">All</button>
+    <button class="tab-btn" onclick="ft('full',this)" style="font-size:10px;padding:4px 12px">Full Match</button>
+    <button class="tab-btn" onclick="ft('context',this)" style="font-size:10px;padding:4px 12px">Context Only</button>
+    <button class="tab-btn" onclick="ft('transition',this)" style="font-size:10px;padding:4px 12px">Transition Only</button>
+    <button class="tab-btn" onclick="ft('none',this)" style="font-size:10px;padding:4px 12px">No Signal</button>
   </div>
   <table>
     <thead><tr>
@@ -297,19 +149,19 @@ tr:hover td{background:#1a1e24}
 <div class="tc" id="t2">
   <div class="section-title">Today's Snapshot</div>
   <div class="card-grid">
-    <div class="card"><div class="card-label">SAHAM TERTEKAN<span class="tip" onclick="showHelp('saham_tertekan')">?</span></div><div class="card-val g">9</div><div class="card-sub">Masih dalam tekanan</div></div>
-    <div class="card"><div class="card-label">MULAI MEMBAIK<span class="tip" onclick="showHelp('mulai_membaik')">?</span></div><div class="card-val y">20</div><div class="card-sub">Kekuatan mulai naik</div></div>
-    <div class="card"><div class="card-label">KANDIDAT TURNAROUND<span class="tip" onclick="showHelp('kandidat_turnaround')">?</span></div><div class="card-val b">4</div><div class="card-sub">Tekanan + pemulihan</div></div>
-    <div class="card"><div class="card-label">Universe</div><div class="card-val">30</div><div class="card-sub">IDX30</div></div>
+    <div class="card"><div class="card-label">SAHAM TERTEKAN<span class="tip" title="What does this mean?&#10;Stock is still under heavy pressure.&#10;&#10;How is it calculated?&#10;Price is far below previous highs&#10;and volatility remains elevated.&#10;&#10;Research Source:&#10;Research-009B">?</span></div><div class="card-val g">9</div><div class="card-sub">Saham yang jatuh berat dan masih dalam kondisi tertekan</div></div>
+    <div class="card"><div class="card-label">MULAI MEMBAIK<span class="tip" title="What does this mean?&#10;Stock is starting to recover.&#10;&#10;How is it calculated?&#10;Current strength is better than it was&#10;during the previous two months.&#10;&#10;Research Source:&#10;Research-008B / Research-009B">?</span></div><div class="card-val y">22</div><div class="card-sub">Saham dengan kekuatan relatif yang mulai meningkat</div></div>
+    <div class="card"><div class="card-label">KANDIDAT TURNAROUND<span class="tip" title="What does this mean?&#10;Distressed stocks that are beginning&#10;to show signs of recovery.&#10;&#10;How is it calculated?&#10;Stock meets BOTH conditions:&#10;1. Under heavy pressure (Context Match)&#10;2. Improving relative strength (Transition Match)&#10;&#10;Research Source:&#10;Research-008B / Research-009B">?</span></div><div class="card-val b">4</div><div class="card-sub">Saham tertekan yang mulai menunjukkan pemulihan</div></div>
+    <div class="card"><div class="card-label">Universe</div><div class="card-val">30</div><div class="card-sub">IDX30 tickers</div></div>
   </div>
   <div class="section-title">Signal Diagnostics</div>
   <div class="card-grid">
-    <div class="card"><div class="card-label">KEKUATAN MULAI NAIK<span class="tip" onclick="showHelp('kekuatan_mulai_naik')">?</span></div><div class="card-val g">20</div><div class="card-sub">Mulai outperform pasar</div></div>
-    <div class="card"><div class="card-label">MINAT BELI MENINGKAT<span class="tip" onclick="showHelp('minat_beli_meningkat')">?</span></div><div class="card-val y">11</div><div class="card-sub">Volume perdagangan tinggi</div></div>
-    <div class="card"><div class="card-label">DI ATAS TREND PENDEK<span class="tip" onclick="showHelp('di_atas_trend_pendek')">?</span></div><div class="card-val">0</div><div class="card-sub">Harga di atas MA20</div></div>
-    <div class="card"><div class="card-label">PANTUL DARI DASAR<span class="tip" onclick="showHelp('pantul_dari_dasar')">?</span></div><div class="card-val g">4</div><div class="card-sub">Pantul &gt;10% dari dasar 60d</div></div>
-    <div class="card"><div class="card-label">RATA-RATA PENURUNAN<span class="tip" onclick="showHelp('rata_penurunan')">?</span></div><div class="card-val r">-36.89%</div><div class="card-sub">Penurunan dari puncak 1th</div></div>
-    <div class="card"><div class="card-label">RATA-RATA GEJOLAK<span class="tip" onclick="showHelp('rata_gejolak')">?</span></div><div class="card-val y">3.14%</div><div class="card-sub">Volatilitas rata-rata 60d</div></div>
+    <div class="card"><div class="card-label">KEKUATAN MULAI NAIK<span class="tip" title="What does this mean?&#10;Stocks starting to outperform the market.&#10;&#10;How is it calculated?&#10;RS_CHANGE_60D &gt; 0&#10;Relative strength improved over 60 days.&#10;&#10;Research Source:&#10;Research-009">?</span></div><div class="card-val g">22</div><div class="card-sub">Saham yang mulai outperform pasar</div></div>
+    <div class="card"><div class="card-label">MINAT BELI MENINGKAT<span class="tip" title="What does this mean?&#10;Trading activity is increasing.&#10;&#10;How is it calculated?&#10;Current volume is at least&#10;30% higher than normal.&#10;&#10;Research Source:&#10;Research-008B">?</span></div><div class="card-val y">13</div><div class="card-sub">Aktivitas perdagangan di atas normal</div></div>
+    <div class="card"><div class="card-label">DI ATAS TREND PENDEK<span class="tip" title="What does this mean?&#10;Price has moved above&#10;its short-term trend.&#10;&#10;How is it calculated?&#10;Current price is above&#10;its average price over&#10;the last 20 trading days.&#10;&#10;Research Source:&#10;Research-009B">?</span></div><div class="card-val">0</div><div class="card-sub">Harga di atas rata-rata 20 hari</div></div>
+    <div class="card"><div class="card-label">PANTUL DARI DASAR<span class="tip" title="What does this mean?&#10;Stock has rebounded from&#10;a recent low.&#10;&#10;How is it calculated?&#10;Price is more than 10%&#10;above the lowest point&#10;of the last 60 trading days.&#10;&#10;Research Source:&#10;Research-008B">?</span></div><div class="card-val g">4</div><div class="card-sub">Memantul &gt;10% dari level terendah 60 hari</div></div>
+    <div class="card"><div class="card-label">RATA-RATA PENURUNAN<span class="tip" title="Rata-rata penurunan semua saham dari harga tertinggi masing-masing.&#10;&#10;(Perhitungan:&#10;Mean Drawdown_252D&#10;— seluruh universe IDX30)">?</span></div><div class="card-val r">-39.61%</div><div class="card-sub">Rata-rata penurunan dari harga tertinggi</div></div>
+    <div class="card"><div class="card-label">RATA-RATA GEJOLAK<span class="tip" title="Intensitas pergerakan harga rata-rata — semakin tinggi semakin berisiko.&#10;&#10;(Perhitungan:&#10;Mean Volatility_60D&#10;— seluruh universe IDX30)">?</span></div><div class="card-val y">3.22%</div><div class="card-sub">Intensitas pergerakan harga rata-rata</div></div>
   </div>
   <div class="section-title">Top Candidates</div>
   <table>
@@ -322,7 +174,7 @@ tr:hover td{background:#1a1e24}
 
 <div class="tc" id="t3">
   <div class="section-title">Candidate Persistence Tracking</div>
-  <p style="font-size:11px;color:#64748b;margin-bottom:10px">Riwayat hari berturut-turut setiap saham dalam status tekanan/pemulihan. Diurutkan berdasarkan total hari aktif.</p>
+  <p style="font-size:11px;color:#64748b;margin-bottom:10px">Consecutive days each ticker has maintained context/transition match. Sorted by total active streak.</p>
   <table>
     <thead><tr>
       <th data-key="ticker">Ticker</th><th data-key="ctx_days">Context Streak</th><th data-key="trn_days">Transition Streak</th><th>First Detected (Ctx)</th><th>First Detected (Trn)</th><th data-key="total_entries">Total Days Tracked</th>
@@ -331,36 +183,8 @@ tr:hover td{background:#1a1e24}
   </table>
 </div>
 
-<div class="tc" id="t5">
-  <div class="section-title">Exit Monitor<span class="tip" onclick="showHelp('exit')">?</span></div>
-  <div id="insight-exit"></div>
-  <div style="margin-bottom:12px;background:#171b20;border:1px solid #222830;border-radius:6px;padding:10px 12px">
-    <div style="font-size:9px;font-family:'Space Mono',monospace;color:#9CA3AF;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;font-weight:600">LEGENDA RULE EXIT</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 12px">
-      <div style="font-size:11px"><span style="display:inline-block;background:#222830;color:#F5F7FA;border-radius:3px;padding:1px 5px;font-family:'Space Mono',monospace;font-weight:700;font-size:10px;margin-right:4px">A</span> Peringkat Turun (Rank &gt; 10)</div>
-      <div style="font-size:11px"><span style="display:inline-block;background:#222830;color:#F5F7FA;border-radius:3px;padding:1px 5px;font-family:'Space Mono',monospace;font-weight:700;font-size:10px;margin-right:4px">B</span> Momentum Melemah (RS20 &lt; 0 &amp; RS Chg 20D &lt; 0)</div>
-      <div style="font-size:11px"><span style="display:inline-block;background:#222830;color:#F5F7FA;border-radius:3px;padding:1px 5px;font-family:'Space Mono',monospace;font-weight:700;font-size:10px;margin-right:4px">C</span> Trend MA50 Rusak (Close &lt; MA50)</div>
-      <div style="font-size:11px"><span style="display:inline-block;background:#222830;color:#F5F7FA;border-radius:3px;padding:1px 5px;font-family:'Space Mono',monospace;font-weight:700;font-size:10px;margin-right:4px">D</span> Pelemahan Terkonfirmasi (Close &lt; MA100 atau DD &gt; 15%)</div>
-    </div>
-  </div>
-  <div style="margin-bottom:10px;display:flex;gap:6px;flex-wrap:wrap">
-    <button class="tab-btn active" onclick="ef('all',this)">All</button>
-    <button class="tab-btn" onclick="ef('EXIT',this)" style="color:#ef4444">Exit</button>
-    <button class="tab-btn" onclick="ef('EXIT RISK',this)" style="color:#f59e0b">Exit Risk</button>
-    <button class="tab-btn" onclick="ef('WEAKENING',this)" style="color:#f97316">Weakening</button>
-    <button class="tab-btn" onclick="ef('EXIT WATCH',this)" style="color:#60a5fa">Exit Watch</button>
-    <button class="tab-btn" onclick="ef('HEALTHY',this)" style="color:#00c26f">Healthy</button>
-  </div>
-  <table>
-    <thead><tr>
-      <th data-key="ticker">Ticker</th><th data-key="rank">Rank</th><th data-key="rank_change">Rank Chg</th><th>Exit State</th><th>Rules</th><th data-key="rs_20d">RS20</th><th data-key="rs_change_20d">RS Chg 20D</th><th>vs MA50</th><th>vs MA100</th><th data-key="drawdown_from_entry">DD Entry</th>
-    </tr></thead>
-    <tbody id="tbody-exit"></tbody>
-  </table>
-</div>
-
 <div class="tc" id="t4">
-  <div class="section-title">Pipeline Diagnostics<span class="tip" onclick="showHelp('diagnostics')">?</span></div>
+  <div class="section-title">Pipeline Diagnostics</div>
   <div class="card-grid">
     <div class="card wide-card">
       <div class="card-label">Pipeline Status</div>
@@ -374,13 +198,51 @@ tr:hover td{background:#1a1e24}
     <div class="card"><div class="card-label">Last Turnaround Update</div><div class="card-val" style="font-size:14px">0d 0h ago</div><div class="card-sub">turnaround_latest.csv</div></div>
     <div class="card"><div class="card-label">Last Exit Update</div><div class="card-val" style="font-size:14px">0d 0h ago</div><div class="card-sub">exit_watchlist_latest.csv</div></div>
     <div class="card"><div class="card-label">Records Processed</div><div class="card-val g">30</div><div class="card-sub">tickers in latest run</div></div>
-    <div class="card"><div class="card-label">Data Freshness</div><div class="card-val g">2026-06-07</div><div class="card-sub">report date</div></div>
-    <div class="card"><div class="card-label">History Records</div><div class="card-val b">30</div><div class="card-sub">turnaround_history.csv</div></div>
+    <div class="card"><div class="card-label">Data Freshness</div><div class="card-val g">2026-06-08</div><div class="card-sub">report date</div></div>
+    <div class="card"><div class="card-label">History Records</div><div class="card-val b">60</div><div class="card-sub">turnaround_history.csv</div></div>
     <div class="card"><div class="card-label">Workflow</div><div class="card-val" style="font-size:13px">daily_radar.yml</div><div class="card-sub">cron: 30 9 * * * (16:30 WIB)</div></div>
   </div>
 </div>
 
-<div class="overlay" id="overlay"></div>
+<div class="tc" id="t5">
+  <div class="section-title">My Portfolio · Actual Holdings Monitor</div>
+  <div class="card-grid" id="mp-cards"></div>
+  <table>
+    <thead><tr>
+      <th data-key="ticker">Ticker</th><th data-key="lot">Lot</th><th data-key="buy_price">Buy Price</th><th data-key="current_price">Current Price</th><th data-key="unrealized_percent">Gain/Loss %</th><th data-key="unrealized_profit">Gain/Loss Rp</th><th data-key="rank">Rank</th><th data-key="exit_status">Exit Status</th><th data-key="sector">Alignment</th><th data-key="days_held">Days Held</th><th data-key="action">Action</th>
+    </tr></thead>
+    <tbody id="tbody-portfolio"></tbody>
+  </table>
+</div>
+
+<div class="tc" id="t6">
+  <div class="section-title">Exit Monitor · Rule-Based Exit Signals</div>
+  <div style="margin-bottom:12px;background:#171b20;border:1px solid #222830;border-radius:6px;padding:10px 12px">
+    <div style="font-size:9px;font-family:'Space Mono',monospace;color:#9CA3AF;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;font-weight:600">LEGENDA RULE EXIT</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 12px">
+      <div style="font-size:11px"><span style="display:inline-block;background:#222830;color:#F5F7FA;border-radius:3px;padding:1px 5px;font-family:'Space Mono',monospace;font-weight:700;font-size:10px;margin-right:4px">A</span> Peringkat Turun (Rank &gt; 10)</div>
+      <div style="font-size:11px"><span style="display:inline-block;background:#222830;color:#F5F7FA;border-radius:3px;padding:1px 5px;font-family:'Space Mono',monospace;font-weight:700;font-size:10px;margin-right:4px">B</span> Momentum Melemah (RS20 &lt; 0 &amp; RS Chg 20D &lt; 0)</div>
+      <div style="font-size:11px"><span style="display:inline-block;background:#222830;color:#F5F7FA;border-radius:3px;padding:1px 5px;font-family:'Space Mono',monospace;font-weight:700;font-size:10px;margin-right:4px">C</span> Trend MA50 Rusak (Close &lt; MA50)</div>
+      <div style="font-size:11px"><span style="display:inline-block;background:#222830;color:#F5F7FA;border-radius:3px;padding:1px 5px;font-family:'Space Mono',monospace;font-weight:700;font-size:10px;margin-right:4px">D</span> Pelemahan Terkonfirmasi (Close &lt; MA100 atau DD &gt; 15%)</div>
+    </div>
+  </div>
+  <div style="margin-bottom:10px;display:flex;gap:6px;flex-wrap:wrap">
+    <button class="tab-btn active" onclick="ef('all',this)" style="font-size:10px;padding:4px 12px">All</button>
+    <button class="tab-btn" onclick="ef('EXIT',this)" style="font-size:10px;padding:4px 12px;color:#ef4444">Exit</button>
+    <button class="tab-btn" onclick="ef('EXIT RISK',this)" style="font-size:10px;padding:4px 12px;color:#f59e0b">Exit Risk</button>
+    <button class="tab-btn" onclick="ef('WEAKENING',this)" style="font-size:10px;padding:4px 12px;color:#f97316">Weakening</button>
+    <button class="tab-btn" onclick="ef('EXIT WATCH',this)" style="font-size:10px;padding:4px 12px;color:#60a5fa">Exit Watch</button>
+    <button class="tab-btn" onclick="ef('HEALTHY',this)" style="font-size:10px;padding:4px 12px;color:#00c26f">Healthy</button>
+  </div>
+  <table>
+    <thead><tr>
+      <th data-key="ticker">Ticker</th><th data-key="rank">Rank</th><th data-key="rank_change">Rank Chg</th><th>Exit State</th><th>Rules</th><th data-key="rs_20d">RS20</th><th data-key="rs_change_20d">RS Chg 20D</th><th>vs MA50</th><th>vs MA100</th><th data-key="drawdown_from_entry">DD Entry</th>
+    </tr></thead>
+    <tbody id="tbody-exit"></tbody>
+  </table>
+</div>
+
+<div class="overlay" id="overlay" onclick="closePanel()"></div>
 <div class="panel" id="panel">
   <div class="panel-hdr">
     <div><div class="tk" id="ptk"></div><div class="name" id="pname"></div></div>
@@ -388,163 +250,15 @@ tr:hover td{background:#1a1e24}
   </div>
   <div class="panel-body" id="pbody"></div>
 </div>
-
-<div class="help-modal" id="help">
-  <div class="help-hdr">
-    <div class="help-title" id="htitle"></div>
-    <button class="help-close" onclick="closeHelp()">✕</button>
-  </div>
-  <div class="help-body" id="hbody"></div>
-</div>
-
 <script>
-const HLP={
-  leaders:'<div class="help-section"><div class="help-section-title">Apa Artinya?</div><ul><li>Peringkat 30 saham IDX30 berdasarkan 4 faktor nilai: Kualitas, Pertumbuhan, Nilai, dan Momentum</li><li>Setiap faktor dihitung secara persentil (0-100) lalu digabung dengan bobot tetap</li></ul></div><div class="help-section"><div class="help-section-title">Mengapa Penting?</div><ul><li>Membantu memilih 5 saham terbaik setiap bulan untuk portofolio</li><li>Sistem ini sudah melalui riset dan pengujian sejak 2019</li></ul></div><div class="help-section"><div class="help-section-title">Cara Membaca?</div><ul><li>Semakin tinggi skor, semakin baik peringkatnya</li><li>Top 5 (label PORTFOLIO) adalah posisi yang saat ini ditempati</li><li>Skor setiap faktor menunjukkan kekuatan di area tersebut</li></ul></div>',
-  turnaround:'<div class="help-section"><div class="help-section-title">Apa Artinya?</div><ul><li>Mendeteksi saham yang mungkin berbalik arah dari tekanan menuju pemulihan</li><li>Saham diperiksa dari dua sisi: apakah masih tertekan dan apakah sudah mulai pulih</li></ul></div><div class="help-section"><div class="help-section-title">Mengapa Penting?</div><ul><li>Menangkap peluang pemulihan lebih awal sebelum harga naik signifikan</li><li>Membantu mengidentifikasi saham yang mungkin akan masuk peringkat teratas</li></ul></div><div class="help-section"><div class="help-section-title">Cara Membaca?</div><ul><li>Status Ctx (tekanan) = YES berarti saham masih dalam tekanan besar</li><li>Status Trn (pemulihan) = YES berarti mulai menunjukkan perbaikan</li><li>Keduanya YES = kandidat terkuat untuk dipantau</li><li>Gunakan filter untuk memfilter berdasarkan status</li></ul></div>',
-  diagnostics:'<div class="help-section"><div class="help-section-title">Apa Artinya?</div><ul><li>Menampilkan status kesehatan sistem dan kesegaran data</li><li>Memastikan pipeline berjalan sesuai jadwal</li></ul></div><div class="help-section"><div class="help-section-title">Mengapa Penting?</div><ul><li>Data yang basi dapat menghasilkan sinyal yang menyesatkan</li><li>Memantau apakah pipeline harian dan bulanan berjalan normal</li></ul></div><div class="help-section"><div class="help-section-title">Cara Membaca?</div><ul><li>Operational = pipeline berjalan normal</li><li>File ages menunjukkan waktu sejak data terakhir diperbarui</li><li>Jika lebih dari 24 jam (harian) atau 35 hari (bulanan), ada masalah</li></ul></div>',
-  exit:'<div class="help-section"><div class="help-section-title">Apa Artinya?</div><ul><li>Sistem aturan untuk mendeteksi saham yang perlu diwaspadai atau dikeluarkan dari portofolio</li><li>Menggunakan 4 tingkat peringatan: A (awal) hingga D (keluar)</li></ul></div><div class="help-section"><div class="help-section-title">Mengapa Penting?</div><ul><li>Melindungi portofolio dari penurunan lebih dalam</li><li>Memberikan sinyal objektif kapan harus waspada, bukan keputusan emosional</li></ul></div><div class="help-section"><div class="help-section-title">Cara Membaca?</div><ul><li>HEALTHY = tidak ada masalah</li><li>EXIT WATCH (A) = peringkat turun di luar 10 besar, waspada</li><li>WEAKENING (B) = momentum melemah, perlu perhatian</li><li>EXIT RISK (C) = trend rusak, risiko meningkat</li><li>EXIT (D) = pelemahan terkonfirmasi, sinyal keluar</li></ul></div>',
-  saham_tertekan:'<div class="help-section"><div class="help-section-title">Apa Artinya?</div><ul><li>Saham masih berada dalam tekanan besar</li><li>Jauh dari harga tertinggi sebelumnya</li><li>Belum menunjukkan pemulihan yang kuat</li></ul></div><div class="help-section"><div class="help-section-title">Mengapa Penting?</div><ul><li>Menjadi sumber kandidat turnaround</li><li>Menunjukkan area pasar yang masih lemah</li></ul></div><div class="help-section"><div class="help-section-title">Cara Membaca?</div><ul><li>Angka lebih tinggi = lebih banyak saham tertekan</li><li>Angka lebih rendah = tekanan pasar berkurang</li></ul></div>',
-  mulai_membaik:'<div class="help-section"><div class="help-section-title">Apa Artinya?</div><ul><li>Saham yang kekuatan relatifnya mulai meningkat</li><li>Dibanding dua bulan sebelumnya, performa saham ini membaik</li></ul></div><div class="help-section"><div class="help-section-title">Mengapa Penting?</div><ul><li>Bisa menjadi sinyal awal pemulihan pasar</li><li>Menunjukkan minat investor mulai kembali</li></ul></div><div class="help-section"><div class="help-section-title">Cara Membaca?</div><ul><li>Angka lebih tinggi = semakin banyak saham pulih</li><li>Jika angka terus meningkat, pasar memasuki fase pemulihan</li></ul></div>',
-  kandidat_turnaround:'<div class="help-section"><div class="help-section-title">Apa Artinya?</div><ul><li>Saham yang memenuhi dua syarat: masih tertekan dan mulai menunjukkan pemulihan</li><li>Ini adalah kandidat yang berpotensi berbalik arah</li></ul></div><div class="help-section"><div class="help-section-title">Mengapa Penting?</div><ul><li>Menangkap peluang pemulihan lebih awal</li><li>Bisa menjadi tambahan portofolio jika pemulihan berlanjut</li></ul></div><div class="help-section"><div class="help-section-title">Cara Membaca?</div><ul><li>Bukan sinyal beli otomatis, tetapi radar untuk dipantau</li><li>Semakin tinggi angka, semakin banyak peluang potensial</li></ul></div>',
-  kekuatan_mulai_naik:'<div class="help-section"><div class="help-section-title">Apa Artinya?</div><ul><li>Jumlah saham yang mulai mengungguli pergerakan pasar</li><li>Menunjukkan perubahan momentum secara luas</li></ul></div><div class="help-section"><div class="help-section-title">Mengapa Penting?</div><ul><li>Mendeteksi pemulihan pasar lebih awal</li><li>Jika jumlahnya meningkat, pasar sedang menguat</li></ul></div><div class="help-section"><div class="help-section-title">Cara Membaca?</div><ul><li>Angka lebih tinggi = pemulihan semakin meluas</li><li>Angka rendah = hanya sedikit saham yang menguat</li></ul></div>',
-  minat_beli_meningkat:'<div class="help-section"><div class="help-section-title">Apa Artinya?</div><ul><li>Volume perdagangan minimal 30% lebih tinggi dari normal</li><li>Menunjukkan aktivitas investor di atas rata-rata</li></ul></div><div class="help-section"><div class="help-section-title">Mengapa Penting?</div><ul><li>Volume tinggi bisa memperkuat sinyal pergerakan harga</li><li>Volume tinggi + harga naik = minat beli nyata</li><li>Volume tinggi + harga turun = bisa distribusi</li></ul></div><div class="help-section"><div class="help-section-title">Cara Membaca?</div><ul><li>Angka lebih tinggi = semakin banyak saham dengan volume tinggi</li><li>Perhatikan arah harga saat volume meningkat</li></ul></div>',
-  di_atas_trend_pendek:'<div class="help-section"><div class="help-section-title">Apa Artinya?</div><ul><li>Harga saham di atas rata-rata 20 hari terakhir</li><li>Menunjukkan tren jangka pendek yang positif</li></ul></div><div class="help-section"><div class="help-section-title">Mengapa Penting?</div><ul><li>Mengonfirmasi momentum naik jangka pendek</li><li>Saham yang konsisten di atas MA20 biasanya sehat</li></ul></div><div class="help-section"><div class="help-section-title">Cara Membaca?</div><ul><li>Angka lebih tinggi = semakin banyak saham di atas MA20</li><li>Jika mendekati 0, pasar sedang lemah</li><li>Ini indikator jangka pendek, kombinasikan dengan indikator lain</li></ul></div>',
-  pantul_dari_dasar:'<div class="help-section"><div class="help-section-title">Apa Artinya?</div><ul><li>Saham yang naik lebih dari 10% dari titik terendah 60 hari</li><li>Menunjukkan usaha pemulihan setelah penurunan</li></ul></div><div class="help-section"><div class="help-section-title">Mengapa Penting?</div><ul><li>Mengonfirmasi bahwa saham mulai bangkit</li><li>Semakin banyak yang memantul, semakin besar potensi pemulihan pasar</li></ul></div><div class="help-section"><div class="help-section-title">Cara Membaca?</div><ul><li>Angka lebih tinggi = semakin banyak saham pulih</li><li>Gunakan bersama indikator volume dan kekuatan relatif</li></ul></div>',
-  rata_penurunan:'<div class="help-section"><div class="help-section-title">Apa Artinya?</div><ul><li>Rata-rata penurunan semua saham IDX30 dari harga tertinggi 1 tahun</li><li>Gambaran kesehatan pasar secara keseluruhan</li></ul></div><div class="help-section"><div class="help-section-title">Mengapa Penting?</div><ul><li>Mengetahui apakah pasar sedang dalam tekanan luas</li><li>Membantu mengatur ekspektasi risiko</li></ul></div><div class="help-section"><div class="help-section-title">Cara Membaca?</div><ul><li>Di atas -15% = pasar relatif sehat</li><li>-15% hingga -30% = waspada</li><li>Di bawah -30% = tekanan luas</li></ul></div>',
-  rata_gejolak:'<div class="help-section"><div class="help-section-title">Apa Artinya?</div><ul><li>Rata-rata intensitas pergerakan harga seluruh IDX30 dalam 60 hari</li><li>Mengukur tingkat ketidakpastian pasar</li></ul></div><div class="help-section"><div class="help-section-title">Mengapa Penting?</div><ul><li>Volatilitas tinggi = pergerakan harga lebih ekstrem</li><li>Membantu menyesuaikan strategi dan ekspektasi risiko</li></ul></div><div class="help-section"><div class="help-section-title">Cara Membaca?</div><ul><li>Di bawah 2% = pasar tenang</li><li>2% hingga 4% = normal</li><li>Di atas 4% = volatilitas tinggi, risiko meningkat</li></ul></div>'
-}
 const L=[{"rank": "1", "ticker": "ADRO.JK", "quality": 53.77, "growth": 86.21, "value": 62.07, "momentum": 92.97, "final_score": 78.05}, {"rank": "2", "ticker": "ESSA.JK", "quality": 64.65, "growth": 96.55, "value": 26.9, "momentum": 81.14, "final_score": 76.22}, {"rank": "3", "ticker": "PTBA.JK", "quality": 49.96, "growth": 93.1, "value": 55.86, "momentum": 81.98, "final_score": 74.7}, {"rank": "4", "ticker": "MAPI.JK", "quality": 44.85, "growth": 72.41, "value": 26.55, "momentum": 87.46, "final_score": 66.2}, {"rank": "5", "ticker": "BMRI.JK", "quality": 77.59, "growth": 68.97, "value": 77.58, "momentum": 52.06, "final_score": 66.07}, {"rank": "6", "ticker": "CPIN.JK", "quality": 63.88, "growth": 82.76, "value": 47.59, "momentum": 53.61, "final_score": 64.32}, {"rank": "7", "ticker": "PGAS.JK", "quality": 35.81, "growth": 75.86, "value": 52.07, "momentum": 74.81, "final_score": 63.1}, {"rank": "8", "ticker": "ANTM.JK", "quality": 50.62, "growth": 79.31, "value": 38.97, "momentum": 62.28, "final_score": 62.14}, {"rank": "9", "ticker": "AKRA.JK", "quality": 49.14, "growth": 65.52, "value": 34.83, "momentum": 70.14, "final_score": 59.97}, {"rank": "10", "ticker": "BBRI.JK", "quality": 71.21, "growth": 62.07, "value": 75.86, "momentum": 41.84, "final_score": 58.65}, {"rank": "11", "ticker": "BRPT.JK", "quality": 41.83, "growth": 100.0, "value": 9.48, "momentum": 49.26, "final_score": 58.65}, {"rank": "12", "ticker": "BBNI.JK", "quality": 53.96, "growth": 55.17, "value": 83.45, "momentum": 55.21, "final_score": 57.71}, {"rank": "13", "ticker": "INDF.JK", "quality": 50.49, "growth": 58.62, "value": 74.83, "momentum": 55.98, "final_score": 57.28}, {"rank": "14", "ticker": "EXCL.JK", "quality": 18.62, "growth": 34.48, "value": 66.55, "momentum": 85.0, "final_score": 51.4}, {"rank": "15", "ticker": "INTP.JK", "quality": 47.44, "growth": 48.28, "value": 86.21, "momentum": 39.3, "final_score": 48.72}, {"rank": "16", "ticker": "MDKA.JK", "quality": 12.34, "growth": 34.48, "value": 40.17, "momentum": 87.43, "final_score": 48.05}, {"rank": "17", "ticker": "ITMG.JK", "quality": 45.77, "growth": 13.79, "value": 57.24, "momentum": 72.51, "final_score": 46.68}, {"rank": "18", "ticker": "ASII.JK", "quality": 53.52, "growth": 17.24, "value": 77.59, "momentum": 55.78, "final_score": 45.83}, {"rank": "19", "ticker": "BBCA.JK", "quality": 80.35, "growth": 44.83, "value": 30.34, "momentum": 18.94, "final_score": 43.2}, {"rank": "20", "ticker": "TLKM.JK", "quality": 62.2, "growth": 6.9, "value": 28.96, "momentum": 64.46, "final_score": 43.08}, {"rank": "21", "ticker": "SMGR.JK", "quality": 31.59, "growth": 89.66, "value": 38.28, "momentum": 11.01, "final_score": 42.48}, {"rank": "22", "ticker": "MIKA.JK", "quality": 73.92, "growth": 51.72, "value": 17.93, "momentum": 11.83, "final_score": 39.93}, {"rank": "23", "ticker": "UNTR.JK", "quality": 50.34, "growth": 0.0, "value": 61.38, "momentum": 58.2, "final_score": 39.09}, {"rank": "24", "ticker": "ICBP.JK", "quality": 59.0, "growth": 24.14, "value": 48.96, "momentum": 33.97, "final_score": 38.78}, {"rank": "25", "ticker": "SIDO.JK", "quality": 82.3, "growth": 3.45, "value": 37.24, "momentum": 31.45, "final_score": 36.34}, {"rank": "26", "ticker": "GOTO.JK", "quality": 16.44, "growth": 34.48, "value": 51.55, "momentum": 34.66, "final_score": 31.74}, {"rank": "27", "ticker": "KLBF.JK", "quality": 62.6, "growth": 20.69, "value": 45.86, "momentum": 10.26, "final_score": 30.03}, {"rank": "28", "ticker": "TPIA.JK", "quality": 50.22, "growth": 34.48, "value": 54.48, "momentum": 0.78, "final_score": 28.62}, {"rank": "29", "ticker": "AMMN.JK", "quality": 41.71, "growth": 34.48, "value": 9.48, "momentum": 3.14, "final_score": 22.82}, {"rank": "30", "ticker": "HEAL.JK", "quality": 19.05, "growth": 10.34, "value": 14.83, "momentum": 14.2, "final_score": 14.32}];
-const T=[{"rank": "1", "ticker": "CPIN.JK", "drawdown_252d": -32.31, "distance_from_high_252d": -32.31, "volatility_60d": 3.09, "rs_change_60d": 31.91, "volume_ratio": 1.53, "recovery_from_60d_low": 1.05, "context_match": true, "transition_match": true}, {"rank": "2", "ticker": "BRPT.JK", "drawdown_252d": -65.42, "distance_from_high_252d": -65.42, "volatility_60d": 8.09, "rs_change_60d": 63.3, "volume_ratio": 0.8, "recovery_from_60d_low": 18.4, "context_match": true, "transition_match": true}, {"rank": "3", "ticker": "ASII.JK", "drawdown_252d": -35.12, "distance_from_high_252d": -35.12, "volatility_60d": 3.3, "rs_change_60d": 10.58, "volume_ratio": 0.87, "recovery_from_60d_low": 0.0, "context_match": true, "transition_match": true}, {"rank": "4", "ticker": "EXCL.JK", "drawdown_252d": -40.98, "distance_from_high_252d": -40.98, "volatility_60d": 4.0, "rs_change_60d": 12.97, "volume_ratio": 0.67, "recovery_from_60d_low": 3.52, "context_match": true, "transition_match": true}, {"rank": "5", "ticker": "MDKA.JK", "drawdown_252d": -34.77, "distance_from_high_252d": -34.77, "volatility_60d": 5.32, "rs_change_60d": -60.43, "volume_ratio": 1.23, "recovery_from_60d_low": 17.89, "context_match": true, "transition_match": false}, {"rank": "6", "ticker": "ANTM.JK", "drawdown_252d": -42.23, "distance_from_high_252d": -42.23, "volatility_60d": 3.59, "rs_change_60d": -59.31, "volume_ratio": 1.38, "recovery_from_60d_low": 5.36, "context_match": true, "transition_match": false}, {"rank": "7", "ticker": "AMMN.JK", "drawdown_252d": -62.61, "distance_from_high_252d": -62.61, "volatility_60d": 5.89, "rs_change_60d": -25.32, "volume_ratio": 1.13, "recovery_from_60d_low": 13.45, "context_match": true, "transition_match": false}, {"rank": "8", "ticker": "TPIA.JK", "drawdown_252d": -87.54, "distance_from_high_252d": -87.54, "volatility_60d": 8.0, "rs_change_60d": -26.36, "volume_ratio": 5.66, "recovery_from_60d_low": 0.0, "context_match": true, "transition_match": false}, {"rank": "9", "ticker": "ESSA.JK", "drawdown_252d": -39.06, "distance_from_high_252d": -39.06, "volatility_60d": 4.24, "rs_change_60d": -13.09, "volume_ratio": 0.68, "recovery_from_60d_low": 0.0, "context_match": true, "transition_match": false}, {"rank": "10", "ticker": "MAPI.JK", "drawdown_252d": -1.33, "distance_from_high_252d": -1.33, "volatility_60d": 3.46, "rs_change_60d": 53.32, "volume_ratio": 0.98, "recovery_from_60d_low": 37.5, "context_match": false, "transition_match": true}, {"rank": "11", "ticker": "AKRA.JK", "drawdown_252d": -20.78, "distance_from_high_252d": -20.78, "volatility_60d": 2.54, "rs_change_60d": 18.15, "volume_ratio": 1.69, "recovery_from_60d_low": 3.31, "context_match": false, "transition_match": true}, {"rank": "12", "ticker": "BMRI.JK", "drawdown_252d": -22.23, "distance_from_high_252d": -22.23, "volatility_60d": 1.92, "rs_change_60d": 4.12, "volume_ratio": 1.41, "recovery_from_60d_low": 0.0, "context_match": false, "transition_match": true}, {"rank": "13", "ticker": "ITMG.JK", "drawdown_252d": -24.23, "distance_from_high_252d": -24.23, "volatility_60d": 2.94, "rs_change_60d": 7.65, "volume_ratio": 1.73, "recovery_from_60d_low": 0.0, "context_match": false, "transition_match": true}, {"rank": "14", "ticker": "BBNI.JK", "drawdown_252d": -24.67, "distance_from_high_252d": -24.67, "volatility_60d": 2.3, "rs_change_60d": 10.05, "volume_ratio": 1.92, "recovery_from_60d_low": 0.0, "context_match": false, "transition_match": true}, {"rank": "15", "ticker": "ICBP.JK", "drawdown_252d": -40.0, "distance_from_high_252d": -40.0, "volatility_60d": 2.08, "rs_change_60d": 22.52, "volume_ratio": 1.42, "recovery_from_60d_low": 0.0, "context_match": false, "transition_match": true}, {"rank": "16", "ticker": "INTP.JK", "drawdown_252d": -40.16, "distance_from_high_252d": -40.16, "volatility_60d": 2.2, "rs_change_60d": 16.66, "volume_ratio": 1.69, "recovery_from_60d_low": 0.0, "context_match": false, "transition_match": true}, {"rank": "17", "ticker": "BBCA.JK", "drawdown_252d": -41.57, "distance_from_high_252d": -41.57, "volatility_60d": 2.21, "rs_change_60d": 18.69, "volume_ratio": 2.3, "recovery_from_60d_low": 0.0, "context_match": false, "transition_match": true}, {"rank": "18", "ticker": "BBRI.JK", "drawdown_252d": -28.78, "distance_from_high_252d": -28.78, "volatility_60d": 2.03, "rs_change_60d": 0.96, "volume_ratio": 1.21, "recovery_from_60d_low": 0.0, "context_match": false, "transition_match": true}, {"rank": "19", "ticker": "INDF.JK", "drawdown_252d": -29.03, "distance_from_high_252d": -29.03, "volatility_60d": 1.92, "rs_change_60d": 37.34, "volume_ratio": 1.3, "recovery_from_60d_low": 2.54, "context_match": false, "transition_match": true}, {"rank": "20", "ticker": "GOTO.JK", "drawdown_252d": -29.58, "distance_from_high_252d": -29.58, "volatility_60d": 2.0, "rs_change_60d": 25.46, "volume_ratio": 0.14, "recovery_from_60d_low": 0.0, "context_match": false, "transition_match": true}, {"rank": "21", "ticker": "TLKM.JK", "drawdown_252d": -29.95, "distance_from_high_252d": -29.95, "volatility_60d": 2.4, "rs_change_60d": 11.59, "volume_ratio": 0.75, "recovery_from_60d_low": 0.0, "context_match": false, "transition_match": true}, {"rank": "22", "ticker": "SIDO.JK", "drawdown_252d": -33.64, "distance_from_high_252d": -33.64, "volatility_60d": 1.77, "rs_change_60d": 4.96, "volume_ratio": 0.58, "recovery_from_60d_low": 0.0, "context_match": false, "transition_match": true}, {"rank": "23", "ticker": "MIKA.JK", "drawdown_252d": -43.1, "distance_from_high_252d": -43.1, "volatility_60d": 2.12, "rs_change_60d": 14.85, "volume_ratio": 0.89, "recovery_from_60d_low": 0.0, "context_match": false, "transition_match": true}, {"rank": "24", "ticker": "HEAL.JK", "drawdown_252d": -53.99, "distance_from_high_252d": -53.99, "volatility_60d": 2.31, "rs_change_60d": 1.12, "volume_ratio": 0.54, "recovery_from_60d_low": 0.0, "context_match": false, "transition_match": true}, {"rank": "25", "ticker": "KLBF.JK", "drawdown_252d": -55.34, "distance_from_high_252d": -55.34, "volatility_60d": 1.84, "rs_change_60d": 12.67, "volume_ratio": 0.86, "recovery_from_60d_low": 0.0, "context_match": false, "transition_match": true}, {"rank": "26", "ticker": "PGAS.JK", "drawdown_252d": -33.07, "distance_from_high_252d": -33.07, "volatility_60d": 2.75, "rs_change_60d": -34.76, "volume_ratio": 2.21, "recovery_from_60d_low": 0.0, "context_match": false, "transition_match": false}, {"rank": "27", "ticker": "ADRO.JK", "drawdown_252d": -13.85, "distance_from_high_252d": -13.85, "volatility_60d": 2.56, "rs_change_60d": -22.42, "volume_ratio": 0.71, "recovery_from_60d_low": 2.75, "context_match": false, "transition_match": false}, {"rank": "28", "ticker": "PTBA.JK", "drawdown_252d": -18.55, "distance_from_high_252d": -18.55, "volatility_60d": 2.49, "rs_change_60d": -7.83, "volume_ratio": 0.92, "recovery_from_60d_low": 0.0, "context_match": false, "transition_match": false}, {"rank": "29", "ticker": "UNTR.JK", "drawdown_252d": -32.29, "distance_from_high_252d": -32.29, "volatility_60d": 2.13, "rs_change_60d": -0.57, "volume_ratio": 1.06, "recovery_from_60d_low": 0.0, "context_match": false, "transition_match": false}, {"rank": "30", "ticker": "SMGR.JK", "drawdown_252d": -50.64, "distance_from_high_252d": -50.64, "volatility_60d": 2.84, "rs_change_60d": -5.53, "volume_ratio": 0.6, "recovery_from_60d_low": 0.0, "context_match": false, "transition_match": false}];
-const SM={"date": "2026-06-07", "universe_size": 30, "context_match_count": 9, "transition_match_count": 20, "full_match_count": 4, "context_classification": {"deep_drawdown": ["CPIN.JK", "BRPT.JK", "ASII.JK", "EXCL.JK", "MDKA.JK", "ANTM.JK", "AMMN.JK", "TPIA.JK", "ESSA.JK", "ICBP.JK", "INTP.JK", "BBCA.JK", "BBRI.JK", "INDF.JK", "GOTO.JK", "TLKM.JK", "SIDO.JK", "MIKA.JK", "HEAL.JK", "KLBF.JK", "PGAS.JK", "UNTR.JK", "SMGR.JK"], "far_from_high": ["CPIN.JK", "BRPT.JK", "ASII.JK", "EXCL.JK", "MDKA.JK", "ANTM.JK", "AMMN.JK", "TPIA.JK", "ESSA.JK", "AKRA.JK", "BMRI.JK", "ITMG.JK", "BBNI.JK", "ICBP.JK", "INTP.JK", "BBCA.JK", "BBRI.JK", "INDF.JK", "GOTO.JK", "TLKM.JK", "SIDO.JK", "MIKA.JK", "HEAL.JK", "KLBF.JK", "PGAS.JK", "UNTR.JK", "SMGR.JK"], "high_volatility": ["CPIN.JK", "BRPT.JK", "ASII.JK", "EXCL.JK", "MDKA.JK", "ANTM.JK", "AMMN.JK", "TPIA.JK", "ESSA.JK", "MAPI.JK"]}, "signal_diagnostics": {"rs_change_60d_positive_count": 20, "volume_ratio_high_count": 11, "above_ma20_count": 0, "recovery_gt_10pct_count": 4, "avg_drawdown_252d": -36.89, "avg_volatility_60d": 3.14}, "top_candidates": [{"ticker": "CPIN.JK", "drawdown": -32.31, "distance_from_high": -32.31, "volatility": 3.09, "rs_change_60d": 31.91, "volume_ratio": 1.53, "recovery": 1.05, "context_match": true, "transition_match": true, "full_match": true, "confirmation_count": 1}, {"ticker": "BRPT.JK", "drawdown": -65.42, "distance_from_high": -65.42, "volatility": 8.09, "rs_change_60d": 63.3, "volume_ratio": 0.8, "recovery": 18.4, "context_match": true, "transition_match": true, "full_match": true, "confirmation_count": 1}, {"ticker": "ASII.JK", "drawdown": -35.12, "distance_from_high": -35.12, "volatility": 3.3, "rs_change_60d": 10.58, "volume_ratio": 0.87, "recovery": 0.0, "context_match": true, "transition_match": true, "full_match": true, "confirmation_count": 0}, {"ticker": "EXCL.JK", "drawdown": -40.98, "distance_from_high": -40.98, "volatility": 4.0, "rs_change_60d": 12.97, "volume_ratio": 0.67, "recovery": 3.52, "context_match": true, "transition_match": true, "full_match": true, "confirmation_count": 0}, {"ticker": "MDKA.JK", "drawdown": -34.77, "distance_from_high": -34.77, "volatility": 5.32, "rs_change_60d": -60.43, "volume_ratio": 1.23, "recovery": 17.89, "context_match": true, "transition_match": false, "full_match": false, "confirmation_count": 1}, {"ticker": "ANTM.JK", "drawdown": -42.23, "distance_from_high": -42.23, "volatility": 3.59, "rs_change_60d": -59.31, "volume_ratio": 1.38, "recovery": 5.36, "context_match": true, "transition_match": false, "full_match": false, "confirmation_count": 1}, {"ticker": "AMMN.JK", "drawdown": -62.61, "distance_from_high": -62.61, "volatility": 5.89, "rs_change_60d": -25.32, "volume_ratio": 1.13, "recovery": 13.45, "context_match": true, "transition_match": false, "full_match": false, "confirmation_count": 1}, {"ticker": "TPIA.JK", "drawdown": -87.54, "distance_from_high": -87.54, "volatility": 8.0, "rs_change_60d": -26.36, "volume_ratio": 5.66, "recovery": 0.0, "context_match": true, "transition_match": false, "full_match": false, "confirmation_count": 1}, {"ticker": "ESSA.JK", "drawdown": -39.06, "distance_from_high": -39.06, "volatility": 4.24, "rs_change_60d": -13.09, "volume_ratio": 0.68, "recovery": 0.0, "context_match": true, "transition_match": false, "full_match": false, "confirmation_count": 0}, {"ticker": "MAPI.JK", "drawdown": -1.33, "distance_from_high": -1.33, "volatility": 3.46, "rs_change_60d": 53.32, "volume_ratio": 0.98, "recovery": 37.5, "context_match": false, "transition_match": true, "full_match": false, "confirmation_count": 1}]};
-const SK={"CPIN.JK": {"ctx_days": 1, "trn_days": 1, "first_ctx": "2026-06-07", "first_trn": "2026-06-07", "total_entries": 1}, "BRPT.JK": {"ctx_days": 1, "trn_days": 1, "first_ctx": "2026-06-07", "first_trn": "2026-06-07", "total_entries": 1}, "ASII.JK": {"ctx_days": 1, "trn_days": 1, "first_ctx": "2026-06-07", "first_trn": "2026-06-07", "total_entries": 1}, "EXCL.JK": {"ctx_days": 1, "trn_days": 1, "first_ctx": "2026-06-07", "first_trn": "2026-06-07", "total_entries": 1}, "MDKA.JK": {"ctx_days": 1, "trn_days": 0, "first_ctx": "2026-06-07", "first_trn": "-", "total_entries": 1}, "ANTM.JK": {"ctx_days": 1, "trn_days": 0, "first_ctx": "2026-06-07", "first_trn": "-", "total_entries": 1}, "AMMN.JK": {"ctx_days": 1, "trn_days": 0, "first_ctx": "2026-06-07", "first_trn": "-", "total_entries": 1}, "TPIA.JK": {"ctx_days": 1, "trn_days": 0, "first_ctx": "2026-06-07", "first_trn": "-", "total_entries": 1}, "ESSA.JK": {"ctx_days": 1, "trn_days": 0, "first_ctx": "2026-06-07", "first_trn": "-", "total_entries": 1}, "MAPI.JK": {"ctx_days": 0, "trn_days": 1, "first_ctx": "-", "first_trn": "2026-06-07", "total_entries": 1}, "AKRA.JK": {"ctx_days": 0, "trn_days": 1, "first_ctx": "-", "first_trn": "2026-06-07", "total_entries": 1}, "BMRI.JK": {"ctx_days": 0, "trn_days": 1, "first_ctx": "-", "first_trn": "2026-06-07", "total_entries": 1}, "ITMG.JK": {"ctx_days": 0, "trn_days": 1, "first_ctx": "-", "first_trn": "2026-06-07", "total_entries": 1}, "BBNI.JK": {"ctx_days": 0, "trn_days": 1, "first_ctx": "-", "first_trn": "2026-06-07", "total_entries": 1}, "ICBP.JK": {"ctx_days": 0, "trn_days": 1, "first_ctx": "-", "first_trn": "2026-06-07", "total_entries": 1}, "INTP.JK": {"ctx_days": 0, "trn_days": 1, "first_ctx": "-", "first_trn": "2026-06-07", "total_entries": 1}, "BBCA.JK": {"ctx_days": 0, "trn_days": 1, "first_ctx": "-", "first_trn": "2026-06-07", "total_entries": 1}, "BBRI.JK": {"ctx_days": 0, "trn_days": 1, "first_ctx": "-", "first_trn": "2026-06-07", "total_entries": 1}, "INDF.JK": {"ctx_days": 0, "trn_days": 1, "first_ctx": "-", "first_trn": "2026-06-07", "total_entries": 1}, "GOTO.JK": {"ctx_days": 0, "trn_days": 1, "first_ctx": "-", "first_trn": "2026-06-07", "total_entries": 1}, "TLKM.JK": {"ctx_days": 0, "trn_days": 1, "first_ctx": "-", "first_trn": "2026-06-07", "total_entries": 1}, "SIDO.JK": {"ctx_days": 0, "trn_days": 1, "first_ctx": "-", "first_trn": "2026-06-07", "total_entries": 1}, "MIKA.JK": {"ctx_days": 0, "trn_days": 1, "first_ctx": "-", "first_trn": "2026-06-07", "total_entries": 1}, "HEAL.JK": {"ctx_days": 0, "trn_days": 1, "first_ctx": "-", "first_trn": "2026-06-07", "total_entries": 1}, "KLBF.JK": {"ctx_days": 0, "trn_days": 1, "first_ctx": "-", "first_trn": "2026-06-07", "total_entries": 1}, "PGAS.JK": {"ctx_days": 0, "trn_days": 0, "first_ctx": "-", "first_trn": "-", "total_entries": 1}, "ADRO.JK": {"ctx_days": 0, "trn_days": 0, "first_ctx": "-", "first_trn": "-", "total_entries": 1}, "PTBA.JK": {"ctx_days": 0, "trn_days": 0, "first_ctx": "-", "first_trn": "-", "total_entries": 1}, "UNTR.JK": {"ctx_days": 0, "trn_days": 0, "first_ctx": "-", "first_trn": "-", "total_entries": 1}, "SMGR.JK": {"ctx_days": 0, "trn_days": 0, "first_ctx": "-", "first_trn": "-", "total_entries": 1}};
-const EX=[{"Date": "2026-06-07", "ticker": "ESSA.JK", "rank": 2, "rank_change": 0, "close": 585.0, "rs_20d": -9.51, "rs_change_20d": -27.26, "ma20": 719.75, "ma50": 769.9, "ma100": 718.55, "drawdown_from_entry": 0.0, "exit_state": "EXIT", "triggered_rules": "B, C, D"}, {"Date": "2026-06-07", "ticker": "ANTM.JK", "rank": 8, "rank_change": -1, "close": 2750.0, "rs_20d": -9.55, "rs_change_20d": -16.46, "ma20": 3135.5, "ma50": 3536.2, "ma100": 3786.4, "drawdown_from_entry": 0.0, "exit_state": "EXIT", "triggered_rules": "B, C, D"}, {"Date": "2026-06-07", "ticker": "AKRA.JK", "rank": 9, "rank_change": -4, "close": 1220.0, "rs_20d": -1.2, "rs_change_20d": -17.21, "ma20": 1356.5, "ma50": 1386.48, "ma100": 1313.02, "drawdown_from_entry": 0.0, "exit_state": "EXIT", "triggered_rules": "B, C, D"}, {"Date": "2026-06-07", "ticker": "BRPT.JK", "rank": 11, "rank_change": 0, "close": 1480.0, "rs_20d": -11.9, "rs_change_20d": -37.45, "ma20": 1813.5, "ma50": 1858.1, "ma100": 2043.65, "drawdown_from_entry": 0.0, "exit_state": "EXIT", "triggered_rules": "A, B, C, D"}, {"Date": "2026-06-07", "ticker": "MDKA.JK", "rank": 16, "rank_change": 0, "close": 2570.0, "rs_20d": -0.11, "rs_change_20d": -0.25, "ma20": 2637.0, "ma50": 3016.2, "ma100": 3114.9, "drawdown_from_entry": 0.0, "exit_state": "EXIT", "triggered_rules": "A, B, C, D"}, {"Date": "2026-06-07", "ticker": "ASII.JK", "rank": 18, "rank_change": 0, "close": 4570.0, "rs_20d": -2.3, "rs_change_20d": -4.59, "ma20": 5440.75, "ma50": 5723.35, "ma100": 5998.77, "drawdown_from_entry": 0.0, "exit_state": "EXIT", "triggered_rules": "A, B, C, D"}, {"Date": "2026-06-07", "ticker": "UNTR.JK", "rank": 23, "rank_change": 0, "close": 21250.0, "rs_20d": -8.51, "rs_change_20d": -10.08, "ma20": 24703.75, "ma50": 27875.7, "ma100": 27992.24, "drawdown_from_entry": 0.0, "exit_state": "EXIT", "triggered_rules": "A, B, C, D"}, {"Date": "2026-06-07", "ticker": "SIDO.JK", "rank": 25, "rank_change": 0, "close": 364.0, "rs_20d": -4.59, "rs_change_20d": -2.83, "ma20": 413.4, "ma50": 464.55, "ma100": 489.22, "drawdown_from_entry": 0.0, "exit_state": "EXIT", "triggered_rules": "A, B, C, D"}, {"Date": "2026-06-07", "ticker": "TPIA.JK", "rank": 28, "rank_change": 0, "close": 1305.0, "rs_20d": -57.55, "rs_change_20d": -88.51, "ma20": 2875.18, "ma50": 4439.02, "ma100": 5491.96, "drawdown_from_entry": 0.0, "exit_state": "EXIT", "triggered_rules": "A, B, C, D"}, {"Date": "2026-06-07", "ticker": "ADRO.JK", "rank": 1, "rank_change": 0, "close": 2240.0, "rs_20d": 9.18, "rs_change_20d": -2.4, "ma20": 2357.5, "ma50": 2391.4, "ma100": 2267.36, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "C"}, {"Date": "2026-06-07", "ticker": "PTBA.JK", "rank": 3, "rank_change": 1, "close": 2590.0, "rs_20d": 9.51, "rs_change_20d": 5.64, "ma20": 2778.0, "ma50": 2883.2, "ma100": 2745.3, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "C"}, {"Date": "2026-06-07", "ticker": "BMRI.JK", "rank": 5, "rank_change": 5, "close": 3840.0, "rs_20d": 9.67, "rs_change_20d": 7.15, "ma20": 4142.15, "ma50": 4201.71, "ma100": 4382.24, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "C"}, {"Date": "2026-06-07", "ticker": "CPIN.JK", "rank": 6, "rank_change": 0, "close": 3380.0, "rs_20d": 3.39, "rs_change_20d": 6.23, "ma20": 3961.93, "ma50": 4012.35, "ma100": 4045.47, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "C"}, {"Date": "2026-06-07", "ticker": "PGAS.JK", "rank": 7, "rank_change": 0, "close": 1520.0, "rs_20d": 4.76, "rs_change_20d": -3.6, "ma20": 1697.04, "ma50": 1722.12, "ma100": 1852.04, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "C"}, {"Date": "2026-06-07", "ticker": "BBRI.JK", "rank": 10, "rank_change": -1, "close": 2740.0, "rs_20d": 2.36, "rs_change_20d": -6.32, "ma20": 3053.5, "ma50": 3116.44, "ma100": 3319.86, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "C"}, {"Date": "2026-06-07", "ticker": "BBNI.JK", "rank": 12, "rank_change": 0, "close": 3210.0, "rs_20d": 0.23, "rs_change_20d": -8.23, "ma20": 3763.0, "ma50": 3771.4, "ma100": 3915.57, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-07", "ticker": "INDF.JK", "rank": 13, "rank_change": 0, "close": 6050.0, "rs_20d": 4.49, "rs_change_20d": -5.82, "ma20": 6713.75, "ma50": 6710.5, "ma100": 6660.25, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-07", "ticker": "EXCL.JK", "rank": 14, "rank_change": -6, "close": 2650.0, "rs_20d": 1.62, "rs_change_20d": -5.07, "ma20": 2875.0, "ma50": 2984.6, "ma100": 3176.7, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-07", "ticker": "INTP.JK", "rank": 15, "rank_change": 0, "close": 4050.0, "rs_20d": 5.18, "rs_change_20d": 1.53, "ma20": 4471.76, "ma50": 4650.39, "ma100": 5263.85, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-07", "ticker": "ITMG.JK", "rank": 17, "rank_change": 0, "close": 21900.0, "rs_20d": 5.46, "rs_change_20d": 0.92, "ma20": 23122.5, "ma50": 25017.9, "ma100": 23702.69, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-07", "ticker": "BBCA.JK", "rank": 19, "rank_change": 0, "close": 5075.0, "rs_20d": 1.1, "rs_change_20d": 5.71, "ma20": 5911.25, "ma50": 6185.83, "ma100": 6668.39, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-07", "ticker": "TLKM.JK", "rank": 20, "rank_change": 0, "close": 2760.0, "rs_20d": 13.78, "rs_change_20d": 17.89, "ma20": 2981.0, "ma50": 3013.8, "ma100": 3230.9, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-07", "ticker": "SMGR.JK", "rank": 21, "rank_change": 0, "close": 1555.0, "rs_20d": -6.96, "rs_change_20d": 0.29, "ma20": 1845.2, "ma50": 2110.56, "ma100": 2382.07, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-07", "ticker": "MIKA.JK", "rank": 22, "rank_change": 0, "close": 1525.0, "rs_20d": -0.58, "rs_change_20d": 5.73, "ma20": 1728.25, "ma50": 1928.0, "ma100": 2116.8, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-07", "ticker": "ICBP.JK", "rank": 24, "rank_change": 0, "close": 6450.0, "rs_20d": 9.47, "rs_change_20d": 10.96, "ma20": 6828.75, "ma50": 7017.5, "ma100": 7470.0, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-07", "ticker": "GOTO.JK", "rank": 26, "rank_change": 0, "close": 50.0, "rs_20d": 19.58, "rs_change_20d": 20.26, "ma20": 50.0, "ma50": 51.42, "ma100": 56.32, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-07", "ticker": "KLBF.JK", "rank": 27, "rank_change": 0, "close": 695.0, "rs_20d": -1.02, "rs_change_20d": 4.44, "ma20": 789.75, "ma50": 862.99, "ma100": 972.89, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-07", "ticker": "AMMN.JK", "rank": 29, "rank_change": 0, "close": 3290.0, "rs_20d": -9.52, "rs_change_20d": 3.33, "ma20": 3440.5, "ma50": 4495.4, "ma100": 5811.35, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-07", "ticker": "HEAL.JK", "rank": 30, "rank_change": 0, "close": 800.0, "rs_20d": -2.37, "rs_change_20d": 11.12, "ma20": 959.25, "ma50": 1094.12, "ma100": 1210.2, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-07", "ticker": "MAPI.JK", "rank": 4, "rank_change": -1, "close": 1485.0, "rs_20d": 34.25, "rs_change_20d": 32.98, "ma20": 1488.5, "ma50": 1349.6, "ma100": 1281.2, "drawdown_from_entry": 0.0, "exit_state": "HEALTHY", "triggered_rules": "NONE"}];
+const T=[{"rank": "1", "ticker": "BRPT.JK", "drawdown_252d": -67.64, "distance_from_high_252d": -67.64, "volatility_60d": 8.14, "rs_change_60d": 68.96, "volume_ratio": 0.81, "recovery_from_60d_low": 10.8, "context_match": true, "transition_match": true}, {"rank": "2", "ticker": "CPIN.JK", "drawdown_252d": -36.92, "distance_from_high_252d": -36.92, "volatility_60d": 3.22, "rs_change_60d": 43.66, "volume_ratio": 1.17, "recovery_from_60d_low": 0.0, "context_match": true, "transition_match": true}, {"rank": "3", "ticker": "ASII.JK", "drawdown_252d": -38.11, "distance_from_high_252d": -38.11, "volatility_60d": 3.32, "rs_change_60d": 9.77, "volume_ratio": 1.13, "recovery_from_60d_low": 0.0, "context_match": true, "transition_match": true}, {"rank": "4", "ticker": "EXCL.JK", "drawdown_252d": -45.66, "distance_from_high_252d": -45.66, "volatility_60d": 4.13, "rs_change_60d": 13.89, "volume_ratio": 0.98, "recovery_from_60d_low": 0.0, "context_match": true, "transition_match": true}, {"rank": "5", "ticker": "TPIA.JK", "drawdown_252d": -84.68, "distance_from_high_252d": -84.68, "volatility_60d": 8.63, "rs_change_60d": -10.43, "volume_ratio": 2.28, "recovery_from_60d_low": 22.99, "context_match": true, "transition_match": false}, {"rank": "6", "ticker": "MDKA.JK", "drawdown_252d": -38.58, "distance_from_high_252d": -38.58, "volatility_60d": 5.3, "rs_change_60d": -46.16, "volume_ratio": 0.88, "recovery_from_60d_low": 11.01, "context_match": true, "transition_match": false}, {"rank": "7", "ticker": "ANTM.JK", "drawdown_252d": -46.85, "distance_from_high_252d": -46.85, "volatility_60d": 3.7, "rs_change_60d": -41.21, "volume_ratio": 1.39, "recovery_from_60d_low": 0.0, "context_match": true, "transition_match": false}, {"rank": "8", "ticker": "ESSA.JK", "drawdown_252d": -41.15, "distance_from_high_252d": -41.15, "volatility_60d": 4.18, "rs_change_60d": -13.19, "volume_ratio": 1.14, "recovery_from_60d_low": 0.0, "context_match": true, "transition_match": false}, {"rank": "9", "ticker": "AMMN.JK", "drawdown_252d": -64.2, "distance_from_high_252d": -64.2, "volatility_60d": 5.88, "rs_change_60d": -11.17, "volume_ratio": 0.77, "recovery_from_60d_low": 8.62, "context_match": true, "transition_match": false}, {"rank": "10", "ticker": "MAPI.JK", "drawdown_252d": -1.33, "distance_from_high_252d": -1.33, "volatility_60d": 3.46, "rs_change_60d": 65.67, "volume_ratio": 0.98, "recovery_from_60d_low": 37.5, "context_match": false, "transition_match": true}, {"rank": "11", "ticker": "ITMG.JK", "drawdown_252d": -24.32, "distance_from_high_252d": -24.32, "volatility_60d": 2.89, "rs_change_60d": 8.66, "volume_ratio": 1.59, "recovery_from_60d_low": 0.0, "context_match": false, "transition_match": true}, {"rank": "12", "ticker": "AKRA.JK", "drawdown_252d": -24.35, "distance_from_high_252d": -24.35, "volatility_60d": 2.57, "rs_change_60d": 30.42, "volume_ratio": 1.67, "recovery_from_60d_low": 0.0, "context_match": false, "transition_match": true}, {"rank": "13", "ticker": "BMRI.JK", "drawdown_252d": -24.86, "distance_from_high_252d": -24.86, "volatility_60d": 1.91, "rs_change_60d": 8.33, "volume_ratio": 1.66, "recovery_from_60d_low": 0.0, "context_match": false, "transition_match": true}, {"rank": "14", "ticker": "BBNI.JK", "drawdown_252d": -29.37, "distance_from_high_252d": -29.37, "volatility_60d": 2.39, "rs_change_60d": 14.28, "volume_ratio": 2.94, "recovery_from_60d_low": 0.0, "context_match": false, "transition_match": true}, {"rank": "15", "ticker": "INDF.JK", "drawdown_252d": -30.5, "distance_from_high_252d": -30.5, "volatility_60d": 1.93, "rs_change_60d": 45.17, "volume_ratio": 1.83, "recovery_from_60d_low": 0.42, "context_match": false, "transition_match": true}, {"rank": "16", "ticker": "BBRI.JK", "drawdown_252d": -32.68, "distance_from_high_252d": -32.68, "volatility_60d": 2.11, "rs_change_60d": 2.17, "volume_ratio": 2.32, "recovery_from_60d_low": 0.0, "context_match": false, "transition_match": true}, {"rank": "17", "ticker": "TLKM.JK", "drawdown_252d": -40.36, "distance_from_high_252d": -40.36, "volatility_60d": 3.05, "rs_change_60d": 17.53, "volume_ratio": 2.19, "recovery_from_60d_low": 0.0, "context_match": false, "transition_match": true}, {"rank": "18", "ticker": "INTP.JK", "drawdown_252d": -40.9, "distance_from_high_252d": -40.9, "volatility_60d": 2.2, "rs_change_60d": 18.68, "volume_ratio": 1.43, "recovery_from_60d_low": 0.0, "context_match": false, "transition_match": true}, {"rank": "19", "ticker": "BBCA.JK", "drawdown_252d": -44.16, "distance_from_high_252d": -44.16, "volatility_60d": 2.22, "rs_change_60d": 23.01, "volume_ratio": 2.6, "recovery_from_60d_low": 0.0, "context_match": false, "transition_match": true}, {"rank": "20", "ticker": "SMGR.JK", "drawdown_252d": -52.87, "distance_from_high_252d": -52.87, "volatility_60d": 2.7, "rs_change_60d": 4.99, "volume_ratio": 1.71, "recovery_from_60d_low": 0.0, "context_match": false, "transition_match": true}, {"rank": "21", "ticker": "GOTO.JK", "drawdown_252d": -29.58, "distance_from_high_252d": -29.58, "volatility_60d": 2.0, "rs_change_60d": 34.41, "volume_ratio": 0.13, "recovery_from_60d_low": 0.0, "context_match": false, "transition_match": true}, {"rank": "22", "ticker": "UNTR.JK", "drawdown_252d": -33.48, "distance_from_high_252d": -33.48, "volatility_60d": 2.1, "rs_change_60d": 3.27, "volume_ratio": 1.06, "recovery_from_60d_low": 0.0, "context_match": false, "transition_match": true}, {"rank": "23", "ticker": "SIDO.JK", "drawdown_252d": -35.47, "distance_from_high_252d": -35.47, "volatility_60d": 1.79, "rs_change_60d": 5.59, "volume_ratio": 0.65, "recovery_from_60d_low": 0.0, "context_match": false, "transition_match": true}, {"rank": "24", "ticker": "ICBP.JK", "drawdown_252d": -44.19, "distance_from_high_252d": -44.19, "volatility_60d": 2.26, "rs_change_60d": 23.05, "volume_ratio": 0.79, "recovery_from_60d_low": 0.0, "context_match": false, "transition_match": true}, {"rank": "25", "ticker": "MIKA.JK", "drawdown_252d": -46.46, "distance_from_high_252d": -46.46, "volatility_60d": 2.22, "rs_change_60d": 13.56, "volume_ratio": 0.75, "recovery_from_60d_low": 0.0, "context_match": false, "transition_match": true}, {"rank": "26", "ticker": "HEAL.JK", "drawdown_252d": -55.71, "distance_from_high_252d": -55.71, "volatility_60d": 2.33, "rs_change_60d": 2.43, "volume_ratio": 0.67, "recovery_from_60d_low": 0.0, "context_match": false, "transition_match": true}, {"rank": "27", "ticker": "KLBF.JK", "drawdown_252d": -57.13, "distance_from_high_252d": -57.13, "volatility_60d": 1.86, "rs_change_60d": 14.9, "volume_ratio": 0.93, "recovery_from_60d_low": 0.0, "context_match": false, "transition_match": true}, {"rank": "28", "ticker": "PGAS.JK", "drawdown_252d": -38.8, "distance_from_high_252d": -38.8, "volatility_60d": 2.91, "rs_change_60d": -29.28, "volume_ratio": 2.67, "recovery_from_60d_low": 0.0, "context_match": false, "transition_match": false}, {"rank": "29", "ticker": "ADRO.JK", "drawdown_252d": -16.54, "distance_from_high_252d": -16.54, "volatility_60d": 2.58, "rs_change_60d": -15.85, "volume_ratio": 0.64, "recovery_from_60d_low": 0.0, "context_match": false, "transition_match": false}, {"rank": "30", "ticker": "PTBA.JK", "drawdown_252d": -21.38, "distance_from_high_252d": -21.38, "volatility_60d": 2.47, "rs_change_60d": -5.71, "volume_ratio": 1.21, "recovery_from_60d_low": 0.0, "context_match": false, "transition_match": false}];
+const SM={"date": "2026-06-08", "universe_size": 30, "context_match_count": 9, "transition_match_count": 22, "full_match_count": 4, "context_classification": {"deep_drawdown": ["BRPT.JK", "CPIN.JK", "ASII.JK", "EXCL.JK", "TPIA.JK", "MDKA.JK", "ANTM.JK", "ESSA.JK", "AMMN.JK", "BBNI.JK", "INDF.JK", "BBRI.JK", "TLKM.JK", "INTP.JK", "BBCA.JK", "SMGR.JK", "GOTO.JK", "UNTR.JK", "SIDO.JK", "ICBP.JK", "MIKA.JK", "HEAL.JK", "KLBF.JK", "PGAS.JK"], "far_from_high": ["BRPT.JK", "CPIN.JK", "ASII.JK", "EXCL.JK", "TPIA.JK", "MDKA.JK", "ANTM.JK", "ESSA.JK", "AMMN.JK", "ITMG.JK", "AKRA.JK", "BMRI.JK", "BBNI.JK", "INDF.JK", "BBRI.JK", "TLKM.JK", "INTP.JK", "BBCA.JK", "SMGR.JK", "GOTO.JK", "UNTR.JK", "SIDO.JK", "ICBP.JK", "MIKA.JK", "HEAL.JK", "KLBF.JK", "PGAS.JK", "PTBA.JK"], "high_volatility": ["BRPT.JK", "CPIN.JK", "ASII.JK", "EXCL.JK", "TPIA.JK", "MDKA.JK", "ANTM.JK", "ESSA.JK", "AMMN.JK", "MAPI.JK"]}, "signal_diagnostics": {"rs_change_60d_positive_count": 22, "volume_ratio_high_count": 13, "above_ma20_count": 0, "recovery_gt_10pct_count": 4, "avg_drawdown_252d": -39.61, "avg_volatility_60d": 3.22}, "top_candidates": [{"ticker": "BRPT.JK", "drawdown": -67.64, "distance_from_high": -67.64, "volatility": 8.14, "rs_change_60d": 68.96, "volume_ratio": 0.81, "recovery": 10.8, "context_match": true, "transition_match": true, "full_match": true, "confirmation_count": 1}, {"ticker": "CPIN.JK", "drawdown": -36.92, "distance_from_high": -36.92, "volatility": 3.22, "rs_change_60d": 43.66, "volume_ratio": 1.17, "recovery": 0.0, "context_match": true, "transition_match": true, "full_match": true, "confirmation_count": 0}, {"ticker": "ASII.JK", "drawdown": -38.11, "distance_from_high": -38.11, "volatility": 3.32, "rs_change_60d": 9.77, "volume_ratio": 1.13, "recovery": 0.0, "context_match": true, "transition_match": true, "full_match": true, "confirmation_count": 0}, {"ticker": "EXCL.JK", "drawdown": -45.66, "distance_from_high": -45.66, "volatility": 4.13, "rs_change_60d": 13.89, "volume_ratio": 0.98, "recovery": 0.0, "context_match": true, "transition_match": true, "full_match": true, "confirmation_count": 0}, {"ticker": "TPIA.JK", "drawdown": -84.68, "distance_from_high": -84.68, "volatility": 8.63, "rs_change_60d": -10.43, "volume_ratio": 2.28, "recovery": 22.99, "context_match": true, "transition_match": false, "full_match": false, "confirmation_count": 2}, {"ticker": "MDKA.JK", "drawdown": -38.58, "distance_from_high": -38.58, "volatility": 5.3, "rs_change_60d": -46.16, "volume_ratio": 0.88, "recovery": 11.01, "context_match": true, "transition_match": false, "full_match": false, "confirmation_count": 1}, {"ticker": "ANTM.JK", "drawdown": -46.85, "distance_from_high": -46.85, "volatility": 3.7, "rs_change_60d": -41.21, "volume_ratio": 1.39, "recovery": 0.0, "context_match": true, "transition_match": false, "full_match": false, "confirmation_count": 1}, {"ticker": "ESSA.JK", "drawdown": -41.15, "distance_from_high": -41.15, "volatility": 4.18, "rs_change_60d": -13.19, "volume_ratio": 1.14, "recovery": 0.0, "context_match": true, "transition_match": false, "full_match": false, "confirmation_count": 0}, {"ticker": "AMMN.JK", "drawdown": -64.2, "distance_from_high": -64.2, "volatility": 5.88, "rs_change_60d": -11.17, "volume_ratio": 0.77, "recovery": 8.62, "context_match": true, "transition_match": false, "full_match": false, "confirmation_count": 0}, {"ticker": "MAPI.JK", "drawdown": -1.33, "distance_from_high": -1.33, "volatility": 3.46, "rs_change_60d": 65.67, "volume_ratio": 0.98, "recovery": 37.5, "context_match": false, "transition_match": true, "full_match": false, "confirmation_count": 1}]};
+const SK={"CPIN.JK": {"ctx_days": 2, "trn_days": 2, "first_ctx": "2026-06-07", "first_trn": "2026-06-07", "total_entries": 2}, "BRPT.JK": {"ctx_days": 2, "trn_days": 2, "first_ctx": "2026-06-07", "first_trn": "2026-06-07", "total_entries": 2}, "ASII.JK": {"ctx_days": 2, "trn_days": 2, "first_ctx": "2026-06-07", "first_trn": "2026-06-07", "total_entries": 2}, "EXCL.JK": {"ctx_days": 2, "trn_days": 2, "first_ctx": "2026-06-07", "first_trn": "2026-06-07", "total_entries": 2}, "MDKA.JK": {"ctx_days": 2, "trn_days": 0, "first_ctx": "2026-06-07", "first_trn": "-", "total_entries": 2}, "ANTM.JK": {"ctx_days": 2, "trn_days": 0, "first_ctx": "2026-06-07", "first_trn": "-", "total_entries": 2}, "AMMN.JK": {"ctx_days": 2, "trn_days": 0, "first_ctx": "2026-06-07", "first_trn": "-", "total_entries": 2}, "TPIA.JK": {"ctx_days": 2, "trn_days": 0, "first_ctx": "2026-06-07", "first_trn": "-", "total_entries": 2}, "ESSA.JK": {"ctx_days": 2, "trn_days": 0, "first_ctx": "2026-06-07", "first_trn": "-", "total_entries": 2}, "MAPI.JK": {"ctx_days": 0, "trn_days": 2, "first_ctx": "-", "first_trn": "2026-06-07", "total_entries": 2}, "AKRA.JK": {"ctx_days": 0, "trn_days": 2, "first_ctx": "-", "first_trn": "2026-06-07", "total_entries": 2}, "BMRI.JK": {"ctx_days": 0, "trn_days": 2, "first_ctx": "-", "first_trn": "2026-06-07", "total_entries": 2}, "ITMG.JK": {"ctx_days": 0, "trn_days": 2, "first_ctx": "-", "first_trn": "2026-06-07", "total_entries": 2}, "BBNI.JK": {"ctx_days": 0, "trn_days": 2, "first_ctx": "-", "first_trn": "2026-06-07", "total_entries": 2}, "ICBP.JK": {"ctx_days": 0, "trn_days": 2, "first_ctx": "-", "first_trn": "2026-06-07", "total_entries": 2}, "INTP.JK": {"ctx_days": 0, "trn_days": 2, "first_ctx": "-", "first_trn": "2026-06-07", "total_entries": 2}, "BBCA.JK": {"ctx_days": 0, "trn_days": 2, "first_ctx": "-", "first_trn": "2026-06-07", "total_entries": 2}, "BBRI.JK": {"ctx_days": 0, "trn_days": 2, "first_ctx": "-", "first_trn": "2026-06-07", "total_entries": 2}, "INDF.JK": {"ctx_days": 0, "trn_days": 2, "first_ctx": "-", "first_trn": "2026-06-07", "total_entries": 2}, "GOTO.JK": {"ctx_days": 0, "trn_days": 2, "first_ctx": "-", "first_trn": "2026-06-07", "total_entries": 2}, "TLKM.JK": {"ctx_days": 0, "trn_days": 2, "first_ctx": "-", "first_trn": "2026-06-07", "total_entries": 2}, "SIDO.JK": {"ctx_days": 0, "trn_days": 2, "first_ctx": "-", "first_trn": "2026-06-07", "total_entries": 2}, "MIKA.JK": {"ctx_days": 0, "trn_days": 2, "first_ctx": "-", "first_trn": "2026-06-07", "total_entries": 2}, "HEAL.JK": {"ctx_days": 0, "trn_days": 2, "first_ctx": "-", "first_trn": "2026-06-07", "total_entries": 2}, "KLBF.JK": {"ctx_days": 0, "trn_days": 2, "first_ctx": "-", "first_trn": "2026-06-07", "total_entries": 2}, "PGAS.JK": {"ctx_days": 0, "trn_days": 0, "first_ctx": "-", "first_trn": "-", "total_entries": 2}, "ADRO.JK": {"ctx_days": 0, "trn_days": 0, "first_ctx": "-", "first_trn": "-", "total_entries": 2}, "PTBA.JK": {"ctx_days": 0, "trn_days": 0, "first_ctx": "-", "first_trn": "-", "total_entries": 2}, "UNTR.JK": {"ctx_days": 0, "trn_days": 0, "first_ctx": "-", "first_trn": "-", "total_entries": 2}, "SMGR.JK": {"ctx_days": 0, "trn_days": 0, "first_ctx": "-", "first_trn": "-", "total_entries": 2}};
+const EX=[{"Date": "2026-06-08", "ticker": "ESSA.JK", "rank": 2, "rank_change": 0, "close": 565.0, "rs_20d": -8.96, "rs_change_20d": -24.12, "ma20": 706.25, "ma50": 766.1, "ma100": 718.05, "drawdown_from_entry": -3.42, "exit_state": "EXIT", "triggered_rules": "B, C, D"}, {"Date": "2026-06-08", "ticker": "ANTM.JK", "rank": 8, "rank_change": 0, "close": 2530.0, "rs_20d": -6.93, "rs_change_20d": -4.51, "ma20": 3080.5, "ma50": 3514.4, "ma100": 3779.6, "drawdown_from_entry": -8.0, "exit_state": "EXIT", "triggered_rules": "B, C, D"}, {"Date": "2026-06-08", "ticker": "BRPT.JK", "rank": 11, "rank_change": 0, "close": 1385.0, "rs_20d": -9.06, "rs_change_20d": -20.35, "ma20": 1780.25, "ma50": 1857.7, "ma100": 2025.6, "drawdown_from_entry": 0.0, "exit_state": "EXIT", "triggered_rules": "A, B, C, D"}, {"Date": "2026-06-08", "ticker": "ASII.JK", "rank": 18, "rank_change": 0, "close": 4360.0, "rs_20d": -1.77, "rs_change_20d": -1.65, "ma20": 5367.5, "ma50": 5684.89, "ma100": 5977.64, "drawdown_from_entry": 0.0, "exit_state": "EXIT", "triggered_rules": "A, B, C, D"}, {"Date": "2026-06-08", "ticker": "TPIA.JK", "rank": 28, "rank_change": 0, "close": 1605.0, "rs_20d": -47.34, "rs_change_20d": -53.89, "ma20": 2681.38, "ma50": 4366.48, "ma100": 5437.0, "drawdown_from_entry": 0.0, "exit_state": "EXIT", "triggered_rules": "A, B, C, D"}, {"Date": "2026-06-08", "ticker": "ADRO.JK", "rank": 1, "rank_change": 0, "close": 2170.0, "rs_20d": 10.53, "rs_change_20d": 1.32, "ma20": 2341.5, "ma50": 2384.68, "ma100": 2271.72, "drawdown_from_entry": -3.12, "exit_state": "EXIT RISK", "triggered_rules": "C"}, {"Date": "2026-06-08", "ticker": "PTBA.JK", "rank": 3, "rank_change": 0, "close": 2500.0, "rs_20d": 10.79, "rs_change_20d": 10.7, "ma20": 2760.0, "ma50": 2870.0, "ma100": 2747.1, "drawdown_from_entry": -3.47, "exit_state": "EXIT RISK", "triggered_rules": "C"}, {"Date": "2026-06-08", "ticker": "BMRI.JK", "rank": 5, "rank_change": 0, "close": 3710.0, "rs_20d": 10.61, "rs_change_20d": 8.52, "ma20": 4115.0, "ma50": 4184.6, "ma100": 4373.65, "drawdown_from_entry": -3.39, "exit_state": "EXIT RISK", "triggered_rules": "C"}, {"Date": "2026-06-08", "ticker": "CPIN.JK", "rank": 6, "rank_change": 0, "close": 3150.0, "rs_20d": 4.76, "rs_change_20d": 11.94, "ma20": 3925.9, "ma50": 3996.22, "ma100": 4033.58, "drawdown_from_entry": -6.8, "exit_state": "EXIT RISK", "triggered_rules": "C"}, {"Date": "2026-06-08", "ticker": "PGAS.JK", "rank": 7, "rank_change": 0, "close": 1390.0, "rs_20d": 3.56, "rs_change_20d": -1.69, "ma20": 1679.87, "ma50": 1713.68, "ma100": 1848.05, "drawdown_from_entry": -8.55, "exit_state": "EXIT RISK", "triggered_rules": "C"}, {"Date": "2026-06-08", "ticker": "AKRA.JK", "rank": 9, "rank_change": 0, "close": 1165.0, "rs_20d": 1.04, "rs_change_20d": -11.22, "ma20": 1339.75, "ma50": 1384.03, "ma100": 1312.28, "drawdown_from_entry": -4.51, "exit_state": "EXIT RISK", "triggered_rules": "C"}, {"Date": "2026-06-08", "ticker": "BBRI.JK", "rank": 10, "rank_change": 0, "close": 2590.0, "rs_20d": 2.82, "rs_change_20d": -3.78, "ma20": 3020.0, "ma50": 3101.74, "ma100": 3311.58, "drawdown_from_entry": -5.47, "exit_state": "EXIT RISK", "triggered_rules": "C"}, {"Date": "2026-06-08", "ticker": "BBNI.JK", "rank": 12, "rank_change": 0, "close": 3010.0, "rs_20d": 1.36, "rs_change_20d": -3.47, "ma20": 3720.5, "ma50": 3750.8, "ma100": 3906.46, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-08", "ticker": "INDF.JK", "rank": 13, "rank_change": 0, "close": 5925.0, "rs_20d": 8.32, "rs_change_20d": 1.86, "ma20": 6661.25, "ma50": 6708.5, "ma100": 6652.75, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-08", "ticker": "EXCL.JK", "rank": 14, "rank_change": 0, "close": 2440.0, "rs_20d": 3.38, "rs_change_20d": 3.89, "ma20": 2844.5, "ma50": 2975.0, "ma100": 3163.6, "drawdown_from_entry": -7.92, "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-08", "ticker": "INTP.JK", "rank": 15, "rank_change": 0, "close": 4000.0, "rs_20d": 10.42, "rs_change_20d": 14.78, "ma20": 4442.0, "ma50": 4633.06, "ma100": 5236.84, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-08", "ticker": "MDKA.JK", "rank": 16, "rank_change": 0, "close": 2420.0, "rs_20d": 10.43, "rs_change_20d": 23.58, "ma20": 2619.0, "ma50": 3000.8, "ma100": 3115.8, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-08", "ticker": "ITMG.JK", "rank": 17, "rank_change": 0, "close": 21875.0, "rs_20d": 13.4, "rs_change_20d": 19.4, "ma20": 23001.25, "ma50": 24877.82, "ma100": 23709.77, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-08", "ticker": "BBCA.JK", "rank": 19, "rank_change": 0, "close": 4850.0, "rs_20d": 1.92, "rs_change_20d": 5.77, "ma20": 5845.0, "ma50": 6150.61, "ma100": 6640.01, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-08", "ticker": "TLKM.JK", "rank": 20, "rank_change": 0, "close": 2350.0, "rs_20d": 2.77, "rs_change_20d": 9.2, "ma20": 2950.5, "ma50": 2994.8, "ma100": 3219.7, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-08", "ticker": "SMGR.JK", "rank": 21, "rank_change": 0, "close": 1485.0, "rs_20d": -4.11, "rs_change_20d": 7.72, "ma20": 1817.06, "ma50": 2088.86, "ma100": 2370.73, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-08", "ticker": "MIKA.JK", "rank": 22, "rank_change": 0, "close": 1435.0, "rs_20d": -2.84, "rs_change_20d": 4.2, "ma20": 1702.75, "ma50": 1915.3, "ma100": 2107.05, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-08", "ticker": "UNTR.JK", "rank": 23, "rank_change": 0, "close": 20875.0, "rs_20d": -0.44, "rs_change_20d": 4.27, "ma20": 24377.5, "ma50": 27698.88, "ma100": 27910.34, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-08", "ticker": "ICBP.JK", "rank": 24, "rank_change": 0, "close": 6000.0, "rs_20d": 8.48, "rs_change_20d": 13.07, "ma20": 6776.25, "ma50": 6992.5, "ma100": 7449.25, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-08", "ticker": "SIDO.JK", "rank": 25, "rank_change": 0, "close": 354.0, "rs_20d": -2.56, "rs_change_20d": 1.06, "ma20": 407.2, "ma50": 461.63, "ma100": 487.51, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-08", "ticker": "GOTO.JK", "rank": 26, "rank_change": 0, "close": 50.0, "rs_20d": 23.38, "rs_change_20d": 26.44, "ma20": 50.0, "ma50": 51.36, "ma100": 56.13, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-08", "ticker": "KLBF.JK", "rank": 27, "rank_change": 0, "close": 665.0, "rs_20d": -2.3, "rs_change_20d": 3.04, "ma20": 778.26, "ma50": 856.93, "ma100": 967.82, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-08", "ticker": "AMMN.JK", "rank": 29, "rank_change": 0, "close": 3150.0, "rs_20d": -1.8, "rs_change_20d": 18.73, "ma20": 3387.5, "ma50": 4458.4, "ma100": 5774.85, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-08", "ticker": "HEAL.JK", "rank": 30, "rank_change": 0, "close": 770.0, "rs_20d": 0.76, "rs_change_20d": 18.42, "ma20": 948.0, "ma50": 1083.84, "ma100": 1204.27, "drawdown_from_entry": 0.0, "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-08", "ticker": "MAPI.JK", "rank": 4, "rank_change": 0, "close": 1485.0, "rs_20d": 25.44, "rs_change_20d": 9.64, "ma20": 1490.0, "ma50": 1355.6, "ma100": 1284.25, "drawdown_from_entry": 0.0, "exit_state": "HEALTHY", "triggered_rules": "NONE"}];
+const MP=[];
 
-(function(){
-  var exitCount=0,exitRiskCount=0,weakeningCount=0,exitWatchCount=0,healthyCount=0
-  EX.forEach(function(d){
-    if(d.exit_state==='EXIT')exitCount++
-    else if(d.exit_state==='EXIT RISK')exitRiskCount++
-    else if(d.exit_state==='WEAKENING')weakeningCount++
-    else if(d.exit_state==='EXIT WATCH')exitWatchCount++
-    else if(d.exit_state==='HEALTHY')healthyCount++
-  })
-  var sd=SM.signal_diagnostics||{}
-  var avgDD=sd.avg_drawdown_252d||0
-  var avgVol=sd.avg_volatility_60d||0
-  var aboveMA20=sd.above_ma20_count||0
-  var rsPositive=sd.rs_change_60d_positive_count||20
-  var top5=L.filter(function(d){return d.rank<=5})
-  var top10=L.filter(function(d){return d.rank<=10})
-  var bot5=L.filter(function(d){return d.rank>25})
-  var factors=['quality','growth','value','momentum']
-  var avg=function(arr,k){return arr.reduce(function(s,d){return s+d[k]},0)/arr.length}
-  var fullMatch=T.filter(function(d){return d.context_match&&d.transition_match})
-  var fullMatchCount=fullMatch.length
-  var ctxOnly=T.filter(function(d){return d.context_match&&!d.transition_match})
-  var trnOnly=T.filter(function(d){return !d.context_match&&d.transition_match})
-  var rsPosT=T.filter(function(d){return d.rs_change_60d>0}).length
-  var avgRec=T.reduce(function(s,d){return s+d.recovery_from_60d_low},0)/T.length
-  var strongestFactor=factors.map(function(f){return{name:f,val:avg(top5,f)}}).sort(function(a,b){return b.val-a.val})[0]
-  var weakestFactor=factors.map(function(f){return{name:f,val:avg(bot5,f)}}).sort(function(a,b){return a.val-b.val})[0]
-  var top5score=avg(top5,'final_score')
-  var bot5score=avg(bot5,'final_score')
-  var rankUp=EX.filter(function(d){return d.rank_change>0}).length
-  var rankDown=EX.filter(function(d){return d.rank_change<0}).length
-  var portfolioExit=EX.filter(function(d){return top5.some(function(t){return t.ticker===d.ticker})&&d.exit_state!=='HEALTHY'})
-  var status='TIDAK ADA AKSI',cls='s-hijau'
-  if(exitCount>=3){status='RISIKO MENINGKAT';cls='s-merah'}
-  else if(exitCount>=1&&portfolioExit.length>0){status='REVIEW';cls='s-kuning'}
-  else if(exitCount>=1||exitRiskCount>=2){status='REVIEW';cls='s-kuning'}
-  else if(fullMatchCount>=3||avgDD<-25||avgVol>3.5||aboveMA20===0){status='TAHAN';cls='s-biru'}
-  var sections=[]
-  var ldr='Peringkat atas dikuasai '+top5.map(function(d){return d.ticker.split('.')[0]}).join(', ')+' dengan rerata skor '+top5score.toFixed(1)+'. '
-  ldr+='Faktor '+strongestFactor.name.charAt(0).toUpperCase()+strongestFactor.name.slice(1)+' menjadi pendorong utama (rata-rata '+strongestFactor.val.toFixed(1)+'), sementara '+weakestFactor.name+' tertinggal di kelompok bawah ('+weakestFactor.val.toFixed(1)+'). '
-  if(rankDown>rankUp){
-    ldr+=rankDown+' saham turun peringkat hari ini — tekanan rotasi terlihat di beberapa sektor.'
-  }else if(rankUp>0){
-    ldr+=rankUp+' saham naik peringkat — distribusi kekuatan mulai meluas.'
-  }else{
-    ldr+='Peringkat relatif stabil hari ini.'
-  }
-  sections.push({title:'Pimpinan Pasar',text:ldr})
-  var ta=''
-  if(fullMatchCount>0){
-    var fn=fullMatch.map(function(d){return d.ticker.split('.')[0]+' (RS Change '+d.rs_change_60d.toFixed(0)+'%)'}).join(', ')
-    ta+=fullMatchCount+' kandidat turnaround penuh: '+fn+'. '
-    var sr=fullMatch.filter(function(d){return d.recovery_from_60d_low>5})
-    if(sr.length>0)ta+=sr.map(function(d){return d.ticker.split('.')[0]}).join(' dan ')+' sudah memulih '+sr[0].recovery_from_60d_low.toFixed(1)+'% dari dasar 60 hari — sinyal pemulihan awal. '
-  }
-  ta+='Total '+rsPosT+'/'+T.length+' saham menunjukkan kekuatan relatif positif. '
-  if(avgRec>5){
-    ta+='Rata-rata pemulihan '+avgRec.toFixed(1)+'% — momentum pemulihan mulai terbentuk.'
-  }else if(avgRec>0){
-    ta+='Pemulihan rata-rata '+avgRec.toFixed(1)+'% — masih tahap awal, perlu konfirmasi volume.'
-  }else{
-    ta+='Rata-rata pemulihan '+avgRec.toFixed(1)+'% — tekanan masih dominan, pemuluhan belum terkonfirmasi.'
-  }
-  sections.push({title:'Kandidat Turnaround',text:ta})
-  var exs=''
-  if(exitCount>=3){
-    exs+='Tekanan keluar meluas — '+exitCount+' saham EXIT, '+exitRiskCount+' EXIT RISK, '+weakeningCount+' weakening. '
-  }else if(exitCount>0){
-    exs+=exitCount+' saham EXIT dan '+exitRiskCount+' EXIT RISK. '
-  }else{
-    exs+='Tidak ada saham dalam status EXIT. '
-  }
-  var exTickers=EX.filter(function(d){return d.exit_state==='EXIT'})
-  if(exTickers.length>0){
-    var worst=exTickers.slice().sort(function(a,b){return a.rs_20d-b.rs_20d})[0]
-    exs+=exTickers.length+' saham dengan EXIT aktif — '+worst.ticker.split('.')[0]+' paling tertekan dengan RS20 '+worst.rs_20d.toFixed(1)+'%. '
-  }
-  if(avgDD<-30){
-    exs+='Pasar dalam tekanan luas: rata-rata penurunan '+avgDD.toFixed(1)+'% dari puncak 1 tahun. '
-  }else if(avgDD<-20){
-    exs+='Rata-rata penurunan IDX30 '+avgDD.toFixed(1)+'% — waspada pelemahan lanjutan. '
-  }else{
-    exs+='Rata-rata penurunan '+avgDD.toFixed(1)+'% — dalam batas wajar. '
-  }
-  if(aboveMA20===0){
-    exs+='Seluruh IDX30 di bawah MA20 — tren pendek sangat lemah, tidak ada satu pun saham yang bertahan.'
-  }else if(aboveMA20<5){
-    exs+='Hanya '+aboveMA20+' saham di atas MA20 — pasar bearish jangka pendek.'
-  }
-  if(avgVol>4){
-    exs+='Volatilitas tinggi ('+avgVol.toFixed(2)+'%) — fluktuasi ekstrem meningkatkan risiko.'
-  }
-  sections.push({title:'Tekanan Pasar',text:exs})
-  var focuses=[]
-  if(portfolioExit.length>0){
-    focuses.push('Portofolio: '+portfolioExit.map(function(d){return d.ticker.split('.')[0]}).join(', ')+' masuk sinyal EXIT')
-  }else if(exitCount>0){
-    focuses.push('EXIT: '+EX.filter(function(d){return d.exit_state==='EXIT'}).slice(0,3).map(function(d){return d.ticker.split('.')[0]}).join(', '))
-  }
-  if(fullMatchCount>0){
-    focuses.push('Turnaround: '+fullMatch.slice(0,2).map(function(d){return d.ticker.split('.')[0]}).join(', '))
-  }
-  if(avgDD<-25){
-    focuses.push('Waspada tekanan pasar ('+avgDD.toFixed(1)+'%)')
-  }else if(aboveMA20===0){
-    focuses.push('Pasar melemah — 0 di atas MA20')
-  }else if(rsPositive>15){
-    focuses.push(rsPositive+'/30 menguat')
-  }
-  if(focuses.length>3)focuses=focuses.slice(0,3)
-  var h='<div class="conc"><div class="conc-hdr"><span class="conc-status '+cls+'">'+status+'</span><span class="conc-label">KESIMPULAN HARI INI</span></div><div class="conc-body">'
-  sections.forEach(function(s){
-    h+='<div class="conc-col"><div class="conc-sub">'+s.title+'</div><p style="font-size:11px;color:#C9D1D9;line-height:1.6;margin:4px 0 0">'+s.text+'</p></div>'
-  })
-  h+='</div>'
-  if(focuses.length>0){
-    h+='<div style="margin-top:10px;padding-top:8px;border-top:1px solid #1a1f26;display:flex;gap:8px;flex-wrap:wrap">'
-    focuses.forEach(function(f){
-      h+='<span style="font-size:10px;font-family:\'Space Mono\',monospace;color:#f59e0b;background:#2a2411;border:1px solid #665511;padding:2px 8px;border-radius:4px">'+f+'</span>'
-    })
-    h+='</div>'
-  }
-  h+='</div>'
-  document.getElementById('conclusion').innerHTML=h
-})();
-
+function fmtRupiah(v){return (v>=0?'':'−')+'Rp '+Math.abs(v).toLocaleString('id-ID')}
 function sc(v){return v>=60?'high':v>=40?'mid':'low'}
 function bar(v,k){return '<div class="bar"><div class="bar-track"><div class="bar-fill" style="width:'+Math.min(v,100)+'%;background:'+k+'"></div></div><span class="bv">'+v.toFixed(1)+'</span></div>'}
 function badge(v,t){return v?'<span class="badge '+t+'">Yes</span>':'<span class="badge bg-gray">No</span>'}
@@ -665,124 +379,50 @@ function makeSortable(id,s,fn){
       var m100=r.close<r.ma100?'<span class="badge bg-red">DI BAWAH</span>':'<span class="badge bg-green">DI ATAS</span>'
       var dd=r.drawdown_from_entry<-15?'sf low':'sf high'
       var rc2=r.rank_change>0?'<span class="sf high">+'+r.rank_change+'</span>':r.rank_change<0?'<span class="sf low">'+r.rank_change+'</span>':'<span style="color:#9CA3AF">0</span>'
-      return '<tr><td class="tk tk-click" data-ticker="'+r.ticker.split('.')[0]+'" style="color:'+ac(r.ticker)+'">'+r.ticker.split('.')[0]+'</td><td style="font-family:monospace;font-size:12px;color:#9CA3AF">#'+r.rank+'</td><td style="font-family:monospace;font-size:12px">'+rc2+'</td><td><span class="badge '+sc+'">'+r.exit_state+'</span></td><td style="font-family:monospace;font-size:11px;color:#9CA3AF" title="'+r.triggered_rules.replace(/A/g,'A: Peringkat turun di luar 10 besar').replace(/B/g,'B: Momentum jangka pendek melemah').replace(/C/g,'C: Harga di bawah MA50 — tren rusak').replace(/D/g,'D: Pelemahan terkonfirmasi — keluar')+'">'+r.triggered_rules+'</td><td class="'+rc+'">'+r.rs_20d.toFixed(1)+'%</td><td class="'+rcc+'">'+r.rs_change_20d.toFixed(1)+'%</td><td>'+m50+'</td><td>'+m100+'</td><td class="'+dd+'">'+r.drawdown_from_entry.toFixed(1)+'%</td></tr>'
+      return '<tr><td class="tk tk-click" data-ticker="'+r.ticker.split('.')[0]+'" style="color:'+ac(r.ticker)+'">'+r.ticker.split('.')[0]+'</td><td style="font-family:monospace;font-size:12px;color:#9CA3AF">#'+r.rank+'</td><td style="font-family:monospace;font-size:12px">'+rc2+'</td><td><span class="badge '+sc+'">'+r.exit_state+'</span></td><td style="font-family:monospace;font-size:11px;color:#9CA3AF" title="'+r.triggered_rules.replace(/A/g,'A: Peringkat Turun').replace(/B/g,'B: Momentum Melemah').replace(/C/g,'C: Trend MA50 Rusak').replace(/D/g,'D: Pelemahan Terkonfirmasi')+'">'+r.triggered_rules+'</td><td class="'+rc+'">'+r.rs_20d.toFixed(1)+'%</td><td class="'+rcc+'">'+r.rs_change_20d.toFixed(1)+'%</td><td>'+m50+'</td><td>'+m100+'</td><td class="'+dd+'">'+r.drawdown_from_entry.toFixed(1)+'%</td></tr>'
     }).join('')
   }
   function refresh(){render(sortData(filtered(),s))}
   refresh()
   makeSortable('tbody-exit',s,refresh)
-  window.ef=function(v,b){f=v;document.querySelectorAll('#t5 .tab-btn').forEach(function(x){x.classList.remove('active')});b.classList.add('active');refresh()}
+  window.ef=function(v,b){f=v;document.querySelectorAll('#t6 .tab-btn').forEach(function(x){x.classList.remove('active')});b.classList.add('active');refresh()}
+})();
+
+(function(){
+  var full=MP;var s={key:null,dir:'asc'}
+  function render(d){
+    var totalCost=0,totalValue=0,totalPL=0,exitCount=0,top10Count=0
+    d.forEach(function(r){
+      totalCost+=r.cost_basis
+      totalValue+=r.current_value
+      totalPL+=r.unrealized_profit
+      if(r.exit_status==='EXIT')exitCount++
+      if(r.rank>=1&&r.rank<=10)top10Count++
+    })
+    var ret=totalCost>0?((totalValue-totalCost)/totalCost*100):0
+    document.getElementById('mp-cards').innerHTML=
+      '<div class="card"><div class="card-label">Total Cost Basis</div><div class="card-val">'+fmtRupiah(totalCost)+'</div><div class="card-sub">Modal awal</div></div>'+
+      '<div class="card"><div class="card-label">Total Current Value</div><div class="card-val">'+fmtRupiah(totalValue)+'</div><div class="card-sub">Nilai saat ini</div></div>'+
+      '<div class="card"><div class="card-label">Total Unrealized P/L</div><div class="card-val'+(totalPL>=0?' g':' r')+'">'+(totalPL>=0?'+':'')+fmtRupiah(totalPL)+'</div><div class="card-sub">Laba/rugi belum terealisasi</div></div>'+
+      '<div class="card"><div class="card-label">Portfolio Return</div><div class="card-val'+(ret>=0?' g':' r')+'">'+(ret>=0?'+':'')+ret.toFixed(2)+'%</div><div class="card-sub">Return keseluruhan</div></div>'+
+      '<div class="card"><div class="card-label">Holdings</div><div class="card-val b">'+d.length+'</div><div class="card-sub">Jumlah saham dimiliki</div></div>'+
+      '<div class="card"><div class="card-label">EXIT Holdings</div><div class="card-val'+(exitCount>0?' r':' b')+'">'+exitCount+'</div><div class="card-sub">Saham dengan status EXIT</div></div>'+
+      '<div class="card"><div class="card-label">Top 10 Holdings</div><div class="card-val g">'+top10Count+'</div><div class="card-sub">Saham di rank 1-10</div></div>'
+    document.getElementById('tbody-portfolio').innerHTML=d.map(function(r){
+      var ab=r.action==='STRONG HOLD'?'bg-green':r.action==='REVIEW'?'bg-yellow':r.action==='TRIM'?'bg-yellow':r.action==='REPLACE CANDIDATE'?'bg-red':'bg-gray'
+      var eb=r.exit_status==='EXIT'?'bg-red':r.exit_status==='EXIT RISK'?'bg-yellow':r.exit_status==='WEAKENING'?'bg-yellow':r.exit_status==='EXIT WATCH'?'bg-blue':'bg-green'
+      var rnk=r.rank>0&&r.rank<99?'#'+r.rank:'—'
+      return '<tr><td class="tk tk-click" data-ticker="'+r.ticker+'">'+r.ticker+'</td><td>'+r.lot+'</td><td style="font-family:Space Mono,monospace;font-weight:600">'+fmtRupiah(r.buy_price)+'</td><td style="font-family:Space Mono,monospace;font-weight:600">'+fmtRupiah(r.current_price)+'</td><td class="sf '+(r.unrealized_percent>=0?'high':'low')+'">'+(r.unrealized_percent>=0?'+':'')+r.unrealized_percent.toFixed(2)+'%</td><td class="sf '+(r.unrealized_profit>=0?'high':'low')+'">'+(r.unrealized_profit>=0?'+':'')+fmtRupiah(r.unrealized_profit)+'</td><td style="font-family:Space Mono,monospace;color:#9CA3AF">'+rnk+'</td><td><span class="badge '+eb+'">'+r.exit_status+'</span></td><td style="font-size:11px;color:#9CA3AF">'+(r.sector||'—')+'</td><td style="font-family:Space Mono,monospace">'+r.days_held+'d</td><td><span class="badge '+ab+'">'+r.action+'</span></td></tr>'
+    }).join('')
+  }
+  function refresh(){render(sortData(full,s))}
+  refresh()
+  makeSortable('tbody-portfolio',s,refresh)
 })();
 
 function st(i){document.querySelectorAll('.tab-btn').forEach(function(b,j){b.classList.toggle('active',j===i)});document.querySelectorAll('.tc').forEach(function(t,j){t.classList.toggle('active',j===i)})}
 
 const PF={"ADRO": {"name": "Adaro Energy Indonesia", "sector": "Energy", "industry": "Coal Mining", "summary": "One of Indonesia's largest coal mining companies. Produces thermal coal for domestic and export markets."}, "AKRA": {"name": "AKR Corporindo", "sector": "Trading", "industry": "Chemical Distribution", "summary": "Distributes fuel, chemicals, and industrial goods across Indonesia. Also develops industrial estates."}, "AMMN": {"name": "Amman Mineral Internasional", "sector": "Mining", "industry": "Copper & Gold", "summary": "Operates the Batu Hijau copper and gold mine in West Sumbawa. One of Indonesia's largest copper producers."}, "ANTM": {"name": "Aneka Tambang", "sector": "Mining", "industry": "Diversified Metals", "summary": "State-owned mining company producing gold, nickel, and bauxite. Operates the Pongkor gold mine."}, "ASII": {"name": "Astra International", "sector": "Conglomerate", "industry": "Automotive & Diversified", "summary": "Indonesia's largest conglomerate. Dominates automotive (Toyota/Daihatsu/Honda), heavy equipment, and financial services."}, "BBCA": {"name": "Bank Central Asia", "sector": "Banking", "industry": "Private Banking", "summary": "Indonesia's largest private bank by market cap. Known for retail banking, digital innovation, and strong credit quality."}, "BBNI": {"name": "Bank Negara Indonesia", "sector": "Banking", "industry": "State-Owned Banking", "summary": "State-owned bank focusing on corporate and international banking. Strong in trade finance and treasury."}, "BBRI": {"name": "Bank Rakyat Indonesia", "sector": "Banking", "industry": "Microfinance & Retail", "summary": "Indonesia's largest bank by assets. Dominates microfinance through 7,000+ BRI Units across the archipelago."}, "BMRI": {"name": "Bank Mandiri", "sector": "Banking", "industry": "State-Owned Banking", "summary": "Largest state-owned bank by assets. Strong in corporate banking, treasury, and wholesale transactions."}, "BRPT": {"name": "Barito Pacific", "sector": "Petrochemical", "industry": "Petrochemical & Plantation", "summary": "Major petrochemical producer through subsidiary Chandra Asri. Also has plantation and property interests."}, "CPIN": {"name": "Charoen Pokphand Indonesia", "sector": "Agriculture", "industry": "Animal Feed & Poultry", "summary": "Indonesia's largest animal feed producer. Vertically integrated poultry business from feed to processed chicken."}, "ESSA": {"name": "Essa Industries Indonesia", "sector": "Energy", "industry": "Natural Gas Processing", "summary": "Operates a natural gas processing plant in West Java. Produces LPG and condensate from natural gas."}, "EXCL": {"name": "XL Axiata", "sector": "Telecommunication", "industry": "Mobile Telecom", "summary": "Major mobile network operator. Part of Malaysia's Axiata Group. Strong in data and digital services."}, "GOTO": {"name": "GoTo Gojek Tokopedia", "sector": "Technology", "industry": "Digital Platform", "summary": "Indonesia's largest digital platform. Combines on-demand services (Gojek) and e-commerce (Tokopedia) with financial services."}, "HEAL": {"name": "Medikaloka Hermina", "sector": "Healthcare", "industry": "Hospital Management", "summary": "Operates 40+ hospitals across Indonesia under the Hermina brand. Largest private hospital network by revenue."}, "ICBP": {"name": "Indofood CBP Sukses Makmur", "sector": "Consumer Goods", "industry": "Packaged Food", "summary": "Consumer packaged goods arm of Indofood. Produces instant noodles (Indomie), dairy, snacks, and beverages."}, "INDF": {"name": "Indofood Sukses Makmur", "sector": "Consumer Goods", "industry": "Food & Agribusiness", "summary": "Indonesia's largest food company. Produces Indomie instant noodles, owns plantations (Bogasari), and CPO operations."}, "INTP": {"name": "Indocement Tunggal Prakarsa", "sector": "Material", "industry": "Cement", "summary": "Second-largest cement producer in Indonesia. Part of HeidelbergCement Group. Operates 13 cement plants."}, "ITMG": {"name": "Indo Tambangraya Megah", "sector": "Energy", "industry": "Coal Mining", "summary": "Coal mining company with operations in Kalimantan. Produces thermal coal for export markets."}, "KLBF": {"name": "Kalbe Farma", "sector": "Healthcare", "industry": "Pharmaceutical", "summary": "Indonesia's largest pharmaceutical company by revenue. Produces prescription drugs, consumer health, and nutrition products."}, "MAPI": {"name": "Mitra Adiperkasa", "sector": "Retail", "industry": "Lifestyle Retail", "summary": "Indonesia's largest lifestyle retailer. Operates Sports Station, Sogo, Starbucks, Zara, and 3,000+ retail stores."}, "MDKA": {"name": "Merdeka Copper Gold", "sector": "Mining", "industry": "Gold & Copper", "summary": "Fast-growing mining company with gold, copper, and nickel operations. Owns Tujuh Bukit gold mine and nickel projects."}, "MIKA": {"name": "Mitra Keluarga", "sector": "Healthcare", "industry": "Hospital Management", "summary": "Operates 16+ hospitals in major Indonesian cities under the Mitra Keluarga brand. Focuses on middle-class healthcare."}, "PGAS": {"name": "Perusahaan Gas Negara", "sector": "Energy", "industry": "Natural Gas Distribution", "summary": "State-owned gas company. Distributes natural gas through 10,000+ km pipeline network across Indonesia."}, "PTBA": {"name": "Bukit Asam", "sector": "Energy", "industry": "Coal Mining", "summary": "State-owned coal mining company. Operates the Tanjung Enim mine in South Sumatra. Produces thermal coal."}, "SIDO": {"name": "Sido Muncul", "sector": "Healthcare", "industry": "Herbal Medicine", "summary": "Indonesia's largest herbal medicine manufacturer. Produces Tolak Angin, Kuku Bima, and other traditional remedies."}, "SMGR": {"name": "Semen Indonesia", "sector": "Material", "industry": "Cement", "summary": "Indonesia's largest cement producer (state-owned). Operates under Semen Gresik, Semen Padang, and Semen Tonasa brands."}, "TLKM": {"name": "Telkom Indonesia", "sector": "Telecommunication", "industry": "Fixed & Mobile Telecom", "summary": "Indonesia's largest telecom company. Owns Telkomsel (mobile), IndiHome (broadband), and extensive fiber infrastructure."}, "TPIA": {"name": "Chandra Asri Pacific", "sector": "Petrochemical", "industry": "Petrochemical", "summary": "Indonesia's largest integrated petrochemical company. Produces naphtha, ethylene, polyethylene, and polypropylene."}, "UNTR": {"name": "United Tractors", "sector": "Heavy Equipment", "industry": "Mining Equipment & Contracting", "summary": "Distributes Komatsu heavy equipment, operates coal mines, and runs mining contracting through Pamapersada Nusantara."}};
-/* INSIGHT LAYER V1 — Leaders Analysis */
-(function(){
-  var n=L.length
-  if(n===0){document.getElementById('insight-leaders').innerHTML='';return}
-  var top5=L.filter(function(d){return d.rank<=5})
-  var bot5=L.filter(function(d){return d.rank>n-5})
-  var factors=['quality','growth','value','momentum']
-  var avg=function(arr,k){return arr.reduce(function(s,d){return s+d[k]},0)/arr.length}
-  var t5=factors.map(function(f){return{name:f,val:avg(top5,f)}})
-  var allTop5Avg=t5.reduce(function(s,f){return s+f.val},0)/4
-  var allBot5Avg=factors.reduce(function(s,f){return s+avg(bot5,f)},0)/4
-  var gap=allTop5Avg-allBot5Avg
-  var strongest=t5.slice().sort(function(a,b){return b.val-a.val})[0]
-  var weakest=factors.map(function(f){return{name:f,val:avg(bot5,f)}}).sort(function(a,b){return a.val-b.val})[0]
-  var h='<div class="insight-card"><div class="insight-hdr"><span class="insight-title">Analisis Leaders</span><span class="insight-badge '+(gap>30?'r':gap>15?'y':'n')+'">Gap Top5\u2013Bot5: '+gap.toFixed(1)+'</span></div><div class="insight-grid">'
-  h+='<div class="insight-row"><span class="insight-lbl">Rerata Top 5</span><span class="insight-val g">'+allTop5Avg.toFixed(1)+'</span></div>'
-  h+='<div class="insight-row"><span class="insight-lbl">Faktor Terkuat Top5</span><span class="insight-val g">'+strongest.name.charAt(0).toUpperCase()+strongest.name.slice(1)+' ('+strongest.val.toFixed(1)+')</span></div>'
-  h+='<div class="insight-row"><span class="insight-lbl">Rerata Bottom 5</span><span class="insight-val r">'+allBot5Avg.toFixed(1)+'</span></div>'
-  h+='<div class="insight-row"><span class="insight-lbl">Faktor Terlemah Bot5</span><span class="insight-val r">'+weakest.name.charAt(0).toUpperCase()+weakest.name.slice(1)+' ('+weakest.val.toFixed(1)+')</span></div>'
-  h+='</div><div class="insight-note">Kesenjangan '+gap.toFixed(1)+' poin \u2014 '+(gap>30?'distribusi sangat timpang, dominasi saham unggulan kuat':gap>15?'distribusi cukup timpang, pemimpin pasar jelas':gap>5?'distribusi moderat, persaingan merata':'pasar relatif homogen, banyak saham setara')+'</div></div>'
-  document.getElementById('insight-leaders').innerHTML=h
-})();
-
-/* INSIGHT LAYER V1 — Top 10 Summary */
-(function(){
-  var top10=L.filter(function(d){return d.rank<=10})
-  var n=top10.length
-  if(n===0){document.getElementById('insight-top10').innerHTML='';return}
-  var sectors={}
-  top10.forEach(function(d){
-    var p=PF[d.ticker.split('.')[0]]
-    if(p){var sec=p.sector;sectors[sec]=(sectors[sec]||0)+1}
-  })
-  var secList=Object.keys(sectors).sort(function(a,b){return sectors[b]-sectors[a]})
-  var avg=function(k){return top10.reduce(function(s,d){return s+d[k]},0)/n}
-  var h='<div class="insight-card"><div class="insight-hdr"><span class="insight-title">Top 10 Ringkasan</span><span class="insight-badge b">'+n+' saham</span></div><div class="insight-grid">'
-  h+='<div class="insight-row"><span class="insight-lbl">Rerata Score</span><span class="insight-val">'+avg('final_score').toFixed(1)+'</span></div>'
-  h+='<div class="insight-row"><span class="insight-lbl">Quality / Growth</span><span class="insight-val">'+avg('quality').toFixed(1)+' / '+avg('growth').toFixed(1)+'</span></div>'
-  h+='<div class="insight-row"><span class="insight-lbl">Value / Momentum</span><span class="insight-val">'+avg('value').toFixed(1)+' / '+avg('momentum').toFixed(1)+'</span></div>'
-  h+='<div class="insight-row"><span class="insight-lbl">Sektor Dominan</span><span class="insight-val">'+secList[0]+' ('+sectors[secList[0]]+')</span></div>'
-  h+='</div>'
-  if(secList.length>1){
-    h+='<div class="insight-note">Sektor: '+secList.map(function(s){return s+' ('+sectors[s]+')'}).join(' \u00b7 ')+'</div>'
-  }
-  h+='</div>'
-  document.getElementById('insight-top10').innerHTML=h
-})();
-
-/* INSIGHT LAYER V1 — Turnaround Analysis */
-(function(){
-  var full=T.length
-  if(full===0){document.getElementById('insight-turnaround').innerHTML='';return}
-  var fullMatch=T.filter(function(d){return d.context_match&&d.transition_match}).length
-  var ctxOnly=T.filter(function(d){return d.context_match&&!d.transition_match}).length
-  var trnOnly=T.filter(function(d){return !d.context_match&&d.transition_match}).length
-  var none=full-fullMatch-ctxOnly-trnOnly
-  var avgDD=T.reduce(function(s,d){return s+d.drawdown_252d},0)/full
-  var avgRec=T.reduce(function(s,d){return s+d.recovery_from_60d_low},0)/full
-  var avgVol=T.reduce(function(s,d){return s+d.volatility_60d},0)/full
-  var rsPos=T.filter(function(d){return d.rs_change_60d>0}).length
-  var h='<div class="insight-card"><div class="insight-hdr"><span class="insight-title">Analisis Turnaround</span><span class="insight-badge b">'+full+' ticker</span></div><div class="insight-grid">'
-  h+='<div class="insight-row"><span class="insight-lbl">Full Match</span><span class="insight-val g">'+fullMatch+'</span></div>'
-  h+='<div class="insight-row"><span class="insight-lbl">Context Only</span><span class="insight-val y">'+ctxOnly+'</span></div>'
-  h+='<div class="insight-row"><span class="insight-lbl">Transition Only</span><span class="insight-val b">'+trnOnly+'</span></div>'
-  h+='<div class="insight-row"><span class="insight-lbl">No Signal</span><span class="insight-val n">'+none+'</span></div>'
-  h+='<div class="insight-row"><span class="insight-lbl">RS Positive</span><span class="insight-val '+(rsPos>full/2?'g':'r')+'">'+rsPos+'/'+full+'</span></div>'
-  h+='<div class="insight-row"><span class="insight-lbl">Rerata DD 252d</span><span class="insight-val r">'+avgDD.toFixed(1)+'%</span></div>'
-  h+='<div class="insight-row"><span class="insight-lbl">Rerata Recovery</span><span class="insight-val '+(avgRec>5?'g':avgRec>0?'y':'r')+'">'+avgRec.toFixed(1)+'%</span></div>'
-  h+='<div class="insight-row"><span class="insight-lbl">Rerata Vol 60d</span><span class="insight-val '+(avgVol>4?'r':avgVol>3?'y':'g')+'">'+avgVol.toFixed(2)+'%</span></div>'
-  h+='</div></div>'
-  document.getElementById('insight-turnaround').innerHTML=h
-})();
-
-/* INSIGHT LAYER V1 — Exit Analysis */
-(function(){
-  var total=EX.length
-  if(total===0){document.getElementById('insight-exit').innerHTML='';return}
-  var exitCount=EX.filter(function(d){return d.exit_state==='EXIT'}).length
-  var exitRiskCount=EX.filter(function(d){return d.exit_state==='EXIT RISK'}).length
-  var weakenCount=EX.filter(function(d){return d.exit_state==='WEAKENING'}).length
-  var watchCount=EX.filter(function(d){return d.exit_state==='EXIT WATCH'}).length
-  var healthyCount=EX.filter(function(d){return d.exit_state==='HEALTHY'}).length
-  var avgRS20=EX.reduce(function(s,d){return s+d.rs_20d},0)/total
-  var avgRSchg=EX.reduce(function(s,d){return s+d.rs_change_20d},0)/total
-  var ruleCount={}
-  EX.forEach(function(d){
-    if(d.triggered_rules){
-      d.triggered_rules.split(', ').forEach(function(r){
-        ruleCount[r]=(ruleCount[r]||0)+1
-      })
-    }
-  })
-  var ruleList=Object.keys(ruleCount).sort(function(a,b){return ruleCount[b]-ruleCount[a]})
-  var topRule=ruleList[0]||'\u2014'
-  var h='<div class="insight-card"><div class="insight-hdr"><span class="insight-title">Analisis Exit</span><span class="insight-badge '+(exitCount>=3?'r':exitCount>0?'y':'g')+'">'+exitCount+' EXIT</span></div><div class="insight-grid">'
-  h+='<div class="insight-row"><span class="insight-lbl">EXIT</span><span class="insight-val r">'+exitCount+'</span></div>'
-  h+='<div class="insight-row"><span class="insight-lbl">EXIT RISK</span><span class="insight-val y">'+exitRiskCount+'</span></div>'
-  h+='<div class="insight-row"><span class="insight-lbl">WEAKENING</span><span class="insight-val y">'+weakenCount+'</span></div>'
-  h+='<div class="insight-row"><span class="insight-lbl">WATCH / HEALTHY</span><span class="insight-val g">'+watchCount+' / '+healthyCount+'</span></div>'
-  h+='<div class="insight-row"><span class="insight-lbl">Rerata RS20</span><span class="insight-val '+(avgRS20>0?'g':'r')+'">'+avgRS20.toFixed(1)+'%</span></div>'
-  h+='<div class="insight-row"><span class="insight-lbl">Rerata RS Chg 20D</span><span class="insight-val '+(avgRSchg>0?'g':'r')+'">'+avgRSchg.toFixed(1)+'%</span></div>'
-  h+='<div class="insight-row"><span class="insight-lbl">Rule Terbanyak</span><span class="insight-val">'+topRule+' ('+ruleCount[topRule]+'x)</span></div>'
-  h+='</div></div>'
-  document.getElementById('insight-exit').innerHTML=h
-})();
-
 const FD={"BBCA.JK": {"roe": 0.22972, "net_margin": 0.53462005, "operating_margin": 0.67586, "debt_to_equity": null, "free_cash_flow": null, "pe_ratio": 10.775863, "pb_ratio": 2.4064806, "dividend_yield": 6.62, "roa": 0.03661, "market_cap": 623596904906752, "revenue_growth": 0.025, "earnings_growth": 0.037}, "BBRI.JK": {"roe": 0.18135999, "net_margin": 0.40230998, "operating_margin": 0.42025003, "debt_to_equity": null, "free_cash_flow": null, "pe_ratio": 7.042254, "pb_ratio": 1.2199025, "dividend_yield": 15.26, "roa": 0.02715, "market_cap": 412575296651264, "revenue_growth": 0.163, "earnings_growth": 0.143}, "BBNI.JK": {"roe": 0.12029, "net_margin": 0.40032002, "operating_margin": 0.47421002, "debt_to_equity": null, "free_cash_flow": null, "pe_ratio": 5.88926, "pb_ratio": 0.7418746, "dividend_yield": 10.89, "roa": 0.01584, "market_cap": 119594320658432, "revenue_growth": 0.078, "earnings_growth": 0.052}, "BMRI.JK": {"roe": 0.21040002, "net_margin": 0.40245, "operating_margin": 0.58581, "debt_to_equity": null, "free_cash_flow": null, "pe_ratio": 6.1274314, "pb_ratio": 1.1741004, "dividend_yield": 12.42, "roa": 0.02575, "market_cap": 358399988465664, "revenue_growth": 0.015, "earnings_growth": 0.167}, "TLKM.JK": {"roe": 0.14214, "net_margin": 0.11276, "operating_margin": 0.24583, "debt_to_equity": 0.44115000000000004, "free_cash_flow": 34257999233024, "pe_ratio": 16.778116, "pb_ratio": 2.0289195, "dividend_yield": 7.7, "roa": 0.07377, "market_cap": 272440848547840, "revenue_growth": 0.015, "earnings_growth": -0.216}, "ASII.JK": {"roe": 0.13245, "net_margin": 0.099429995, "operating_margin": 0.0857, "debt_to_equity": 0.39859, "free_cash_flow": 15747374907392, "pe_ratio": 5.820692, "pb_ratio": 0.7865944, "dividend_yield": 8.53, "roa": 0.04541, "market_cap": 183091637256192, "revenue_growth": -0.056, "earnings_growth": -0.146}, "ICBP.JK": {"roe": 0.14631, "net_margin": 0.11969, "operating_margin": 0.20801, "debt_to_equity": 0.62219, "free_cash_flow": 6226821251072, "pe_ratio": 8.223684, "pb_ratio": 1.3777635, "dividend_yield": 3.88, "roa": 0.07327, "market_cap": 75219305758720, "revenue_growth": 0.076, "earnings_growth": -0.031}, "CPIN.JK": {"roe": 0.19496, "net_margin": 0.091630004, "operating_margin": 0.17216, "debt_to_equity": 0.18068, "free_cash_flow": 2504820785152, "pe_ratio": 8.305689, "pb_ratio": 1.5095513, "dividend_yield": 5.33, "roa": 0.12819, "market_cap": 55425240137728, "revenue_growth": 0.127, "earnings_growth": 0.677}, "INDF.JK": {"roe": 0.13319, "net_margin": 0.086780004, "operating_margin": 0.18856001, "debt_to_equity": 0.61085, "free_cash_flow": 8638832312320, "pe_ratio": 4.8638134, "pb_ratio": 0.6870716, "dividend_yield": 4.63, "roa": 0.068909995, "market_cap": 53121577385984, "revenue_growth": 0.074, "earnings_growth": 0.086}, "ADRO.JK": {"roe": 0.10256, "net_margin": 0.2543, "operating_margin": 0.31133, "debt_to_equity": 0.19536, "free_cash_flow": -21144876, "pe_ratio": 7.235843, "pb_ratio": 0.7421, "dividend_yield": 10.56, "roa": 0.05422, "market_cap": 64513105723392, "revenue_growth": 0.234, "earnings_growth": 0.748}, "KLBF.JK": {"roe": 0.1443, "net_margin": 0.09988, "operating_margin": 0.13664, "debt_to_equity": 0.01187, "free_cash_flow": 2396069298176, "pe_ratio": 8.725675, "pb_ratio": 1.2942996, "dividend_yield": 2.88, "roa": 0.090220004, "market_cap": 31447958159360, "revenue_growth": 0.101, "earnings_growth": -0.035}, "PTBA.JK": {"roe": 0.14413999, "net_margin": 0.07837, "operating_margin": 0.08306, "debt_to_equity": 0.11489, "free_cash_flow": 488093122560, "pe_ratio": 8.928572, "pb_ratio": 1.2672404, "dividend_yield": 12.84, "roa": 0.05271, "market_cap": 29822183014400, "revenue_growth": -0.003, "earnings_growth": 1.047}, "MDKA.JK": {"roe": 0.0055299997, "net_margin": -0.03275, "operating_margin": 0.040900003, "debt_to_equity": 0.71135, "free_cash_flow": -440244960, "pe_ratio": null, "pb_ratio": null, "dividend_yield": null, "roa": 0.01675, "market_cap": 62751435128832, "revenue_growth": 0.063, "earnings_growth": null}, "AMMN.JK": {"roe": 0.10484, "net_margin": 0.20658001, "operating_margin": 0.38917, "debt_to_equity": 1.1655200000000001, "free_cash_flow": -1094615168, "pe_ratio": 22.521906, "pb_ratio": 2.3612, "dividend_yield": null, "roa": 0.052849997, "market_cap": 238236836298752, "revenue_growth": 379.373, "earnings_growth": null}, "ANTM.JK": {"roe": 0.24687, "net_margin": 0.09661999, "operating_margin": 0.15276, "debt_to_equity": 0.21609, "free_cash_flow": -4749535477760, "pe_ratio": 9.1657505, "pb_ratio": 1.7011505, "dividend_yield": 5.52, "roa": 0.108459994, "market_cap": 66084602380288, "revenue_growth": 0.121, "earnings_growth": 0.599}, "BRPT.JK": {"roe": 0.34817, "net_margin": 0.05984, "operating_margin": 0.19275999, "debt_to_equity": 1.3390700000000002, "free_cash_flow": -1247792384, "pe_ratio": 13.605442, "pb_ratio": 4.737, "dividend_yield": null, "roa": 0.00985, "market_cap": 138693385912320, "revenue_growth": 2.322, "earnings_growth": 4.61}, "TPIA.JK": {"roe": 0.42368, "net_margin": 0.14337, "operating_margin": 0.16072, "debt_to_equity": 1.1702299999999999, "free_cash_flow": -1840610688, "pe_ratio": 3.444726, "pb_ratio": 1.4595, "dividend_yield": 0.47, "roa": -0.01233, "market_cap": 112872420016128, "revenue_growth": 2.864, "earnings_growth": null}, "PGAS.JK": {"roe": 0.10092, "net_margin": 0.061890002, "operating_margin": 0.13191, "debt_to_equity": 0.29053, "free_cash_flow": 228038624, "pe_ratio": 8.424787, "pb_ratio": 0.8502, "dividend_yield": 8.26, "roa": 0.05302, "market_cap": 36847090663424, "revenue_growth": -0.038, "earnings_growth": 0.458}, "UNTR.JK": {"roe": 0.12315, "net_margin": 0.09766, "operating_margin": 0.07727, "debt_to_equity": 0.25751, "free_cash_flow": 4743001800704, "pe_ratio": 6.277455, "pb_ratio": 0.7764926, "dividend_yield": 10.32, "roa": 0.06395, "market_cap": 74946768273408, "revenue_growth": -0.167, "earnings_growth": -0.794}, "SMGR.JK": {"roe": 0.00438, "net_margin": 0.00637, "operating_margin": 0.0312, "debt_to_equity": 0.21137, "free_cash_flow": 2993279991808, "pe_ratio": 45.668137, "pb_ratio": 0.24051498, "dividend_yield": 1.82, "roa": 0.0103400005, "market_cap": 10473771630592, "revenue_growth": 0.083, "earnings_growth": 0.887}, "INTP.JK": {"roe": 0.09884, "net_margin": 0.12803, "operating_margin": 0.05941, "debt_to_equity": 0.12118999999999999, "free_cash_flow": 1880727224320, "pe_ratio": 5.9808617, "pb_ratio": 0.5714874, "dividend_yield": 11.56, "roa": 0.04168, "market_cap": 13299083116544, "revenue_growth": -0.033, "earnings_growth": 0.041}, "GOTO.JK": {"roe": -0.03291, "net_margin": -0.03316, "operating_margin": 0.07829, "debt_to_equity": 0.27754, "free_cash_flow": -323724115968, "pe_ratio": null, "pb_ratio": 1.6553551, "dividend_yield": null, "roa": 0.00322, "market_cap": 53100509396992, "revenue_growth": 0.263, "earnings_growth": null}, "ESSA.JK": {"roe": 0.121120006, "net_margin": 0.15882, "operating_margin": 0.35653, "debt_to_equity": 0.00021999999999999998, "free_cash_flow": 86916824, "pe_ratio": 10.965323, "pb_ratio": 1.3281, "dividend_yield": 1.04, "roa": 0.083680004, "market_cap": 10077780049920, "revenue_growth": 0.368, "earnings_growth": 1.31}, "EXCL.JK": {"roe": -0.20136999, "net_margin": -0.12106, "operating_margin": -0.00874, "debt_to_equity": 2.0904, "free_cash_flow": 11772207562752, "pe_ratio": null, "pb_ratio": 1.6549467, "dividend_yield": 6.0, "roa": -0.010720001, "market_cap": 48229638995968, "revenue_growth": 0.374, "earnings_growth": null}, "MAPI.JK": {"roe": 0.17545, "net_margin": 0.051820002, "operating_margin": 0.0855, "debt_to_equity": 0.4696, "free_cash_flow": 3872628146176, "pe_ratio": 10.383889, "pb_ratio": 1.6824908, "dividend_yield": 0.67, "roa": 0.0796, "market_cap": 24651000446976, "revenue_growth": 0.32, "earnings_growth": 0.33}, "MIKA.JK": {"roe": 0.17981, "net_margin": 0.25302, "operating_margin": 0.30093, "debt_to_equity": 0.00111, "free_cash_flow": 511055921152, "pe_ratio": 15.38384, "pb_ratio": 2.7983396, "dividend_yield": 2.82, "roa": 0.11729, "market_cap": 21207642537984, "revenue_growth": 0.066, "earnings_growth": 0.048}, "HEAL.JK": {"roe": 0.07834, "net_margin": 0.056209996, "operating_margin": 0.1254, "debt_to_equity": 0.48057, "free_cash_flow": -570719993856, "pe_ratio": 30.030031, "pb_ratio": 2.1436284, "dividend_yield": 1.69, "roa": 0.05061, "market_cap": 12255226757120, "revenue_growth": 0.054, "earnings_growth": -0.187}, "SIDO.JK": {"roe": 0.32823002, "net_margin": 0.29088, "operating_margin": 0.2754, "debt_to_equity": 0.00049, "free_cash_flow": 953373229056, "pe_ratio": 9.415417, "pb_ratio": 3.288909, "dividend_yield": 10.16, "roa": 0.23064, "market_cap": 10714412482560, "revenue_growth": -0.188, "earnings_growth": -0.35}, "AKRA.JK": {"roe": 0.18943001, "net_margin": 0.05264, "operating_margin": 0.06335, "debt_to_equity": 0.34159999999999996, "free_cash_flow": 3903885148160, "pe_ratio": 9.398352, "pb_ratio": 1.8836404, "dividend_yield": 8.2, "roa": 0.05751, "market_cap": 24155718156288, "revenue_growth": 0.262, "earnings_growth": 0.161}, "ITMG.JK": {"roe": 0.093839996, "net_margin": 0.09527001, "operating_margin": 0.14809, "debt_to_equity": 0.04237, "free_cash_flow": 243388752, "pe_ratio": 7.5872536, "pb_ratio": 0.712, "dividend_yield": 7.9, "roa": 0.064770006, "market_cap": 24416289292288, "revenue_growth": 0.031, "earnings_growth": -0.149}};
 
 function tickerData(t){
@@ -798,13 +438,13 @@ function aiExplain(leaderData,turnaroundData,exitData){
   if(turnaroundData&&turnaroundData.context_match&&turnaroundData.transition_match){
     lines.push('<div class="panel-status turnaround"><b>KANDIDAT TURNAROUND</b>')
     lines.push('<div style="margin-top:6px;font-size:11px;color:#9CA3AF;font-weight:400">')
-    if(turnaroundData.drawdown_252d<-20)lines.push('<span class="panel-bullet">&#8226;</span>Penurunan dalam')
-    if(turnaroundData.distance_from_high_252d<-15)lines.push('<span class="panel-bullet">&#8226;</span>Jauh dari harga tertinggi')
-    if(turnaroundData.rs_change_60d>0)lines.push('<span class="panel-bullet">&#8226;</span>Kekuatan relatif membaik')
-    if(turnaroundData.volume_ratio>1.3)lines.push('<span class="panel-bullet">&#8226;</span>Volume meningkat')
+    if(turnaroundData.drawdown_252d<-20)lines.push('<span class="panel-bullet">&#8226;</span>Deep drawdown')
+    if(turnaroundData.distance_from_high_252d<-15)lines.push('<span class="panel-bullet">&#8226;</span>Far from previous high')
+    if(turnaroundData.rs_change_60d>0)lines.push('<span class="panel-bullet">&#8226;</span>Improving RS60')
+    if(turnaroundData.volume_ratio>1.3)lines.push('<span class="panel-bullet">&#8226;</span>Elevated volume')
     if(turnaroundData.recovery_from_60d_low>5)lines.push('<span class="panel-bullet">&#8226;</span>Pemulihan dari dasar')
     lines.push('</div></div>')
-    lines.push('<div style="font-size:11px;color:#64748b;margin-top:6px;line-height:1.5">Saham masih berisiko tinggi tetapi menunjukkan tanda awal akumulasi.</div>')
+    lines.push('<div style="font-size:11px;color:#64748b;margin-top:6px;line-height:1.5">Stock remains high risk but shows early signs of accumulation.</div>')
     return lines.join('')
   }
   if(exitData&&exitData.exit_state==='EXIT'){
@@ -813,13 +453,13 @@ function aiExplain(leaderData,turnaroundData,exitData){
     lines.push('<span class="panel-bullet">&#8226;</span>Exit state: '+exitData.exit_state)
     lines.push('<span class="panel-bullet">&#8226;</span>Rules: '+exitData.triggered_rules)
     lines.push('</div></div>')
-    lines.push('<div style="font-size:11px;color:#64748b;margin-top:6px;line-height:1.5">Saham menunjukkan kelemahan yang berkelanjutan di beberapa indikator.</div>')
+    lines.push('<div style="font-size:11px;color:#64748b;margin-top:6px;line-height:1.5">Stock shows sustained weakness across multiple indicators.</div>')
     return lines.join('')
   }
   if(leaderData&&leaderData.rank<=5){
     lines.push('<div class="panel-status portfolio"><b>PORTOFOLIO AKTIF</b>')
     lines.push('<div style="margin-top:6px;font-size:11px;color:#9CA3AF;font-weight:400">')
-    lines.push('<span class="panel-bullet">&#8226;</span>Peringkat 5 besar dalam sistem Config B')
+    lines.push('<span class="panel-bullet">&#8226;</span>Top 5 in Config B ranking')
     lines.push('<span class="panel-bullet">&#8226;</span>Saat ini masuk portofolio')
     lines.push('</div></div>')
     return lines.join('')
@@ -969,68 +609,8 @@ function closePanel(){
   document.getElementById('overlay').classList.remove('show')
 }
 
-function showHelp(k){
-  var h=HLP[k]
-  if(!h)return
-  var titles={leaders:'Config B Leaders',turnaround:'Turnaround Watchlist',diagnostics:'Pipeline Diagnostics',exit:'Exit Monitor',saham_tertekan:'Saham Tertekan',mulai_membaik:'Mulai Membaik',kandidat_turnaround:'Kandidat Turnaround',kekuatan_mulai_naik:'Kekuatan Mulai Naik',minat_beli_meningkat:'Minat Beli Meningkat',di_atas_trend_pendek:'Di Atas Trend Pendek',pantul_dari_dasar:'Pantul Dari Dasar',rata_penurunan:'Rata-Rata Penurunan',rata_gejolak:'Rata-Rata Gejolak'}
-  document.getElementById('htitle').textContent=titles[k]||k
-  document.getElementById('hbody').innerHTML=h
-  document.getElementById('help').classList.add('show')
-  document.getElementById('overlay').classList.add('show')
-}
-
-function closeHelp(){
-  document.getElementById('help').classList.remove('show')
-  document.getElementById('overlay').classList.remove('show')
-}
-
-function closeAll(){
-  closePanel();closeHelp()
-}
-
-document.addEventListener('keydown',function(e){if(e.key==='Escape')closeAll()})
-document.addEventListener('click',function(e){
-  var t=e.target.closest('.tk-click')
-  if(t){var tkr=t.getAttribute('data-ticker')||t.textContent.trim();e.stopPropagation();openPanel(tkr);return}
-  var tip=e.target.closest('.tip')
-  if(tip)return
-  var h=e.target.closest('.help-modal')
-  var o=e.target.closest('#overlay')
-  var p=e.target.closest('#panel')
-  if(o){closePanel();if(!h)closeHelp()}
-  if(!h&&document.getElementById('help').classList.contains('show'))closeHelp()
-})
-;(function(){
-  var p=document.getElementById('panel'),o=document.getElementById('overlay')
-  var sx=0,sy=0,dx=0,dragging=false,th=80
-  p.addEventListener('touchstart',function(e){
-    if(!p.classList.contains('show'))return
-    var t=e.touches[0];sx=t.clientX;sy=t.clientY;dx=0;dragging=false
-  },{passive:true})
-  p.addEventListener('touchmove',function(e){
-    if(!p.classList.contains('show')||sx===0)return
-    var cx=e.touches[0].clientX-sx,cy=e.touches[0].clientY-sy
-    if(!dragging){
-      if(Math.abs(cx)<10&&Math.abs(cy)<10)return
-      if(Math.abs(cx)<Math.abs(cy))return
-      if(cx<0)return
-      dragging=true;p.classList.add('panel-dragging')
-    }
-    dx=cx
-    if(dx>window.innerWidth)dx=window.innerWidth
-    p.style.transform='translateX('+dx+'px)'
-    o.style.opacity=Math.max(0,.5*(1-dx/window.innerWidth))
-  },{passive:false})
-  p.addEventListener('touchend',function(){
-    if(sx===0)return
-    if(dragging){
-      p.classList.remove('panel-dragging')
-      if(dx>th){p.style.transform='';o.style.opacity='';closePanel()}
-      else{p.style.transform='';o.style.opacity=''}
-    }
-    sx=0;dragging=false
-  },{passive:true})
-})()
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closePanel()})
+document.addEventListener('click',function(e){var t=e.target.closest('.tk-click');if(t){var tkr=t.getAttribute('data-ticker')||t.textContent.trim();e.stopPropagation();openPanel(tkr)}})
 </script>
 </body>
 </html>

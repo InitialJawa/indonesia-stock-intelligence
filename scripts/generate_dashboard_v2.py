@@ -13,6 +13,7 @@ PROFILES_FILE = Path("data/state/company_profiles.json")
 FUND_FILE = Path("output/raw/fundamentals.json")
 GROWTH_FILE = Path("output/raw/growth.json")
 EXIT_SUMMARY_FILE = Path("data/state/exit_summary.json")
+RADAR_STATUS_FILE = Path("output/daily_radar_status.json")
 
 def read_csv(filepath):
     if not filepath.exists():
@@ -113,7 +114,7 @@ def file_age(path, report_date=None):
     age = datetime.datetime.now() - mtime
     return f"{age.days}d {age.seconds // 3600}h ago" if age.days < 30 else f"{age.days}d ago"
 
-def build_html(leaders, turnaround, summary, history, streaks, report_date, exit_data=None, profiles=None, fundamentals=None):
+def build_html(leaders, turnaround, summary, history, streaks, report_date, exit_data=None, profiles=None, fundamentals=None, radar_status=None):
     summary_data = summary if isinstance(summary, dict) else {}
     top_candidates = summary_data.get('top_candidates', [])
     ctx_count = summary_data.get('context_match_count', 0)
@@ -128,6 +129,11 @@ def build_html(leaders, turnaround, summary, history, streaks, report_date, exit
     exit_json = json.dumps(exit_data if exit_data else [])
     profiles_json = json.dumps(profiles if profiles else {})
     fundamentals_json = json.dumps(fundamentals if fundamentals else {})
+
+    radar_data = radar_status if isinstance(radar_status, dict) else {}
+    radar_detail = radar_data.get('detail_message', '')
+    radar_status_label = radar_data.get('status', 'SAFE')
+    radar_status_escaped = radar_detail.replace('"', '\"').replace("'", "\\'").replace('\n', ' ')
 
     return f'''<!DOCTYPE html>
 <html lang="en">
@@ -545,78 +551,12 @@ function st(i){{document.querySelectorAll('.tab-btn').forEach(function(b,j){{b.c
 const PF={profiles_json};
 const FD={fundamentals_json};
 
-/* KESIMPULAN HARI INI */
+/* KESIMPULAN AI — from Gemini via daily_radar_status.json */
+const RADAR_STATUS='{radar_status_escaped}';
+const RADAR_LABEL='{radar_status_label}';
 (function(){{
-  var exitCount=EX.filter(function(d){{return d.exit_state==='EXIT'}}).length
-  var exitRiskCount=EX.filter(function(d){{return d.exit_state==='EXIT RISK'}}).length
-  var weakeningCount=EX.filter(function(d){{return d.exit_state==='WEAKENING'}}).length
-  var healthyCount=EX.filter(function(d){{return d.exit_state==='HEALTHY'}}).length
-  var top5=[];L.forEach(function(d){{if(d.rank<=5)top5.push(d.ticker)}})
-  var portfolioExit=EX.filter(function(d){{return top5.indexOf(d.ticker)>=0&&d.exit_state!=='HEALTHY'}})
-  var fullMatchCount=SM.full_match_count||0
-  var sd=SM.signal_diagnostics||{{}}
-  var avgDD=sd.avg_drawdown_252d||0
-  var avgVol=sd.avg_volatility_60d||0
-  var aboveMA20=sd.above_ma20_count||0
-  var rsPositive=sd.rs_change_60d_positive_count||0
-  var rankDrops=EX.filter(function(d){{return d.rank_change<0}}).length
-  var status='TIDAK ADA AKSI',cls='s-hijau',reasons=[],focuses=[]
-  if(exitCount>=3){{
-    status='RISIKO MENINGKAT';cls='s-merah'
-    reasons.push(exitCount+' saham dalam status EXIT — tekanan keluar meluas')
-    reasons.push(exitRiskCount+' EXIT RISK, '+weakeningCount+' weakening — sistem dalam tekanan')
-  }}else if(exitCount>=1&&portfolioExit.length>0){{
-    status='REVIEW';cls='s-kuning'
-    reasons.push(exitCount+' saham EXIT, '+portfolioExit.length+' di antaranya dari portofolio 5 besar')
-  }}else if(exitCount>=1||exitRiskCount>=2){{
-    status='REVIEW';cls='s-kuning'
-    if(exitCount>=1)reasons.push(exitCount+' saham EXIT terdeteksi')
-    else reasons.push(exitRiskCount+' saham EXIT RISK — perhatikan perkembangan')
-  }}else if(fullMatchCount>=3||avgDD<-25||avgVol>3.5||aboveMA20===0){{
-    status='TAHAN';cls='s-biru'
-    if(fullMatchCount>=3)reasons.push(fullMatchCount+' kandidat turnaround terdeteksi')
-    if(avgDD<-25)reasons.push('Rata-rata penurunan IDX30 '+avgDD.toFixed(1)+'%')
-    if(avgVol>3.5)reasons.push('Volatilitas '+avgVol.toFixed(2)+'% — fluktuasi di atas normal')
-    if(aboveMA20===0)reasons.push('Seluruh IDX30 di bawah MA20 — tren pendek lemah')
-  }}else{{
-    reasons.push('Tidak ada sinyal exit signifikan')
-    reasons.push('Rata-rata penurunan '+avgDD.toFixed(1)+'% — dalam batas wajar')
-  }}
-  if(reasons.length<2){{
-    if(exitCount>0)reasons.push(exitCount+' saham EXIT, '+exitRiskCount+' EXIT RISK')
-    else if(avgDD>-15)reasons.push('Penurunan pasar minimal ('+avgDD.toFixed(1)+'%)')
-    else if(rsPositive>15)reasons.push(rsPositive+' dari 30 saham mulai menguat')
-    else reasons.push(healthyCount+' dari '+EX.length+' saham dalam kondisi sehat')
-  }}
-  if(portfolioExit.length>0){{
-    var tkr=portfolioExit.map(function(d){{return d.ticker.split('.')[0]}}).join(', ')
-    focuses.push('Portofolio: '+tkr+' masuk sinyal exit — pantau pergerakan')
-  }}else if(exitCount>0){{
-    var ex=EX.filter(function(d){{return d.exit_state==='EXIT'}}).slice(0,3).map(function(d){{return d.ticker.split('.')[0]}}).join(', ')
-    focuses.push('Pantau '+ex+' — saham dengan sinyal EXIT aktif')
-  }}else if(fullMatchCount>=3&&SM.top_candidates){{
-    var tkr=SM.top_candidates.filter(function(d){{return d.full_match}}).slice(0,3).map(function(d){{return d.ticker.split('.')[0]}}).join(', ')
-    if(tkr)focuses.push('Pantau '+tkr+' — kandidat turnaround penuh')
-    else focuses.push(fullMatchCount+' kandidat turnaround — pantau perkembangannya')
-  }}else{{
-    focuses.push('Pantau perubahan ranking harian — '+rankDrops+' saham turun peringkat')
-  }}
-  if(avgDD<-25){{
-    focuses.push('Waspada tekanan pasar — rata-rata penurunan '+avgDD.toFixed(1)+'%')
-  }}else if(aboveMA20===0){{
-    focuses.push('Pasar melemah — 0 saham berhasil bertahan di atas MA20')
-  }}else if(rsPositive>15){{
-    focuses.push(rsPositive+' dari 30 saham menunjukkan penguatan — positif')
-  }}else{{
-    focuses.push(rankDrops+' saham turun peringkat hari ini — perhatikan distribusi')
-  }}
-  if(focuses.length>2)focuses=focuses.slice(0,2)
-  if(reasons.length>3)reasons=reasons.slice(0,3)
-  var h='<div class="conc"><div class="conc-hdr"><span class="conc-status '+cls+'">'+status+'</span><span class="conc-label">KESIMPULAN HARI INI</span></div><div class="conc-body"><div class="conc-col"><div class="conc-sub">Alasan</div><ul class="conc-list">'
-  reasons.forEach(function(r){{h+='<li>'+r+'</li>'}})
-  h+='</ul></div><div class="conc-col"><div class="conc-sub">Fokus Hari Ini</div><ul class="conc-list">'
-  focuses.forEach(function(f){{h+='<li>'+f+'</li>'}})
-  h+='</ul></div></div></div>'
+  var c=RADAR_LABEL==='SAFE'?'s-hijau':RADAR_LABEL==='CAUTION'?'s-kuning':'s-merah'
+  var h='<div class="conc"><div class="conc-hdr"><span class="conc-status '+c+'">'+RADAR_LABEL+'</span><span class="conc-label">KESIMPULAN AI — GEMINI</span></div><div class="conc-body"><div class="conc-col" style="min-width:100%"><div class="conc-sub">Analisis Hari Ini</div><div style="font-size:12px;color:#C9D1D9;line-height:1.6;padding:4px 0">'+RADAR_STATUS+'</div></div></div></div>'
   document.getElementById('conclusion').innerHTML=h
 }})();
 
@@ -995,8 +935,14 @@ def main():
         print(f"  Loaded {len(fundamentals)} fundamental records")
     else:
         print("  No fundamentals data found — skipping")
+    print("  Loading radar status...")
+    radar_status = read_json(RADAR_STATUS_FILE)
+    if radar_status:
+        print(f"  Radar status: {radar_status.get('status', 'N/A')} | AI narrative: {len(radar_status.get('detail_message', ''))} chars")
+    else:
+        print("  No radar status found — skipping AI conclusion")
     print("  Generating HTML...")
-    html = build_html(leaders, turnaround, summary, history, streaks, report_date, exit_data, profiles, fundamentals)
+    html = build_html(leaders, turnaround, summary, history, streaks, report_date, exit_data, profiles, fundamentals, radar_status)
     V2_DIR.mkdir(parents=True, exist_ok=True)
     output_path = V2_DIR / 'index.html'
     with open(output_path, 'w', encoding='utf-8') as f:

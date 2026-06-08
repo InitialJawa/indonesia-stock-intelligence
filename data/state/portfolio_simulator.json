@@ -1,0 +1,27 @@
+[
+  {
+    "ticker": "BBCA",
+    "investment": 25000000,
+    "entry_price": 8900
+  },
+  {
+    "ticker": "BMRI",
+    "investment": 15000000,
+    "entry_price": 4200
+  },
+  {
+    "ticker": "BBNI",
+    "investment": 10000000,
+    "entry_price": 5100
+  },
+  {
+    "ticker": "ADRO",
+    "investment": 20000000,
+    "entry_price": 2100
+  },
+  {
+    "ticker": "ESSA",
+    "investment": 8000000,
+    "entry_price": 1850
+  }
+]

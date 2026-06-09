@@ -91,9 +91,6 @@ tr:hover td{background:#111b26}
 .cfg-btn.active-res{background:#0c1929;color:#60a5fa;border-color:#1e3a5f}
 .cfg-btn:not(.active-prod):not(.active-res){color:#64748b}
 .cfg-label{font-size:10px;color:#64748b}
-.top-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:6px;margin-top:8px}
-.top-candidate{background:#111820;border:1px solid #1e293b;border-radius:8px;padding:10px;cursor:pointer;transition:border-color .15s}
-.top-candidate:hover{border-color:#3b82f6}
 .sub-tab-nav{display:flex;gap:2px;margin-bottom:12px;border-bottom:1px solid #1e2633}
 .sub-tab-btn{padding:6px 12px;font-size:10px;font-family:'Space Mono',monospace;background:transparent;border:none;color:#64748b;cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;letter-spacing:.04em}
 .sub-tab-btn:hover{color:#e8edf5}
@@ -187,7 +184,7 @@ tr:hover td{background:#111b26}
 <div class="tab-nav">
 <button class="tab-btn active" onclick="st(0,this)">Leaders</button>
 <button class="tab-btn" onclick="st(1,this)">Turnaround</button>
-<button class="tab-btn" onclick="st(2,this)">Candidates</button>
+
 <button class="tab-btn" onclick="st(3,this)">History</button>
 <button class="tab-btn" onclick="st(4,this)">Exit</button>
 <button class="tab-btn" onclick="st(5,this)">Diagnostics</button>
@@ -241,12 +238,6 @@ tr:hover td{background:#111b26}
 <tbody id="tbody-trn"></tbody>
 </table></div>
 </div>
-</div>
-
-<div class="tc" id="t2">
-<div class="section-title">Top Candidates</div>
-<div style="margin-bottom:8px;font-size:11px;color:#64748b">Top 10 tickers by composite score. Score breakdown = quality, growth, value, momentum factor scores (0-100).</div>
-<div class="top-grid" id="top-candidates"></div>
 </div>
 
 <div class="tc" id="t3">
@@ -497,27 +488,6 @@ function renderTurnaround() {
       options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: '#1e293b' } }, x: { grid: { display: false }, ticks: { color: '#94a3b8' } } } }
     });
   }
-}
-
-function renderTop() {
-  var w = getWeights();
-  var scored = L.map(function(r) { return Object.assign({}, r, { _score: computeFinalScore(r, w) }); });
-  scored.sort(function(a, b) { return b._score - a._score; });
-  scored.forEach(function(r, i) { r._rank = i + 1; });
-  var top10 = scored.filter(function(d) { return d._rank <= 10; });
-  var h = '';
-  top10.forEach(function(d) {
-    var sym = d.ticker.split('.')[0];
-    h += '<div class="top-candidate" onclick="openPanel(\'' + sym + '\')"><div><span class="tk" style="color:' + ac(d.ticker) + '">' + sym + '</span><span class="flag" style="margin-left:2px">#' + d._rank + '</span></div><div style="display:flex;gap:6px;margin-top:6px">';
-    ['quality', 'growth', 'value', 'momentum'].forEach(function(f) {
-      var v = d[f]; var c = v >= 60 ? '#00d68f' : v >= 40 ? '#f59e0b' : '#ef4444';
-      h += '<div style="background:#1e293b;border-radius:4px;padding:2px 6px;font-size:10px;color:' + c + ';min-width:20px;text-align:center">' + f.charAt(0).toUpperCase() + ' ' + (+v).toFixed(0) + '</div>';
-    });
-    h += '</div><div style="display:flex;gap:8px;margin-top:4px;font-size:10px;color:#64748b">';
-    var p = PF[sym]; if (p) { h += '<span>' + p.sector + '</span>'; }
-    h += '<span>Score ' + d._score.toFixed(1) + '</span></div></div>';
-  });
-  document.getElementById('top-candidates').innerHTML = h;
 }
 
 function renderHistory() {
@@ -894,7 +864,7 @@ function closePanel() {
 }
 
 function renderAll() {
-  var _fns = [renderRadarConclusion, renderLeaders, renderInsights, renderTop, renderHistory, re, renderComparisonCards];
+  var _fns = [renderRadarConclusion, renderLeaders, renderInsights, renderHistory, re, renderComparisonCards];
   for (var _i = 0; _i < _fns.length; _i++) { try { _fns[_i](); } catch(e) { console.warn('renderAll: ' + (_fns[_i].name || 'fn' + _i) + ' failed:', e); } }
 }
 

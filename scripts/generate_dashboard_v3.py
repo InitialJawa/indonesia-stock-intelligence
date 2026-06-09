@@ -467,20 +467,33 @@ Ideal position: top-left (high return, low drawdown) or top-right (high return, 
 <div class="panel-body" id="pbody"></div>
 </div>
 <script>
-const L = {leaders_json};
-const T = {turnaround_json};
-const SM = {summary_json};
-const SK = {streaks_json};
-const EX = {exit_json};
-const PF = {profiles_json};
-const FD = {fundamentals_json};
-const CW_B = {cw_b_json};
-const CW_F = {cw_f_json};
-const WI = {warehouse_json};
-const IC = {ic_json};
-const BT = {bt_json};
-const FCOLORS = {fcolors_json};
-const FNAMES = {fnames_json};
+var L = [], T = [], SM = {}, SK = [], EX = [], PF = {}, FD = {}, CW_B = {}, CW_F = {}, WI = {}, IC = {}, BT = {}, FCOLORS = {}, FNAMES = {};
+
+async function loadAllData() {
+  var sources = [
+    ['./data/leaders.json', function(d) { L = d; }],
+    ['./data/turnaround.json', function(d) { T = d; }],
+    ['./data/summary.json', function(d) { SM = d; }],
+    ['./data/streaks.json', function(d) { SK = d; }],
+    ['./data/exit.json', function(d) { EX = d; }],
+    ['./data/profiles.json', function(d) { PF = d; }],
+    ['./data/fundamentals.json', function(d) { FD = d; }],
+    ['./data/cw_b.json', function(d) { CW_B = d; }],
+    ['./data/cw_f.json', function(d) { CW_F = d; }],
+    ['./data/warehouse.json', function(d) { WI = d; }],
+    ['./data/ic.json', function(d) { IC = d; }],
+    ['./data/bt.json', function(d) { BT = d; }],
+    ['./data/fcolors.json', function(d) { FCOLORS = d; }],
+    ['./data/fnames.json', function(d) { FNAMES = d; }],
+  ];
+  for (var i = 0; i < sources.length; i++) {
+    try {
+      var r = await fetch(sources[i][0]);
+      if (r.ok) { sources[i][1](await r.json()); }
+    } catch(e) { console.warn('loadAllData: fetch failed for', sources[i][0]); }
+  }
+  renderAll();
+}
 
 var activeConfig = 'prod';
 function getWeights() { return activeConfig === 'prod' ? CW_F : CW_B; }
@@ -530,7 +543,6 @@ function renderLeaders() {
   }).join('');
   document.getElementById('tbody-leaders').innerHTML = html;
 }
-renderLeaders();
 
 function renderFactorPanel() {
   var w = getWeights();
@@ -547,7 +559,6 @@ function renderFactorPanel() {
   });
   document.getElementById('factor-panel').innerHTML = h;
 }
-renderFactorPanel();
 
 function switchConfig(cfg) {
   activeConfig = cfg;
@@ -600,7 +611,6 @@ function renderInsights() {
     document.getElementById('insight-top10').innerHTML = h2;
   }
 }
-renderInsights();
 
 function st(tabIdx, btn) {
   document.querySelectorAll('.tab-nav .tab-btn').forEach(function(b) { b.classList.remove('active'); });
@@ -656,7 +666,6 @@ function renderTop() {
   });
   document.getElementById('top-candidates').innerHTML = h;
 }
-renderTop();
 
 function renderHistory() {
   var h = SK.map(function(r) {
@@ -665,7 +674,6 @@ function renderHistory() {
   }).join('');
   document.getElementById('tbody-history').innerHTML = h;
 }
-renderHistory();
 
 var es = { key: null, dir: 'asc' };
 function re() {
@@ -690,7 +698,6 @@ function ef(v, btn) {
   btn.classList.add('active');
   re();
 }
-re();
 
 function stSub(tabId, subId, btn) {
   var parent = btn.parentElement;
@@ -718,7 +725,6 @@ function renderComparisonCards() {
   });
   document.getElementById('comparison-cards').innerHTML = h;
 }
-renderComparisonCards();
 
 function switchPeriod(period, btn) {
   document.querySelectorAll('#t6-2 .period-btn').forEach(function(b) { b.classList.remove('active'); });
@@ -1031,13 +1037,23 @@ function closePanel() {
   document.getElementById('panel').classList.remove('active');
 }
 
+function renderAll() {
+  renderLeaders();
+  renderFactorPanel();
+  renderInsights();
+  renderTop();
+  renderHistory();
+  re();
+  renderComparisonCards();
+}
+
 document.addEventListener('click', function(e) {
   var tkEl = e.target.closest('.tk-click');
   if (tkEl) { openPanel(tkEl.getAttribute('data-ticker') || tkEl.textContent.trim()); }
 });
 document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { closePanel(); } });
 
-console.log('ISI Dashboard V3 loaded. Config:', activeConfig, 'Tickers:', L.length);
+loadAllData();
 </script>
 </body></html>"""
 
@@ -1078,20 +1094,6 @@ def build_html(leaders, turnaround, summary, history, streaks, report_date, exit
     history_len = max(history_len, len(streaks))
 
     substitutions = {
-        'leaders_json': leaders_json,
-        'turnaround_json': turnaround_json,
-        'summary_json': summary_json,
-        'streaks_json': streaks_json,
-        'exit_json': exit_json,
-        'profiles_json': profiles_json,
-        'fundamentals_json': fundamentals_json,
-        'cw_b_json': cw_b_json,
-        'cw_f_json': cw_f_json,
-        'warehouse_json': warehouse_json,
-        'ic_json': ic_json,
-        'bt_json': bt_json,
-        'fcolors_json': fcolors_json,
-        'fnames_json': fnames_json,
         'warehouse_range': warehouse_range,
         'report_date': display_date or '',
         'ctx_match_count': str(ctx_match_count),
@@ -1168,10 +1170,39 @@ def main():
         warehouse_info=warehouse_info,
     )
 
+    data_dir_out = os.path.join(project_dir, "docs", "data")
+    os.makedirs(data_dir_out, exist_ok=True)
+
+    def write_json(filename, data):
+        with open(os.path.join(data_dir_out, filename), "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=2, ensure_ascii=False)
+
+    write_json("leaders.json", leaders)
+    write_json("turnaround.json", turnaround)
+    write_json("exit.json", exit_data if exit_data else [])
+    write_json("summary.json", summary_data)
+    write_json("streaks.json", streaks)
+    write_json("profiles.json", profiles if profiles else {})
+    write_json("fundamentals.json", fundamentals if fundamentals else {})
+    write_json("cw_b.json", CONFIG_B_WEIGHTS)
+    write_json("cw_f.json", config_weights)
+    write_json("warehouse.json", warehouse_info if warehouse_info else {})
+    write_json("ic.json", IC_VALUES)
+    write_json("bt.json", BACKTEST_RESULTS)
+    write_json("fcolors.json", FACTOR_COLORS)
+    write_json("fnames.json", FACTOR_LABELS)
+
     output_path = os.path.join(project_dir, "dashboard", "index.html")
     with open(output_path, "w", encoding="utf-8") as f:
         f.write(html)
+
+    docs_path = os.path.join(project_dir, "docs", "index.html")
+    with open(docs_path, "w", encoding="utf-8") as f:
+        f.write(html)
+
     print(f"[OK] Dashboard V3 written to {output_path} ({len(html)} bytes)")
+    print(f"[OK] Dashboard V3 copied to {docs_path}")
+    print(f"[OK] 14 data files written to {data_dir_out}")
 
 
 if __name__ == "__main__":

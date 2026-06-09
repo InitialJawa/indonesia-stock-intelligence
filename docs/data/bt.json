@@ -1,0 +1,65 @@
+{
+  "full": {
+    "label": "Full Period (2022-02 → 2026-05)",
+    "config_b": {
+      "cagr": 13.22,
+      "sharpe": 0.6072,
+      "max_dd": -27.53,
+      "total_return": 71.29
+    },
+    "config_f": {
+      "cagr": 11.07,
+      "sharpe": 0.5701,
+      "max_dd": -22.0,
+      "total_return": 57.6
+    },
+    "ihsg": {
+      "cagr": -0.89,
+      "sharpe": -0.08,
+      "max_dd": -28.73,
+      "total_return": -3.82
+    }
+  },
+  "pre_2026": {
+    "label": "Before 2026 (2022-02 → 2025-12)",
+    "config_b": {
+      "cagr": 23.56,
+      "sharpe": 1.0158,
+      "max_dd": -26.08,
+      "total_return": 129.02
+    },
+    "config_f": {
+      "cagr": 17.21,
+      "sharpe": 0.8459,
+      "max_dd": -22.0,
+      "total_return": 86.25
+    },
+    "ihsg": {
+      "cagr": -0.6,
+      "sharpe": 0.12,
+      "max_dd": -12.51,
+      "total_return": -2.33
+    }
+  },
+  "ytd_2026": {
+    "label": "2026 YTD (2026-01 → 2026-05)",
+    "config_b": {
+      "cagr": -55.7,
+      "sharpe": -1.5343,
+      "max_dd": -27.53,
+      "total_return": -23.77
+    },
+    "config_f": {
+      "cagr": -35.85,
+      "sharpe": -0.9304,
+      "max_dd": -17.04,
+      "total_return": -13.75
+    },
+    "ihsg": {
+      "cagr": -7.81,
+      "sharpe": -0.58,
+      "max_dd": -18.62,
+      "total_return": -2.68
+    }
+  }
+}

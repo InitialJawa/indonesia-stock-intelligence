@@ -1,0 +1,18 @@
+{
+  "quality": {
+    "ic": 0.0279,
+    "role": "Stabilizer"
+  },
+  "growth": {
+    "ic": -0.0126,
+    "role": "Diversifier"
+  },
+  "value": {
+    "ic": 0.0555,
+    "role": "Predictive"
+  },
+  "momentum": {
+    "ic": 0.0356,
+    "role": "Primary Return Driver"
+  }
+}

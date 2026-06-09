@@ -1,0 +1,272 @@
+[
+  {
+    "rank": "1",
+    "ticker": "ADRO.JK",
+    "quality": "53.77",
+    "growth": "86.21",
+    "value": "62.07",
+    "momentum": "92.97",
+    "final_score": "78.05"
+  },
+  {
+    "rank": "2",
+    "ticker": "ESSA.JK",
+    "quality": "64.65",
+    "growth": "96.55",
+    "value": "26.9",
+    "momentum": "81.14",
+    "final_score": "76.22"
+  },
+  {
+    "rank": "3",
+    "ticker": "PTBA.JK",
+    "quality": "49.96",
+    "growth": "93.1",
+    "value": "55.86",
+    "momentum": "81.98",
+    "final_score": "74.7"
+  },
+  {
+    "rank": "4",
+    "ticker": "MAPI.JK",
+    "quality": "44.85",
+    "growth": "72.41",
+    "value": "26.55",
+    "momentum": "87.46",
+    "final_score": "66.2"
+  },
+  {
+    "rank": "5",
+    "ticker": "BMRI.JK",
+    "quality": "77.59",
+    "growth": "68.97",
+    "value": "77.58",
+    "momentum": "52.06",
+    "final_score": "66.07"
+  },
+  {
+    "rank": "6",
+    "ticker": "CPIN.JK",
+    "quality": "63.88",
+    "growth": "82.76",
+    "value": "47.59",
+    "momentum": "53.61",
+    "final_score": "64.32"
+  },
+  {
+    "rank": "7",
+    "ticker": "PGAS.JK",
+    "quality": "35.81",
+    "growth": "75.86",
+    "value": "52.07",
+    "momentum": "74.81",
+    "final_score": "63.1"
+  },
+  {
+    "rank": "8",
+    "ticker": "ANTM.JK",
+    "quality": "50.62",
+    "growth": "79.31",
+    "value": "38.97",
+    "momentum": "62.28",
+    "final_score": "62.14"
+  },
+  {
+    "rank": "9",
+    "ticker": "AKRA.JK",
+    "quality": "49.14",
+    "growth": "65.52",
+    "value": "34.83",
+    "momentum": "70.14",
+    "final_score": "59.97"
+  },
+  {
+    "rank": "10",
+    "ticker": "BBRI.JK",
+    "quality": "71.21",
+    "growth": "62.07",
+    "value": "75.86",
+    "momentum": "41.84",
+    "final_score": "58.65"
+  },
+  {
+    "rank": "11",
+    "ticker": "BRPT.JK",
+    "quality": "41.83",
+    "growth": "100.0",
+    "value": "9.48",
+    "momentum": "49.26",
+    "final_score": "58.65"
+  },
+  {
+    "rank": "12",
+    "ticker": "BBNI.JK",
+    "quality": "53.96",
+    "growth": "55.17",
+    "value": "83.45",
+    "momentum": "55.21",
+    "final_score": "57.71"
+  },
+  {
+    "rank": "13",
+    "ticker": "INDF.JK",
+    "quality": "50.49",
+    "growth": "58.62",
+    "value": "74.83",
+    "momentum": "55.98",
+    "final_score": "57.28"
+  },
+  {
+    "rank": "14",
+    "ticker": "EXCL.JK",
+    "quality": "18.62",
+    "growth": "34.48",
+    "value": "66.55",
+    "momentum": "85.0",
+    "final_score": "51.4"
+  },
+  {
+    "rank": "15",
+    "ticker": "INTP.JK",
+    "quality": "47.44",
+    "growth": "48.28",
+    "value": "86.21",
+    "momentum": "39.3",
+    "final_score": "48.72"
+  },
+  {
+    "rank": "16",
+    "ticker": "MDKA.JK",
+    "quality": "12.34",
+    "growth": "34.48",
+    "value": "40.17",
+    "momentum": "87.43",
+    "final_score": "48.05"
+  },
+  {
+    "rank": "17",
+    "ticker": "ITMG.JK",
+    "quality": "45.77",
+    "growth": "13.79",
+    "value": "57.24",
+    "momentum": "72.51",
+    "final_score": "46.68"
+  },
+  {
+    "rank": "18",
+    "ticker": "ASII.JK",
+    "quality": "53.52",
+    "growth": "17.24",
+    "value": "77.59",
+    "momentum": "55.78",
+    "final_score": "45.83"
+  },
+  {
+    "rank": "19",
+    "ticker": "BBCA.JK",
+    "quality": "80.35",
+    "growth": "44.83",
+    "value": "30.34",
+    "momentum": "18.94",
+    "final_score": "43.2"
+  },
+  {
+    "rank": "20",
+    "ticker": "TLKM.JK",
+    "quality": "62.2",
+    "growth": "6.9",
+    "value": "28.96",
+    "momentum": "64.46",
+    "final_score": "43.08"
+  },
+  {
+    "rank": "21",
+    "ticker": "SMGR.JK",
+    "quality": "31.59",
+    "growth": "89.66",
+    "value": "38.28",
+    "momentum": "11.01",
+    "final_score": "42.48"
+  },
+  {
+    "rank": "22",
+    "ticker": "MIKA.JK",
+    "quality": "73.92",
+    "growth": "51.72",
+    "value": "17.93",
+    "momentum": "11.83",
+    "final_score": "39.93"
+  },
+  {
+    "rank": "23",
+    "ticker": "UNTR.JK",
+    "quality": "50.34",
+    "growth": "0.0",
+    "value": "61.38",
+    "momentum": "58.2",
+    "final_score": "39.09"
+  },
+  {
+    "rank": "24",
+    "ticker": "ICBP.JK",
+    "quality": "59.0",
+    "growth": "24.14",
+    "value": "48.96",
+    "momentum": "33.97",
+    "final_score": "38.78"
+  },
+  {
+    "rank": "25",
+    "ticker": "SIDO.JK",
+    "quality": "82.3",
+    "growth": "3.45",
+    "value": "37.24",
+    "momentum": "31.45",
+    "final_score": "36.34"
+  },
+  {
+    "rank": "26",
+    "ticker": "GOTO.JK",
+    "quality": "16.44",
+    "growth": "34.48",
+    "value": "51.55",
+    "momentum": "34.66",
+    "final_score": "31.74"
+  },
+  {
+    "rank": "27",
+    "ticker": "KLBF.JK",
+    "quality": "62.6",
+    "growth": "20.69",
+    "value": "45.86",
+    "momentum": "10.26",
+    "final_score": "30.03"
+  },
+  {
+    "rank": "28",
+    "ticker": "TPIA.JK",
+    "quality": "50.22",
+    "growth": "34.48",
+    "value": "54.48",
+    "momentum": "0.78",
+    "final_score": "28.62"
+  },
+  {
+    "rank": "29",
+    "ticker": "AMMN.JK",
+    "quality": "41.71",
+    "growth": "34.48",
+    "value": "9.48",
+    "momentum": "3.14",
+    "final_score": "22.82"
+  },
+  {
+    "rank": "30",
+    "ticker": "HEAL.JK",
+    "quality": "19.05",
+    "growth": "10.34",
+    "value": "14.83",
+    "momentum": "14.2",
+    "final_score": "14.32"
+  }
+]

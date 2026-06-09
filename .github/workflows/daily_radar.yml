@@ -67,10 +67,6 @@ jobs:
         run: |
           python scripts/validate_market_pipeline.py
 
-      - name: Generate HTML Dashboard V2
-        run: |
-          python scripts/generate_dashboard_v2.py
-
       - name: Commit and Push Changes
         run: |
           git config --global user.name 'github-actions[bot]'

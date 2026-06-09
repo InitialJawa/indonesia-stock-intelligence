@@ -157,8 +157,8 @@ tr:hover td{background:#1a1e24}
   <button class="tab-btn" onclick="st(1)">02 · Turnaround</button>
   <button class="tab-btn" onclick="st(2)">03 · Daily Summary</button>
   <button class="tab-btn" onclick="st(3)">04 · History</button>
-  <button class="tab-btn" onclick="st(4)">05 · Diagnostics</button>
-  <button class="tab-btn" onclick="st(5)">06 · Exit Monitor</button>
+  <button class="tab-btn" onclick="st(4)">05 · Exit Monitor</button>
+  <button class="tab-btn" onclick="st(5)">06 · Diagnostics</button>
 </div>
 
 <div class="tc active" id="t0">
@@ -230,28 +230,35 @@ tr:hover td{background:#1a1e24}
   </table>
 </div>
 
-<div class="tc" id="t4">
-  <div class="section-title">Pipeline Diagnostics</div>
-  <div class="card-grid">
-    <div class="card wide-card">
-      <div class="card-label">Pipeline Status</div>
-      <div style="display:flex;align-items:center;gap:8px;margin-top:4px">
-        <span style="width:8px;height:8px;border-radius:50%;background:#00c26f;display:inline-block"></span>
-        <span style="font-size:14px;font-weight:600">OPERATIONAL</span>
-      </div>
-      <div class="card-sub">All systems nominal</div>
+<div class="tc" id="t5">
+  <div class="section-title">Exit Monitor · Rule-Based Exit Signals</div>
+  <div style="margin-bottom:12px;background:#171b20;border:1px solid #222830;border-radius:6px;padding:10px 12px">
+    <div style="font-size:9px;font-family:'Space Mono',monospace;color:#9CA3AF;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;font-weight:600">LEGENDA RULE EXIT</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 12px">
+      <div style="font-size:11px"><span style="display:inline-block;background:#222830;color:#F5F7FA;border-radius:3px;padding:1px 5px;font-family:'Space Mono',monospace;font-weight:700;font-size:10px;margin-right:4px">A</span> Peringkat Turun (Rank &gt; 10)</div>
+      <div style="font-size:11px"><span style="display:inline-block;background:#222830;color:#F5F7FA;border-radius:3px;padding:1px 5px;font-family:'Space Mono',monospace;font-weight:700;font-size:10px;margin-right:4px">B</span> Momentum Melemah (RS20 &lt; 0 &amp; RS Chg 20D &lt; 0)</div>
+      <div style="font-size:11px"><span style="display:inline-block;background:#222830;color:#F5F7FA;border-radius:3px;padding:1px 5px;font-family:'Space Mono',monospace;font-weight:700;font-size:10px;margin-right:4px">C</span> Trend MA50 Rusak (Close &lt; MA50)</div>
+      <div style="font-size:11px"><span style="display:inline-block;background:#222830;color:#F5F7FA;border-radius:3px;padding:1px 5px;font-family:'Space Mono',monospace;font-weight:700;font-size:10px;margin-right:4px">D</span> Pelemahan Terkonfirmasi (Close &lt; MA100 atau DD &gt; 15%)</div>
     </div>
-    <div class="card"><div class="card-label">Last Leaders Update</div><div class="card-val" style="font-size:14px">0d 5h ago</div><div class="card-sub">leaders_latest.csv</div></div>
-    <div class="card"><div class="card-label">Last Turnaround Update</div><div class="card-val" style="font-size:14px">0d 0h ago</div><div class="card-sub">turnaround_latest.csv</div></div>
-    <div class="card"><div class="card-label">Last Exit Update</div><div class="card-val" style="font-size:14px">0d 0h ago</div><div class="card-sub">exit_watchlist_latest.csv</div></div>
-    <div class="card"><div class="card-label">Records Processed</div><div class="card-val g">30</div><div class="card-sub">tickers in latest run</div></div>
-    <div class="card"><div class="card-label">Data Freshness</div><div class="card-val g">2026-06-08</div><div class="card-sub">report date</div></div>
-    <div class="card"><div class="card-label">History Records</div><div class="card-val b">90</div><div class="card-sub">turnaround_history.csv</div></div>
-    <div class="card"><div class="card-label">Workflow</div><div class="card-val" style="font-size:13px">daily_radar.yml</div><div class="card-sub">cron: 30 9 * * * (16:30 WIB)</div></div>
   </div>
+  <div id="insight-exit"></div>
+  <div style="margin-bottom:10px;display:flex;gap:6px;flex-wrap:wrap">
+    <button class="tab-btn active" onclick="ef('all',this)" style="font-size:10px;padding:4px 12px">All</button>
+    <button class="tab-btn" onclick="ef('EXIT',this)" style="font-size:10px;padding:4px 12px;color:#ef4444">Exit</button>
+    <button class="tab-btn" onclick="ef('EXIT RISK',this)" style="font-size:10px;padding:4px 12px;color:#f59e0b">Exit Risk</button>
+    <button class="tab-btn" onclick="ef('WEAKENING',this)" style="font-size:10px;padding:4px 12px;color:#f97316">Weakening</button>
+    <button class="tab-btn" onclick="ef('EXIT WATCH',this)" style="font-size:10px;padding:4px 12px;color:#60a5fa">Exit Watch</button>
+    <button class="tab-btn" onclick="ef('HEALTHY',this)" style="font-size:10px;padding:4px 12px;color:#00c26f">Healthy</button>
+  </div>
+  <table>
+    <thead><tr>
+      <th data-key="ticker">Ticker</th><th data-key="rank">Rank</th><th data-key="rank_change">Rank Chg</th><th>Exit State</th><th>Rules</th><th data-key="rs_20d">RS20</th><th data-key="rs_change_20d">RS Chg 20D</th><th>vs MA50</th><th>vs MA100</th><th data-key="drawdown_from_entry">DD Entry</th>
+    </tr></thead>
+    <tbody id="tbody-exit"></tbody>
+  </table>
 </div>
 
-<div class="tc" id="t5">
+<div class="tc" id="t4">
   <div class="section-title">Exit Monitor · Rule-Based Exit Signals</div>
   <div style="margin-bottom:12px;background:#171b20;border:1px solid #222830;border-radius:6px;padding:10px 12px">
     <div style="font-size:9px;font-family:'Space Mono',monospace;color:#9CA3AF;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;font-weight:600">LEGENDA RULE EXIT</div>

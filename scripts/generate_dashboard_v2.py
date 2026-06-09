@@ -114,14 +114,15 @@ def file_age(path, report_date=None):
     age = datetime.datetime.now() - mtime
     return f"{age.days}d {age.seconds // 3600}h ago" if age.days < 30 else f"{age.days}d ago"
 
-def build_html(leaders, turnaround, summary, history, streaks, report_date, exit_data=None, profiles=None, fundamentals=None, radar_status=None):
+def build_html(leaders, turnaround, summary, history, streaks, report_date, exit_data=None, profiles=None, fundamentals=None, radar_status=None, today=None):
     summary_data = summary if isinstance(summary, dict) else {}
     top_candidates = summary_data.get('top_candidates', [])
     ctx_count = summary_data.get('context_match_count', 0)
     trn_count = summary_data.get('transition_match_count', 0)
     full_count = summary_data.get('full_match_count', 0)
     sig = summary_data.get('signal_diagnostics', {})
-
+    display_date = today if today else report_date
+    
     leaders_json = json.dumps(leaders)
     turnaround_json = json.dumps(turnaround)
     summary_json = json.dumps(summary_data)
@@ -286,7 +287,7 @@ tr:hover td{{background:#1a1e24}}
 <body>
 <div class="hdr">
   <div class="logo">ISI <span>·</span> V2 <span>·</span> READ-ONLY DASHBOARD</div>
-  <div class="dt">{report_date} · IDX30</div>
+  <div class="dt">{display_date} · IDX30</div>
 </div>
 <div id="conclusion"></div>
 <div class="tab-nav">
@@ -1037,7 +1038,7 @@ def main():
     else:
         print("  No radar status found — skipping AI conclusion")
     print("  Generating HTML...")
-    html = build_html(leaders, turnaround, summary, history, streaks, report_date, exit_data, profiles, fundamentals, radar_status)
+    html = build_html(leaders, turnaround, summary, history, streaks, report_date, exit_data, profiles, fundamentals, radar_status, today=date_str)
     V2_DIR.mkdir(parents=True, exist_ok=True)
     output_path = V2_DIR / 'index.html'
     with open(output_path, 'w', encoding='utf-8') as f:

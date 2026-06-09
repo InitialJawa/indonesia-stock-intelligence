@@ -1,15 +1,15 @@
 {
-    "last_update": "2026-06-10 01:01",
-    "status": "WARNING",
+    "last_update": "2026-06-09 19:48",
+    "status": "SAFE",
+    "market_health": 68,
+    "opportunity": 75,
+    "risk": 45,
+    "confidence": 65,
+    "capital_deployment": 70,
+    "action": "ACCUMULATE",
+    "rationale": "Divergensi pasar signifikan dengan score gap 40.6 menunjukkan kekuatan terfokus, bukan merata. Breadth pasar campuran, dengan 7 saham di bawah 40, mengindikasikan selektivitas dan potensi risiko di segmen yang lebih luas. Lonjakan volume pada BBNI dan ITMG menyoroti peluang spesifik, namun juga potensi volatilitas. Faktor Growth kuat (80), namun Quality menjadi yang terlemah (60), menambah pertimbangan risiko. Tidak ada perubahan signifikan pada score gap selama 5 hari terakhir, menunjukkan stabilitas dalam struktur pasar saat ini. Dengan probabilitas keuntungan pada saham tertentu dan fokus perlindungan modal, akumulasi selektif direkomendasikan.",
+    "detail_message": "Divergensi pasar signifikan dengan score gap 40.6 menunjukkan kekuatan terfokus, bukan merata. Breadth pasar campuran, dengan 7 saham di bawah 40, mengindikasikan selektivitas dan potensi risiko di segmen yang lebih luas. Lonjakan volume pada BBNI dan ITMG menyoroti peluang spesifik, namun juga potensi volatilitas. Faktor Growth kuat (80), namun Quality menjadi yang terlemah (60), menambah pertimbangan risiko. Tidak ada perubahan signifikan pada score gap selama 5 hari terakhir, menunjukkan stabilitas dalam struktur pasar saat ini. Dengan probabilitas keuntungan pada saham tertentu dan fokus perlindungan modal, akumulasi selektif direkomendasikan.",
     "anomalies": [],
-    "market_health": 45,
-    "opportunity": 54,
-    "risk": 52,
-    "confidence": 51,
-    "capital_deployment": 29,
-    "action": "REDUCE",
-    "detail_message": "Score gap 40.6 poin menunjukkan pemisahan kualitas yang jelas antara top5 dan bottom5. Faktor dominan: Growth (80.0). Faktor terlemah: Quality (60.0). Breadth terbatas (1 saham >=70). Top5 turnover 4 — rotasi tinggi, stabilitas rendah.",
-    "rationale": "Score gap 40.6 poin menunjukkan pemisahan kualitas yang jelas antara top5 dan bottom5. Faktor dominan: Growth (80.0). Faktor terlemah: Quality (60.0). Breadth terbatas (1 saham >=70). Top5 turnover 4 — rotasi tinggi, stabilitas rendah.",
     "radar_context": {
         "production_config": "Config F",
         "top5_avg_score": 66.8,
@@ -23,8 +23,14 @@
         "strongest_factor_score": 80.0,
         "weakest_factor": "Quality",
         "weakest_factor_score": 60.0,
-        "top5_turnover": 4,
+        "top5_turnover": 0,
         "watchlist_count": 5
     },
-    "volume_details": []
+    "volume_details": [
+        "PTBA.JK: Volume 1.1x (Wajar)",
+        "BBNI.JK: Volume 3.2x (Volume Lonjakan)",
+        "INDF.JK: Volume 1.2x (Wajar)",
+        "ASII.JK: Volume 1.0x (Wajar)",
+        "ITMG.JK: Volume 2.8x (Volume Lonjakan)"
+    ]
 }

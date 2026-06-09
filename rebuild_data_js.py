@@ -8,7 +8,7 @@ lines = []
 skipped = []
 for fname, vname, fb in zip(files, vars, fallbacks):
     try:
-        with open('dashboard/data/' + fname) as f:
+        with open('docs/data/' + fname) as f:
             content = json.dumps(json.load(f), separators=(',', ':'))
         lines.append(f'var {vname} = {content};')
     except FileNotFoundError:

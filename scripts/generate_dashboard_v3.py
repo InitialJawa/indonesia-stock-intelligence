@@ -471,20 +471,20 @@ var L = [], T = [], SM = {}, SK = [], EX = [], PF = {}, FD = {}, CW_B = {}, CW_F
 
 async function loadAllData() {
   var sources = [
-    ['./data/leaders.json', function(d) { L = d; }],
-    ['./data/turnaround.json', function(d) { T = d; }],
-    ['./data/summary.json', function(d) { SM = d; }],
-    ['./data/streaks.json', function(d) { SK = d; }],
-    ['./data/exit.json', function(d) { EX = d; }],
-    ['./data/profiles.json', function(d) { PF = d; }],
-    ['./data/fundamentals.json', function(d) { FD = d; }],
-    ['./data/cw_b.json', function(d) { CW_B = d; }],
-    ['./data/cw_f.json', function(d) { CW_F = d; }],
-    ['./data/warehouse.json', function(d) { WI = d; }],
-    ['./data/ic.json', function(d) { IC = d; }],
-    ['./data/bt.json', function(d) { BT = d; }],
-    ['./data/fcolors.json', function(d) { FCOLORS = d; }],
-    ['./data/fnames.json', function(d) { FNAMES = d; }],
+    ['../docs/data/leaders.json', function(d) { L = d; }],
+    ['../docs/data/turnaround.json', function(d) { T = d; }],
+    ['../docs/data/summary.json', function(d) { SM = d; }],
+    ['../docs/data/streaks.json', function(d) { SK = d; }],
+    ['../docs/data/exit.json', function(d) { EX = d; }],
+    ['../docs/data/profiles.json', function(d) { PF = d; }],
+    ['../docs/data/fundamentals.json', function(d) { FD = d; }],
+    ['../docs/data/cw_b.json', function(d) { CW_B = d; }],
+    ['../docs/data/cw_f.json', function(d) { CW_F = d; }],
+    ['../docs/data/warehouse.json', function(d) { WI = d; }],
+    ['../docs/data/ic.json', function(d) { IC = d; }],
+    ['../docs/data/bt.json', function(d) { BT = d; }],
+    ['../docs/data/fcolors.json', function(d) { FCOLORS = d; }],
+    ['../docs/data/fnames.json', function(d) { FNAMES = d; }],
   ];
   for (var i = 0; i < sources.length; i++) {
     try {

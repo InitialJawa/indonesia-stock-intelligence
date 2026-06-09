@@ -181,7 +181,7 @@ tr:hover td{background:#111b26}
 <span class="pill res">Config B (Q25/G30/V10/M35)</span>
 <span class="pill warehouse">2022-01 → 2026-05 (53mo)</span>
 </div>
-<div class="dt">2026-06-09</div>
+<div class="dt">2026-06-10</div>
 </div>
 
 <div class="tab-nav">
@@ -308,7 +308,7 @@ tr:hover td{background:#111b26}
 </div>
 <div class="card-sub">All systems nominal</div>
 </div>
-<div class="card"><div class="card-label">Last Leaders Update</div><div class="card-val" style="font-size:14px">0d 0h ago</div><div class="card-sub">leaders_latest.csv</div></div>
+<div class="card"><div class="card-label">Last Leaders Update</div><div class="card-val" style="font-size:14px">1d 23h ago</div><div class="card-sub">leaders_latest.csv</div></div>
 <div class="card"><div class="card-label">Last Turnaround Update</div><div class="card-val" style="font-size:14px">0d 0h ago</div><div class="card-sub">turnaround_latest.csv</div></div>
 <div class="card"><div class="card-label">Last Exit Update</div><div class="card-val" style="font-size:14px">0d 0h ago</div><div class="card-sub">exit_watchlist_latest.csv</div></div>
 <div class="card"><div class="card-label">Records Processed</div><div class="card-val g">0</div><div class="card-sub">tickers in latest run</div></div>
@@ -371,20 +371,20 @@ var L = [], T = [], SM = {}, SK = [], EX = [], PF = {}, FD = {}, CW_B = {}, CW_F
 
 async function loadAllData() {
   var sources = [
-    ['./data/leaders.json', function(d) { L = d; }],
-    ['./data/turnaround.json', function(d) { T = d; }],
-    ['./data/summary.json', function(d) { SM = d; }],
-    ['./data/streaks.json', function(d) { SK = d; }],
-    ['./data/exit.json', function(d) { EX = d; }],
-    ['./data/profiles.json', function(d) { PF = d; }],
-    ['./data/fundamentals.json', function(d) { FD = d; }],
-    ['./data/cw_b.json', function(d) { CW_B = d; }],
-    ['./data/cw_f.json', function(d) { CW_F = d; }],
-    ['./data/warehouse.json', function(d) { WI = d; }],
-    ['./data/ic.json', function(d) { IC = d; }],
-    ['./data/bt.json', function(d) { BT = d; }],
-    ['./data/fcolors.json', function(d) { FCOLORS = d; }],
-    ['./data/fnames.json', function(d) { FNAMES = d; }],
+    ['../docs/data/leaders.json', function(d) { L = d; }],
+    ['../docs/data/turnaround.json', function(d) { T = d; }],
+    ['../docs/data/summary.json', function(d) { SM = d; }],
+    ['../docs/data/streaks.json', function(d) { SK = d; }],
+    ['../docs/data/exit.json', function(d) { EX = d; }],
+    ['../docs/data/profiles.json', function(d) { PF = d; }],
+    ['../docs/data/fundamentals.json', function(d) { FD = d; }],
+    ['../docs/data/cw_b.json', function(d) { CW_B = d; }],
+    ['../docs/data/cw_f.json', function(d) { CW_F = d; }],
+    ['../docs/data/warehouse.json', function(d) { WI = d; }],
+    ['../docs/data/ic.json', function(d) { IC = d; }],
+    ['../docs/data/bt.json', function(d) { BT = d; }],
+    ['../docs/data/fcolors.json', function(d) { FCOLORS = d; }],
+    ['../docs/data/fnames.json', function(d) { FNAMES = d; }],
   ];
   for (var i = 0; i < sources.length; i++) {
     try {

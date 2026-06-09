@@ -194,6 +194,21 @@ tr:hover td{background:#111b26}
 .sim-period-btn{padding:4px 10px;font-size:10px;font-family:'Space Mono',monospace;background:transparent;border:1px solid #1e293b;color:#64748b;cursor:pointer;border-radius:4px;transition:all .15s}
 .sim-period-btn:hover{border-color:#3b82f6;color:#60a5fa}
 .sim-period-btn.active{background:#0c1929;border-color:#3b82f6;color:#60a5fa}
+.radar-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:6px}
+.radar-card{background:#111820;border:1px solid #1e293b;border-radius:8px;padding:10px 12px;text-align:center}
+.radar-card-label{font-size:9px;color:#64748b;text-transform:uppercase;letter-spacing:.08em;font-family:'Space Mono',monospace;margin-bottom:2px}
+.radar-card-val{font-size:20px;font-weight:700;font-family:'Space Mono',monospace;line-height:1.2}
+.radar-card-sub{font-size:9px;color:#64748b;margin-top:2px}
+.radar-action{font-size:11px;padding:3px 14px;border-radius:100px;font-family:'Space Mono',monospace;font-weight:700;letter-spacing:.04em;display:inline-block}
+.radar-action.accumulate{background:#064e2e;color:#00d68f;border:1px solid #166534}
+.radar-action.hold{background:#0c1929;color:#60a5fa;border:1px solid #1e3a5f}
+.radar-action.wait{background:#3b2a04;color:#fbbf24;border:1px solid #5c4308}
+.radar-action.reduce{background:#3b0a0a;color:#ef4444;border:1px solid #5c1515}
+.radar-action.buy{background:#064e2e;color:#00d68f;border:1px solid #166534}
+.radar-badge{display:inline-block;padding:3px 16px;font-size:11px;font-weight:700;font-family:'Space Mono',monospace;border-radius:100px;letter-spacing:.04em}
+.radar-badge.safe{background:#064e2e;color:#00d68f;border:1px solid #166534}
+.radar-badge.warning{background:#3b2a04;color:#fbbf24;border:1px solid #5c4308}
+.radar-badge.danger{background:#3b0a0a;color:#ef4444;border:1px solid #5c1515}
 </style>
 </head>
 <body>
@@ -472,15 +487,36 @@ function renderLeaders() {
   document.getElementById('tbody-leaders').innerHTML = html;
 }
 
-function renderRadarConclusion() {
-  if (!RS || !RS.detail_message) return;
-  var c = RS.status === 'SAFE' ? '#00d68f' : RS.status === 'CAUTION' ? '#f59e0b' : '#ef4444';
-  var bg = RS.status === 'SAFE' ? '#064e2e' : RS.status === 'CAUTION' ? '#3b2a04' : '#3b0a0a';
-  var bd = RS.status === 'SAFE' ? '#166534' : RS.status === 'CAUTION' ? '#5c4308' : '#5c1515';
-  var h = '<div style="display:flex;align-items:center;gap:12px;background:#111820;border:1px solid #1e293b;border-radius:8px;padding:14px 18px;margin:4px 24px">';
-  h += '<span style="background:' + bg + ';color:' + c + ';border:1px solid ' + bd + ';padding:4px 14px;border-radius:100px;font-size:10px;font-family:Space Mono,monospace;font-weight:700;letter-spacing:.04em;white-space:nowrap">' + RS.status + '</span>';
-  h += '<div style="flex:1"><div style="font-size:10px;color:#64748b;font-family:Space Mono,monospace;letter-spacing:.08em;margin-bottom:2px">ANALISA AI — ' + (RS.last_update || '') + '</div>';
-  h += '<div style="font-size:12px;color:#c8d0dc;line-height:1.6">' + RS.detail_message + '</div></div>';
+function renderRadarV2() {
+  if (!RS || !RS.market_health === undefined) return;
+  var statusCls = (RS.status || 'SAFE').toLowerCase();
+  var statusColor = statusCls === 'safe' ? '#00d68f' : statusCls === 'warning' ? '#fbbf24' : '#ef4444';
+  var actionCls = (RS.action || 'HOLD').toLowerCase();
+  var mh = RS.market_health, opp = RS.opportunity, rk = RS.risk, cf = RS.confidence, cd = RS.capital_deployment;
+  function scoreColor(v) { return v >= 60 ? '#00d68f' : v >= 40 ? '#fbbf24' : '#ef4444'; }
+  var h = '<div style="background:#111820;border:1px solid #1e293b;border-radius:8px;padding:14px 18px;margin:4px 24px">';
+  h += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">';
+  h += '<div><span class="radar-badge ' + statusCls + '">' + RS.status + '</span>';
+  h += '<span class="radar-action ' + actionCls + '" style="margin-left:8px">' + RS.action + '</span></div>';
+  h += '<div style="font-size:10px;color:#64748b;font-family:Space Mono,monospace">' + (RS.last_update || '') + '</div>';
+  h += '</div>';
+  h += '<div class="radar-grid">';
+  var cards = [
+    { label: 'MARKET HEALTH', val: mh, sub: 'Overall market condition' },
+    { label: 'OPPORTUNITY', val: opp, sub: 'Alpha potential' },
+    { label: 'RISK', val: rk, sub: 'Downside exposure' },
+    { label: 'CONFIDENCE', val: cf, sub: 'Signal alignment' },
+    { label: 'CAPITAL DEPLOYMENT', val: cd + '%', sub: 'Recommended allocation', valColor: cd >= 60 ? '#00d68f' : cd >= 40 ? '#fbbf24' : '#ef4444' }
+  ];
+  cards.forEach(function(c) {
+    h += '<div class="radar-card"><div class="radar-card-label">' + c.label + '</div>';
+    h += '<div class="radar-card-val" style="color:' + (c.valColor || scoreColor(c.val)) + '">' + c.val + '</div>';
+    h += '<div class="radar-card-sub">' + c.sub + '</div></div>';
+  });
+  h += '</div>';
+  if (RS.detail_message) {
+    h += '<div style="font-size:11px;color:#94a3b8;line-height:1.6;padding:8px 0 0;border-top:1px solid #1e2633;margin-top:6px">' + RS.detail_message + '</div>';
+  }
   h += '</div>';
   document.getElementById('radar-conclusion').innerHTML = h;
 }
@@ -977,7 +1013,7 @@ function closePanel() {
 }
 
 function renderAll() {
-  var _fns = [renderRadarConclusion, renderLeaders, renderInsights, renderHistory, re];
+  var _fns = [renderRadarV2, renderLeaders, renderInsights, renderHistory, re];
   for (var _i = 0; _i < _fns.length; _i++) { try { _fns[_i](); } catch(e) { console.warn('renderAll: ' + (_fns[_i].name || 'fn' + _i) + ' failed:', e); } }
   try { initSlider(); } catch(e) { console.warn('initSlider failed:', e); }
   try { var _st = localStorage.getItem('simTab'); if (_st === '0' || _st === '1') stSubSim(parseInt(_st)); } catch(e) {}

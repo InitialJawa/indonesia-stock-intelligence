@@ -1,6 +1,30 @@
 {
-    "last_update": "2026-06-09 18:32",
-    "status": "SAFE",
-    "anomalies": [],
-    "detail_message": "Meskipun status sistem keseluruhan menunjukkan 'SAFE', volume perdagangan untuk PTBA.JK masih tergolong sepi. Kondisi ini menunjukkan kurangnya keyakinan pasar yang seragam di seluruh watchlist, yang tidak memenuhi standar kami untuk eksekusi. Demi perlindungan modal, keputusan terbaik saat ini adalah **WAIT AND SEE**."
+  "last_update": "2026-06-10 01:01",
+  "status": "WARNING",
+  "anomalies": [],
+  "market_health": 45,
+  "opportunity": 54,
+  "risk": 52,
+  "confidence": 51,
+  "capital_deployment": 29,
+  "action": "REDUCE",
+  "detail_message": "Score gap 40.6 poin menunjukkan pemisahan kualitas yang jelas antara top5 dan bottom5. Faktor dominan: Growth (80.0). Faktor terlemah: Quality (60.0). Breadth terbatas (1 saham >=70). Top5 turnover 4 — rotasi tinggi, stabilitas rendah.",
+  "rationale": "Score gap 40.6 poin menunjukkan pemisahan kualitas yang jelas antara top5 dan bottom5. Faktor dominan: Growth (80.0). Faktor terlemah: Quality (60.0). Breadth terbatas (1 saham >=70). Top5 turnover 4 — rotasi tinggi, stabilitas rendah.",
+  "radar_context": {
+    "production_config": "Config F",
+    "top5_avg_score": 66.8,
+    "bot5_avg_score": 26.2,
+    "score_gap": 40.6,
+    "score_gap_5d_change": 0,
+    "breadth_above_70": 1,
+    "breadth_above_60": 7,
+    "breadth_below_40": 7,
+    "strongest_factor": "Growth",
+    "strongest_factor_score": 80.0,
+    "weakest_factor": "Quality",
+    "weakest_factor_score": 60.0,
+    "top5_turnover": 4,
+    "watchlist_count": 5
+  },
+  "volume_details": []
 }

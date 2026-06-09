@@ -196,7 +196,7 @@ tr:hover td{background:#111b26}
 </div>
 
 <div id="insight-leaders" style="padding:8px 24px 0"></div>
-<div id="insight-top10" style="padding:4px 24px 0"></div>
+
 <div id="radar-conclusion" style="padding:4px 24px 0"></div>
 <div id="insight-ctx" style="padding:4px 24px 0"></div>
 <div id="insight-exit" style="padding:4px 24px 0"></div>
@@ -208,8 +208,7 @@ tr:hover td{background:#111b26}
 <button class="cfg-btn active-prod" id="cfg-prod" onclick="switchConfig('prod')">Config F (Q25/G10/V30/M35)</button>
 <button class="cfg-btn" id="cfg-res" onclick="switchConfig('res')">Config B (Q25/G30/V10/M35)</button>
 </div>
-<div class="section-title" style="font-size:11px;color:#64748b;margin-bottom:8px">Factor IC Panel</div>
-<div class="factor-grid" id="factor-panel"></div>
+
 <div style="margin-top:12px" class="table-wrap">
 <table>
 <thead><tr>
@@ -419,28 +418,11 @@ function renderLeaders() {
   document.getElementById('tbody-leaders').innerHTML = html;
 }
 
-function renderFactorPanel() {
-  var w = getWeights();
-  var order = ['quality', 'growth', 'value', 'momentum'];
-  var h = '';
-  order.forEach(function(k) {
-    var d = IC[k];
-    var icv = d.ic;
-    var cls = icv > 0 ? 'positive' : 'negative';
-    var pctW = (w[k] * 100).toFixed(0);
-    var barW = Math.min(Math.abs(icv) * 1000, 100);
-    var barC = icv > 0 ? '#00d68f' : '#ef4444';
-    h += '<div class="factor-card"><div class="factor-hdr"><span class="factor-name">' + FNAMES[k] + '</span><span class="factor-weight">' + pctW + '%</span></div><div class="factor-ic ' + cls + '">' + (icv > 0 ? '+' : '') + icv.toFixed(4) + '</div><div class="ic-bar"><div class="ic-fill" style="width:' + barW + '%;background:' + barC + '"></div></div><div class="factor-role">' + d.role + '</div></div>';
-  });
-  document.getElementById('factor-panel').innerHTML = h;
-}
-
 function switchConfig(cfg) {
   activeConfig = cfg;
   document.getElementById('cfg-prod').className = 'cfg-btn' + (cfg === 'prod' ? ' active-prod' : '');
   document.getElementById('cfg-res').className = 'cfg-btn' + (cfg === 'res' ? ' active-res' : '');
   renderLeaders();
-  renderFactorPanel();
   renderInsights();
   renderTop();
 }
@@ -468,23 +450,6 @@ function renderInsights() {
   h += '<div class="insight-row"><span class="insight-lbl">Faktor Terlemah Bot5</span><span class="insight-val r">' + weakest.name.charAt(0).toUpperCase() + weakest.name.slice(1) + ' (' + weakest.val.toFixed(1) + ')</span></div>';
   h += '</div><div class="insight-note">Kesenjangan ' + gap.toFixed(1) + ' poin — ' + (gap > 30 ? 'distribusi sangat timpang, dominasi saham unggulan kuat' : gap > 15 ? 'distribusi cukup timpang, pemimpin pasar jelas' : gap > 5 ? 'distribusi moderat, persaingan merata' : 'pasar relatif homogen, banyak saham setara') + '</div>';
   document.getElementById('insight-leaders').innerHTML = h;
-
-  var top10 = scored.filter(function(d) { return d._rank <= 10; });
-  var n10 = top10.length;
-  if (n10 > 0) {
-    var sectors = {};
-    top10.forEach(function(d) { var p = PF[d.ticker.split('.')[0]]; if (p) { sectors[p.sector] = (sectors[p.sector] || 0) + 1; } });
-    var secList = Object.keys(sectors).sort(function(a, b) { return sectors[b] - sectors[a]; });
-    var avg10 = function(k) { return top10.reduce(function(s, d) { return s + (+d[k]); }, 0) / n10; };
-    var h2 = '<div class="insight-hdr"><span class="insight-title">Top 10 Ringkasan</span><span class="insight-badge b">' + n10 + ' saham</span></div><div class="insight-grid">';
-    h2 += '<div class="insight-row"><span class="insight-lbl">Rerata Score</span><span class="insight-val">' + avg10('_score').toFixed(1) + '</span></div>';
-    h2 += '<div class="insight-row"><span class="insight-lbl">Quality / Growth</span><span class="insight-val">' + avg10('quality').toFixed(1) + ' / ' + avg10('growth').toFixed(1) + '</span></div>';
-    h2 += '<div class="insight-row"><span class="insight-lbl">Value / Momentum</span><span class="insight-val">' + avg10('value').toFixed(1) + ' / ' + avg10('momentum').toFixed(1) + '</span></div>';
-    h2 += '<div class="insight-row"><span class="insight-lbl">Sektor Dominan</span><span class="insight-val">' + secList[0] + ' (' + sectors[secList[0]] + ')</span></div>';
-    h2 += '</div>';
-    if (secList.length > 1) { h2 += '<div class="insight-note">Sektor: ' + secList.map(function(s) { return s + ' (' + sectors[s] + ')'; }).join(' · ') + '</div>'; }
-    document.getElementById('insight-top10').innerHTML = h2;
-  }
 }
 
 function st(tabIdx, btn) {
@@ -916,7 +881,7 @@ function closePanel() {
 }
 
 function renderAll() {
-  var _fns = [renderLeaders, renderFactorPanel, renderInsights, renderTop, renderHistory, re, renderComparisonCards];
+  var _fns = [renderLeaders, renderInsights, renderTop, renderHistory, re, renderComparisonCards];
   for (var _i = 0; _i < _fns.length; _i++) { try { _fns[_i](); } catch(e) { console.warn('renderAll: ' + (_fns[_i].name || 'fn' + _i) + ' failed:', e); } }
 }
 

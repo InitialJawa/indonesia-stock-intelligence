@@ -240,6 +240,37 @@ tr:hover td{background:#111b26}
 ::-webkit-scrollbar-track{background:#0a0e14}
 ::-webkit-scrollbar-thumb{background:#1e293b;border-radius:3px}
 ::-webkit-scrollbar-thumb:hover{background:#334155}
+.panel-section{margin-bottom:1.25rem}
+.panel-section-title{font-size:10px;font-family:'Space Mono',monospace;color:#64748b;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;font-weight:700}
+.panel-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #131a22;font-size:13px}
+.panel-row:last-child{border:none}
+.panel-label{color:#94a3b8}
+.panel-val{font-family:'Space Mono',monospace;font-weight:600;color:#e8edf5}
+.panel-status{font-size:12px;padding:10px 14px;border-radius:6px;margin-bottom:10px;line-height:1.6}
+.panel-status.turnaround{background:#0c1929;border:1px solid #1e3a5f;color:#60a5fa}
+.panel-status.exit{background:#2a1111;border:1px solid #661111;color:#f87171}
+.panel-status.portfolio{background:#064e2e;border:1px solid #166534;color:#00d68f}
+.panel-status.healthy{background:#171b20;border:1px solid #222830;color:#94a3b8}
+.fd-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px 16px}
+.fd-item{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #131a22;font-size:12px}
+.fd-item:nth-last-child(-n+2){border:none}
+.fd-label{color:#94a3b8}
+.fd-val{font-family:'Space Mono',monospace;font-weight:600;color:#e8edf5}
+.fd-na{color:#64748b;font-style:italic}
+.interp-box{background:#0d1219;border:1px solid #1e2633;border-radius:8px;padding:12px 14px;margin-bottom:10px}
+.interp-row{display:flex;justify-content:space-between;font-size:12px;padding:4px 0}
+.interp-label{color:#94a3b8}
+.interp-conclusion{font-size:12px;color:#c8d0dc;line-height:1.6;padding:8px 0 0 0}
+.align-card{padding:12px 14px;border-radius:8px;margin-bottom:10px;font-size:13px}
+.align-sejalan{background:#064e2e;border:1px solid #166534}
+.align-perhatian{background:#2a2411;border:1px solid #665511}
+.align-konflik{background:#2a1711;border:1px solid #663311}
+.align-turnaround{background:#0c1929;border:1px solid #1e3a5f}
+.align-netral{background:#171b20;border:1px solid #1e2633}
+.align-title{font-weight:700;font-size:13px;margin-bottom:4px}
+.align-desc{font-size:12px;color:#94a3b8;line-height:1.5}
+.panel-bullet{color:#64748b;margin-right:6px}
+.panel-summary{font-size:13px;color:#c8d0dc;line-height:1.6;padding:8px 0}
 </style>
 </head>
 <body>
@@ -786,39 +817,50 @@ var equityChart, riskChart;
 })();
 
 function tickerData(sym) {
-  var tk = sym + '.JK';
-  var l = null, pf = null, fd = null, ed = null, w = getWeights();
+  var tk = sym.indexOf('.JK') > 0 ? sym : sym + '.JK';
+  var l = null, td = null, pf = null, fd = null, ed = null, w = getWeights();
   L.forEach(function(d) { if (d.ticker === tk) l = d; });
+  T.forEach(function(d) { if (d.ticker === tk) td = d; });
   if (PF[sym]) pf = PF[sym];
   if (FD[sym]) fd = FD[sym];
   EX.forEach(function(d) { if (d.ticker === tk) ed = d; });
   var score = l ? computeFinalScore(l, w) : 0;
-  return { ticker: tk, sym: sym, leader: l, profile: pf, fundamentals: fd, exit: ed, score: score };
+  return { ticker: tk, sym: sym, leader: l, turnaround: td, profile: pf, fundamentals: fd, exit: ed, score: score };
 }
 
-function aiExplain(sym) {
-  var d = tickerData(sym);
-  if (d.leader) {
-    var w = getWeights();
-    function n(v) { return +v; }
-    var factors = [
-      { name: 'Quality', val: n(d.leader.quality), weight: w.quality, ic: IC.quality.ic },
-      { name: 'Growth', val: n(d.leader.growth), weight: w.growth, ic: IC.growth.ic },
-      { name: 'Value', val: n(d.leader.value), weight: w.value, ic: IC.value.ic },
-      { name: 'Momentum', val: n(d.leader.momentum), weight: w.momentum, ic: IC.momentum.ic }
-    ];
-    var topFactor = factors.slice().sort(function(a, b) { return b.val - a.val; })[0];
-    var strongest = factors.filter(function(f) { return f.val >= 60; }).map(function(f) { return f.name; });
-    var weakest = factors.filter(function(f) { return f.val < 40; }).map(function(f) { return f.name; });
-    var sec = d.profile ? d.profile.sector || '' : '';
-    var narrative = d.sym + (sec ? ' (' + sec + ')' : '') + ' scores ' + d.score.toFixed(1) + ' with ' + configLabel() + '. Highest factor: ' + topFactor.name + ' (' + topFactor.val.toFixed(1) + '). ';
-    narrative += 'IC ' + (topFactor.ic > 0 ? 'positive' : 'negative') + ' (' + (topFactor.ic > 0 ? '+' : '') + topFactor.ic.toFixed(4) + ') \u2014 this factor has been ' + (topFactor.ic > 0.02 ? 'strongly predictive' : topFactor.ic > 0 ? 'modestly predictive' : 'non-predictive') + ' historically. ';
-    if (strongest.length > 0) narrative += 'Strengths: ' + strongest.join(', ') + '. ';
-    if (weakest.length > 0) narrative += 'Weaknesses: ' + weakest.join(', ') + '. ';
-    if (d.exit) narrative += 'Exit state: ' + d.exit.exit_state + '.';
-    return narrative;
+function aiExplain(d) {
+  var lines = [];
+  if (d.turnaround && d.turnaround.context_match && d.turnaround.transition_match) {
+    lines.push('<div class="panel-status turnaround"><b>KANDIDAT TURNAROUND</b>');
+    lines.push('<div style="margin-top:6px;font-size:11px;color:#9CA3AF;font-weight:400">');
+    if (d.turnaround.drawdown_252d < -20) lines.push('<span class="panel-bullet">&#8226;</span>Deep drawdown');
+    if (d.turnaround.distance_from_high_252d < -15) lines.push('<span class="panel-bullet">&#8226;</span>Far from previous high');
+    if (d.turnaround.rs_change_60d > 0) lines.push('<span class="panel-bullet">&#8226;</span>Improving RS60');
+    if (d.turnaround.volume_ratio > 1.3) lines.push('<span class="panel-bullet">&#8226;</span>Elevated volume');
+    if (d.turnaround.recovery_from_60d_low > 5) lines.push('<span class="panel-bullet">&#8226;</span>Pemulihan dari dasar');
+    lines.push('</div></div>');
+    lines.push('<div style="font-size:11px;color:#64748b;margin-top:6px;line-height:1.5">Stock remains high risk but shows early signs of accumulation.</div>');
+    return lines.join('');
   }
-  return 'Insufficient data for ' + sym + '.';
+  if (d.exit && d.exit.exit_state === 'EXIT') {
+    lines.push('<div class="panel-status exit"><b>SINYAL EXIT AKTIF</b>');
+    lines.push('<div style="margin-top:6px;font-size:11px;color:#9CA3AF;font-weight:400">');
+    lines.push('<span class="panel-bullet">&#8226;</span>Exit state: ' + d.exit.exit_state);
+    lines.push('<span class="panel-bullet">&#8226;</span>Rules: ' + d.exit.triggered_rules);
+    lines.push('</div></div>');
+    lines.push('<div style="font-size:11px;color:#64748b;margin-top:6px;line-height:1.5">Stock shows sustained weakness across multiple indicators.</div>');
+    return lines.join('');
+  }
+  if (d.leader && d.leader.rank <= 5) {
+    lines.push('<div class="panel-status portfolio"><b>PORTOFOLIO AKTIF</b>');
+    lines.push('<div style="margin-top:6px;font-size:11px;color:#9CA3AF;font-weight:400">');
+    lines.push('<span class="panel-bullet">&#8226;</span>Top 5 in ' + configLabel() + ' ranking');
+    lines.push('<span class="panel-bullet">&#8226;</span>Saat ini masuk portofolio');
+    lines.push('</div></div>');
+    return lines.join('');
+  }
+  lines.push('<div class="panel-status healthy"><b>PEMANTAUAN</b></div>');
+  return lines.join('');
 }
 
 function renderScoreBreakdown(d) {
@@ -847,49 +889,139 @@ function renderScoreBreakdown(d) {
 }
 
 function renderFundamentals(fd) {
-  if (!fd) return '<div class=\"card-sub\">No fundamental data available.</div>';
-  var h = '<div style=\"display:grid;grid-template-columns:1fr 1fr;gap:6px 16px;margin-top:8px\">';
-  var shown = ['market_cap', 'pe_ttm', 'pbv', 'roe', 'debt_to_equity', 'current_ratio', 'revenue_growth', 'net_profit_margin', 'dividend_yield', 'eps_growth_1y'];
-  var labels = { market_cap: 'Market Cap', pe_ttm: 'P/E TTM', pbv: 'P/BV', roe: 'ROE', debt_to_equity: 'D/E', current_ratio: 'Current Ratio', revenue_growth: 'Rev Growth', net_profit_margin: 'Net Margin', dividend_yield: 'Div Yield', eps_growth_1y: 'EPS Growth 1Y' };
-  shown.forEach(function(k) {
-    if (fd[k] !== undefined && fd[k] !== null) {
-      var v = fd[k];
-      var cls = '';
-      if (k === 'roe' || k === 'revenue_growth' || k === 'net_profit_margin' || k === 'eps_growth_1y') { cls = v > 0 ? 'g' : 'r'; }
-      if (k === 'debt_to_equity') { cls = v < 1 ? 'g' : v < 2 ? 'y' : 'r'; }
-      if (k === 'pe_ttm') { cls = v > 0 && v < 30 ? 'g' : v > 0 ? 'y' : 'r'; }
-      h += '<div class=\"insight-row\"><span class=\"insight-lbl\">' + (labels[k] || k) + '</span><span class=\"insight-val ' + cls + '\">' + (typeof v === 'number' ? (v % 1 === 0 ? v.toLocaleString() : v.toFixed(2)) : v) + '</span></div>';
-    }
-  });
-  h += '</div>';
-  return h;
+  if (!fd) return '';
+  function fmtMarketCap(v) {
+    if (v === null || v === undefined) return 'Tidak tersedia';
+    var t = v / 1e12;
+    if (t < 1) return Math.round(v / 1e9) + ' B';
+    if (t < 10) return t.toFixed(1) + ' T';
+    return Math.round(t).toLocaleString('id-ID') + ' T';
+  }
+  var html = '<div class="panel-section"><div class="panel-section-title">FUNDAMENTAL SNAPSHOT</div>';
+  html += '<div class="fd-grid">';
+  function fmt(l, v, u) {
+    if (v === null || v === undefined) return '<div class="fd-item"><span class="fd-label">' + l + '</span><span class="fd-na">Tidak tersedia</span></div>';
+    var f = Number(v);
+    if (u === '%') return '<div class="fd-item"><span class="fd-label">' + l + '</span><span class="fd-val">' + (f * 100).toFixed(1) + '%</span></div>';
+    if (u === 'dy') return '<div class="fd-item"><span class="fd-label">' + l + '</span><span class="fd-val">' + f.toFixed(1) + '%</span></div>';
+    if (u === 'x') return '<div class="fd-item"><span class="fd-label">' + l + '</span><span class="fd-val">' + f.toFixed(1) + 'x</span></div>';
+    if (u === 'mc') return '<div class="fd-item"><span class="fd-label">' + l + '</span><span class="fd-val">' + fmtMarketCap(f) + '</span></div>';
+    return '<div class="fd-item"><span class="fd-label">' + l + '</span><span class="fd-val">' + f.toFixed(1) + '</span></div>';
+  }
+  html += fmt('ROE', fd.roe, '%');
+  html += fmt('ROA', fd.roa, '%');
+  html += fmt('PER', fd.pe_ratio, 'x');
+  html += fmt('PBV', fd.pb_ratio, 'x');
+  html += fmt('EPS Growth', fd.earnings_growth, '%');
+  html += fmt('Revenue Growth', fd.revenue_growth, '%');
+  html += fmt('DER', fd.debt_to_equity, 'x');
+  html += fmt('Dividend Yield', fd.dividend_yield, 'dy');
+  html += fmt('Market Cap', fd.market_cap, 'mc');
+  html += '</div>';
+  html += '<div class="panel-section-title" style="margin-top:1rem">INTERPRETASI SEDERHANA</div>';
+  html += '<div class="interp-box">';
+  var roe = fd.roe !== null && fd.roe !== undefined ? fd.roe : null;
+  var pl = roe === null ? 'Tidak tersedia' : roe > 0.20 ? 'Tinggi' : roe > 0.10 ? 'Sedang' : 'Rendah';
+  html += '<div class="interp-row"><span class="interp-label">Profitabilitas</span><span class="fd-val">' + pl + '</span></div>';
+  var pe = fd.pe_ratio !== null && fd.pe_ratio !== undefined ? fd.pe_ratio : null;
+  var pb = fd.pb_ratio !== null && fd.pb_ratio !== undefined ? fd.pb_ratio : null;
+  var vl = pe === null ? 'Tidak tersedia' : pe < 10 ? 'Murah' : pe < 20 ? 'Sedang' : 'Mahal';
+  html += '<div class="interp-row"><span class="interp-label">Valuasi</span><span class="fd-val">' + vl + '</span></div>';
+  var rev = fd.revenue_growth !== null && fd.revenue_growth !== undefined ? fd.revenue_growth : null;
+  var eps = fd.earnings_growth !== null && fd.earnings_growth !== undefined ? fd.earnings_growth : null;
+  if (rev === null && eps === null) var gl = 'Tidak tersedia'; else {
+    var ag = 0, ac = 0;
+    if (rev !== null) { ag += rev; ac++; }
+    if (eps !== null) { ag += eps; ac++; }
+    ag /= ac;
+    var gl = ag > 0.10 ? 'Tinggi' : ag >= 0 ? 'Sedang' : 'Negatif';
+  }
+  html += '<div class="interp-row"><span class="interp-label">Pertumbuhan</span><span class="fd-val">' + gl + '</span></div>';
+  var der = fd.debt_to_equity !== null && fd.debt_to_equity !== undefined ? fd.debt_to_equity : null;
+  var dl = der === null ? 'Tidak tersedia' : der < 0.5 ? 'Rendah' : der < 1.5 ? 'Sedang' : 'Tinggi';
+  html += '<div class="interp-row"><span class="interp-label">Utang</span><span class="fd-val">' + dl + '</span></div>';
+  var mc = fd.market_cap !== null && fd.market_cap !== undefined ? fd.market_cap : null;
+  var szl = mc === null ? 'Tidak tersedia' : mc >= 1e14 ? 'Large Cap' : mc >= 1e13 ? 'Mid Cap' : 'Small Cap';
+  html += '<div class="interp-row"><span class="interp-label">Ukuran Perusahaan</span><span class="fd-val">' + szl + '</span></div>';
+  var cc = 'Perusahaan ini memiliki ';
+  cc += pl === 'Tinggi' ? 'profitabilitas yang kuat' : pl === 'Sedang' ? 'profitabilitas yang cukup baik' : 'profitabilitas yang rendah';
+  cc += ', ';
+  cc += vl === 'Murah' ? 'valuasi yang relatif murah' : vl === 'Sedang' ? 'valuasi yang wajar' : 'valuasi yang relatif mahal';
+  cc += ', dengan ';
+  cc += gl === 'Tinggi' ? 'pertumbuhan yang tinggi' : gl === 'Sedang' ? 'pertumbuhan yang stabil' : gl === 'Negatif' ? 'pertumbuhan yang negatif' : 'data pertumbuhan tidak tersedia';
+  cc += '. ';
+  cc += 'Perusahaan ini tergolong ' + szl.toLowerCase() + '.';
+  html += '<div class="interp-conclusion">' + cc + '</div>';
+  html += '</div></div>';
+  return html;
 }
 
-function renderAlignment(sym) {
-  var pf = PF[sym];
-  if (!pf) return '<div class=\"card-sub\">No profile data.</div>';
-  var h = '<div class=\"card-label\">Sector & Industry Alignment</div><div style=\"margin-top:6px;display:grid;grid-template-columns:1fr 1fr;gap:6px 16px\">';
-  h += '<div class=\"insight-row\"><span class=\"insight-lbl\">Sector</span><span class=\"insight-val\">' + (pf.sector || '\u2014') + '</span></div>';
-  h += '<div class=\"insight-row\"><span class=\"insight-lbl\">Industry</span><span class=\"insight-val\">' + (pf.industry || '\u2014') + '</span></div>';
-  if (pf.sector_rank) h += '<div class=\"insight-row\"><span class=\"insight-lbl\">Sector Rank</span><span class=\"insight-val\">#' + pf.sector_rank + '</span></div>';
-  if (pf.peers) h += '<div class=\"insight-row\"><span class=\"insight-lbl\">Peers</span><span class=\"insight-val\" style=\"font-size:11px\">' + pf.peers.join(', ') + '</span></div>';
-  h += '</div>';
-  return h;
+function renderAlignment(sym, d) {
+  var ld = d.leader, td = d.turnaround, ed = d.exit;
+  var state = 'netral', label = 'NETRAL', icon = '&#9898;', cls = 'align-netral', desc = 'Tidak ada sinyal dominan dari sistem.';
+  if (ld && ld.rank <= 10 && ed && ed.exit_state === 'HEALTHY') { state = 'sejalan'; label = 'SEJALAN'; icon = '&#128994;'; cls = 'align-sejalan'; desc = 'Fundamental dan tren harga sejalan.'; }
+  else if (ld && ld.rank <= 10 && ed && ed.exit_state === 'EXIT RISK') { state = 'perhatian'; label = 'PERLU PERHATIAN'; icon = '&#128993;'; cls = 'align-perhatian'; desc = 'Fundamental masih kuat dan masuk portofolio, tetapi tren harga belum sepenuhnya pulih.'; }
+  else if (ld && ld.rank <= 10 && ed && ed.exit_state === 'EXIT') { state = 'konflik'; label = 'KONFLIK'; icon = '&#128992;'; cls = 'align-konflik'; desc = 'Perusahaan masih berada di peringkat atas Config B, namun Exit Layer mendeteksi pelemahan momentum. Perlu pemantauan tambahan sebelum mengambil keputusan.'; }
+  else if (td && td.context_match && td.transition_match && (!ed || ed.exit_state !== 'EXIT')) { state = 'turnaround'; label = 'TURNAROUND'; icon = '&#128309;'; cls = 'align-turnaround'; desc = 'Masuk kandidat turnaround dengan tanda pemulihan yang mulai muncul.'; }
+  var html = '<div class="panel-section-title">STATUS KESELARASAN</div>';
+  html += '<div class="align-card ' + cls + '">';
+  html += '<div class="align-title">' + icon + ' ' + label + '</div>';
+  html += '<div class="align-desc">' + desc + '</div>';
+  html += '</div>';
+  return html;
 }
 
 function openPanel(sym) {
   var d = tickerData(sym);
   document.getElementById('ptk').textContent = sym;
   document.getElementById('ptk').style.color = ac(sym + '.JK');
-  document.getElementById('pname').textContent = d.profile ? d.profile.name || d.profile.sector || '' : '';
-  var body = document.getElementById('pbody');
-  body.innerHTML = '<div class=\"ai-explain\">' + aiExplain(sym) + '</div>';
-  body.innerHTML += renderScoreBreakdown(d);
-  body.innerHTML += '<div style=\"margin-top:12px\">' + renderFundamentals(d.fundamentals) + '</div>';
-  body.innerHTML += '<div style=\"margin-top:12px\">' + renderAlignment(sym) + '</div>';
-  if (d.exit) {
-    body.innerHTML += '<div style=\"margin-top:12px\"><div class=\"card-label\">Exit Status</div><div style=\"margin-top:6px\"><span class=\"es-' + d.exit.exit_state.toLowerCase().replace(/ /g, '-') + '\">' + d.exit.exit_state + '</span> \u2014 ' + (d.exit.rules || 'No rules triggered') + '</div></div>';
+  document.getElementById('pname').textContent = d.profile ? (d.profile.name || d.profile.sector || '') : (d.turnaround ? d.turnaround.ticker : sym + '.JK');
+  var html = '';
+  // Status explanation (turnaround / exit / portfolio / monitoring)
+  html += aiExplain(d);
+  // Score breakdown (V3 specific)
+  html += '<div class="panel-section">' + renderScoreBreakdown(d) + '</div>';
+  // Company summary
+  if (d.profile && d.profile.summary) {
+    html += '<div class="panel-section"><div class="panel-section-title">TENTANG PERUSAHAAN</div>';
+    html += '<div class="panel-summary">' + d.profile.summary + '</div></div>';
   }
+  // Dashboard status
+  html += '<div class="panel-section"><div class="panel-section-title">STATUS DASHBOARD</div>';
+  if (d.leader) html += '<div class="panel-row"><span class="panel-label">Peringkat Leader</span><span class="panel-val">#' + d.leader.rank + '</span></div>';
+  if (d.turnaround) html += '<div class="panel-row"><span class="panel-label">Status Turnaround</span><span class="panel-val">' + (d.turnaround.context_match ? 'Context' : '\u2014') + (d.turnaround.transition_match ? ' / Transition' : '') + '</span></div>';
+  if (d.exit) html += '<div class="panel-row"><span class="panel-label">Status Exit</span><span class="panel-val">' + d.exit.exit_state + '</span></div>';
+  html += '</div>';
+  // Fundamental snapshot
+  html += renderFundamentals(d.fundamentals);
+  // Price & trend
+  if (d.turnaround || d.exit) {
+    html += '<div class="panel-section"><div class="panel-section-title">HARGA &amp; TREN</div>';
+    if (d.exit) html += '<div class="panel-row"><span class="panel-label">Harga Terakhir</span><span class="panel-val">' + d.exit.close + '</span></div>';
+    if (d.turnaround) html += '<div class="panel-row"><span class="panel-label">Penurunan dari Puncak</span><span class="panel-val sf low">' + pct(d.turnaround.drawdown_252d) + '</span></div>';
+    if (d.turnaround) html += '<div class="panel-row"><span class="panel-label">Jarak dari Harga Tertinggi</span><span class="panel-val sf low">' + pct(d.turnaround.distance_from_high_252d) + '</span></div>';
+    if (d.turnaround) html += '<div class="panel-row"><span class="panel-label">Pemulihan dari Dasar</span><span class="panel-val sf ' + (d.turnaround.recovery_from_60d_low > 0 ? 'high' : 'low') + '">' + pct(d.turnaround.recovery_from_60d_low) + '</span></div>';
+    html += '</div>';
+  }
+  // Relative strength
+  if (d.exit || d.turnaround) {
+    html += '<div class="panel-section"><div class="panel-section-title">KEKUATAN RELATIF</div>';
+    if (d.exit) html += '<div class="panel-row"><span class="panel-label">RS20</span><span class="panel-val sf ' + (d.exit.rs_20d > 0 ? 'high' : 'low') + '">' + (+d.exit.rs_20d).toFixed(1) + '%</span></div>';
+    if (d.exit) html += '<div class="panel-row"><span class="panel-label">RS Change 20D</span><span class="panel-val sf ' + (d.exit.rs_change_20d > 0 ? 'high' : 'low') + '">' + (+d.exit.rs_change_20d).toFixed(1) + '%</span></div>';
+    if (d.turnaround) html += '<div class="panel-row"><span class="panel-label">RS Change 60D</span><span class="panel-val sf ' + (d.turnaround.rs_change_60d > 0 ? 'high' : 'low') + '">' + pct(d.turnaround.rs_change_60d) + '</span></div>';
+    html += '</div>';
+  }
+  // Position vs MA
+  if (d.exit) {
+    html += '<div class="panel-section"><div class="panel-section-title">POSISI TERHADAP MA</div>';
+    html += '<div class="panel-row"><span class="panel-label">vs MA20</span><span class="panel-val">' + (d.exit.ma20 != null ? (+d.exit.close < +d.exit.ma20 ? '<span style="color:#ef4444">DI BAWAH</span>' : '<span style="color:#00c26f">DI ATAS</span>') : '\u2014') + '</span></div>';
+    html += '<div class="panel-row"><span class="panel-label">vs MA50</span><span class="panel-val">' + (d.exit.ma50 != null ? (+d.exit.close < +d.exit.ma50 ? '<span style="color:#ef4444">DI BAWAH</span>' : '<span style="color:#00c26f">DI ATAS</span>') : '\u2014') + '</span></div>';
+    html += '<div class="panel-row"><span class="panel-label">vs MA100</span><span class="panel-val">' + (d.exit.ma100 != null ? (+d.exit.close < +d.exit.ma100 ? '<span style="color:#ef4444">DI BAWAH</span>' : '<span style="color:#00c26f">DI ATAS</span>') : '\u2014') + '</span></div>';
+    html += '</div>';
+  }
+  // Alignment
+  html += '<div class="panel-section">' + renderAlignment(sym, d) + '</div>';
+  document.getElementById('pbody').innerHTML = html;
   document.getElementById('overlay').classList.add('active');
   document.getElementById('panel').classList.add('active');
 }

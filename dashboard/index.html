@@ -209,6 +209,30 @@ tr:hover td{background:#111b26}
 .radar-badge.safe{background:#064e2e;color:#00d68f;border:1px solid #166534}
 .radar-badge.warning{background:#3b2a04;color:#fbbf24;border:1px solid #5c4308}
 .radar-badge.danger{background:#3b0a0a;color:#ef4444;border:1px solid #5c1515}
+/* Market tab */
+.mkt-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:8px}
+.mkt-card{background:#111820;border:1px solid #1e293b;border-radius:8px;padding:12px;text-align:center}
+.mkt-card .val{font-size:22px;font-weight:700;font-family:'Space Mono',monospace;line-height:1.3}
+.mkt-card .lbl{font-size:9px;color:#64748b;text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px}
+.mkt-card .chg{font-size:10px;font-family:'Space Mono',monospace;margin-top:2px}
+.mkt-card .chg.up{color:#00d68f}
+.mkt-card .chg.down{color:#ef4444}
+.mkt-section{margin-bottom:14px}
+.mkt-section-title{font-size:10px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;border-bottom:1px solid #1e293b;padding-bottom:4px}
+.mkt-regime{display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:8px;margin-bottom:8px}
+.mkt-regime.risk-on{background:#064e2e;border:1px solid #166534}
+.mkt-regime.risk-off{background:#3b0a0a;border:1px solid #5c1515}
+.mkt-regime .icon{font-size:20px}
+.mkt-regime .label{font-size:14px;font-weight:700;font-family:'Space Mono',monospace;letter-spacing:.06em}
+.mkt-regime.risk-on .label{color:#00d68f}
+.mkt-regime.risk-off .label{color:#ef4444}
+.mkt-regime .sub{font-size:10px;color:#9CA3AF;margin-left:6px}
+.mkt-radar-row{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:8px}
+.alpha-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.alpha-card{background:#111820;border:1px solid #1e293b;border-radius:6px;padding:8px 6px;text-align:center}
+.alpha-tkr{font-size:10px;font-weight:600;color:#94a3b8;font-family:'Space Mono',monospace}
+.alpha-val{font-size:14px;font-weight:700;font-family:'Space Mono',monospace}
+.alpha-lbl{font-size:8px;color:#64748b;text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
 </style>
 </head>
 <body>
@@ -223,23 +247,50 @@ tr:hover td{background:#111b26}
 </div>
 
 <div class="tab-nav">
-<button class="tab-btn active" onclick="st(0,this)">Leaders</button>
-<button class="tab-btn" onclick="st(1,this)">Turnaround</button>
+<button class="tab-btn active" onclick="st(0,this)">Market</button>
+<button class="tab-btn" onclick="st(1,this)">Leaders</button>
+<button class="tab-btn" onclick="st(2,this)">Turnaround</button>
 
-<button class="tab-btn" onclick="st(3,this)">History</button>
-<button class="tab-btn" onclick="st(4,this)">Exit</button>
-<button class="tab-btn" onclick="st(5,this)">Diagnostics</button>
-<button class="tab-btn" onclick="st(6,this)">Simulation Lab</button>
-<button class="tab-btn" onclick="st(7,this)">Research</button>
+<button class="tab-btn" onclick="st(4,this)">History</button>
+<button class="tab-btn" onclick="st(5,this)">Exit</button>
+<button class="tab-btn" onclick="st(6,this)">Diagnostics</button>
+<button class="tab-btn" onclick="st(7,this)">Simulation Lab</button>
+<button class="tab-btn" onclick="st(8,this)">Research</button>
 </div>
 
 <div id="insight-leaders" style="padding:8px 24px 0"></div>
 
-<div id="radar-conclusion" style="padding:4px 24px 0"></div>
 <div id="insight-ctx" style="padding:4px 24px 0"></div>
 <div id="insight-exit" style="padding:4px 24px 0"></div>
 
 <div class="tc active" id="t0">
+<div class="mkt-section">
+  <div class="mkt-section-title">Market Regime</div>
+  <div id="mkt-regime" class="mkt-regime risk-on"><div class="icon">&#9650;</div><div class="label">RISK ON</div><div class="sub">Breadth improving, gap widening</div></div>
+</div>
+<div class="mkt-section">
+  <div class="mkt-section-title">Market Snapshot</div>
+  <div class="mkt-cards" id="mkt-snapshot"></div>
+</div>
+<div class="mkt-section">
+  <div class="mkt-section-title">ISI Health</div>
+  <div id="mkt-isi-health" class="mkt-cards" style="grid-template-columns:repeat(4,1fr)"></div>
+</div>
+<div class="mkt-section">
+  <div class="mkt-section-title">Chief Risk Officer</div>
+  <div id="radar-conclusion" style="padding:0"></div>
+</div>
+<div class="mkt-section">
+  <div class="mkt-section-title">AI Summary</div>
+  <div id="mkt-summary" style="background:#111820;border:1px solid #1e293b;border-radius:8px;padding:12px;font-size:12px;color:#9CA3AF;line-height:1.6"></div>
+</div>
+<div class="mkt-section">
+  <div class="mkt-section-title">Alpha Monitor</div>
+  <div id="mkt-alpha" class="alpha-grid"></div>
+</div>
+</div>
+
+<div class="tc" id="t1">
 <div class="section-title">Leaders · Config Switcher</div>
 <div style="display:flex;gap:6px;align-items:center;margin-bottom:10px">
 <span class="cfg-label">Active Config:</span>
@@ -257,20 +308,20 @@ tr:hover td{background:#111b26}
 </div>
 </div>
 
-<div class="tc" id="t1">
+<div class="tc" id="t2">
 <div class="section-title">Context / Transition Tracker</div>
 <div class="sub-tab-nav">
-<button class="tab-btn active" onclick="stSub('1','ctx',this)">Context Match</button>
-<button class="tab-btn" onclick="stSub('1','trn',this)">Transition Match</button>
+<button class="tab-btn active" onclick="stSub('2','ctx',this)">Context Match</button>
+<button class="tab-btn" onclick="stSub('2','trn',this)">Transition Match</button>
 </div>
-<div class="sub-tc active" id="t1-ctx">
+<div class="sub-tc active" id="t2-ctx">
 <div class="card-grid">
 <div class="card"><div class="card-label">Context Match Count</div><div class="card-val g">0</div><div class="card-sub">stable context alignment</div></div>
 <div class="card"><div class="card-label">Transition Match Count</div><div class="card-val g">0</div><div class="card-sub">active transition phase</div></div>
 </div>
 
 </div>
-<div class="sub-tc" id="t1-trn">
+<div class="sub-tc" id="t2-trn">
 <div class="table-wrap"><table>
 <thead><tr><th>Ticker</th><th>Context</th><th>Transition</th><th>Full</th><th>Last Update</th></tr></thead>
 <tbody id="tbody-trn"></tbody>
@@ -400,7 +451,7 @@ tr:hover td{background:#111b26}
 </div>
 <script src="data/data.js"></script>
 <script>
-var L, T, SM, SK, EX, PF, FD, CW_B, CW_F, WI, IC, BT, FCOLORS, FNAMES, RS, BM;
+var L, T, SM, SK, EX, PF, FD, CW_B, CW_F, WI, IC, BT, FCOLORS, FNAMES, RS, BM, MKT;
 var BM_M = (function() {
   if (!BM || !BM.length) return [];
   var labels = [], cb = [], cf = [], ih = [];
@@ -494,7 +545,7 @@ function renderRadarV2() {
   var actionCls = (RS.action || 'HOLD').toLowerCase();
   var mh = RS.market_health, opp = RS.opportunity, rk = RS.risk, cf = RS.confidence, cd = RS.capital_deployment;
   function scoreColor(v) { return v >= 60 ? '#00d68f' : v >= 40 ? '#fbbf24' : '#ef4444'; }
-  var h = '<div style="background:#111820;border:1px solid #1e293b;border-radius:8px;padding:14px 18px;margin:4px 24px">';
+  var h = '<div style="background:#111820;border:1px solid #1e293b;border-radius:8px;padding:14px 18px">';
   h += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">';
   h += '<div><span class="radar-badge ' + statusCls + '">' + RS.status + '</span>';
   h += '<span class="radar-action ' + actionCls + '" style="margin-left:8px">' + RS.action + '</span></div>';
@@ -1012,8 +1063,98 @@ function closePanel() {
   document.getElementById('panel').classList.remove('active');
 }
 
+function renderMarket() {
+  // Market Regime
+  var rc = RS && RS.radar_context ? RS.radar_context : null;
+  var regime, regimeCls, regimeIcon, regimeSub;
+  if (rc && rc.score_gap !== undefined) {
+    var isRiskOn = rc.score_gap > 15 && rc.breadth_above_60 > 30 && (rc.top5_turnover || 0) < 40;
+    var isRiskOff = rc.score_gap < 8 || rc.breadth_below_40 > 30 || (rc.top5_turnover || 0) > 55;
+    if (isRiskOn && !isRiskOff) { regime = 'RISK ON'; regimeCls = 'risk-on'; regimeIcon = '&#9650;'; regimeSub = 'Breadth improving, gap widening'; }
+    else if (isRiskOff) { regime = 'RISK OFF'; regimeCls = 'risk-off'; regimeIcon = '&#9660;'; regimeSub = 'Weak breadth, narrow leadership'; }
+    else { regime = 'NEUTRAL'; regimeCls = 'risk-on'; regimeIcon = '&#9654;'; regimeSub = 'Mixed signals, selective positioning'; }
+  } else {
+    regime = 'NEUTRAL'; regimeCls = 'risk-on'; regimeIcon = '&#9654;'; regimeSub = 'Insufficient data';
+  }
+  var rEl = document.getElementById('mkt-regime');
+  if (rEl) { rEl.className = 'mkt-regime ' + regimeCls; rEl.innerHTML = '<div class="icon">' + regimeIcon + '</div><div class="label">' + regime + '</div><div class="sub">' + regimeSub + '</div>'; }
+
+  // Market Snapshot
+  if (typeof MKT !== 'undefined' && MKT) {
+    var snapCards = [
+      { lbl: 'IHSG', val: MKT.ihsg.value.toLocaleString(), chg: MKT.ihsg.daily, chgLabel: 'Daily' },
+      { lbl: 'USD/IDR', val: MKT.usdidr.value.toLocaleString(), chg: MKT.usdidr.daily, chgLabel: 'Daily' },
+      { lbl: 'Gold', val: '$' + MKT.gold.value.toLocaleString(), chg: MKT.gold.daily, chgLabel: 'Daily' },
+      { lbl: 'Oil', val: '$' + MKT.oil.value, chg: MKT.oil.daily, chgLabel: 'Daily' }
+    ];
+    var h = '';
+    snapCards.forEach(function(c) {
+      var chgCls = c.chg > 0 ? 'up' : c.chg < 0 ? 'down' : '';
+      h += '<div class="mkt-card"><div class="lbl">' + c.lbl + '</div><div class="val">' + c.val + '</div><div class="chg ' + chgCls + '">' + (c.chg > 0 ? '+' : '') + c.chg + '% ' + c.chgLabel + '</div></div>';
+    });
+    document.getElementById('mkt-snapshot').innerHTML = h;
+  }
+
+  // ISI Health
+  if (rc) {
+    var healthCards = [
+      { lbl: 'Top5 Avg', val: (rc.top5_avg_score || 0).toFixed(1), sub: 'Leader strength' },
+      { lbl: 'Bot5 Avg', val: (rc.bot5_avg_score || 0).toFixed(1), sub: 'Tail weakness' },
+      { lbl: 'Score Gap', val: (rc.score_gap || 0).toFixed(1), sub: 'Top–Bot dispersion' },
+      { lbl: 'Breadth >60', val: (rc.breadth_above_60 || 0) + '/' + (rc.watchlist_count || 0), sub: 'Stocks above 60' }
+    ];
+    var h2 = '';
+    healthCards.forEach(function(c) {
+      h2 += '<div class="mkt-card"><div class="lbl">' + c.lbl + '</div><div class="val">' + c.val + '</div><div class="chg" style="font-size:9px;color:#64748b">' + c.sub + '</div></div>';
+    });
+    document.getElementById('mkt-isi-health').innerHTML = h2;
+  }
+
+  // AI Summary
+  var summaryEl = document.getElementById('mkt-summary');
+  if (summaryEl && RS && RS.detail_message) {
+    summaryEl.innerHTML = RS.detail_message;
+  }
+
+  // Alpha Monitor (top 5 tickers by latest alpha)
+  if (BM && BM_M && BM_M.length > 0) {
+    var n = BM_M.length;
+    var latest = BM_M[n - 1];
+    var alphaB = ((latest.ret_b || 0) - (latest.ret_i || 0)).toFixed(2);
+    var alphaF = ((latest.ret_f || 0) - (latest.ret_i || 0)).toFixed(2);
+    var ytdB = 0, ytdF = 0, ytdI = 0, ytdCount = 0;
+    for (var i = 0; i < n; i++) {
+      if (BM.labels[i] && BM.labels[i].indexOf('2026') >= 0) {
+        ytdB += BM_M[i].ret_b || 0; ytdF += BM_M[i].ret_f || 0; ytdI += BM_M[i].ret_i || 0; ytdCount++;
+      }
+    }
+    var alphaYtdB = ytdCount > 0 ? (ytdB - ytdI).toFixed(2) : '—';
+    var alphaYtdF = ytdCount > 0 ? (ytdF - ytdI).toFixed(2) : '—';
+    var alphaInceptionB = ((BM.config_b[n - 1] / BM.config_b[0] - 1) * 100 - (BM.ihsg[n - 1] / BM.ihsg[0] - 1) * 100).toFixed(2);
+    var alphaInceptionF = ((BM.config_f[n - 1] / BM.config_f[0] - 1) * 100 - (BM.ihsg[n - 1] / BM.ihsg[0] - 1) * 100).toFixed(2);
+    var alphaCards = [
+      { tkr: 'Config F', val: alphaF + '%', lbl: 'This Mo' },
+      { tkr: 'Config B', val: alphaB + '%', lbl: 'This Mo' },
+      { tkr: 'Config F', val: alphaYtdF + '%', lbl: 'YTD' },
+      { tkr: 'Config B', val: alphaYtdB + '%', lbl: 'YTD' },
+      { tkr: 'Config F', val: alphaInceptionF + '%', lbl: 'Since Inception' },
+      { tkr: 'Config B', val: alphaInceptionB + '%', lbl: 'Since Inception' }
+    ];
+    // Actually show only 5 best, but for V3 we show both configs across 3 periods
+    var h3 = '';
+    alphaCards.forEach(function(c) {
+      var isPos = parseFloat(c.val) >= 0;
+      h3 += '<div class="alpha-card"><div class="alpha-tkr">' + c.tkr + '</div><div class="alpha-val" style="color:' + (isPos ? '#00d68f' : '#ef4444') + '">' + c.val + '</div><div class="alpha-lbl">' + c.lbl + '</div></div>';
+    });
+    // Pad with blanks if needed
+    var extra = 6 - alphaCards.length;
+    for (var j = 0; j < extra; j++) { h3 += '<div class="alpha-card" style="opacity:0.3"><div class="alpha-tkr">—</div><div class="alpha-val">—</div><div class="alpha-lbl">—</div></div>'; }
+    document.getElementById('mkt-alpha').innerHTML = h3;
+  }
+}
+
 function renderAll() {
-  var _fns = [renderRadarV2, renderLeaders, renderInsights, renderHistory, re];
+  var _fns = [renderMarket, renderRadarV2, renderLeaders, renderInsights, renderHistory, re];
   for (var _i = 0; _i < _fns.length; _i++) { try { _fns[_i](); } catch(e) { console.warn('renderAll: ' + (_fns[_i].name || 'fn' + _i) + ' failed:', e); } }
   try { initSlider(); } catch(e) { console.warn('initSlider failed:', e); }
   try { var _st = localStorage.getItem('simTab'); if (_st === '0' || _st === '1') stSubSim(parseInt(_st)); } catch(e) {}

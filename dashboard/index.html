@@ -332,7 +332,13 @@ tr:hover td{background:#111b26}
 </div>
 
 <div class="tc" id="t6">
-<div class="section-title">Simulation Lab · V3.1 — Real Monthly Backtest</div>
+<div class="sub-tab-nav" style="margin-bottom:10px">
+<button class="sub-tab-btn active" onclick="stSubSim(0,this)">Chart</button>
+<button class="sub-tab-btn" onclick="stSubSim(1,this)">Monthly Data</button>
+</div>
+<div class="sub-tc active" id="t6-0">
+<div class="section-title">Equity Curve</div>
+<div style="font-size:11px;color:#64748b;margin:-8px 0 12px;font-family:'Space Mono',monospace">Growth of Rp100M Since 2022</div>
 <div class="sim-row">
   <button class="sim-period-btn" onclick="setSimPeriod(1, this)">1M</button>
   <button class="sim-period-btn" onclick="setSimPeriod(3, this)">3M</button>
@@ -352,12 +358,10 @@ tr:hover td{background:#111b26}
 <div class="chart-container"><canvas id="simChart"></canvas></div>
 <div class="sim-summary" id="sim-summary"></div>
 </div>
-<div class="sub-tab-nav">
-<button class="sub-tab-btn active" onclick="stSubSim(0,this)">Chart</button>
-<button class="sub-tab-btn" onclick="stSubSim(1,this)">Monthly Data</button>
 </div>
-<div class="sub-tc active" id="t6-0"></div>
 <div class="sub-tc" id="t6-1">
+<div class="section-title">Monthly Returns</div>
+<div style="font-size:11px;color:#64748b;margin:-8px 0 12px;font-family:'Space Mono',monospace">All monthly portfolio returns</div>
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
 <span class="section-title" style="margin:0">Monthly Returns</span>
 <button class="sim-export" onclick="exportCSV()">Export CSV</button>
@@ -575,10 +579,13 @@ function stSub(tabId, subId, btn) {
 }
 
 function stSubSim(idx, btn) {
+  if (!btn) btn = document.querySelectorAll('#t6 .sub-tab-btn')[idx];
+  if (!btn) return;
   document.querySelectorAll('#t6 .sub-tab-btn').forEach(function(b) { b.classList.remove('active'); });
   btn.classList.add('active');
   document.querySelectorAll('#t6 .sub-tc').forEach(function(c) { c.classList.remove('active'); });
   document.getElementById('t6-' + idx).classList.add('active');
+  try { localStorage.setItem('simTab', idx); } catch(e) {}
   if (idx === 1) renderSimTable();
 }
 var simChart = null, simStartIdx = 0, simEndIdx = BM.labels.length - 1;
@@ -973,6 +980,7 @@ function renderAll() {
   var _fns = [renderRadarConclusion, renderLeaders, renderInsights, renderHistory, re];
   for (var _i = 0; _i < _fns.length; _i++) { try { _fns[_i](); } catch(e) { console.warn('renderAll: ' + (_fns[_i].name || 'fn' + _i) + ' failed:', e); } }
   try { initSlider(); } catch(e) { console.warn('initSlider failed:', e); }
+  try { var _st = localStorage.getItem('simTab'); if (_st === '0' || _st === '1') stSubSim(parseInt(_st)); } catch(e) {}
 }
 
 document.addEventListener('click', function(e) {

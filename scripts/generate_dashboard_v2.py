@@ -933,7 +933,10 @@ function showTip(ev,el){{
     toastEl.className='toast'
     document.body.appendChild(toastEl)
   }}
+  toastEl.classList.remove('show')
   toastEl.textContent=txt
+  toastEl.style.left='-9999px'
+  toastEl.style.top='-9999px'
   toastEl.classList.add('show')
   var r=el.getBoundingClientRect()
   toastEl.style.left=Math.max(4,Math.min(r.left+r.width/2-toastEl.offsetWidth/2,document.documentElement.clientWidth-toastEl.offsetWidth-4))+'px'

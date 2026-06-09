@@ -321,12 +321,32 @@ def main():
 
     # -- Simpan status ke JSON file --
     os.makedirs("output", exist_ok=True)
+    api_key = os.environ.get("GEMINI_API_KEY", "").strip()
+    if not api_key:
+        try:
+            with open("config/settings.json", "r") as f:
+                settings = json.load(f)
+                api_key = settings.get("gemini", {}).get("api_key", "").strip()
+        except Exception:
+            pass
+
     status_data = {
         "last_update": now.strftime("%Y-%m-%d %H:%M"),
         "status": status,
         "anomalies": anomalies,
-        "detail_message": detail_message
     }
+
+    if api_key:
+        status_data["detail_message"] = detail_message
+    else:
+        # Fallback mode: preserve existing detail_message if file already exists
+        try:
+            with open(STATUS_FILE, "r") as f:
+                existing = json.load(f)
+                status_data["detail_message"] = existing.get("detail_message", detail_message)
+            print(f"[!] Fallback mode — mempertahankan analisis AI sebelumnya dari {STATUS_FILE}")
+        except Exception:
+            status_data["detail_message"] = detail_message
 
     with open(STATUS_FILE, "w") as f:
         json.dump(status_data, f, indent=4, ensure_ascii=False)

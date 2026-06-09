@@ -1,6 +1,6 @@
 {
-    "last_update": "2026-06-09 17:27",
+    "last_update": "2026-06-05 09:03",
     "status": "SAFE",
     "anomalies": [],
-    "detail_message": "Sistem berjalan normal (SAFE). Analisis AI tidak tersedia saat ini — GEMINI_API_KEY belum dikonfigurasi. Aktifkan kunci API di GitHub Secrets untuk mengaktifkan narasi otomatis."
+    "detail_message": "Meskipun status sistem keseluruhan menunjukkan 'SAFE', volume perdagangan untuk PTBA.JK masih tergolong sepi. Kondisi ini menunjukkan kurangnya keyakinan pasar yang seragam di seluruh watchlist, yang tidak memenuhi standar kami untuk eksekusi. Demi perlindungan modal, keputusan terbaik saat ini adalah **WAIT AND SEE**."
 }

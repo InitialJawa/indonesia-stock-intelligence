@@ -195,18 +195,18 @@ tr:hover td{background:#1a1e24}
 <div class="tc" id="t2">
   <div class="section-title">Today's Snapshot</div>
   <div class="card-grid">
-    <div class="card card-click" data-filter="ctx"><div class="card-label">SAHAM TERTEKAN<span class="tip" onclick="showTip(event,this)" data-tip-key="ctx">?</span></div><div class="card-val g">9</div><div class="card-sub">Saham yang jatuh berat dan masih dalam kondisi tertekan</div></div>
-    <div class="card card-click" data-filter="trn"><div class="card-label">MULAI MEMBAIK<span class="tip" onclick="showTip(event,this)" data-tip-key="trn">?</span></div><div class="card-val y">22</div><div class="card-sub">Saham dengan kekuatan relatif yang mulai meningkat</div></div>
-    <div class="card card-click" data-filter="full"><div class="card-label">KANDIDAT TURNAROUND<span class="tip" onclick="showTip(event,this)" data-tip-key="full">?</span></div><div class="card-val b">4</div><div class="card-sub">Saham tertekan yang mulai menunjukkan pemulihan</div></div>
+    <div class="card card-click" onclick="filterStocks('ctx','fltr-cards',this)"><div class="card-label">SAHAM TERTEKAN<span class="tip" onclick="showTip(event,this)" data-tip-key="ctx">?</span></div><div class="card-val g">9</div><div class="card-sub">Saham yang jatuh berat dan masih dalam kondisi tertekan</div></div>
+    <div class="card card-click" onclick="filterStocks('trn','fltr-cards',this)"><div class="card-label">MULAI MEMBAIK<span class="tip" onclick="showTip(event,this)" data-tip-key="trn">?</span></div><div class="card-val y">22</div><div class="card-sub">Saham dengan kekuatan relatif yang mulai meningkat</div></div>
+    <div class="card card-click" onclick="filterStocks('full','fltr-cards',this)"><div class="card-label">KANDIDAT TURNAROUND<span class="tip" onclick="showTip(event,this)" data-tip-key="full">?</span></div><div class="card-val b">4</div><div class="card-sub">Saham tertekan yang mulai menunjukkan pemulihan</div></div>
     <div class="card"><div class="card-label">Universe</div><div class="card-val">30</div><div class="card-sub">IDX30 tickers</div></div>
   </div>
   <div class="fltr-info" id="fltr-cards"></div>
   <div class="section-title">Signal Diagnostics</div>
   <div class="card-grid">
-    <div class="card card-click" data-filter="rs-pos"><div class="card-label">KEKUATAN MULAI NAIK<span class="tip" onclick="showTip(event,this)" data-tip-key="rs-pos">?</span></div><div class="card-val g">22</div><div class="card-sub">Saham yang mulai outperform pasar</div></div>
-    <div class="card card-click" data-filter="vol-high"><div class="card-label">MINAT BELI MENINGKAT<span class="tip" onclick="showTip(event,this)" data-tip-key="vol-high">?</span></div><div class="card-val y">13</div><div class="card-sub">Aktivitas perdagangan di atas normal</div></div>
+    <div class="card card-click" onclick="filterStocks('rs-pos','fltr-sig',this)"><div class="card-label">KEKUATAN MULAI NAIK<span class="tip" onclick="showTip(event,this)" data-tip-key="rs-pos">?</span></div><div class="card-val g">22</div><div class="card-sub">Saham yang mulai outperform pasar</div></div>
+    <div class="card card-click" onclick="filterStocks('vol-high','fltr-sig',this)"><div class="card-label">MINAT BELI MENINGKAT<span class="tip" onclick="showTip(event,this)" data-tip-key="vol-high">?</span></div><div class="card-val y">13</div><div class="card-sub">Aktivitas perdagangan di atas normal</div></div>
     <div class="card"><div class="card-label">DI ATAS TREND PENDEK<span class="tip" onclick="showTip(event,this)" data-tip-key="above-ma20">?</span></div><div class="card-val">0</div><div class="card-sub">Harga di atas rata-rata 20 hari</div></div>
-    <div class="card card-click" data-filter="recovery"><div class="card-label">PANTUL DARI DASAR<span class="tip" onclick="showTip(event,this)" data-tip-key="recovery">?</span></div><div class="card-val g">4</div><div class="card-sub">Memantul &gt;10% dari level terendah 60 hari</div></div>
+    <div class="card card-click" onclick="filterStocks('recovery','fltr-sig',this)"><div class="card-label">PANTUL DARI DASAR<span class="tip" onclick="showTip(event,this)" data-tip-key="recovery">?</span></div><div class="card-val g">4</div><div class="card-sub">Memantul &gt;10% dari level terendah 60 hari</div></div>
     <div class="card"><div class="card-label">RATA-RATA PENURUNAN<span class="tip" onclick="showTip(event,this)" data-tip-key="avg-dd">?</span></div><div class="card-val r">-39.61%</div><div class="card-sub">Rata-rata penurunan dari harga tertinggi</div></div>
     <div class="card"><div class="card-label">RATA-RATA GEJOLAK<span class="tip" onclick="showTip(event,this)" data-tip-key="avg-vol">?</span></div><div class="card-val y">3.22%</div><div class="card-sub">Intensitas pergerakan harga rata-rata</div></div>
   </div>
@@ -732,46 +732,46 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape')closePanel()
 document.addEventListener('click',function(e){var t=e.target.closest('.tk-click');if(t){var tkr=t.getAttribute('data-ticker')||t.textContent.trim();e.stopPropagation();openPanel(tkr)}})
 
 /* CARD FILTER — Daily Summary card clicks */
-(function(){
-  var filterMap={    ctx: {label:'SAHAM TERTEKAN (Context Match)', fn:function(d){return d.context_match}},    trn: {label:'MULAI MEMBAIK (Transition Match)', fn:function(d){return d.transition_match}},    full: {label:'KANDIDAT TURNAROUND (Full Match)', fn:function(d){return d.context_match&&d.transition_match}},    'rs-pos': {label:'KEKUATAN MULAI NAIK (RS Change 60D &gt; 0)', fn:function(d){return d.rs_change_60d>0}},    'vol-high': {label:'MINAT BELI MENINGKAT (Volume Ratio &ge; 1.3)', fn:function(d){return d.volume_ratio>=1.3}},    recovery: {label:'PANTUL DARI DASAR (Recovery &gt; 10%)', fn:function(d){return d.recovery_from_60d_low>10}}  }
-  var activeFilter=null
-  function render(filterType,containerId){
-    var m=filterMap[filterType],el=document.getElementById(containerId)
-    if(!m){el.classList.remove('show');return}
-    var filtered=T.filter(m.fn)
-    var html='<div class="fltr-hdr"><span>'+m.label+' &mdash; '+filtered.length+' saham</span><span class="fltr-close" data-cid="'+containerId+'">&#10005;</span></div>'
-    html+='<div class="fltr-list">'
-    filtered.forEach(function(d){
-      var ticker=d.ticker.split('.')[0]
-      var c=ac(d.ticker)
-      html+='<span class="fltr-tag tk-click" data-ticker="'+ticker+'" style="cursor:pointer;color:'+c+'">'+ticker+'</span>'
-    })
-    html+='</div>'
-    el.innerHTML=html
-    el.classList.add('show')
-  }
-  document.addEventListener('click',function(e){
-    var cls=e.target.closest('.fltr-close')
-    if(cls){var id=cls.getAttribute('data-cid');if(id){document.getElementById(id).classList.remove('show');document.querySelectorAll('.card-click.active').forEach(function(c){c.classList.remove('active')});activeFilter=null}}
-    var crd=e.target.closest('.card-click[data-filter]')
-    if(crd){
-      var f=crd.getAttribute('data-filter')
-      var container=crd.closest('.card-grid').nextElementSibling
-      if(container&&container.classList.contains('fltr-info')){
-        if(activeFilter===f&&container.classList.contains('show')){
-          container.classList.remove('show')
-          crd.classList.remove('active')
-          activeFilter=null
-        }else{
-          document.querySelectorAll('.card-click.active').forEach(function(c){c.classList.remove('active')})
-          crd.classList.add('active')
-          render(f,container.id)
-          activeFilter=f
-        }
-      }
-    }
+var activeFilter=null
+var filterMap={
+  ctx: {label:'SAHAM TERTEKAN (Context Match)', fn:function(d){return d.context_match}},
+  trn: {label:'MULAI MEMBAIK (Transition Match)', fn:function(d){return d.transition_match}},
+  full: {label:'KANDIDAT TURNAROUND (Full Match)', fn:function(d){return d.context_match&&d.transition_match}},
+  'rs-pos': {label:'KEKUATAN MULAI NAIK (RS Change 60D > 0)', fn:function(d){return d.rs_change_60d>0}},
+  'vol-high': {label:'MINAT BELI MENINGKAT (Volume Ratio >= 1.3)', fn:function(d){return d.volume_ratio>=1.3}},
+  recovery: {label:'PANTUL DARI DASAR (Recovery > 10%)', fn:function(d){return d.recovery_from_60d_low>10}}
+}
+function renderFilter(filterType,containerId){
+  var m=filterMap[filterType],el=document.getElementById(containerId)
+  if(!m){el.classList.remove('show');return}
+  var filtered=T.filter(m.fn)
+  var html='<div class="fltr-hdr"><span>'+m.label+' \u2014 '+filtered.length+' saham</span><span class="fltr-close" onclick='closeFilter("'+containerId+'")'>\u2715</span></div>'
+  html+='<div class="fltr-list">'
+  filtered.forEach(function(d){
+    var ticker=d.ticker.split('.')[0]
+    var c=ac(d.ticker)
+    html+='<span class="fltr-tag tk-click" data-ticker="'+ticker+'" style="cursor:pointer;color:'+c+'">'+ticker+'</span>'
   })
-})();
+  html+='</div>'
+  el.innerHTML=html
+  el.classList.add('show')
+}
+function closeFilter(id){
+  document.getElementById(id).classList.remove('show')
+  document.querySelectorAll('.card-click.active').forEach(function(c){c.classList.remove('active')})
+  activeFilter=null
+}
+function filterStocks(type,containerId,el){
+  if(activeFilter===type&&document.getElementById(containerId).classList.contains('show')){
+    closeFilter(containerId)
+    el.classList.remove('active')
+  }else{
+    document.querySelectorAll('.card-click.active').forEach(function(c){c.classList.remove('active')})
+    el.classList.add('active')
+    renderFilter(type,containerId)
+    activeFilter=type
+  }
+}
 
 /* TOOLTIP POPUP — for ? marks (Bahasa Indonesia) */
 var toastEl=null

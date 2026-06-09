@@ -745,7 +745,7 @@ function renderFilter(filterType,containerId){
   var m=filterMap[filterType],el=document.getElementById(containerId)
   if(!m){el.classList.remove('show');return}
   var filtered=T.filter(m.fn)
-  var html='<div class="fltr-hdr"><span>'+m.label+' \u2014 '+filtered.length+' saham</span><span class="fltr-close" onclick='closeFilter("'+containerId+'")'>\u2715</span></div>'
+  var html='<div class="fltr-hdr"><span>'+m.label+' \u2014 '+filtered.length+' saham</span><span class="fltr-close" data-cid="'+containerId+'">\u2715</span></div>'
   html+='<div class="fltr-list">'
   filtered.forEach(function(d){
     var ticker=d.ticker.split('.')[0]
@@ -772,6 +772,7 @@ function filterStocks(type,containerId,el){
     activeFilter=type
   }
 }
+document.addEventListener('click',function(e){var el=e.target.closest('.fltr-close');if(el)closeFilter(el.getAttribute('data-cid'))})
 
 /* TOOLTIP POPUP — for ? marks (Bahasa Indonesia) */
 var toastEl=null

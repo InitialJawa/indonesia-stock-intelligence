@@ -366,34 +366,9 @@ Ideal position: top-left (high return, low drawdown) or top-right (high return, 
 </div>
 <div class="panel-body" id="pbody"></div>
 </div>
+<script src="data/data.js"></script>
 <script>
-var L = [], T = [], SM = {}, SK = [], EX = [], PF = {}, FD = {}, CW_B = {}, CW_F = {}, WI = {}, IC = {}, BT = {}, FCOLORS = {}, FNAMES = {};
-
-async function loadAllData() {
-  var sources = [
-    ['./data/leaders.json', function(d) { L = d; }],
-    ['./data/turnaround.json', function(d) { T = d; }],
-    ['./data/summary.json', function(d) { SM = d; }],
-    ['./data/streaks.json', function(d) { SK = d; }],
-    ['./data/exit.json', function(d) { EX = d; }],
-    ['./data/profiles.json', function(d) { PF = d; }],
-    ['./data/fundamentals.json', function(d) { FD = d; }],
-    ['./data/cw_b.json', function(d) { CW_B = d; }],
-    ['./data/cw_f.json', function(d) { CW_F = d; }],
-    ['./data/warehouse.json', function(d) { WI = d; }],
-    ['./data/ic.json', function(d) { IC = d; }],
-    ['./data/bt.json', function(d) { BT = d; }],
-    ['./data/fcolors.json', function(d) { FCOLORS = d; }],
-    ['./data/fnames.json', function(d) { FNAMES = d; }],
-  ];
-  for (var i = 0; i < sources.length; i++) {
-    try {
-      var r = await fetch(sources[i][0]);
-      if (r.ok) { sources[i][1](await r.json()); }
-    } catch(e) { console.warn('loadAllData: fetch failed for', sources[i][0]); }
-  }
-  renderAll();
-}
+var L, T, SM, SK, EX, PF, FD, CW_B, CW_F, WI, IC, BT, FCOLORS, FNAMES;
 
 var activeConfig = 'prod';
 function getWeights() { return activeConfig === 'prod' ? CW_F : CW_B; }
@@ -629,7 +604,7 @@ function renderComparisonCards() {
 function switchPeriod(period, btn) {
   document.querySelectorAll('#t6-2 .period-btn').forEach(function(b) { b.classList.remove('active'); });
   btn.classList.add('active');
-  var pd = BT.periods[period];
+  var pd = BT[period];
   if (!pd) { document.getElementById('period-cards').innerHTML = '<p style="color:#64748b">No data for this period.</p>'; return; }
   var h = '';
   ['config_b', 'config_f', 'ihsg'].forEach(function(cfg) {
@@ -646,61 +621,64 @@ function switchPeriod(period, btn) {
 
 var equityChart, riskChart;
 (function() {
-  var labels = WI.labels || WI.month_labels || [];
-  var cb = WI.config_b || WI.equity_b || [];
-  var cf = WI.config_f || WI.equity_f || [];
-  var ihsg = WI.ihsg || WI.equity_i || [];
-  var ctx = document.getElementById('equityChart');
-  if (ctx && labels.length > 0 && cb.length > 0) {
-    equityChart = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: labels,
-        datasets: [
-          { label: 'Config B', data: cb, borderColor: '#60a5fa', backgroundColor: 'rgba(96,165,250,0.05)', fill: false, tension: 0.2, pointRadius: 0 },
-          { label: 'Config F', data: cf, borderColor: '#00d68f', backgroundColor: 'rgba(0,214,143,0.05)', fill: false, tension: 0.2, pointRadius: 0 },
-          { label: 'IHSG', data: ihsg, borderColor: '#94a3b8', backgroundColor: 'rgba(148,163,184,0.05)', fill: false, tension: 0.2, pointRadius: 0, borderDash: [4, 4] }
-        ]
-      },
-      options: {
-        responsive: true, maintainAspectRatio: true,
-        plugins: {
-          legend: { labels: { color: '#94a3b8', font: { size: 12 } } },
-          tooltip: { mode: 'index', intersect: false, backgroundColor: '#0f172a', titleColor: '#e8edf5', bodyColor: '#94a3b8', borderColor: '#1e293b', borderWidth: 1 }
+  if (typeof Chart === 'undefined') return;
+  try {
+    var labels = WI.labels || WI.month_labels || [];
+    var cb = WI.config_b || WI.equity_b || [];
+    var cf = WI.config_f || WI.equity_f || [];
+    var ihsg = WI.ihsg || WI.equity_i || [];
+    var ctx = document.getElementById('equityChart');
+    if (ctx && labels.length > 0 && cb.length > 0) {
+      equityChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [
+            { label: 'Config B', data: cb, borderColor: '#60a5fa', backgroundColor: 'rgba(96,165,250,0.05)', fill: false, tension: 0.2, pointRadius: 0 },
+            { label: 'Config F', data: cf, borderColor: '#00d68f', backgroundColor: 'rgba(0,214,143,0.05)', fill: false, tension: 0.2, pointRadius: 0 },
+            { label: 'IHSG', data: ihsg, borderColor: '#94a3b8', backgroundColor: 'rgba(148,163,184,0.05)', fill: false, tension: 0.2, pointRadius: 0, borderDash: [4, 4] }
+          ]
         },
-        scales: {
-          x: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8', font: { size: 11 }, maxTicksLimit: 12 } },
-          y: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8', font: { size: 11 }, callback: function(v) { return 'Rp' + v.toLocaleString() + 'jt'; } } }
+        options: {
+          responsive: true, maintainAspectRatio: true,
+          plugins: {
+            legend: { labels: { color: '#94a3b8', font: { size: 12 } } },
+            tooltip: { mode: 'index', intersect: false, backgroundColor: '#0f172a', titleColor: '#e8edf5', bodyColor: '#94a3b8', borderColor: '#1e293b', borderWidth: 1 }
+          },
+          scales: {
+            x: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8', font: { size: 11 }, maxTicksLimit: 12 } },
+            y: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8', font: { size: 11 }, callback: function(v) { return 'Rp' + v.toLocaleString() + 'jt'; } } }
+          }
         }
-      }
-    });
-  }
+      });
+    }
 
-  var rctx = document.getElementById('riskChart');
-  if (rctx && BT.full) {
-    var s = BT.full;
-    riskChart = new Chart(rctx, {
-      type: 'bubble',
-      data: {
-        datasets: [
-          { label: 'Config B', data: [{ x: s.config_b.max_dd, y: s.config_b.cagr, r: Math.min(Math.max(Math.abs(s.config_b.sharpe) * 10, 8), 25) }], backgroundColor: 'rgba(96,165,250,0.6)', borderColor: '#60a5fa', borderWidth: 2 },
-          { label: 'Config F', data: [{ x: s.config_f.max_dd, y: s.config_f.cagr, r: Math.min(Math.max(Math.abs(s.config_f.sharpe) * 10, 8), 25) }], backgroundColor: 'rgba(0,214,143,0.6)', borderColor: '#00d68f', borderWidth: 2 },
-          { label: 'IHSG', data: [{ x: s.ihsg.max_dd, y: s.ihsg.cagr, r: Math.min(Math.max(Math.abs(s.ihsg.sharpe) * 10, 8), 25) }], backgroundColor: 'rgba(148,163,184,0.4)', borderColor: '#94a3b8', borderWidth: 2 }
-        ]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: { labels: { color: '#94a3b8', font: { size: 12 } } },
-          tooltip: { callbacks: { label: function(ctx) { var d = ctx.raw; return ctx.dataset.label + ': CAGR ' + d.y.toFixed(2) + '%, MaxDD ' + d.x.toFixed(2) + '%'; } } }
+    var rctx = document.getElementById('riskChart');
+    if (rctx && BT.full) {
+      var s = BT.full;
+      riskChart = new Chart(rctx, {
+        type: 'bubble',
+        data: {
+          datasets: [
+            { label: 'Config B', data: [{ x: s.config_b.max_dd, y: s.config_b.cagr, r: Math.min(Math.max(Math.abs(s.config_b.sharpe) * 10, 8), 25) }], backgroundColor: 'rgba(96,165,250,0.6)', borderColor: '#60a5fa', borderWidth: 2 },
+            { label: 'Config F', data: [{ x: s.config_f.max_dd, y: s.config_f.cagr, r: Math.min(Math.max(Math.abs(s.config_f.sharpe) * 10, 8), 25) }], backgroundColor: 'rgba(0,214,143,0.6)', borderColor: '#00d68f', borderWidth: 2 },
+            { label: 'IHSG', data: [{ x: s.ihsg.max_dd, y: s.ihsg.cagr, r: Math.min(Math.max(Math.abs(s.ihsg.sharpe) * 10, 8), 25) }], backgroundColor: 'rgba(148,163,184,0.4)', borderColor: '#94a3b8', borderWidth: 2 }
+          ]
         },
-        scales: {
-          x: { title: { display: true, text: 'Max Drawdown (%)', color: '#94a3b8' }, grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } },
-          y: { title: { display: true, text: 'CAGR (%)', color: '#94a3b8' }, grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } }
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { labels: { color: '#94a3b8', font: { size: 12 } } },
+            tooltip: { callbacks: { label: function(ctx) { var d = ctx.raw; return ctx.dataset.label + ': CAGR ' + d.y.toFixed(2) + '%, MaxDD ' + d.x.toFixed(2) + '%'; } } }
+          },
+          scales: {
+            x: { title: { display: true, text: 'Max Drawdown (%)', color: '#94a3b8' }, grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } },
+            y: { title: { display: true, text: 'CAGR (%)', color: '#94a3b8' }, grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } }
+          }
         }
-      }
-    });
-  }
+      });
+    }
+  } catch(e) { console.warn('Chart init failed:', e); }
 })();
 
 (function() {
@@ -938,13 +916,8 @@ function closePanel() {
 }
 
 function renderAll() {
-  renderLeaders();
-  renderFactorPanel();
-  renderInsights();
-  renderTop();
-  renderHistory();
-  re();
-  renderComparisonCards();
+  var _fns = [renderLeaders, renderFactorPanel, renderInsights, renderTop, renderHistory, re, renderComparisonCards];
+  for (var _i = 0; _i < _fns.length; _i++) { try { _fns[_i](); } catch(e) { console.warn('renderAll: ' + (_fns[_i].name || 'fn' + _i) + ' failed:', e); } }
 }
 
 document.addEventListener('click', function(e) {
@@ -953,6 +926,6 @@ document.addEventListener('click', function(e) {
 });
 document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { closePanel(); } });
 
-loadAllData();
+renderAll();
 </script>
 </body></html>

@@ -92,7 +92,7 @@
   {
     "ticker": "CPIN.JK",
     "fundamentals": {
-      "pe": 8.108506,
+      "pe": 7.7399383,
       "pb": 1.4738222,
       "roe": 0.19496,
       "der": 18.068,
@@ -104,7 +104,7 @@
     },
     "quality": 11.7,
     "growth": 28.39,
-    "value": 40.09,
+    "value": 40.39,
     "momentum": 0.0
   },
   {
@@ -164,7 +164,7 @@
   {
     "ticker": "BMRI.JK",
     "fundamentals": {
-      "pe": 6.52323,
+      "pe": 5.9171596,
       "pb": 1.2505392,
       "roe": 0.21040002,
       "der": 0.0,
@@ -176,7 +176,7 @@
     },
     "quality": 12.62,
     "growth": 2.45,
-    "value": 47.65,
+    "value": 48.43,
     "momentum": 0.0
   },
   {

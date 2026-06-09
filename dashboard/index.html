@@ -377,7 +377,7 @@ function computeFinalScore(r, w) { return r.quality * w.quality + r.growth * w.g
 function ac(t) {
   var ld = null, td = null, ed = null, tk = t.indexOf('.JK') > 0 ? t : t + '.JK';
   L.forEach(function(d) { if (d.ticker === tk) ld = d; });
-  T.forEach(function(d) { if (d.ticker === tk) td = d; });
+  (T.value||T).forEach(function(d) { if (d.ticker === tk) td = d; });
   EX.forEach(function(d) { if (d.ticker === tk) ed = d; });
   var w = getWeights();
   var score = ld ? computeFinalScore(ld, w) : 0;
@@ -465,7 +465,8 @@ function st(tabIdx, btn) {
 }
 
 function renderTurnaround() {
-  var tk = T.filter(function(r) { return r.context_match || r.transition_match; });
+  var arr = T.value || T;
+  var tk = arr.filter(function(r) { return r.context_match || r.transition_match; });
   tk.sort(function(a, b) { return (b.context_match + b.transition_match) - (a.context_match + a.transition_match); });
   var html = tk.map(function(r) {
     return '<tr><td class="tk tk-click" data-ticker="' + r.ticker.split('.')[0] + '" style="color:' + ac(r.ticker) + '">' + r.ticker.split('.')[0] + '</td><td class="' + (r.context_match ? 'g' : 'r') + '">' + ctxLabel(r) + '</td><td>' + (r.context_match ? r.context_days : 0) + '</td><td class="' + (r.transition_match ? 'g' : 'r') + '">' + trnLabel(r) + '</td><td>' + (r.transition_match ? r.transition_days : 0) + '</td><td>' + fullLabel(r) + '</td><td>' + (r.last_update || '—') + '</td></tr>';
@@ -652,7 +653,7 @@ function tickerData(sym) {
   var tk = sym.indexOf('.JK') > 0 ? sym : sym + '.JK';
   var l = null, td = null, pf = null, fd = null, ed = null, w = getWeights();
   L.forEach(function(d) { if (d.ticker === tk) l = d; });
-  T.forEach(function(d) { if (d.ticker === tk) td = d; });
+  (T.value||T).forEach(function(d) { if (d.ticker === tk) td = d; });
   if (PF[sym]) pf = PF[sym];
   if (FD[tk]) fd = FD[tk];
   EX.forEach(function(d) { if (d.ticker === tk) ed = d; });

@@ -250,18 +250,12 @@ tr:hover td{background:#111b26}
 <button class="tab-btn active" onclick="st(0,this)">Market</button>
 <button class="tab-btn" onclick="st(1,this)">Leaders</button>
 <button class="tab-btn" onclick="st(2,this)">Turnaround</button>
-
-<button class="tab-btn" onclick="st(4,this)">History</button>
-<button class="tab-btn" onclick="st(5,this)">Exit</button>
-<button class="tab-btn" onclick="st(6,this)">Diagnostics</button>
-<button class="tab-btn" onclick="st(7,this)">Simulation Lab</button>
-<button class="tab-btn" onclick="st(8,this)">Research</button>
+<button class="tab-btn" onclick="st(3,this)">History</button>
+<button class="tab-btn" onclick="st(4,this)">Exit</button>
+<button class="tab-btn" onclick="st(5,this)">Diagnostics</button>
+<button class="tab-btn" onclick="st(6,this)">Simulation Lab</button>
+<button class="tab-btn" onclick="st(7,this)">Research</button>
 </div>
-
-<div id="insight-leaders" style="padding:8px 24px 0"></div>
-
-<div id="insight-ctx" style="padding:4px 24px 0"></div>
-<div id="insight-exit" style="padding:4px 24px 0"></div>
 
 <div class="tc active" id="t0">
 <div class="mkt-section">
@@ -297,6 +291,8 @@ tr:hover td{background:#111b26}
 <button class="cfg-btn active-prod" id="cfg-prod" onclick="switchConfig('prod')">Config F (Q25/G10/V30/M35)</button>
 <button class="cfg-btn" id="cfg-res" onclick="switchConfig('res')">Config B (Q25/G30/V10/M35)</button>
 </div>
+
+<div id="insight-leaders" style="padding:0;margin-bottom:10px"></div>
 
 <div style="margin-top:12px" class="table-wrap">
 <table>

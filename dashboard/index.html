@@ -635,7 +635,7 @@ function st(tabIdx, btn) {
   btn.classList.add('active');
   document.querySelectorAll('.tc').forEach(function(c) { c.classList.remove('active'); });
   document.getElementById('t' + tabIdx).classList.add('active');
-  if (tabIdx === 1) { renderTurnaround(); }
+  if (tabIdx === 2) { renderTurnaround(); }
 }
 
 function renderTurnaround() {
@@ -1279,7 +1279,7 @@ function renderMarketDiagnostics() {
 }
 
 function renderAll() {
-  var _fns = [renderMarket, renderLeaders, renderInsights, renderHistory, re, renderMarketDiagnostics];
+  var _fns = [renderMarket, renderLeaders, renderTurnaround, renderInsights, renderHistory, re, renderMarketDiagnostics];
   for (var _i = 0; _i < _fns.length; _i++) { try { _fns[_i](); } catch(e) { console.warn('renderAll: ' + (_fns[_i].name || 'fn' + _i) + ' failed:', e); } }
   try {
     var hd = document.getElementById('header-date');

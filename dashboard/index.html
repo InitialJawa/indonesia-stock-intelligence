@@ -257,7 +257,7 @@ tr:hover td{background:#111b26}
 <span class="pill res">Config B (Q25/G30/V10/M35)</span>
 <span class="pill warehouse">2022-01 → 2026-05 (53mo)</span>
 </div>
-<div class="dt">2026-06-09</div>
+<div class="dt" id="header-date"></div>
 </div>
 
 <div class="tab-nav">
@@ -288,6 +288,8 @@ tr:hover td{background:#111b26}
     <div id="mkt-v4-trend" class="mkt-v4-hero-sub">Defensif</div>
   </div>
 </div>
+
+<div id="mkt-freshness" style="margin-bottom:10px;font-size:11px;font-family:'Space Mono',monospace;color:#64748b;display:flex;align-items:center;gap:8px"></div>
 
 <div class="mkt-v4-section">
   <div class="mkt-v4-section-title">Mengapa Sistem Mengambil Keputusan Ini?</div>
@@ -438,6 +440,18 @@ tr:hover td{background:#111b26}
 <div class="card"><div class="card-label">Data Freshness</div><div class="card-val g">N/A</div><div class="card-sub">report date</div></div>
 <div class="card"><div class="card-label">History Records</div><div class="card-val b">90</div><div class="card-sub">turnaround_history.csv</div></div>
 <div class="card"><div class="card-label">Workflow</div><div class="card-val" style="font-size:13px">daily_radar.yml</div><div class="card-sub">cron: 30 9 * * *</div></div>
+</div>
+
+<div class="section-title" style="margin-top:16px">Market Pipeline Status</div>
+<div class="card-grid" id="market-diagnostics-grid">
+<div class="card"><div class="card-label">Market Data</div><div class="card-val" id="diag-mkt-status" style="font-size:13px">—</div><div class="card-sub">market.json</div></div>
+<div class="card"><div class="card-label">Radar / Regime</div><div class="card-val" id="diag-rad-status" style="font-size:13px">—</div><div class="card-sub">radar.json</div></div>
+<div class="card"><div class="card-label">IHSG</div><div class="card-val" id="diag-ihsg" style="font-size:14px">—</div><div class="card-sub" id="diag-ihsg-sub">last close</div></div>
+<div class="card"><div class="card-label">USDIDR</div><div class="card-val" id="diag-usd" style="font-size:14px">—</div><div class="card-sub" id="diag-usd-sub">last rate</div></div>
+<div class="card"><div class="card-label">Regime</div><div class="card-val" id="diag-regime" style="font-size:13px">—</div><div class="card-sub">risk status</div></div>
+<div class="card"><div class="card-label">AI Summary</div><div class="card-val" id="diag-ai-status" style="font-size:13px">—</div><div class="card-sub">narrative length</div></div>
+<div class="card"><div class="card-label">data.js</div><div class="card-val" id="diag-datajs" style="font-size:13px">—</div><div class="card-sub">compiled JS vars</div></div>
+<div class="card"><div class="card-label">Last Pipeline Run</div><div class="card-val" id="diag-pipeline-run" style="font-size:13px">—</div><div class="card-sub">freshness</div></div>
 </div>
 </div>
 
@@ -1219,11 +1233,56 @@ function renderMarket() {
 
   // ── 7. AI Summary ──────────────────────────────────
   document.getElementById('mkt-v4-summary').textContent = dm;
+
+  // ── 8. Freshness ───────────────────────────────────
+  renderMarketFreshness();
+}
+
+function renderMarketFreshness() {
+  var el = document.getElementById('mkt-freshness');
+  if (!el) return;
+  var lu = MKT && MKT.market_last_update;
+  if (!lu) { el.innerHTML = '<span>Last update: unknown</span>'; return; }
+  var parts = lu.match(/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2}) WIB/);
+  if (!parts) { el.innerHTML = '<span>Last update: ' + lu + '</span>'; return; }
+  var updateDate = new Date(Date.UTC(+parts[1], +parts[2]-1, +parts[3], +parts[4]-7, +parts[5], +parts[6]));
+  var now = new Date();
+  var diffHours = (now - updateDate) / (1000 * 60 * 60);
+  var diffStr = diffHours < 1 ? Math.round(diffHours * 60) + 'm ago' : Math.round(diffHours) + 'h ago';
+  var stale = diffHours > 24;
+  var color = stale ? '#ef4444' : diffHours > 12 ? '#f59e0b' : '#00d68f';
+  var warn = stale ? '<span style="color:#ef4444;font-weight:700;margin-left:8px;padding:2px 8px;background:#3b0a0a;border:1px solid #5c1515;border-radius:4px">STALE DATA</span>' : '';
+  el.innerHTML = '<span class="pill" style="background:#111820;border:1px solid #1e293b;color:#94a3b8">Last update: ' + lu + '</span><span style="color:' + color + '">' + diffStr + '</span>' + warn;
+}
+
+function renderMarketDiagnostics() {
+  var d = function(id, val, cls, sub) {
+    var vEl = document.getElementById(id);
+    var sEl = document.getElementById(id + '-sub');
+    if (vEl) { vEl.textContent = val; if (cls) vEl.style.color = cls; }
+    if (sEl && sub) sEl.textContent = sub;
+  };
+  d('diag-mkt-status', MKT ? 'OK' : 'MISSING', MKT ? '#00d68f' : '#ef4444', MKT ? 'market.json loaded' : 'market.json not loaded');
+  d('diag-rad-status', RS ? 'OK' : 'MISSING', RS ? '#00d68f' : '#ef4444', RS ? 'radar.json loaded' : 'radar.json not loaded');
+  d('diag-ihsg', MKT && MKT.ihsg ? MKT.ihsg.value.toLocaleString() : '—', '#e8edf5', MKT && MKT.ihsg ? 'daily: ' + (MKT.ihsg.daily >= 0 ? '+' : '') + MKT.ihsg.daily + '%' : 'no data');
+  d('diag-usd', MKT && MKT.usdidr ? MKT.usdidr.value.toLocaleString() : '—', '#e8edf5', MKT && MKT.usdidr ? 'daily: ' + (MKT.usdidr.daily >= 0 ? '+' : '') + MKT.usdidr.daily + '%' : 'no data');
+  d('diag-regime', RS && RS.status ? RS.status : '—', RS && RS.status === 'SAFE' ? '#00d68f' : RS && RS.status === 'DANGER' ? '#ef4444' : '#f59e0b', RS && RS.action ? 'action: ' + RS.action : '');
+  d('diag-ai-status', RS && RS.detail_message ? (RS.detail_message.length + ' chars') : 'EMPTY', RS && RS.detail_message ? '#00d68f' : '#ef4444', RS && RS.detail_message ? 'AI narrative loaded' : 'no AI summary');
+  d('diag-datajs', 'var MKT, RS' in window ? 'OK' : 'MISSING', '#00d68f', '');
+  var lu = MKT && MKT.market_last_update ? MKT.market_last_update : (MKT && MKT.last_update ? MKT.last_update : '—');
+  d('diag-pipeline-run', lu, '#94a3b8', 'market_last_update');
 }
 
 function renderAll() {
-  var _fns = [renderMarket, renderLeaders, renderInsights, renderHistory, re];
+  var _fns = [renderMarket, renderLeaders, renderInsights, renderHistory, re, renderMarketDiagnostics];
   for (var _i = 0; _i < _fns.length; _i++) { try { _fns[_i](); } catch(e) { console.warn('renderAll: ' + (_fns[_i].name || 'fn' + _i) + ' failed:', e); } }
+  try {
+    var hd = document.getElementById('header-date');
+    if (hd) {
+      var lu = MKT && MKT.market_last_update ? MKT.market_last_update : (MKT && MKT.last_update ? MKT.last_update : '');
+      hd.textContent = lu ? lu.split(' ')[0] : '—';
+    }
+  } catch(e) { console.warn('header-date update failed:', e); }
   try { initSlider(); } catch(e) { console.warn('initSlider failed:', e); }
   try { var _st = localStorage.getItem('simTab'); if (_st === '0' || _st === '1') stSubSim(parseInt(_st)); } catch(e) {}
 }

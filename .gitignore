@@ -10,3 +10,15 @@ __pycache__/
 
 # Local Configs/Secrets
 config/settings.json
+
+# AI Assistant workspace files
+.gemini/
+
+# Temp / Debug files
+*.diff
+old_*.html
+insight_*.html
+
+# OS files
+Thumbs.db
+.DS_Store

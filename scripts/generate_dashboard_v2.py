@@ -570,7 +570,7 @@ const RADAR_STATUS='{radar_status_escaped}';
 const RADAR_LABEL='{radar_status_label}';
 (function(){{
   var c=RADAR_LABEL==='SAFE'?'s-hijau':RADAR_LABEL==='CAUTION'?'s-kuning':'s-merah'
-  var h='<div class="conc"><div class="conc-hdr"><span class="conc-status '+c+'">'+RADAR_LABEL+'</span><span class="conc-label">KESIMPULAN AI — GEMINI</span></div><div class="conc-body"><div class="conc-col" style="min-width:100%"><div style="font-size:12px;color:#C9D1D9;line-height:1.6;padding:4px 0">'+RADAR_STATUS+'</div></div></div></div>'
+  var h='<div class="conc"><div class="conc-hdr"><span class="conc-status '+c+'">'+RADAR_LABEL+'</span><span class="conc-label">KESIMPULAN HARI INI</span></div><div class="conc-body"><div class="conc-col" style="min-width:100%"><div style="font-size:12px;color:#C9D1D9;line-height:1.6;padding:4px 0">'+RADAR_STATUS+'</div></div></div></div>'
   document.getElementById('conclusion').innerHTML=h
 }})();
 

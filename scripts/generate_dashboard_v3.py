@@ -798,18 +798,20 @@ function tickerData(sym) {
 
 function aiExplain(sym) {
   var d = tickerData(sym);
-  if (d.leader && d.profile) {
+  if (d.leader) {
     var w = getWeights();
+    function n(v) { return +v; }
     var factors = [
-      { name: 'Quality', val: d.leader.quality, weight: w.quality, ic: IC.quality.ic },
-      { name: 'Growth', val: d.leader.growth, weight: w.growth, ic: IC.growth.ic },
-      { name: 'Value', val: d.leader.value, weight: w.value, ic: IC.value.ic },
-      { name: 'Momentum', val: d.leader.momentum, weight: w.momentum, ic: IC.momentum.ic }
+      { name: 'Quality', val: n(d.leader.quality), weight: w.quality, ic: IC.quality.ic },
+      { name: 'Growth', val: n(d.leader.growth), weight: w.growth, ic: IC.growth.ic },
+      { name: 'Value', val: n(d.leader.value), weight: w.value, ic: IC.value.ic },
+      { name: 'Momentum', val: n(d.leader.momentum), weight: w.momentum, ic: IC.momentum.ic }
     ];
     var topFactor = factors.slice().sort(function(a, b) { return b.val - a.val; })[0];
     var strongest = factors.filter(function(f) { return f.val >= 60; }).map(function(f) { return f.name; });
     var weakest = factors.filter(function(f) { return f.val < 40; }).map(function(f) { return f.name; });
-    var narrative = d.sym + ' (' + d.profile.sector + ') scores ' + d.score.toFixed(1) + ' with ' + configLabel() + '. Highest factor: ' + topFactor.name + ' (' + topFactor.val.toFixed(1) + '). ';
+    var sec = d.profile ? d.profile.sector || '' : '';
+    var narrative = d.sym + (sec ? ' (' + sec + ')' : '') + ' scores ' + d.score.toFixed(1) + ' with ' + configLabel() + '. Highest factor: ' + topFactor.name + ' (' + topFactor.val.toFixed(1) + '). ';
     narrative += 'IC ' + (topFactor.ic > 0 ? 'positive' : 'negative') + ' (' + (topFactor.ic > 0 ? '+' : '') + topFactor.ic.toFixed(4) + ') \u2014 this factor has been ' + (topFactor.ic > 0.02 ? 'strongly predictive' : topFactor.ic > 0 ? 'modestly predictive' : 'non-predictive') + ' historically. ';
     if (strongest.length > 0) narrative += 'Strengths: ' + strongest.join(', ') + '. ';
     if (weakest.length > 0) narrative += 'Weaknesses: ' + weakest.join(', ') + '. ';
@@ -820,12 +822,14 @@ function aiExplain(sym) {
 }
 
 function renderScoreBreakdown(d) {
+  if (!d.leader) return '<div class=\"card-sub\">Ticker tidak ditemukan di leaders.</div>';
   var w = getWeights();
+  function n(v) { return +v; }
   var factors = [
-    { key: 'quality', name: FNAMES.quality, val: d.leader.quality, weight: w.quality, ic: IC.quality.ic, role: IC.quality.role },
-    { key: 'growth', name: FNAMES.growth, val: d.leader.growth, weight: w.growth, ic: IC.growth.ic, role: IC.growth.role },
-    { key: 'value', name: FNAMES.value, val: d.leader.value, weight: w.value, ic: IC.value.ic, role: IC.value.role },
-    { key: 'momentum', name: FNAMES.momentum, val: d.leader.momentum, weight: w.momentum, ic: IC.momentum.ic, role: IC.momentum.role }
+    { key: 'quality', name: FNAMES.quality, val: n(d.leader.quality), weight: w.quality, ic: IC.quality.ic, role: IC.quality.role },
+    { key: 'growth', name: FNAMES.growth, val: n(d.leader.growth), weight: w.growth, ic: IC.growth.ic, role: IC.growth.role },
+    { key: 'value', name: FNAMES.value, val: n(d.leader.value), weight: w.value, ic: IC.value.ic, role: IC.value.role },
+    { key: 'momentum', name: FNAMES.momentum, val: n(d.leader.momentum), weight: w.momentum, ic: IC.momentum.ic, role: IC.momentum.role }
   ];
   var h = '<div class=\"card-label\">Score Breakdown \u00b7 ' + configLabel() + '</div><div class=\"breakdown-grid\">';
   factors.forEach(function(f) {

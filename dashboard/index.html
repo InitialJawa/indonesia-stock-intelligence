@@ -227,14 +227,11 @@ tr:hover td{background:#111b26}
 <div class="card"><div class="card-label">Context Match Count</div><div class="card-val g">0</div><div class="card-sub">stable context alignment</div></div>
 <div class="card"><div class="card-label">Transition Match Count</div><div class="card-val g">0</div><div class="card-sub">active transition phase</div></div>
 </div>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px">
-<div class="chart-container" style="height:250px"><canvas id="ctx-chart"></canvas></div>
-<div class="chart-container" style="height:250px"><canvas id="trn-chart"></canvas></div>
-</div>
+
 </div>
 <div class="sub-tc" id="t1-trn">
 <div class="table-wrap"><table>
-<thead><tr><th>Ticker</th><th>Context</th><th>Ctx Days</th><th>Transition</th><th>Trn Days</th><th>Full</th><th>Last Update</th></tr></thead>
+<thead><tr><th>Ticker</th><th>Context</th><th>Transition</th><th>Full</th><th>Last Update</th></tr></thead>
 <tbody id="tbody-trn"></tbody>
 </table></div>
 </div>
@@ -471,28 +468,9 @@ function renderTurnaround() {
   tk.sort(function(a, b) { return (matchBool(b.context_match) + matchBool(b.transition_match)) - (matchBool(a.context_match) + matchBool(a.transition_match)); });
   var html = tk.map(function(r) {
     var cm = matchBool(r.context_match), tm = matchBool(r.transition_match);
-    var cd = cm && r.context_days != null ? r.context_days : '—';
-    var td = tm && r.transition_days != null ? r.transition_days : '—';
-    return '<tr><td class="tk tk-click" data-ticker="' + r.ticker.split('.')[0] + '" style="color:' + ac(r.ticker) + '">' + r.ticker.split('.')[0] + '</td><td class="' + (cm ? 'g' : 'r') + '">' + ctxLabel(r) + '</td><td>' + cd + '</td><td class="' + (tm ? 'g' : 'r') + '">' + trnLabel(r) + '</td><td>' + td + '</td><td>' + fullLabel(r) + '</td><td>' + (r.last_update || '—') + '</td></tr>';
+    return '<tr><td class="tk tk-click" data-ticker="' + r.ticker.split('.')[0] + '" style="color:' + ac(r.ticker) + '">' + r.ticker.split('.')[0] + '</td><td class="' + (cm ? 'g' : 'r') + '">' + ctxLabel(r) + '</td><td class="' + (tm ? 'g' : 'r') + '">' + trnLabel(r) + '</td><td>' + fullLabel(r) + '</td><td>' + (r.last_update || '—') + '</td></tr>';
   }).join('');
   document.getElementById('tbody-trn').innerHTML = html;
-
-  var cx = tk.filter(function(r) { return r.context_match; }).sort(function(a, b) { return b.context_days - a.context_days; });
-  var ctxCanvas = document.getElementById('ctx-chart');
-  if (ctxCanvas && cx.length > 0) {
-    new Chart(ctxCanvas, {
-      type: 'bar', data: { labels: cx.map(function(r) { return r.ticker.split('.')[0]; }), datasets: [{ label: 'Context Days', data: cx.map(function(r) { return r.context_days; }), backgroundColor: '#3b82f6', borderRadius: 3 }] },
-      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: '#1e293b' } }, x: { grid: { display: false }, ticks: { color: '#94a3b8' } } } }
-    });
-  }
-  var tx = tk.filter(function(r) { return r.transition_match; }).sort(function(a, b) { return b.transition_days - a.transition_days; });
-  var trnCanvas = document.getElementById('trn-chart');
-  if (trnCanvas && tx.length > 0) {
-    new Chart(trnCanvas, {
-      type: 'bar', data: { labels: tx.map(function(r) { return r.ticker.split('.')[0]; }), datasets: [{ label: 'Transition Days', data: tx.map(function(r) { return r.transition_days; }), backgroundColor: '#f59e0b', borderRadius: 3 }] },
-      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: '#1e293b' } }, x: { grid: { display: false }, ticks: { color: '#94a3b8' } } } }
-    });
-  }
 }
 
 function renderHistory() {

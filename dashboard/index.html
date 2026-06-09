@@ -507,7 +507,7 @@ tr:hover td{background:#111b26}
 </div>
 <div class="panel-body" id="pbody"></div>
 </div>
-<script src="data/data.js"></script>
+<script src="data/data.js?v=3.2"></script>
 <script>
 var L, T, SM, SK, EX, PF, FD, CW_B, CW_F, WI, IC, BT, FCOLORS, FNAMES, RS, BM, MKT;
 var BM_M = (function() {
@@ -1269,7 +1269,7 @@ function renderMarketDiagnostics() {
   d('diag-usd', MKT && MKT.usdidr ? MKT.usdidr.value.toLocaleString() : '—', '#e8edf5', MKT && MKT.usdidr ? 'daily: ' + (MKT.usdidr.daily >= 0 ? '+' : '') + MKT.usdidr.daily + '%' : 'no data');
   d('diag-regime', RS && RS.status ? RS.status : '—', RS && RS.status === 'SAFE' ? '#00d68f' : RS && RS.status === 'DANGER' ? '#ef4444' : '#f59e0b', RS && RS.action ? 'action: ' + RS.action : '');
   d('diag-ai-status', RS && RS.detail_message ? (RS.detail_message.length + ' chars') : 'EMPTY', RS && RS.detail_message ? '#00d68f' : '#ef4444', RS && RS.detail_message ? 'AI narrative loaded' : 'no AI summary');
-  d('diag-datajs', 'var MKT, RS' in window ? 'OK' : 'MISSING', '#00d68f', '');
+  d('diag-datajs', typeof MKT !== 'undefined' && typeof RS !== 'undefined' ? 'OK' : 'MISSING', '#00d68f', '');
   var lu = MKT && MKT.market_last_update ? MKT.market_last_update : (MKT && MKT.last_update ? MKT.last_update : '—');
   d('diag-pipeline-run', lu, '#94a3b8', 'market_last_update');
 }

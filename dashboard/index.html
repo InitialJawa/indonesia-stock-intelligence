@@ -210,29 +210,46 @@ tr:hover td{background:#111b26}
 .radar-badge.warning{background:#3b2a04;color:#fbbf24;border:1px solid #5c4308}
 .radar-badge.danger{background:#3b0a0a;color:#ef4444;border:1px solid #5c1515}
 /* Market tab */
-.mkt-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:8px}
-.mkt-card{background:#111820;border:1px solid #1e293b;border-radius:8px;padding:12px;text-align:center}
-.mkt-card .val{font-size:22px;font-weight:700;font-family:'Space Mono',monospace;line-height:1.3}
-.mkt-card .lbl{font-size:9px;color:#64748b;text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px}
-.mkt-card .chg{font-size:10px;font-family:'Space Mono',monospace;margin-top:2px}
-.mkt-card .chg.up{color:#00d68f}
-.mkt-card .chg.down{color:#ef4444}
+.mkt-hero{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;background:#0f1729;border:1px solid #1e293b;border-radius:12px;padding:18px 22px;margin-bottom:14px;gap:12px}
+.mkt-hero-left{display:flex;flex-direction:column;gap:6px}
+.mkt-hero-center{text-align:center}
+.mkt-hero-right{text-align:right}
+.mkt-hero-status{display:inline-block;padding:6px 20px;font-size:13px;font-weight:700;font-family:'Space Mono',monospace;border-radius:100px;letter-spacing:.04em}
+.mkt-hero-status.safe{background:#064e2e;color:#00d68f;border:1px solid #166534}
+.mkt-hero-status.warning{background:#3b2a04;color:#fbbf24;border:1px solid #5c4308}
+.mkt-hero-status.danger{background:#3b0a0a;color:#ef4444;border:1px solid #5c1515}
+.mkt-hero-action{display:inline-block;padding:6px 20px;font-size:13px;font-weight:700;font-family:'Space Mono',monospace;border-radius:100px;letter-spacing:.04em}
+.mkt-hero-action.accumulate{background:#064e2e;color:#00d68f;border:1px solid #166534}
+.mkt-hero-action.hold{background:#0c1929;color:#60a5fa;border:1px solid #1e3a5f}
+.mkt-hero-action.wait{background:#3b2a04;color:#fbbf24;border:1px solid #5c4308}
+.mkt-hero-action.reduce{background:#3b0a0a;color:#ef4444;border:1px solid #5c1515}
+.mkt-hero-action.buy{background:#064e2e;color:#00d68f;border:1px solid #166534}
+.mkt-hero-deployment-lbl{font-size:9px;color:#64748b;text-transform:uppercase;letter-spacing:.1em;font-family:'Space Mono',monospace}
+.mkt-hero-deployment-val{font-size:32px;font-weight:700;font-family:'Space Mono',monospace;line-height:1.2}
+.mkt-hero-regime{display:inline-block;padding:6px 20px;font-size:13px;font-weight:700;font-family:'Space Mono',monospace;border-radius:100px;letter-spacing:.04em}
+.mkt-hero-regime.risk-on{background:#064e2e;color:#00d68f;border:1px solid #166534}
+.mkt-hero-regime.risk-off{background:#3b0a0a;color:#ef4444;border:1px solid #5c1515}
 .mkt-section{margin-bottom:14px}
 .mkt-section-title{font-size:10px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;border-bottom:1px solid #1e293b;padding-bottom:4px}
-.mkt-regime{display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:8px;margin-bottom:8px}
-.mkt-regime.risk-on{background:#064e2e;border:1px solid #166534}
-.mkt-regime.risk-off{background:#3b0a0a;border:1px solid #5c1515}
-.mkt-regime .icon{font-size:20px}
-.mkt-regime .label{font-size:14px;font-weight:700;font-family:'Space Mono',monospace;letter-spacing:.06em}
-.mkt-regime.risk-on .label{color:#00d68f}
-.mkt-regime.risk-off .label{color:#ef4444}
-.mkt-regime .sub{font-size:10px;color:#9CA3AF;margin-left:6px}
-.mkt-radar-row{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:8px}
-.alpha-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
-.alpha-card{background:#111820;border:1px solid #1e293b;border-radius:6px;padding:8px 6px;text-align:center}
-.alpha-tkr{font-size:10px;font-weight:600;color:#94a3b8;font-family:'Space Mono',monospace}
-.alpha-val{font-size:14px;font-weight:700;font-family:'Space Mono',monospace}
-.alpha-lbl{font-size:8px;color:#64748b;text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+.mkt-why-list{background:#0f1729;border:1px solid #1e293b;border-radius:8px;padding:12px 16px}
+.mkt-why-item{font-size:12px;padding:4px 0;display:flex;align-items:center;gap:8px;line-height:1.5}
+.mkt-why-item .icon{font-size:14px;flex-shrink:0}
+.mkt-metrics{display:flex;flex-direction:column;gap:8px}
+.mkt-metric-row{display:grid;grid-template-columns:120px 1fr 36px;align-items:center;gap:10px}
+.mkt-metric-label{font-size:10px;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;font-family:'Space Mono',monospace;white-space:nowrap}
+.mkt-metric-bar{height:8px;background:#1e293b;border-radius:4px;overflow:hidden}
+.mkt-metric-fill{height:100%;border-radius:4px;transition:width .4s ease}
+.mkt-metric-val{font-size:11px;font-weight:700;font-family:'Space Mono',monospace;text-align:right}
+.mkt-context-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.mkt-context-item{background:#0f1729;border:1px solid #1e293b;border-radius:8px;padding:12px;text-align:center}
+.mkt-context-item .lbl{font-size:9px;color:#64748b;text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px}
+.mkt-context-item .val{font-size:20px;font-weight:700;font-family:'Space Mono',monospace;line-height:1.3}
+.mkt-context-item .chg{font-size:10px;font-family:'Space Mono',monospace;margin-top:2px}
+.mkt-context-item .chg.up{color:#00d68f}
+.mkt-context-item .chg.down{color:#ef4444}
+.mkt-context-item .chg-row{display:flex;justify-content:center;gap:8px;margin-top:3px}
+.mkt-context-item .chg-lbl{font-size:8px;color:#4b5563;text-transform:uppercase;letter-spacing:.05em}
+.mkt-summary-box{background:#0f1729;border:1px solid #1e293b;border-radius:8px;padding:12px 16px;font-size:12px;color:#9CA3AF;line-height:1.5;max-height:80px;overflow:hidden}
 </style>
 </head>
 <body>
@@ -258,30 +275,41 @@ tr:hover td{background:#111b26}
 </div>
 
 <div class="tc active" id="t0">
-<div class="mkt-section">
-  <div class="mkt-section-title">Market Regime</div>
-  <div id="mkt-regime" class="mkt-regime risk-on"><div class="icon">&#9650;</div><div class="label">RISK ON</div><div class="sub">Breadth improving, gap widening</div></div>
+
+<div class="mkt-hero">
+  <div class="mkt-hero-left">
+    <div id="mkt-hero-status" class="mkt-hero-status warning">WARNING</div>
+    <div id="mkt-hero-action" class="mkt-hero-action reduce">REDUCE</div>
+  </div>
+  <div class="mkt-hero-center">
+    <div class="mkt-hero-deployment-lbl">CAPITAL DEPLOYMENT</div>
+    <div id="mkt-hero-deployment" class="mkt-hero-deployment-val" style="color:#ef4444">29%</div>
+  </div>
+  <div class="mkt-hero-right">
+    <div id="mkt-hero-regime" class="mkt-hero-regime risk-off">RISK OFF</div>
+  </div>
 </div>
+
 <div class="mkt-section">
-  <div class="mkt-section-title">Market Snapshot</div>
-  <div class="mkt-cards" id="mkt-snapshot"></div>
+  <div class="mkt-section-title">Why?</div>
+  <div id="mkt-why" class="mkt-why-list"></div>
 </div>
+
 <div class="mkt-section">
-  <div class="mkt-section-title">ISI Health</div>
-  <div id="mkt-isi-health" class="mkt-cards" style="grid-template-columns:repeat(4,1fr)"></div>
+  <div class="mkt-section-title">Market Metrics</div>
+  <div id="mkt-metrics" class="mkt-metrics"></div>
 </div>
+
 <div class="mkt-section">
-  <div class="mkt-section-title">Chief Risk Officer</div>
-  <div id="radar-conclusion" style="padding:0"></div>
+  <div class="mkt-section-title">Market Context</div>
+  <div id="mkt-context" class="mkt-context-grid"></div>
 </div>
+
 <div class="mkt-section">
   <div class="mkt-section-title">AI Summary</div>
-  <div id="mkt-summary" style="background:#111820;border:1px solid #1e293b;border-radius:8px;padding:12px;font-size:12px;color:#9CA3AF;line-height:1.6"></div>
+  <div id="mkt-summary" class="mkt-summary-box"></div>
 </div>
-<div class="mkt-section">
-  <div class="mkt-section-title">Alpha Monitor</div>
-  <div id="mkt-alpha" class="alpha-grid"></div>
-</div>
+
 </div>
 
 <div class="tc" id="t1">
@@ -532,40 +560,6 @@ function renderLeaders() {
     return '<tr><td class="tk" style="color:#9CA3AF;font-size:11px">' + r._rank + '</td><td class="tk tk-click" data-ticker="' + r.ticker.split('.')[0] + '" style="color:' + ac(r.ticker) + '">' + r.ticker.split('.')[0] + (r._rank <= 5 ? '<span class="flag">★</span>' : '') + '</td><td class="sf ' + sc(r._score) + '">' + r._score.toFixed(1) + '</td><td>' + bar(r.quality, FCOLORS.quality) + '</td><td>' + bar(r.growth, FCOLORS.growth) + '</td><td>' + bar(r.value, FCOLORS.value) + '</td><td>' + bar(r.momentum, FCOLORS.momentum) + '</td><td></td></tr>';
   }).join('');
   document.getElementById('tbody-leaders').innerHTML = html;
-}
-
-function renderRadarV2() {
-  if (!RS || !RS.market_health === undefined) return;
-  var statusCls = (RS.status || 'SAFE').toLowerCase();
-  var statusColor = statusCls === 'safe' ? '#00d68f' : statusCls === 'warning' ? '#fbbf24' : '#ef4444';
-  var actionCls = (RS.action || 'HOLD').toLowerCase();
-  var mh = RS.market_health, opp = RS.opportunity, rk = RS.risk, cf = RS.confidence, cd = RS.capital_deployment;
-  function scoreColor(v) { return v >= 60 ? '#00d68f' : v >= 40 ? '#fbbf24' : '#ef4444'; }
-  var h = '<div style="background:#111820;border:1px solid #1e293b;border-radius:8px;padding:14px 18px">';
-  h += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">';
-  h += '<div><span class="radar-badge ' + statusCls + '">' + RS.status + '</span>';
-  h += '<span class="radar-action ' + actionCls + '" style="margin-left:8px">' + RS.action + '</span></div>';
-  h += '<div style="font-size:10px;color:#64748b;font-family:Space Mono,monospace">' + (RS.last_update || '') + '</div>';
-  h += '</div>';
-  h += '<div class="radar-grid">';
-  var cards = [
-    { label: 'MARKET HEALTH', val: mh, sub: 'Overall market condition' },
-    { label: 'OPPORTUNITY', val: opp, sub: 'Alpha potential' },
-    { label: 'RISK', val: rk, sub: 'Downside exposure' },
-    { label: 'CONFIDENCE', val: cf, sub: 'Signal alignment' },
-    { label: 'CAPITAL DEPLOYMENT', val: cd + '%', sub: 'Recommended allocation', valColor: cd >= 60 ? '#00d68f' : cd >= 40 ? '#fbbf24' : '#ef4444' }
-  ];
-  cards.forEach(function(c) {
-    h += '<div class="radar-card"><div class="radar-card-label">' + c.label + '</div>';
-    h += '<div class="radar-card-val" style="color:' + (c.valColor || scoreColor(c.val)) + '">' + c.val + '</div>';
-    h += '<div class="radar-card-sub">' + c.sub + '</div></div>';
-  });
-  h += '</div>';
-  if (RS.detail_message) {
-    h += '<div style="font-size:11px;color:#94a3b8;line-height:1.6;padding:8px 0 0;border-top:1px solid #1e2633;margin-top:6px">' + RS.detail_message + '</div>';
-  }
-  h += '</div>';
-  document.getElementById('radar-conclusion').innerHTML = h;
 }
 
 function switchConfig(cfg) {
@@ -1060,97 +1054,107 @@ function closePanel() {
 }
 
 function renderMarket() {
-  // Market Regime
   var rc = RS && RS.radar_context ? RS.radar_context : null;
-  var regime, regimeCls, regimeIcon, regimeSub;
+  var s = RS && RS.status ? RS.status : '—';
+  var a = RS && RS.action ? RS.action : '—';
+  var cd = RS && RS.capital_deployment !== undefined ? RS.capital_deployment : null;
+  var dm = RS && RS.detail_message ? RS.detail_message : '';
+
+  // Hero: status + action + deployment + regime
+  var sCls = (s || 'safe').toLowerCase();
+  document.getElementById('mkt-hero-status').className = 'mkt-hero-status ' + sCls;
+  document.getElementById('mkt-hero-status').textContent = s;
+  var aCls = (a || 'hold').toLowerCase();
+  document.getElementById('mkt-hero-action').className = 'mkt-hero-action ' + aCls;
+  document.getElementById('mkt-hero-action').textContent = a;
+  var cdEl = document.getElementById('mkt-hero-deployment');
+  if (cd !== null) {
+    cdEl.textContent = cd + '%';
+    cdEl.style.color = cd >= 60 ? '#00d68f' : cd >= 40 ? '#fbbf24' : '#ef4444';
+  }
+  var regime = 'NEUTRAL', regimeCls = 'risk-on';
   if (rc && rc.score_gap !== undefined) {
     var isRiskOn = rc.score_gap > 15 && rc.breadth_above_60 > 30 && (rc.top5_turnover || 0) < 40;
     var isRiskOff = rc.score_gap < 8 || rc.breadth_below_40 > 30 || (rc.top5_turnover || 0) > 55;
-    if (isRiskOn && !isRiskOff) { regime = 'RISK ON'; regimeCls = 'risk-on'; regimeIcon = '&#9650;'; regimeSub = 'Breadth improving, gap widening'; }
-    else if (isRiskOff) { regime = 'RISK OFF'; regimeCls = 'risk-off'; regimeIcon = '&#9660;'; regimeSub = 'Weak breadth, narrow leadership'; }
-    else { regime = 'NEUTRAL'; regimeCls = 'risk-on'; regimeIcon = '&#9654;'; regimeSub = 'Mixed signals, selective positioning'; }
-  } else {
-    regime = 'NEUTRAL'; regimeCls = 'risk-on'; regimeIcon = '&#9654;'; regimeSub = 'Insufficient data';
+    if (isRiskOn && !isRiskOff) { regime = 'RISK ON'; regimeCls = 'risk-on'; }
+    else if (isRiskOff) { regime = 'RISK OFF'; regimeCls = 'risk-off'; }
   }
-  var rEl = document.getElementById('mkt-regime');
-  if (rEl) { rEl.className = 'mkt-regime ' + regimeCls; rEl.innerHTML = '<div class="icon">' + regimeIcon + '</div><div class="label">' + regime + '</div><div class="sub">' + regimeSub + '</div>'; }
+  var reEl = document.getElementById('mkt-hero-regime');
+  reEl.className = 'mkt-hero-regime ' + regimeCls;
+  reEl.textContent = regime;
 
-  // Market Snapshot
-  if (typeof MKT !== 'undefined' && MKT) {
-    var snapCards = [
-      { lbl: 'IHSG', val: MKT.ihsg.value.toLocaleString(), chg: MKT.ihsg.daily, chgLabel: 'Daily' },
-      { lbl: 'USD/IDR', val: MKT.usdidr.value.toLocaleString(), chg: MKT.usdidr.daily, chgLabel: 'Daily' },
-      { lbl: 'Gold', val: '$' + MKT.gold.value.toLocaleString(), chg: MKT.gold.daily, chgLabel: 'Daily' },
-      { lbl: 'Oil', val: '$' + MKT.oil.value, chg: MKT.oil.daily, chgLabel: 'Daily' }
-    ];
-    var h = '';
-    snapCards.forEach(function(c) {
-      var chgCls = c.chg > 0 ? 'up' : c.chg < 0 ? 'down' : '';
-      h += '<div class="mkt-card"><div class="lbl">' + c.lbl + '</div><div class="val">' + c.val + '</div><div class="chg ' + chgCls + '">' + (c.chg > 0 ? '+' : '') + c.chg + '% ' + c.chgLabel + '</div></div>';
-    });
-    document.getElementById('mkt-snapshot').innerHTML = h;
-  }
-
-  // ISI Health
+  // Why? — generate bullets from radar_context
+  var bullets = [];
   if (rc) {
-    var healthCards = [
-      { lbl: 'Top5 Avg', val: (rc.top5_avg_score || 0).toFixed(1), sub: 'Leader strength' },
-      { lbl: 'Bot5 Avg', val: (rc.bot5_avg_score || 0).toFixed(1), sub: 'Tail weakness' },
-      { lbl: 'Score Gap', val: (rc.score_gap || 0).toFixed(1), sub: 'Top–Bot dispersion' },
-      { lbl: 'Breadth >60', val: (rc.breadth_above_60 || 0) + '/' + (rc.watchlist_count || 0), sub: 'Stocks above 60' }
+    if (rc.score_gap !== undefined) {
+      var g = rc.score_gap;
+      if (g > 25) bullets.push({ icon: '&#10003;', text: 'Score Gap <b>' + g.toFixed(1) + '</b> — wide dispersion, strong leadership signal', ok: true });
+      else if (g > 15) bullets.push({ icon: '&#9888;', text: 'Score Gap <b>' + g.toFixed(1) + '</b> — moderate, selective stock picking needed', ok: false });
+      else bullets.push({ icon: '&#9888;', text: 'Score Gap <b>' + g.toFixed(1) + '</b> — narrow, market lacks clear leaders', ok: false });
+    }
+    var tot = rc.watchlist_count || 1;
+    var b60 = rc.breadth_above_60 || 0;
+    if (b60 / tot > 0.4) bullets.push({ icon: '&#10003;', text: 'Breadth <b>' + b60 + '/' + tot + '</b> above 60 — broad participation', ok: true });
+    else bullets.push({ icon: '&#9888;', text: 'Breadth <b>' + b60 + '/' + tot + '</b> above 60 — limited, narrow leadership', ok: false });
+    var b40 = rc.breadth_below_40 || 0;
+    if (b40 / tot > 0.3) bullets.push({ icon: '&#9888;', text: '<b>' + b40 + '/' + tot + '</b> stocks below 40 — significant tail weakness', ok: false });
+    if (rc.top5_turnover !== undefined && rc.top5_turnover > 3) {
+      bullets.push({ icon: '&#9888;', text: 'Top5 turnover <b>' + rc.top5_turnover + '</b> — high rotation, low stability', ok: false });
+    }
+    if (rc.weakest_factor && rc.weakest_factor_score !== undefined) {
+      var wf = rc.weakest_factor.charAt(0).toUpperCase() + rc.weakest_factor.slice(1);
+      if (rc.weakest_factor_score < 50) bullets.push({ icon: '&#9888;', text: wf + ' weakest at <b>' + rc.weakest_factor_score.toFixed(1) + '</b> — dragging factor', ok: false });
+    }
+  }
+  if (bullets.length === 0) bullets.push({ icon: '&#9888;', text: 'Insufficient data', ok: false });
+  var bh = bullets.map(function(b) {
+    return '<div class="mkt-why-item"><span class="icon" style="color:' + (b.ok ? '#00d68f' : '#fbbf24') + '">' + b.icon + '</span><span>' + b.text + '</span></div>';
+  }).join('');
+  document.getElementById('mkt-why').innerHTML = bh;
+
+  // Market Metrics — compact progress bars for health/opportunity/risk/confidence
+  var metrics = [
+    { label: 'Market Health', val: RS ? RS.market_health : null },
+    { label: 'Opportunity', val: RS ? RS.opportunity : null },
+    { label: 'Risk', val: RS ? RS.risk : null },
+    { label: 'Confidence', val: RS ? RS.confidence : null }
+  ];
+  var mh = '';
+  metrics.forEach(function(m) {
+    if (m.val === null || m.val === undefined) return;
+    var c = m.val >= 60 ? '#00d68f' : m.val >= 40 ? '#fbbf24' : '#ef4444';
+    mh += '<div class="mkt-metric-row">';
+    mh += '<div class="mkt-metric-label">' + m.label + '</div>';
+    mh += '<div class="mkt-metric-bar"><div class="mkt-metric-fill" style="width:' + Math.min(m.val, 100) + '%;background:' + c + '"></div></div>';
+    mh += '<div class="mkt-metric-val" style="color:' + c + '">' + m.val + '</div>';
+    mh += '</div>';
+  });
+  document.getElementById('mkt-metrics').innerHTML = mh;
+
+  // Market Context — IHSG, USDIDR, Gold, Oil
+  if (typeof MKT !== 'undefined' && MKT) {
+    var assets = [
+      { key: 'ihsg', lbl: 'IHSG', val: MKT.ihsg.value.toLocaleString(), d: MKT.ihsg.daily, m: MKT.ihsg.monthly, pfx: '' },
+      { key: 'usdidr', lbl: 'USD/IDR', val: MKT.usdidr.value.toLocaleString(), d: MKT.usdidr.daily, m: MKT.usdidr.monthly, pfx: '' },
+      { key: 'gold', lbl: 'Gold', val: '$' + MKT.gold.value.toLocaleString(), d: MKT.gold.daily, m: MKT.gold.monthly, pfx: '' },
+      { key: 'oil', lbl: 'Oil', val: '$' + MKT.oil.value, d: MKT.oil.daily, m: MKT.oil.monthly, pfx: '' }
     ];
-    var h2 = '';
-    healthCards.forEach(function(c) {
-      h2 += '<div class="mkt-card"><div class="lbl">' + c.lbl + '</div><div class="val">' + c.val + '</div><div class="chg" style="font-size:9px;color:#64748b">' + c.sub + '</div></div>';
+    var ch = '';
+    assets.forEach(function(x) {
+      ch += '<div class="mkt-context-item"><div class="lbl">' + x.lbl + '</div><div class="val">' + x.val + '</div>';
+      ch += '<div class="chg-row"><span class="chg ' + (x.d >= 0 ? 'up' : 'down') + '">' + (x.d > 0 ? '+' : '') + x.d + '%</span><span class="chg-lbl">D</span>';
+      ch += '<span class="chg ' + (x.m >= 0 ? 'up' : 'down') + '">' + (x.m > 0 ? '+' : '') + x.m + '%</span><span class="chg-lbl">M</span></div>';
+      ch += '</div>';
     });
-    document.getElementById('mkt-isi-health').innerHTML = h2;
+    document.getElementById('mkt-context').innerHTML = ch;
   }
 
   // AI Summary
-  var summaryEl = document.getElementById('mkt-summary');
-  if (summaryEl && RS && RS.detail_message) {
-    summaryEl.innerHTML = RS.detail_message;
-  }
-
-  // Alpha Monitor (top 5 tickers by latest alpha)
-  if (BM && BM_M && BM_M.length > 0) {
-    var n = BM_M.length;
-    var latest = BM_M[n - 1];
-    var alphaB = ((latest.ret_b || 0) - (latest.ret_i || 0)).toFixed(2);
-    var alphaF = ((latest.ret_f || 0) - (latest.ret_i || 0)).toFixed(2);
-    var ytdB = 0, ytdF = 0, ytdI = 0, ytdCount = 0;
-    for (var i = 0; i < n; i++) {
-      if (BM.labels[i] && BM.labels[i].indexOf('2026') >= 0) {
-        ytdB += BM_M[i].ret_b || 0; ytdF += BM_M[i].ret_f || 0; ytdI += BM_M[i].ret_i || 0; ytdCount++;
-      }
-    }
-    var alphaYtdB = ytdCount > 0 ? (ytdB - ytdI).toFixed(2) : '—';
-    var alphaYtdF = ytdCount > 0 ? (ytdF - ytdI).toFixed(2) : '—';
-    var alphaInceptionB = ((BM.config_b[n - 1] / BM.config_b[0] - 1) * 100 - (BM.ihsg[n - 1] / BM.ihsg[0] - 1) * 100).toFixed(2);
-    var alphaInceptionF = ((BM.config_f[n - 1] / BM.config_f[0] - 1) * 100 - (BM.ihsg[n - 1] / BM.ihsg[0] - 1) * 100).toFixed(2);
-    var alphaCards = [
-      { tkr: 'Config F', val: alphaF + '%', lbl: 'This Mo' },
-      { tkr: 'Config B', val: alphaB + '%', lbl: 'This Mo' },
-      { tkr: 'Config F', val: alphaYtdF + '%', lbl: 'YTD' },
-      { tkr: 'Config B', val: alphaYtdB + '%', lbl: 'YTD' },
-      { tkr: 'Config F', val: alphaInceptionF + '%', lbl: 'Since Inception' },
-      { tkr: 'Config B', val: alphaInceptionB + '%', lbl: 'Since Inception' }
-    ];
-    // Actually show only 5 best, but for V3 we show both configs across 3 periods
-    var h3 = '';
-    alphaCards.forEach(function(c) {
-      var isPos = parseFloat(c.val) >= 0;
-      h3 += '<div class="alpha-card"><div class="alpha-tkr">' + c.tkr + '</div><div class="alpha-val" style="color:' + (isPos ? '#00d68f' : '#ef4444') + '">' + c.val + '</div><div class="alpha-lbl">' + c.lbl + '</div></div>';
-    });
-    // Pad with blanks if needed
-    var extra = 6 - alphaCards.length;
-    for (var j = 0; j < extra; j++) { h3 += '<div class="alpha-card" style="opacity:0.3"><div class="alpha-tkr">—</div><div class="alpha-val">—</div><div class="alpha-lbl">—</div></div>'; }
-    document.getElementById('mkt-alpha').innerHTML = h3;
-  }
+  document.getElementById('mkt-summary').textContent = dm;
 }
 
 function renderAll() {
-  var _fns = [renderMarket, renderRadarV2, renderLeaders, renderInsights, renderHistory, re];
+  var _fns = [renderMarket, renderLeaders, renderInsights, renderHistory, re];
   for (var _i = 0; _i < _fns.length; _i++) { try { _fns[_i](); } catch(e) { console.warn('renderAll: ' + (_fns[_i].name || 'fn' + _i) + ' failed:', e); } }
   try { initSlider(); } catch(e) { console.warn('initSlider failed:', e); }
   try { var _st = localStorage.getItem('simTab'); if (_st === '0' || _st === '1') stSubSim(parseInt(_st)); } catch(e) {}

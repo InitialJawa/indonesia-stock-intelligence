@@ -1433,6 +1433,12 @@ var PF = {
     "summary": "Mendistribusikan alat berat Komatsu, mengoperasikan tambang batu bara, dan menjalankan kontraktor tambang melalui Pamapersada Nusantara."
   }
 };
+var RS = {
+    "last_update": "2026-06-09 18:32",
+    "status": "SAFE",
+    "anomalies": [],
+    "detail_message": "Meskipun status sistem keseluruhan menunjukkan 'SAFE', volume perdagangan untuk PTBA.JK masih tergolong sepi. Kondisi ini menunjukkan kurangnya keyakinan pasar yang seragam di seluruh watchlist, yang tidak memenuhi standar kami untuk eksekusi. Demi perlindungan modal, keputusan terbaik saat ini adalah **WAIT AND SEE**."
+};
 var SK = [];
 var SM = {};
 var T = [

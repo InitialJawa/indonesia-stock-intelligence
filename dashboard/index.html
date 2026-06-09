@@ -367,7 +367,7 @@ Ideal position: top-left (high return, low drawdown) or top-right (high return, 
 </div>
 <script src="data/data.js"></script>
 <script>
-var L, T, SM, SK, EX, PF, FD, CW_B, CW_F, WI, IC, BT, FCOLORS, FNAMES;
+var L, T, SM, SK, EX, PF, FD, CW_B, CW_F, WI, IC, BT, FCOLORS, FNAMES, RS;
 
 var activeConfig = 'prod';
 function getWeights() { return activeConfig === 'prod' ? CW_F : CW_B; }
@@ -416,6 +416,19 @@ function renderLeaders() {
     return '<tr><td class="tk" style="color:#9CA3AF;font-size:11px">' + r._rank + '</td><td class="tk tk-click" data-ticker="' + r.ticker.split('.')[0] + '" style="color:' + ac(r.ticker) + '">' + r.ticker.split('.')[0] + (r._rank <= 5 ? '<span class="flag">★</span>' : '') + '</td><td class="sf ' + sc(r._score) + '">' + r._score.toFixed(1) + '</td><td>' + bar(r.quality, FCOLORS.quality) + '</td><td>' + bar(r.growth, FCOLORS.growth) + '</td><td>' + bar(r.value, FCOLORS.value) + '</td><td>' + bar(r.momentum, FCOLORS.momentum) + '</td><td></td></tr>';
   }).join('');
   document.getElementById('tbody-leaders').innerHTML = html;
+}
+
+function renderRadarConclusion() {
+  if (!RS || !RS.detail_message) return;
+  var c = RS.status === 'SAFE' ? '#00d68f' : RS.status === 'CAUTION' ? '#f59e0b' : '#ef4444';
+  var bg = RS.status === 'SAFE' ? '#064e2e' : RS.status === 'CAUTION' ? '#3b2a04' : '#3b0a0a';
+  var bd = RS.status === 'SAFE' ? '#166534' : RS.status === 'CAUTION' ? '#5c4308' : '#5c1515';
+  var h = '<div style="display:flex;align-items:center;gap:12px;background:#111820;border:1px solid #1e293b;border-radius:8px;padding:14px 18px;margin:4px 24px">';
+  h += '<span style="background:' + bg + ';color:' + c + ';border:1px solid ' + bd + ';padding:4px 14px;border-radius:100px;font-size:10px;font-family:Space Mono,monospace;font-weight:700;letter-spacing:.04em;white-space:nowrap">' + RS.status + '</span>';
+  h += '<div style="flex:1"><div style="font-size:10px;color:#64748b;font-family:Space Mono,monospace;letter-spacing:.08em;margin-bottom:2px">ANALISA AI — ' + (RS.last_update || '') + '</div>';
+  h += '<div style="font-size:12px;color:#c8d0dc;line-height:1.6">' + RS.detail_message + '</div></div>';
+  h += '</div>';
+  document.getElementById('radar-conclusion').innerHTML = h;
 }
 
 function switchConfig(cfg) {
@@ -881,7 +894,7 @@ function closePanel() {
 }
 
 function renderAll() {
-  var _fns = [renderLeaders, renderInsights, renderTop, renderHistory, re, renderComparisonCards];
+  var _fns = [renderRadarConclusion, renderLeaders, renderInsights, renderTop, renderHistory, re, renderComparisonCards];
   for (var _i = 0; _i < _fns.length; _i++) { try { _fns[_i](); } catch(e) { console.warn('renderAll: ' + (_fns[_i].name || 'fn' + _i) + ' failed:', e); } }
 }
 

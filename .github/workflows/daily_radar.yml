@@ -80,7 +80,6 @@ jobs:
             echo "No changes to commit."
           else
             git commit -m "feat: daily radar + pipeline V3 (market, data.js, validation)"
-            git fetch origin main
-            git rebase --strategy-option=theirs origin/main
+            git pull --rebase -X theirs origin main
             git push
           fi

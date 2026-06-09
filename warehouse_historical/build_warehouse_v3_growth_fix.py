@@ -1,8 +1,14 @@
 """
-Historical Warehouse V3 — Multi-Year with Commodity Currency Fix (2022-2025)
-Fixes: currency scale errors for commodity tickers (USD reporters).
+Historical Warehouse V3 — Growth Fix (Earnings-Only)
+====================================================
+Same as build_warehouse_v3.py but growth_score uses earnings-only
+instead of 50/50 revenue+earnings blend.
 
-Usage: python warehouse_historical/build_warehouse_v3.py
+Changes from original:
+  - Line 507: gs = earn_scores[i]  (was 50/50 blend)
+  - Line 589: output filename (warehouse_v3_growth_fix.csv)
+
+Usage: python warehouse_historical/build_warehouse_v3_growth_fix.py
 """
 
 import json
@@ -43,26 +49,21 @@ def get_fx_rates():
     # Download USDIDR daily rates
     fx = yf.download("USDIDR=X", start="2019-01-01", end="2026-06-06", progress=False)
     close = fx["Close", "USDIDR=X"]
-    # Annual averages for FY conversion
     annual = close.groupby(close.index.year).mean()
-    # Monthly averages for spot-month conversion if needed
     monthly = close.groupby([close.index.year, close.index.month]).mean()
     FX_CACHE = {"annual": annual, "monthly": monthly}
     return FX_CACHE
 
 def fx_rate_for_fy(fy_year):
-    """Annual average IDR per USD for a given fiscal year."""
     rates = get_fx_rates()
     if fy_year in rates["annual"].index:
         return rates["annual"].loc[fy_year]
-    # Fallback: use nearest available
     available = rates["annual"].dropna()
     if len(available) == 0:
         return 15000
     idx = np.argmin(np.abs(available.index.values - fy_year))
     return available.iloc[idx]
 
-# ── Helpers ─────────────────────────────────────────────────────────
 def load_json(path):
     with open(path) as f:
         return json.load(f)
@@ -77,14 +78,6 @@ def load_monthly(ticker):
     return df
 
 def get_pit_financial_v3(ticker):
-    """Fetch annual financial data, detect currency, normalize to IDR.
-    Returns dict with:
-      - fiscal_data: {fy_year: {net_income, total_equity, total_revenue, shares, ...}}
-      - trailing: {pe, pb, eps}
-      - valid: bool
-      - currency: str (e.g. 'USD', 'IDR')
-      - fx_rate: float (conversion rate used)
-    """
     try:
         t = yf.Ticker(ticker)
         info = t.info
@@ -98,13 +91,11 @@ def get_pit_financial_v3(ticker):
         print(f"  WARN: No financials for {ticker}")
         return None
 
-    # ── Detect currency mismatch ─────────────────────────────
     fin_currency = info.get("financialCurrency", "IDR")
     trade_currency = info.get("currency", "IDR")
     needs_fx = (fin_currency != trade_currency) and fin_currency == "USD"
     fx_rate = None
     if needs_fx:
-        # Get rate for each FY year on demand
         pass  # rates fetched per-year below
 
     shares_out = info.get("sharesOutstanding")
@@ -112,7 +103,6 @@ def get_pit_financial_v3(ticker):
     trailing_pb = info.get("priceToBook") or 0
     trailing_eps = info.get("trailingEps") or 0
 
-    # Trailing QG fields — these are ratios, no conversion needed
     trailing_roe = info.get("returnOnEquity") or 0
     trailing_net_margin = info.get("profitMargins") or 0
     trailing_op_margin = info.get("operatingMargins") or 0
@@ -122,22 +112,16 @@ def get_pit_financial_v3(ticker):
     trailing_earn_growth = info.get("earningsGrowth") or 0
 
     trailing_qg = {
-        "roe": trailing_roe,
-        "net_margin": trailing_net_margin,
-        "op_margin": trailing_op_margin,
-        "der": trailing_der,
-        "fcf": trailing_fcf,
-        "rev_growth": trailing_rev_growth,
+        "roe": trailing_roe, "net_margin": trailing_net_margin,
+        "op_margin": trailing_op_margin, "der": trailing_der,
+        "fcf": trailing_fcf, "rev_growth": trailing_rev_growth,
         "earn_growth": trailing_earn_growth,
     }
 
-    # ── Collect fiscal year data (in IDR) ────────────────────
     fiscal_data = {}
     for col_idx in range(len(fs.columns)):
         fy = fs.columns[col_idx]
         fy_year = fy.year
-
-        # Get FX rate for this FY
         if needs_fx:
             fx_rate = fx_rate_for_fy(fy_year)
         else:
@@ -175,25 +159,20 @@ def get_pit_financial_v3(ticker):
             if "Ordinary Shares Number" in bs.index:
                 val = bs.loc["Ordinary Shares Number"].iloc[col_idx]
                 if val == val and val is not None:
-                    shares = val  # shares count — no FX conversion
+                    shares = val
 
-        # Get raw Diluted EPS for validity check (also convert)
         raw_eps = None
         if "Diluted EPS" in fs.index:
             v = fs.loc["Diluted EPS"].iloc[col_idx]
             if v == v and v is not None:
-                raw_eps = v * fx_rate  # converted to IDR
+                raw_eps = v * fx_rate
 
         fiscal_data[fy_year] = {
-            "net_income": net_income,
-            "total_revenue": total_revenue,
-            "total_equity": total_equity,
-            "shares": shares or shares_out,
-            "raw_eps_idr": raw_eps,
-            "fx_rate": fx_rate,
+            "net_income": net_income, "total_revenue": total_revenue,
+            "total_equity": total_equity, "shares": shares or shares_out,
+            "raw_eps_idr": raw_eps, "fx_rate": fx_rate,
         }
 
-    # ── Determine if annual data is reliable (using converted EPS) ──
     is_valid = True
     if shares_out:
         for col_idx in range(min(3, len(fs.columns))):
@@ -210,15 +189,12 @@ def get_pit_financial_v3(ticker):
     if not is_valid:
         print(f"  NOTE: {ticker} annual data unreliable (EPS too small after FX conversion)")
 
-    # Build sorted list of available FY years
     available_fy = sorted(
         [y for y, d in fiscal_data.items()
          if d["net_income"] is not None and d["net_income"] == d["net_income"]],
         reverse=True
     )
 
-    # ── Correct trailing PB using converted equity (for fallback) ──
-    # Yahoo's priceToBook is wrong for USD reporters. Recompute.
     corrected_trailing_pb = trailing_pb
     if needs_fx and available_fy:
         latest_fy = max(available_fy)
@@ -228,15 +204,6 @@ def get_pit_financial_v3(ticker):
         if eq and eq > 0 and sh and sh > 0:
             bvps = eq / sh
             if bvps > 0:
-                # trailing PB computed as: latest price / BVPS
-                # But we don't have the latest price here, so use
-                # Yahoo's raw priceToBook (which is Price / USD_BVPS)
-                # and multiply back the FX rate that Yahoo omitted
-                # Actually: Yahoo PB = Price_IDR / (Eq_USD / Shares)
-                # Correct PB = Price_IDR / (Eq_IDR / Shares)
-                # = Price_IDR / (Eq_USD * FX / Shares)
-                # = (Price_IDR / (Eq_USD / Shares)) / FX
-                # = Yahoo_PB / FX
                 if trailing_pb > 0 and fx_rate_for_fy(latest_fy) > 0:
                     corrected_trailing_pb = trailing_pb / fx_rate_for_fy(latest_fy)
 
@@ -252,9 +219,8 @@ def get_pit_financial_v3(ticker):
     }
 
 def get_fy_for_month(month_date):
-    return month_date.year - 1  # all have Dec 31 FY
+    return month_date.year - 1
 
-# ── Main ─────────────────────────────────────────────────────────────
 def main():
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
@@ -272,7 +238,7 @@ def main():
 
     # ── 1. Fetch financial data for all tickers ──────────────
     print("=" * 60)
-    print("FETCHING FINANCIAL DATA (V3 — with currency normalization)")
+    print("FETCHING FINANCIAL DATA (Growth Fix — Earnings Only)")
     print("=" * 60)
     fin_data = {}
     for i, ticker in enumerate(universe, 1):
@@ -290,7 +256,7 @@ def main():
 
     # ── 2. Generate all month-ticker combinations ────────────
     print("\n" + "=" * 60)
-    print("BUILDING WAREHOUSE V3 (2022-2025)")
+    print("BUILDING WAREHOUSE V3 GROWTH FIX (2022-2025)")
     print("=" * 60)
 
     all_months = pd.date_range(f"{START_YEAR}-01-01", f"{END_YEAR}-12-01", freq="MS")
@@ -319,7 +285,6 @@ def main():
             if fd is None:
                 continue
 
-            # ── Resolve FY data ─────────────────────────────
             ni = None
             eq = None
             rev = None
@@ -339,7 +304,6 @@ def main():
                             fy_found = True
                             break
 
-            # ── PIT PE/PB ───────────────────────────────────
             pit_pe = None
             pit_pb = None
             data_source = "trailing"
@@ -464,7 +428,7 @@ def main():
                   om_scores[i] * w_om + debt_s * w_der + fcf_scores[i] * w_fcf)
             quality_scores[t] = round(qs, 2)
 
-        # ── 5. Growth scores ────────────────────────────────
+        # ── 5. Growth scores (EARNINGS ONLY) ────────────────
         rev_growth_vals, earn_growth_vals = [], []
         for t in tickers_list:
             fd = fin_data.get(t)
@@ -504,7 +468,8 @@ def main():
 
         growth_scores = {}
         for i, t in enumerate(tickers_list):
-            gs = rev_scores[i] * 0.50 + earn_scores[i] * 0.50
+            # ★ GROWTH FIX: earnings-only instead of 50/50 blend
+            gs = earn_scores[i]
             growth_scores[t] = round(gs, 2)
 
         # ── 6. Momentum scores ──────────────────────────────
@@ -586,47 +551,16 @@ def main():
 
     df = pd.DataFrame(records)
     df = df.sort_values(["month", "ticker"]).reset_index(drop=True)
-    out_path = OUTPUT_DIR / "warehouse_v3.csv"
+    out_path = OUTPUT_DIR / "warehouse_v3_growth_fix.csv"
     df.to_csv(out_path, index=False)
     print(f"\nSaved: {out_path}")
     print(f"Total records: {len(df)}")
     print(f"Date range: {df['month'].min()} to {df['month'].max()}")
     print(f"Unique tickers: {df['ticker'].nunique()}")
 
-    # ── V2 vs V3 comparison ─────────────────────────────────
-    v2_path = OUTPUT_DIR / "warehouse_v2_multiyear_pit.csv"
-    v2_records = None
-    if v2_path.exists():
-        v2_df = pd.read_csv(v2_path)
-
-        # PIT coverage comparison
-        print("\n" + "=" * 60)
-        print("V2 vs V3 COMPARISON")
-        print("=" * 60)
-
-        v3_pit = len(df[df["data_source"] == "pit"])
-        v3_total = len(df)
-        v2_pit = len(v2_df[v2_df["data_source"] == "pit"])
-        v2_total = len(v2_df)
-
-        print(f"V2 PIT coverage: {v2_pit}/{v2_total} ({v2_pit/v2_total*100:.1f}%)")
-        print(f"V3 PIT coverage: {v3_pit}/{v3_total} ({v3_pit/v3_total*100:.1f}%)")
-        print(f"Improvement: +{v3_pit/v3_total*100 - v2_pit/v2_total*100:.1f}pp")
-
-        # Commodity ticker comparison
-        comm_tickers = [t for t in universe if t in commodities]
-        for t in comm_tickers:
-            v2_t = v2_df[v2_df["ticker"] == t]
-            v3_t = df[df["ticker"] == t]
-            v2_src = v2_t["data_source"].value_counts().to_dict() if len(v2_t) > 0 else {}
-            v3_src = v3_t["data_source"].value_counts().to_dict() if len(v3_t) > 0 else {}
-            print(f"  {t}: V2={v2_src}, V3={v3_src}")
-
     # ── Summary ─────────────────────────────────────────────
-    print("\n" + "=" * 60)
-    print("V3 DATA SOURCE SUMMARY")
-    print("=" * 60)
     source_counts = df["data_source"].value_counts()
+    print("\nDATA SOURCE SUMMARY")
     for src, cnt in source_counts.items():
         print(f"  {src}: {cnt} ({cnt/len(df)*100:.1f}%)")
 
@@ -634,14 +568,6 @@ def main():
     trail_tickers = df[df["data_source"] == "trailing"]["ticker"].unique()
     print(f"\nPIT tickers: {sorted(pit_tickers)}")
     print(f"Trailing tickers: {sorted(trail_tickers)}")
-
-    # Monthly coverage
-    print("\n" + "=" * 60)
-    print("MONTHLY COVERAGE")
-    print("=" * 60)
-    monthly_counts = df.groupby("month")["ticker"].count()
-    for m, c in monthly_counts.items():
-        print(f"  {m}: {c} tickers")
 
 if __name__ == "__main__":
     main()

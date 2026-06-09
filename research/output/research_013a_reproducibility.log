@@ -1,0 +1,69 @@
+2026-06-09 18:00:30,812 [INFO] ============================================================
+2026-06-09 18:00:30,812 [INFO] RESEARCH-013A: Baseline Reproducibility Audit
+2026-06-09 18:00:30,812 [INFO] ============================================================
+2026-06-09 18:00:30,812 [INFO] [1/5] Loading Config B weights...
+2026-06-09 18:00:30,813 [INFO]       Config from file: Q25/G10/V30/M35
+2026-06-09 18:00:30,813 [INFO] [2/5] Loading historical data...
+2026-06-09 18:00:30,833 [INFO]       warehouse_v3: 48 months (2022-01 to 2025-12)
+2026-06-09 18:00:30,833 [INFO]       tickers: 64
+2026-06-09 18:00:30,840 [INFO]       IHSG: 101 months
+2026-06-09 18:00:30,840 [INFO] [3/5] Running Config B backtest (Top 5, monthly rebalance)...
+2026-06-09 18:00:30,841 [INFO]       Backtest months: 47
+2026-06-09 18:00:30,841 [INFO] [4/5] Computing performance metrics...
+2026-06-09 18:00:30,841 [INFO] 
+      CONFIG B RESULTS (2022-02 to 2025-12, 47 months):
+2026-06-09 18:00:30,841 [INFO]       CAGR       : 20.74%
+2026-06-09 18:00:30,841 [INFO]       Sharpe     : 0.8603
+2026-06-09 18:00:30,841 [INFO]       Alpha      : 22.45%
+2026-06-09 18:00:30,841 [INFO]       Volatility : 25.69%
+2026-06-09 18:00:30,841 [INFO]       Max DD     : 18.30%
+2026-06-09 18:00:30,841 [INFO]       Win Rate   : 59.57%
+2026-06-09 18:00:30,841 [INFO]       Sortino    : 1.0378
+2026-06-09 18:00:30,841 [INFO]       Beta       : 0.6283
+2026-06-09 18:00:30,841 [INFO]       Excess CAGR: 21.34%
+2026-06-09 18:00:30,841 [INFO]       Final Equity: 2.0921
+2026-06-09 18:00:30,841 [INFO] [5/5] Determining verdict...
+2026-06-09 18:00:30,841 [INFO]       VERDICT: PASS
+2026-06-09 18:00:30,841 [INFO]       Reason: Code executes, Config B weights applied, metrics computed.
+2026-06-09 18:00:30,842 [INFO] 
+      CSV: C:\Users\BedilGaib\.gemini\antigravity\scratch\indonesia-stock-intelligence\research\output\research_013a_reproducibility.csv
+2026-06-09 18:00:30,842 [INFO]       Report: C:\Users\BedilGaib\.gemini\antigravity\scratch\indonesia-stock-intelligence\reports\research_013a_baseline_report.md
+2026-06-09 18:00:30,842 [INFO] 
+============================================================
+2026-06-09 18:00:30,842 [INFO] RESEARCH-013A complete.
+2026-06-09 18:00:30,843 [INFO] ============================================================
+2026-06-09 18:00:51,159 [INFO] ============================================================
+2026-06-09 18:00:51,159 [INFO] RESEARCH-013A: Baseline Reproducibility Audit
+2026-06-09 18:00:51,159 [INFO] ============================================================
+2026-06-09 18:00:51,159 [INFO] [1/5] Loading Config B weights...
+2026-06-09 18:00:51,159 [INFO]       Config B: Q25/G30/V10/M35
+2026-06-09 18:00:51,159 [INFO]       (Config B hardcoded per RESEARCH-013A mandate — ignores config/scoring_weights.json)
+2026-06-09 18:00:51,159 [INFO] [2/5] Loading historical data...
+2026-06-09 18:00:51,180 [INFO]       warehouse_v3: 48 months (2022-01 to 2025-12)
+2026-06-09 18:00:51,180 [INFO]       tickers: 64
+2026-06-09 18:00:51,180 [INFO]       IHSG: 101 months
+2026-06-09 18:00:51,180 [INFO] [3/5] Running Config B backtest (Top 5, monthly rebalance)...
+2026-06-09 18:00:51,180 [INFO]       Backtest months: 47
+2026-06-09 18:00:51,180 [INFO] [4/5] Computing performance metrics...
+2026-06-09 18:00:51,180 [INFO] 
+      CONFIG B RESULTS (2022-02 to 2025-12, 47 months):
+2026-06-09 18:00:51,180 [INFO]       CAGR       : 17.45%
+2026-06-09 18:00:51,180 [INFO]       Sharpe     : 0.7380
+2026-06-09 18:00:51,180 [INFO]       Alpha      : 19.43%
+2026-06-09 18:00:51,180 [INFO]       Volatility : 26.47%
+2026-06-09 18:00:51,180 [INFO]       Max DD     : 29.17%
+2026-06-09 18:00:51,180 [INFO]       Win Rate   : 53.19%
+2026-06-09 18:00:51,180 [INFO]       Sortino    : 0.8935
+2026-06-09 18:00:51,180 [INFO]       Beta       : -0.2032
+2026-06-09 18:00:51,180 [INFO]       Excess CAGR: 18.05%
+2026-06-09 18:00:51,180 [INFO]       Final Equity: 1.8773
+2026-06-09 18:00:51,180 [INFO] [5/5] Determining verdict...
+2026-06-09 18:00:51,180 [INFO]       VERDICT: PASS
+2026-06-09 18:00:51,180 [INFO]       Reason: Code executes, Config B weights applied, metrics computed.
+2026-06-09 18:00:51,181 [INFO] 
+      CSV: C:\Users\BedilGaib\.gemini\antigravity\scratch\indonesia-stock-intelligence\research\output\research_013a_reproducibility.csv
+2026-06-09 18:00:51,181 [INFO]       Report: C:\Users\BedilGaib\.gemini\antigravity\scratch\indonesia-stock-intelligence\reports\research_013a_baseline_report.md
+2026-06-09 18:00:51,181 [INFO] 
+============================================================
+2026-06-09 18:00:51,182 [INFO] RESEARCH-013A complete.
+2026-06-09 18:00:51,182 [INFO] ============================================================

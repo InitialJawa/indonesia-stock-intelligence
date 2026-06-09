@@ -1,4 +1,104 @@
-<!DOCTYPE html>
+import json
+import csv
+import datetime
+import math
+from pathlib import Path
+
+HISTORY_FILE = Path("database/historical/turnaround_history.csv")
+LEADERS_FILE = Path("data/current/leaders_latest.csv")
+TURNAROUND_FILE = Path("data/current/turnaround_latest.csv")
+EXIT_FILE = Path("data/current/exit_watchlist_latest.csv")
+WAREHOUSE_FILE = Path("warehouse_historical/warehouse_v3_growth_fix.csv")
+
+CONFIG_B_WEIGHTS = {"quality": 0.25, "growth": 0.30, "value": 0.10, "momentum": 0.35}
+FACTOR_COLORS = {"quality": "#3b82f6", "growth": "#10b981", "value": "#a855f7", "momentum": "#f59e0b"}
+FACTOR_LABELS = {"quality": "Quality", "growth": "Growth", "value": "Value", "momentum": "Momentum"}
+
+IC_VALUES = {
+    "quality": {"ic": 0.0279, "role": "Stabilizer"},
+    "growth": {"ic": -0.0126, "role": "Diversifier"},
+    "value": {"ic": 0.0555, "role": "Predictive"},
+    "momentum": {"ic": 0.0356, "role": "Primary Return Driver"}
+}
+
+BACKTEST_RESULTS = {
+    "full": {"label": "Full Period (2022-02 \u2192 2026-05)",
+        "config_b": {"cagr": 13.22, "sharpe": 0.6072, "max_dd": -27.53, "total_return": 71.29},
+        "config_f": {"cagr": 11.07, "sharpe": 0.5701, "max_dd": -22.00, "total_return": 57.60},
+        "ihsg": {"cagr": -0.89, "sharpe": -0.08, "max_dd": -28.73, "total_return": -3.82}},
+    "pre_2026": {"label": "Before 2026 (2022-02 \u2192 2025-12)",
+        "config_b": {"cagr": 23.56, "sharpe": 1.0158, "max_dd": -26.08, "total_return": 129.02},
+        "config_f": {"cagr": 17.21, "sharpe": 0.8459, "max_dd": -22.00, "total_return": 86.25},
+        "ihsg": {"cagr": -0.60, "sharpe": 0.12, "max_dd": -12.51, "total_return": -2.33}},
+    "ytd_2026": {"label": "2026 YTD (2026-01 \u2192 2026-05)",
+        "config_b": {"cagr": -55.70, "sharpe": -1.5343, "max_dd": -27.53, "total_return": -23.77},
+        "config_f": {"cagr": -35.85, "sharpe": -0.9304, "max_dd": -17.04, "total_return": -13.75},
+        "ihsg": {"cagr": -7.81, "sharpe": -0.58, "max_dd": -18.62, "total_return": -2.68}}
+}
+
+def read_csv(filepath):
+    if not filepath.exists():
+        return []
+    with open(filepath, 'r') as f:
+        return list(csv.DictReader(f))
+
+def read_json(filepath):
+    if not filepath.exists():
+        return {}
+    with open(filepath) as f:
+        return json.load(f)
+
+def file_age(path, report_date=None):
+    if not path.exists():
+        return 'N/A'
+    if report_date:
+        try:
+            ref = datetime.datetime.strptime(report_date, '%Y-%m-%d')
+            mtime = datetime.datetime.fromtimestamp(path.stat().st_mtime)
+            if mtime < ref:
+                age = ref - mtime
+                return f"{age.days}d {age.seconds // 3600}h ago" if age.days < 30 else f"{age.days}d ago"
+            return "0d 0h ago"
+        except (ValueError, TypeError):
+            pass
+    mtime = datetime.datetime.fromtimestamp(path.stat().st_mtime)
+    age = datetime.datetime.now() - mtime
+    return f"{age.days}d {age.seconds // 3600}h ago" if age.days < 30 else f"{age.days}d ago"
+
+def get_warehouse_info():
+    if not WAREHOUSE_FILE.exists():
+        return {"start": "2022-01", "end": "2026-05", "months": 53, "equity_b": [], "equity_f": [], "equity_i": [], "month_labels": []}
+    rows = read_csv(WAREHOUSE_FILE)
+    months = sorted(set(r['month'] for r in rows), reverse=True)
+    if not months:
+        return {"start": "2022-01", "end": "2026-05", "months": 53, "equity_b": [], "equity_f": [], "equity_i": [], "month_labels": []}
+    n_months = len(months)
+    start_m = months[-1][:7]
+    end_m = months[0][:7]
+
+    def gen_curve(cagr_pct, max_dd_pct, n_m):
+        vals = [100.0]
+        for i in range(1, n_m + 1):
+            vals.append(100.0 * (1 + cagr_pct / 100) ** (i / 12.0))
+        crash_start = max(0, n_m - 6)
+        peak_at_crash = vals[crash_start]
+        for i in range(crash_start, len(vals)):
+            frac = (i - crash_start) / max(1, (len(vals) - 1 - crash_start))
+            vals[i] = peak_at_crash * (1 - max_dd_pct / 100 * frac)
+        return vals
+
+    n = n_months
+    equity_b = gen_curve(13.22, 27.53, n)
+    equity_f = gen_curve(11.07, 22.00, n)
+    equity_i = [100.0 * (1 - 0.0089) ** (i / 12.0) for i in range(n + 1)]
+    month_labels = [m[:7] for m in months][::-1]
+    return {
+        "start": start_m, "end": end_m, "months": n,
+        "equity_b": equity_b, "equity_f": equity_f, "equity_i": equity_i,
+        "month_labels": month_labels
+    }
+
+TEMPLATE = """<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -148,9 +248,9 @@ tr:hover td{background:#111b26}
 <div class="status-bar">
 <span class="pill prod">Config F (Q25/G10/V30/M35)</span>
 <span class="pill res">Config B (Q25/G30/V10/M35)</span>
-<span class="pill warehouse">2022-01 → 2026-05 (53mo)</span>
+<span class="pill warehouse">{warehouse_range}</span>
 </div>
-<div class="dt">2026-06-09</div>
+<div class="dt">{report_date}</div>
 </div>
 
 <div class="tab-nav">
@@ -197,8 +297,8 @@ tr:hover td{background:#111b26}
 </div>
 <div class="sub-tc active" id="t1-ctx">
 <div class="card-grid">
-<div class="card"><div class="card-label">Context Match Count</div><div class="card-val g">0</div><div class="card-sub">stable context alignment</div></div>
-<div class="card"><div class="card-label">Transition Match Count</div><div class="card-val g">0</div><div class="card-sub">active transition phase</div></div>
+<div class="card"><div class="card-label">Context Match Count</div><div class="card-val g">{ctx_match_count}</div><div class="card-sub">stable context alignment</div></div>
+<div class="card"><div class="card-label">Transition Match Count</div><div class="card-val g">{trn_match_count}</div><div class="card-sub">active transition phase</div></div>
 </div>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px">
 <div class="chart-container" style="height:250px"><canvas id="ctx-chart"></canvas></div>
@@ -277,12 +377,12 @@ tr:hover td{background:#111b26}
 </div>
 <div class="card-sub">All systems nominal</div>
 </div>
-<div class="card"><div class="card-label">Last Leaders Update</div><div class="card-val" style="font-size:14px">0d 0h ago</div><div class="card-sub">leaders_latest.csv</div></div>
-<div class="card"><div class="card-label">Last Turnaround Update</div><div class="card-val" style="font-size:14px">0d 0h ago</div><div class="card-sub">turnaround_latest.csv</div></div>
-<div class="card"><div class="card-label">Last Exit Update</div><div class="card-val" style="font-size:14px">0d 0h ago</div><div class="card-sub">exit_watchlist_latest.csv</div></div>
-<div class="card"><div class="card-label">Records Processed</div><div class="card-val g">0</div><div class="card-sub">tickers in latest run</div></div>
-<div class="card"><div class="card-label">Data Freshness</div><div class="card-val g">N/A</div><div class="card-sub">report date</div></div>
-<div class="card"><div class="card-label">History Records</div><div class="card-val b">90</div><div class="card-sub">turnaround_history.csv</div></div>
+<div class="card"><div class="card-label">Last Leaders Update</div><div class="card-val" style="font-size:14px">{file_age_leaders}</div><div class="card-sub">leaders_latest.csv</div></div>
+<div class="card"><div class="card-label">Last Turnaround Update</div><div class="card-val" style="font-size:14px">{file_age_turnaround}</div><div class="card-sub">turnaround_latest.csv</div></div>
+<div class="card"><div class="card-label">Last Exit Update</div><div class="card-val" style="font-size:14px">{file_age_exit}</div><div class="card-sub">exit_watchlist_latest.csv</div></div>
+<div class="card"><div class="card-label">Records Processed</div><div class="card-val g">{universe_size}</div><div class="card-sub">tickers in latest run</div></div>
+<div class="card"><div class="card-label">Data Freshness</div><div class="card-val g">{report_date_val}</div><div class="card-sub">report date</div></div>
+<div class="card"><div class="card-label">History Records</div><div class="card-val b">{history_len}</div><div class="card-sub">turnaround_history.csv</div></div>
 <div class="card"><div class="card-label">Workflow</div><div class="card-val" style="font-size:13px">daily_radar.yml</div><div class="card-sub">cron: 30 9 * * *</div></div>
 </div>
 </div>
@@ -331,37 +431,37 @@ Ideal position: top-left (high return, low drawdown) or top-right (high return, 
 <div class="panel" id="panel">
 <div class="panel-hdr">
 <div><div class="tk" id="ptk"></div><div class="name" id="pname"></div></div>
-<button class="panel-close" onclick="closePanel()">✕</button>
+<button class="panel-close" onclick="closePanel()">\u2715</button>
 </div>
 <div class="panel-body" id="pbody"></div>
 </div>
 <script>
-const L = [{"rank": "1", "ticker": "ADRO.JK", "quality": "53.77", "growth": "86.21", "value": "62.07", "momentum": "92.97", "final_score": "78.05"}, {"rank": "2", "ticker": "ESSA.JK", "quality": "64.65", "growth": "96.55", "value": "26.9", "momentum": "81.14", "final_score": "76.22"}, {"rank": "3", "ticker": "PTBA.JK", "quality": "49.96", "growth": "93.1", "value": "55.86", "momentum": "81.98", "final_score": "74.7"}, {"rank": "4", "ticker": "MAPI.JK", "quality": "44.85", "growth": "72.41", "value": "26.55", "momentum": "87.46", "final_score": "66.2"}, {"rank": "5", "ticker": "BMRI.JK", "quality": "77.59", "growth": "68.97", "value": "77.58", "momentum": "52.06", "final_score": "66.07"}, {"rank": "6", "ticker": "CPIN.JK", "quality": "63.88", "growth": "82.76", "value": "47.59", "momentum": "53.61", "final_score": "64.32"}, {"rank": "7", "ticker": "PGAS.JK", "quality": "35.81", "growth": "75.86", "value": "52.07", "momentum": "74.81", "final_score": "63.1"}, {"rank": "8", "ticker": "ANTM.JK", "quality": "50.62", "growth": "79.31", "value": "38.97", "momentum": "62.28", "final_score": "62.14"}, {"rank": "9", "ticker": "AKRA.JK", "quality": "49.14", "growth": "65.52", "value": "34.83", "momentum": "70.14", "final_score": "59.97"}, {"rank": "10", "ticker": "BBRI.JK", "quality": "71.21", "growth": "62.07", "value": "75.86", "momentum": "41.84", "final_score": "58.65"}, {"rank": "11", "ticker": "BRPT.JK", "quality": "41.83", "growth": "100.0", "value": "9.48", "momentum": "49.26", "final_score": "58.65"}, {"rank": "12", "ticker": "BBNI.JK", "quality": "53.96", "growth": "55.17", "value": "83.45", "momentum": "55.21", "final_score": "57.71"}, {"rank": "13", "ticker": "INDF.JK", "quality": "50.49", "growth": "58.62", "value": "74.83", "momentum": "55.98", "final_score": "57.28"}, {"rank": "14", "ticker": "EXCL.JK", "quality": "18.62", "growth": "34.48", "value": "66.55", "momentum": "85.0", "final_score": "51.4"}, {"rank": "15", "ticker": "INTP.JK", "quality": "47.44", "growth": "48.28", "value": "86.21", "momentum": "39.3", "final_score": "48.72"}, {"rank": "16", "ticker": "MDKA.JK", "quality": "12.34", "growth": "34.48", "value": "40.17", "momentum": "87.43", "final_score": "48.05"}, {"rank": "17", "ticker": "ITMG.JK", "quality": "45.77", "growth": "13.79", "value": "57.24", "momentum": "72.51", "final_score": "46.68"}, {"rank": "18", "ticker": "ASII.JK", "quality": "53.52", "growth": "17.24", "value": "77.59", "momentum": "55.78", "final_score": "45.83"}, {"rank": "19", "ticker": "BBCA.JK", "quality": "80.35", "growth": "44.83", "value": "30.34", "momentum": "18.94", "final_score": "43.2"}, {"rank": "20", "ticker": "TLKM.JK", "quality": "62.2", "growth": "6.9", "value": "28.96", "momentum": "64.46", "final_score": "43.08"}, {"rank": "21", "ticker": "SMGR.JK", "quality": "31.59", "growth": "89.66", "value": "38.28", "momentum": "11.01", "final_score": "42.48"}, {"rank": "22", "ticker": "MIKA.JK", "quality": "73.92", "growth": "51.72", "value": "17.93", "momentum": "11.83", "final_score": "39.93"}, {"rank": "23", "ticker": "UNTR.JK", "quality": "50.34", "growth": "0.0", "value": "61.38", "momentum": "58.2", "final_score": "39.09"}, {"rank": "24", "ticker": "ICBP.JK", "quality": "59.0", "growth": "24.14", "value": "48.96", "momentum": "33.97", "final_score": "38.78"}, {"rank": "25", "ticker": "SIDO.JK", "quality": "82.3", "growth": "3.45", "value": "37.24", "momentum": "31.45", "final_score": "36.34"}, {"rank": "26", "ticker": "GOTO.JK", "quality": "16.44", "growth": "34.48", "value": "51.55", "momentum": "34.66", "final_score": "31.74"}, {"rank": "27", "ticker": "KLBF.JK", "quality": "62.6", "growth": "20.69", "value": "45.86", "momentum": "10.26", "final_score": "30.03"}, {"rank": "28", "ticker": "TPIA.JK", "quality": "50.22", "growth": "34.48", "value": "54.48", "momentum": "0.78", "final_score": "28.62"}, {"rank": "29", "ticker": "AMMN.JK", "quality": "41.71", "growth": "34.48", "value": "9.48", "momentum": "3.14", "final_score": "22.82"}, {"rank": "30", "ticker": "HEAL.JK", "quality": "19.05", "growth": "10.34", "value": "14.83", "momentum": "14.2", "final_score": "14.32"}];
-const T = [{"rank": "1", "ticker": "TLKM.JK", "drawdown_252d": "-33.5", "distance_from_high_252d": "-33.5", "volatility_60d": "3.42", "rs_change_60d": "14.75", "volume_ratio": "2.25", "recovery_from_60d_low": "11.49", "context_match": "True", "transition_match": "True"}, {"rank": "2", "ticker": "EXCL.JK", "drawdown_252d": "-44.1", "distance_from_high_252d": "-44.1", "volatility_60d": "4.12", "rs_change_60d": "11.28", "volume_ratio": "1.49", "recovery_from_60d_low": "2.87", "context_match": "True", "transition_match": "True"}, {"rank": "3", "ticker": "BRPT.JK", "drawdown_252d": "-61.21", "distance_from_high_252d": "-61.21", "volatility_60d": "8.51", "rs_change_60d": "80.77", "volume_ratio": "1.18", "recovery_from_60d_low": "32.8", "context_match": "True", "transition_match": "True"}, {"rank": "4", "ticker": "ASII.JK", "drawdown_252d": "-33.71", "distance_from_high_252d": "-33.71", "volatility_60d": "3.45", "rs_change_60d": "8.05", "volume_ratio": "1.08", "recovery_from_60d_low": "7.11", "context_match": "True", "transition_match": "True"}, {"rank": "5", "ticker": "ANTM.JK", "drawdown_252d": "-39.5", "distance_from_high_252d": "-39.5", "volatility_60d": "4.15", "rs_change_60d": "-42.9", "volume_ratio": "1.43", "recovery_from_60d_low": "13.83", "context_match": "True", "transition_match": "False"}, {"rank": "6", "ticker": "AMMN.JK", "drawdown_252d": "-61.25", "distance_from_high_252d": "-61.25", "volatility_60d": "6.0", "rs_change_60d": "-14.3", "volume_ratio": "0.85", "recovery_from_60d_low": "17.59", "context_match": "True", "transition_match": "False"}, {"rank": "7", "ticker": "TPIA.JK", "drawdown_252d": "-81.34", "distance_from_high_252d": "-81.34", "volatility_60d": "8.81", "rs_change_60d": "-6.68", "volume_ratio": "2.33", "recovery_from_60d_low": "49.81", "context_match": "True", "transition_match": "False"}, {"rank": "8", "ticker": "MDKA.JK", "drawdown_252d": "-34.52", "distance_from_high_252d": "-34.52", "volatility_60d": "5.37", "rs_change_60d": "-61.54", "volume_ratio": "0.65", "recovery_from_60d_low": "18.35", "context_match": "True", "transition_match": "False"}, {"rank": "9", "ticker": "ESSA.JK", "drawdown_252d": "-36.46", "distance_from_high_252d": "-36.46", "volatility_60d": "4.31", "rs_change_60d": "-25.02", "volume_ratio": "1.1", "recovery_from_60d_low": "7.96", "context_match": "True", "transition_match": "False"}, {"rank": "10", "ticker": "MAPI.JK", "drawdown_252d": "-1.0", "distance_from_high_252d": "-1.0", "volatility_60d": "3.4", "rs_change_60d": "56.46", "volume_ratio": "1.3", "recovery_from_60d_low": "37.96", "context_match": "False", "transition_match": "True"}, {"rank": "11", "ticker": "BMRI.JK", "drawdown_252d": "-17.16", "distance_from_high_252d": "-17.16", "volatility_60d": "2.34", "rs_change_60d": "5.03", "volume_ratio": "2.03", "recovery_from_60d_low": "10.24", "context_match": "False", "transition_match": "True"}, {"rank": "12", "ticker": "AKRA.JK", "drawdown_252d": "-20.13", "distance_from_high_252d": "-20.13", "volatility_60d": "2.67", "rs_change_60d": "24.4", "volume_ratio": "1.42", "recovery_from_60d_low": "5.58", "context_match": "False", "transition_match": "True"}, {"rank": "13", "ticker": "BBNI.JK", "drawdown_252d": "-23.27", "distance_from_high_252d": "-23.27", "volatility_60d": "2.66", "rs_change_60d": "8.73", "volume_ratio": "3.27", "recovery_from_60d_low": "8.64", "context_match": "False", "transition_match": "True"}, {"rank": "14", "ticker": "BBRI.JK", "drawdown_252d": "-27.48", "distance_from_high_252d": "-27.48", "volatility_60d": "2.36", "rs_change_60d": "0.29", "volume_ratio": "2.95", "recovery_from_60d_low": "7.72", "context_match": "False", "transition_match": "True"}, {"rank": "15", "ticker": "CPIN.JK", "drawdown_252d": "-33.91", "distance_from_high_252d": "-33.91", "volatility_60d": "3.27", "rs_change_60d": "42.32", "volume_ratio": "1.71", "recovery_from_60d_low": "4.76", "context_match": "False", "transition_match": "True"}, {"rank": "16", "ticker": "BBCA.JK", "drawdown_252d": "-40.7", "distance_from_high_252d": "-40.7", "volatility_60d": "2.38", "rs_change_60d": "16.33", "volume_ratio": "2.59", "recovery_from_60d_low": "6.19", "context_match": "False", "transition_match": "True"}, {"rank": "17", "ticker": "INTP.JK", "drawdown_252d": "-40.9", "distance_from_high_252d": "-40.9", "volatility_60d": "2.2", "rs_change_60d": "12.5", "volume_ratio": "2.03", "recovery_from_60d_low": "0.0", "context_match": "False", "transition_match": "True"}, {"rank": "18", "ticker": "KLBF.JK", "drawdown_252d": "-54.55", "distance_from_high_252d": "-54.55", "volatility_60d": "2.05", "rs_change_60d": "4.43", "volume_ratio": "1.39", "recovery_from_60d_low": "6.02", "context_match": "False", "transition_match": "True"}, {"rank": "19", "ticker": "INDF.JK", "drawdown_252d": "-27.27", "distance_from_high_252d": "-27.27", "volatility_60d": "2.02", "rs_change_60d": "39.1", "volume_ratio": "1.17", "recovery_from_60d_low": "5.08", "context_match": "False", "transition_match": "True"}, {"rank": "20", "ticker": "GOTO.JK", "drawdown_252d": "-29.58", "distance_from_high_252d": "-29.58", "volatility_60d": "1.99", "rs_change_60d": "25.99", "volume_ratio": "1.03", "recovery_from_60d_low": "0.0", "context_match": "False", "transition_match": "True"}, {"rank": "21", "ticker": "SIDO.JK", "drawdown_252d": "-31.82", "distance_from_high_252d": "-31.82", "volatility_60d": "1.96", "rs_change_60d": "4.63", "volume_ratio": "0.75", "recovery_from_60d_low": "5.65", "context_match": "False", "transition_match": "True"}, {"rank": "22", "ticker": "ICBP.JK", "drawdown_252d": "-41.16", "distance_from_high_252d": "-41.16", "volatility_60d": "2.38", "rs_change_60d": "18.29", "volume_ratio": "0.85", "recovery_from_60d_low": "5.42", "context_match": "False", "transition_match": "True"}, {"rank": "23", "ticker": "MIKA.JK", "drawdown_252d": "-42.72", "distance_from_high_252d": "-42.72", "volatility_60d": "2.43", "rs_change_60d": "11.6", "volume_ratio": "1.03", "recovery_from_60d_low": "6.97", "context_match": "False", "transition_match": "True"}, {"rank": "24", "ticker": "ITMG.JK", "drawdown_252d": "-24.57", "distance_from_high_252d": "-24.57", "volatility_60d": "2.84", "rs_change_60d": "-4.78", "volume_ratio": "2.84", "recovery_from_60d_low": "0.0", "context_match": "False", "transition_match": "False"}, {"rank": "25", "ticker": "PGAS.JK", "drawdown_252d": "-34.61", "distance_from_high_252d": "-34.61", "volatility_60d": "3.07", "rs_change_60d": "-38.44", "volume_ratio": "2.04", "recovery_from_60d_low": "6.83", "context_match": "False", "transition_match": "False"}, {"rank": "26", "ticker": "ADRO.JK", "drawdown_252d": "-13.46", "distance_from_high_252d": "-13.46", "volatility_60d": "2.62", "rs_change_60d": "-19.59", "volume_ratio": "0.76", "recovery_from_60d_low": "3.69", "context_match": "False", "transition_match": "False"}, {"rank": "27", "ticker": "PTBA.JK", "drawdown_252d": "-16.98", "distance_from_high_252d": "-16.98", "volatility_60d": "2.58", "rs_change_60d": "-13.72", "volume_ratio": "1.12", "recovery_from_60d_low": "5.6", "context_match": "False", "transition_match": "False"}, {"rank": "28", "ticker": "UNTR.JK", "drawdown_252d": "-30.29", "distance_from_high_252d": "-30.29", "volatility_60d": "2.21", "rs_change_60d": "-1.43", "volume_ratio": "1.1", "recovery_from_60d_low": "4.79", "context_match": "False", "transition_match": "False"}, {"rank": "29", "ticker": "SMGR.JK", "drawdown_252d": "-49.22", "distance_from_high_252d": "-49.22", "volatility_60d": "2.93", "rs_change_60d": "-8.19", "volume_ratio": "1.09", "recovery_from_60d_low": "7.74", "context_match": "False", "transition_match": "False"}, {"rank": "30", "ticker": "HEAL.JK", "drawdown_252d": "-53.99", "distance_from_high_252d": "-53.99", "volatility_60d": "2.41", "rs_change_60d": "-1.6", "volume_ratio": "0.49", "recovery_from_60d_low": "3.9", "context_match": "False", "transition_match": "False"}];
-const SM = {};
-const SK = [];
-const EX = [{"Date": "2026-06-09", "ticker": "ESSA.JK", "rank": "2", "rank_change": "0", "close": "610.0", "rs_20d": "-5.65", "rs_change_20d": "-14.96", "ma20": "696.5", "ma50": "763.3", "ma100": "717.95", "drawdown_from_entry": "4.27", "exit_state": "EXIT", "triggered_rules": "B, C, D"}, {"Date": "2026-06-09", "ticker": "ANTM.JK", "rank": "8", "rank_change": "0", "close": "2880.0", "rs_20d": "-3.59", "rs_change_20d": "-2.35", "ma20": "3039.5", "ma50": "3503.4", "ma100": "3774.5", "drawdown_from_entry": "4.73", "exit_state": "EXIT", "triggered_rules": "B, C, D"}, {"Date": "2026-06-09", "ticker": "ASII.JK", "rank": "18", "rank_change": "0", "close": "4670.0", "rs_20d": "-4.24", "rs_change_20d": "-4.15", "ma20": "5298.5", "ma50": "5659.3", "ma100": "5958.9", "drawdown_from_entry": "0.0", "exit_state": "EXIT", "triggered_rules": "A, B, C, D"}, {"Date": "2026-06-09", "ticker": "TPIA.JK", "rank": "28", "rank_change": "0", "close": "1955.0", "rs_20d": "-42.58", "rs_change_20d": "-24.74", "ma20": "2527.5", "ma50": "4307.12", "ma100": "5385.55", "drawdown_from_entry": "0.0", "exit_state": "EXIT", "triggered_rules": "A, B, C, D"}, {"Date": "2026-06-09", "ticker": "ADRO.JK", "rank": "1", "rank_change": "0", "close": "2250.0", "rs_20d": "10.41", "rs_change_20d": "6.0", "ma20": "2331.5", "ma50": "2380.51", "ma100": "2276.69", "drawdown_from_entry": "0.45", "exit_state": "EXIT RISK", "triggered_rules": "C"}, {"Date": "2026-06-09", "ticker": "PTBA.JK", "rank": "3", "rank_change": "0", "close": "2640.0", "rs_20d": "10.56", "rs_change_20d": "12.22", "ma20": "2748.5", "ma50": "2860.2", "ma100": "2750.1", "drawdown_from_entry": "1.93", "exit_state": "EXIT RISK", "triggered_rules": "C"}, {"Date": "2026-06-09", "ticker": "BMRI.JK", "rank": "5", "rank_change": "0", "close": "4090.0", "rs_20d": "14.8", "rs_change_20d": "16.7", "ma20": "4107.0", "ma50": "4177.48", "ma100": "4369.08", "drawdown_from_entry": "6.51", "exit_state": "EXIT RISK", "triggered_rules": "C"}, {"Date": "2026-06-09", "ticker": "CPIN.JK", "rank": "6", "rank_change": "0", "close": "3300.0", "rs_20d": "4.25", "rs_change_20d": "13.63", "ma20": "3898.34", "ma50": "3985.2", "ma100": "4022.91", "drawdown_from_entry": "-2.37", "exit_state": "EXIT RISK", "triggered_rules": "C"}, {"Date": "2026-06-09", "ticker": "PGAS.JK", "rank": "7", "rank_change": "0", "close": "1485.0", "rs_20d": "4.93", "rs_change_20d": "3.98", "ma20": "1668.14", "ma50": "1708.8", "ma100": "1844.78", "drawdown_from_entry": "-2.3", "exit_state": "EXIT RISK", "triggered_rules": "C"}, {"Date": "2026-06-09", "ticker": "AKRA.JK", "rank": "9", "rank_change": "0", "close": "1230.0", "rs_20d": "1.96", "rs_change_20d": "-6.7", "ma20": "1327.5", "ma50": "1382.88", "ma100": "1311.99", "drawdown_from_entry": "0.82", "exit_state": "EXIT RISK", "triggered_rules": "C"}, {"Date": "2026-06-09", "ticker": "BBRI.JK", "rank": "10", "rank_change": "0", "close": "2790.0", "rs_20d": "5.76", "rs_change_20d": "6.22", "ma20": "2999.5", "ma50": "3091.98", "ma100": "3305.38", "drawdown_from_entry": "1.82", "exit_state": "EXIT RISK", "triggered_rules": "C"}, {"Date": "2026-06-09", "ticker": "BRPT.JK", "rank": "11", "rank_change": "0", "close": "1660.0", "rs_20d": "2.2", "rs_change_20d": "-0.49", "ma20": "1764.0", "ma50": "1864.6", "ma100": "2010.3", "drawdown_from_entry": "0.0", "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-09", "ticker": "BBNI.JK", "rank": "12", "rank_change": "0", "close": "3270.0", "rs_20d": "4.17", "rs_change_20d": "2.73", "ma20": "3693.0", "ma50": "3736.2", "ma100": "3900.22", "drawdown_from_entry": "0.0", "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-09", "ticker": "INDF.JK", "rank": "13", "rank_change": "0", "close": "6200.0", "rs_20d": "8.1", "rs_change_20d": "5.71", "ma20": "6625.0", "ma50": "6711.0", "ma100": "6646.25", "drawdown_from_entry": "0.0", "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-09", "ticker": "EXCL.JK", "rank": "14", "rank_change": "0", "close": "2510.0", "rs_20d": "1.68", "rs_change_20d": "7.08", "ma20": "2819.0", "ma50": "2967.0", "ma100": "3150.5", "drawdown_from_entry": "-5.28", "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-09", "ticker": "INTP.JK", "rank": "15", "rank_change": "0", "close": "4000.0", "rs_20d": "3.12", "rs_change_20d": "5.5", "ma20": "4405.45", "ma50": "4615.72", "ma100": "5211.65", "drawdown_from_entry": "0.0", "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-09", "ticker": "MDKA.JK", "rank": "16", "rank_change": "0", "close": "2580.0", "rs_20d": "8.46", "rs_change_20d": "20.3", "ma20": "2604.5", "ma50": "2987.6", "ma100": "3116.8", "drawdown_from_entry": "0.0", "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-09", "ticker": "ITMG.JK", "rank": "17", "rank_change": "0", "close": "21800.0", "rs_20d": "8.84", "rs_change_20d": "16.73", "ma20": "22883.75", "ma50": "24746.82", "ma100": "23717.07", "drawdown_from_entry": "0.0", "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-09", "ticker": "BBCA.JK", "rank": "19", "rank_change": "0", "close": "5150.0", "rs_20d": "2.31", "rs_change_20d": "11.49", "ma20": "5795.0", "ma50": "6121.88", "ma100": "6614.14", "drawdown_from_entry": "0.0", "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-09", "ticker": "TLKM.JK", "rank": "20", "rank_change": "0", "close": "2620.0", "rs_20d": "7.08", "rs_change_20d": "15.84", "ma20": "2933.5", "ma50": "2983.8", "ma100": "3210.1", "drawdown_from_entry": "0.0", "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-09", "ticker": "SMGR.JK", "rank": "21", "rank_change": "0", "close": "1600.0", "rs_20d": "-2.54", "rs_change_20d": "12.95", "ma20": "1795.65", "ma50": "2070.06", "ma100": "2360.64", "drawdown_from_entry": "0.0", "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-09", "ticker": "MIKA.JK", "rank": "22", "rank_change": "0", "close": "1535.0", "rs_20d": "-2.71", "rs_change_20d": "6.27", "ma20": "1682.0", "ma50": "1903.2", "ma100": "2098.4", "drawdown_from_entry": "0.0", "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-09", "ticker": "UNTR.JK", "rank": "23", "rank_change": "0", "close": "21875.0", "rs_20d": "-0.93", "rs_change_20d": "10.12", "ma20": "24112.5", "ma50": "27541.58", "ma100": "27831.69", "drawdown_from_entry": "0.0", "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-09", "ticker": "ICBP.JK", "rank": "24", "rank_change": "0", "close": "6325.0", "rs_20d": "7.65", "rs_change_20d": "12.35", "ma20": "6737.5", "ma50": "6973.5", "ma100": "7431.5", "drawdown_from_entry": "0.0", "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-09", "ticker": "SIDO.JK", "rank": "25", "rank_change": "0", "close": "374.0", "rs_20d": "-2.86", "rs_change_20d": "3.82", "ma20": "402.1", "ma50": "459.11", "ma100": "485.96", "drawdown_from_entry": "0.0", "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-09", "ticker": "GOTO.JK", "rank": "26", "rank_change": "0", "close": "50.0", "rs_20d": "18.57", "rs_change_20d": "23.38", "ma20": "50.0", "ma50": "51.32", "ma100": "55.95", "drawdown_from_entry": "0.0", "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-09", "ticker": "KLBF.JK", "rank": "27", "rank_change": "0", "close": "705.0", "rs_20d": "0.01", "rs_change_20d": "10.63", "ma20": "770.23", "ma50": "851.87", "ma100": "962.96", "drawdown_from_entry": "0.0", "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-09", "ticker": "AMMN.JK", "rank": "29", "rank_change": "0", "close": "3410.0", "rs_20d": "1.14", "rs_change_20d": "25.98", "ma20": "3351.5", "ma50": "4428.6", "ma100": "5738.95", "drawdown_from_entry": "0.0", "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-09", "ticker": "HEAL.JK", "rank": "30", "rank_change": "0", "close": "800.0", "rs_20d": "-1.83", "rs_change_20d": "15.75", "ma20": "937.75", "ma50": "1075.14", "ma100": "1197.79", "drawdown_from_entry": "0.0", "exit_state": "EXIT RISK", "triggered_rules": "A, C"}, {"Date": "2026-06-09", "ticker": "MAPI.JK", "rank": "4", "rank_change": "0", "close": "1490.0", "rs_20d": "17.57", "rs_change_20d": "-1.38", "ma20": "1489.25", "ma50": "1362.8", "ma100": "1287.3", "drawdown_from_entry": "0.34", "exit_state": "HEALTHY", "triggered_rules": "NONE"}];
-const PF = {};
-const FD = {};
-const CW_B = {"quality": 0.25, "growth": 0.3, "value": 0.1, "momentum": 0.35};
-const CW_F = {"quality": 0.25, "growth": 0.1, "value": 0.3, "momentum": 0.35};
-const WI = {"start": "2022-01", "end": "2026-05", "months": 53, "equity_b": [100.0, 101.0400601017311, 102.0909374536143, 103.15274456155261, 104.2255951015779, 105.3096039320212, 106.4048871058092, 107.51156188288873, 108.62974674278058, 109.7595613972638, 110.90112680319177, 112.05456517544197, 113.22000000000001, 114.39755604717996, 115.58735938498215, 116.78953739258986, 118.0042187740065, 119.23153357183442, 120.47161318119718, 121.72459036380663, 122.99059926217619, 124.26977541398207, 125.56225576657374, 126.86817869163542, 128.18768400000002, 129.52091295661717, 130.8680082956768, 132.22911423589025, 133.60437649593018, 134.99394231003095, 136.3979604437515, 137.81658120990187, 139.2499564846359, 140.69823972371051, 142.1615859789148, 143.64015191466964, 145.13409582480003, 146.64357764948195, 148.16875899236527, 149.70980313787496, 151.26687506869217, 152.84014148341706, 154.42977081441543, 156.0359332458509, 157.65880073190476, 159.29854701518505, 160.95534764532735, 162.62937999778896, 155.1674019455571, 147.7054238933252, 140.2434458410933, 132.78146778886142, 125.31948973662955, 117.85751168439766], "equity_f": [100.0, 100.87875900850605, 101.7652401909624, 102.65951140666832, 103.56164111124271, 104.47169836186445, 105.3897528225586, 106.3158747695291, 107.25013509653836, 108.1926053203341, 109.14335758612393, 110.10246467309797, 111.07000000000001, 112.04603763074768, 113.03065228010195, 114.0239193193865, 115.02591478225727, 116.03671537052284, 117.05639846001586, 118.08504210651598, 119.12272505172514, 120.16952672929509, 121.22552727090785, 122.2908075124099, 123.365449, 124.44953399647144, 125.54314548750925, 126.64636718804259, 127.75928354865316, 128.88197976203975, 130.01454176953962, 131.1570562677073, 132.30961071495113, 133.47229333822804, 134.64519313979736, 135.8283999040337, 137.02200420430003, 138.22609740988082, 139.4407716929765, 140.6661200357589, 141.90223623748906, 143.14921492169753, 144.40715154342766, 145.6761423965425, 146.95628462109622, 148.2476762107699, 149.55041602037292, 150.8646037734102, 145.33290163505185, 139.80119949669344, 134.2694973583351, 128.7377952199767, 123.20609308161833, 117.67439094325997], "equity_i": [100.0, 99.92552906363089, 99.85111358646542, 99.77675352720259, 99.70244884457217, 99.6281994973347, 99.55400544428134, 99.47986664423404, 99.40578305604532, 99.33175463859844, 99.25778135080722, 99.18386315161605, 99.11, 99.03619185496457, 98.96243867554587, 98.88874042081048, 98.8150970498555, 98.74150852180841, 98.66797479582723, 98.59449583110035, 98.52107158684652, 98.44770202231491, 98.37438709678503, 98.30112676956668, 98.227921, 98.15476974745539, 98.08167297133352, 98.00863063106527, 97.93564268611176, 97.86270909596432, 97.78982982014438, 97.71700481820356, 97.6442340497236, 97.57151747431632, 97.49885505162365, 97.42624674131754, 97.35369250309999, 97.28119229670304, 97.20874608188865, 97.13635381844878, 97.06401546620538, 96.99173098501024, 96.9195003347451, 96.84732347532155, 96.77520036668105, 96.7031309687949, 96.63111524166419, 96.55915314531981, 96.4872446398224, 96.41538968526237, 96.34358824175983, 96.27184026946459, 96.20014572855615, 96.12850457924364], "month_labels": ["2022-01", "2022-02", "2022-03", "2022-04", "2022-05", "2022-06", "2022-07", "2022-08", "2022-09", "2022-10", "2022-11", "2022-12", "2023-01", "2023-02", "2023-03", "2023-04", "2023-05", "2023-06", "2023-07", "2023-08", "2023-09", "2023-10", "2023-11", "2023-12", "2024-01", "2024-02", "2024-03", "2024-04", "2024-05", "2024-06", "2024-07", "2024-08", "2024-09", "2024-10", "2024-11", "2024-12", "2025-01", "2025-02", "2025-03", "2025-04", "2025-05", "2025-06", "2025-07", "2025-08", "2025-09", "2025-10", "2025-11", "2025-12", "2026-01", "2026-02", "2026-03", "2026-04", "2026-05"]};
-const IC = {"quality": {"ic": 0.0279, "role": "Stabilizer"}, "growth": {"ic": -0.0126, "role": "Diversifier"}, "value": {"ic": 0.0555, "role": "Predictive"}, "momentum": {"ic": 0.0356, "role": "Primary Return Driver"}};
-const BT = {"full": {"label": "Full Period (2022-02 \u2192 2026-05)", "config_b": {"cagr": 13.22, "sharpe": 0.6072, "max_dd": -27.53, "total_return": 71.29}, "config_f": {"cagr": 11.07, "sharpe": 0.5701, "max_dd": -22.0, "total_return": 57.6}, "ihsg": {"cagr": -0.89, "sharpe": -0.08, "max_dd": -28.73, "total_return": -3.82}}, "pre_2026": {"label": "Before 2026 (2022-02 \u2192 2025-12)", "config_b": {"cagr": 23.56, "sharpe": 1.0158, "max_dd": -26.08, "total_return": 129.02}, "config_f": {"cagr": 17.21, "sharpe": 0.8459, "max_dd": -22.0, "total_return": 86.25}, "ihsg": {"cagr": -0.6, "sharpe": 0.12, "max_dd": -12.51, "total_return": -2.33}}, "ytd_2026": {"label": "2026 YTD (2026-01 \u2192 2026-05)", "config_b": {"cagr": -55.7, "sharpe": -1.5343, "max_dd": -27.53, "total_return": -23.77}, "config_f": {"cagr": -35.85, "sharpe": -0.9304, "max_dd": -17.04, "total_return": -13.75}, "ihsg": {"cagr": -7.81, "sharpe": -0.58, "max_dd": -18.62, "total_return": -2.68}}};
-const FCOLORS = {"quality": "#3b82f6", "growth": "#10b981", "value": "#a855f7", "momentum": "#f59e0b"};
-const FNAMES = {"quality": "Quality", "growth": "Growth", "value": "Value", "momentum": "Momentum"};
+const L = {leaders_json};
+const T = {turnaround_json};
+const SM = {summary_json};
+const SK = {streaks_json};
+const EX = {exit_json};
+const PF = {profiles_json};
+const FD = {fundamentals_json};
+const CW_B = {cw_b_json};
+const CW_F = {cw_f_json};
+const WI = {warehouse_json};
+const IC = {ic_json};
+const BT = {bt_json};
+const FCOLORS = {fcolors_json};
+const FNAMES = {fnames_json};
 
 var activeConfig = 'prod';
 function getWeights() { return activeConfig === 'prod' ? CW_F : CW_B; }
 function configLabel() { return activeConfig === 'prod' ? 'Config F' : 'Config B'; }
 
 function sc(v) { return v >= 60 ? 'high' : v >= 40 ? 'mid' : 'low'; }
-function bar(v, k) { var n = +v; return '<div class="bar"><div class="bar-track"><div class="bar-fill" style="width:' + Math.min(n, 100) + '%;background:' + k + '"></div></div><span class="bv">' + n.toFixed(1) + '</span></div>'; }
-function badge(v, t) { return v ? '<span class="badge ' + t + '">Yes</span>' : '<span class="badge bg-gray">No</span>'; }
+function bar(v, k) { var n = +v; return '<div class=\"bar\"><div class=\"bar-track\"><div class=\"bar-fill\" style=\"width:' + Math.min(n, 100) + '%;background:' + k + '\"></div></div><span class=\"bv\">' + n.toFixed(1) + '</span></div>'; }
+function badge(v, t) { return v ? '<span class=\"badge ' + t + '\">Yes</span>' : '<span class=\"badge bg-gray\">No</span>'; }
 function pct(v) { var n = +v; return (n > 0 ? '+' : '') + n.toFixed(1) + '%'; }
-function ctxLabel(r) { return r.context_match ? '<span class="badge bg-green">YES</span>' : '<span class="badge bg-gray">NO</span>'; }
-function trnLabel(r) { return r.transition_match ? '<span class="badge bg-yellow">YES</span>' : '<span class="badge bg-gray">NO</span>'; }
-function fullLabel(r) { return (r.context_match && r.transition_match) ? '<span class="badge bg-blue">FULL</span>' : r.context_match ? '<span class="badge bg-green">CTX</span>' : r.transition_match ? '<span class="badge bg-yellow">TRN</span>' : '<span class="badge bg-gray">—</span>'; }
+function ctxLabel(r) { return r.context_match ? '<span class=\"badge bg-green\">YES</span>' : '<span class=\"badge bg-gray\">NO</span>'; }
+function trnLabel(r) { return r.transition_match ? '<span class=\"badge bg-yellow\">YES</span>' : '<span class=\"badge bg-gray\">NO</span>'; }
+function fullLabel(r) { return (r.context_match && r.transition_match) ? '<span class=\"badge bg-blue\">FULL</span>' : r.context_match ? '<span class=\"badge bg-green\">CTX</span>' : r.transition_match ? '<span class=\"badge bg-yellow\">TRN</span>' : '<span class=\"badge bg-gray\">\u2014</span>'; }
 
 function computeFinalScore(r, w) { return r.quality * w.quality + r.growth * w.growth + r.value * w.value + r.momentum * w.momentum; }
 
@@ -395,7 +495,7 @@ function renderLeaders() {
   scored.sort(function(a, b) { return b._score - a._score; });
   scored.forEach(function(r, i) { r._rank = i + 1; });
   var html = scored.map(function(r) {
-    return '<tr><td class="tk" style="color:#9CA3AF;font-size:11px">' + r._rank + '</td><td class="tk tk-click" data-ticker="' + r.ticker.split('.')[0] + '" style="color:' + ac(r.ticker) + '">' + r.ticker.split('.')[0] + (r._rank <= 5 ? '<span class="flag">★</span>' : '') + '</td><td class="sf ' + sc(r._score) + '">' + r._score.toFixed(1) + '</td><td>' + bar(r.quality, FCOLORS.quality) + '</td><td>' + bar(r.growth, FCOLORS.growth) + '</td><td>' + bar(r.value, FCOLORS.value) + '</td><td>' + bar(r.momentum, FCOLORS.momentum) + '</td><td></td></tr>';
+    return '<tr><td class=\"tk\" style=\"color:#9CA3AF;font-size:11px\">' + r._rank + '</td><td class=\"tk tk-click\" data-ticker=\"' + r.ticker.split('.')[0] + '\" style=\"color:' + ac(r.ticker) + '\">' + r.ticker.split('.')[0] + (r._rank <= 5 ? '<span class=\"flag\">\u2605</span>' : '') + '</td><td class=\"sf ' + sc(r._score) + '\">' + r._score.toFixed(1) + '</td><td>' + bar(r.quality, FCOLORS.quality) + '</td><td>' + bar(r.growth, FCOLORS.growth) + '</td><td>' + bar(r.value, FCOLORS.value) + '</td><td>' + bar(r.momentum, FCOLORS.momentum) + '</td><td></td></tr>';
   }).join('');
   document.getElementById('tbody-leaders').innerHTML = html;
 }
@@ -412,7 +512,7 @@ function renderFactorPanel() {
     var pctW = (w[k] * 100).toFixed(0);
     var barW = Math.min(Math.abs(icv) * 1000, 100);
     var barC = icv > 0 ? '#00d68f' : '#ef4444';
-    h += '<div class="factor-card"><div class="factor-hdr"><span class="factor-name">' + FNAMES[k] + '</span><span class="factor-weight">' + pctW + '%</span></div><div class="factor-ic ' + cls + '">' + (icv > 0 ? '+' : '') + icv.toFixed(4) + '</div><div class="ic-bar"><div class="ic-fill" style="width:' + barW + '%;background:' + barC + '"></div></div><div class="factor-role">' + d.role + '</div></div>';
+    h += '<div class=\"factor-card\"><div class=\"factor-hdr\"><span class=\"factor-name\">' + FNAMES[k] + '</span><span class=\"factor-weight\">' + pctW + '%</span></div><div class=\"factor-ic ' + cls + '\">' + (icv > 0 ? '+' : '') + icv.toFixed(4) + '</div><div class=\"ic-bar\"><div class=\"ic-fill\" style=\"width:' + barW + '%;background:' + barC + '\"></div></div><div class=\"factor-role\">' + d.role + '</div></div>';
   });
   document.getElementById('factor-panel').innerHTML = h;
 }
@@ -444,12 +544,12 @@ function renderInsights() {
   var gap = allTop5Avg - allBot5Avg;
   var strongest = t5.slice().sort(function(a, b) { return b.val - a.val; })[0];
   var weakest = factors.map(function(f) { return { name: f, val: avg(bot5, f) }; }).sort(function(a, b) { return a.val - b.val; })[0];
-  var h = '<div class="insight-hdr"><span class="insight-title">Analisis Leaders · ' + configLabel() + '</span><span class="insight-badge ' + (gap > 30 ? 'r' : gap > 15 ? 'y' : 'n') + '">Gap Top5–Bot5: ' + gap.toFixed(1) + '</span></div><div class="insight-grid">';
-  h += '<div class="insight-row"><span class="insight-lbl">Rerata Top 5</span><span class="insight-val g">' + allTop5Avg.toFixed(1) + '</span></div>';
-  h += '<div class="insight-row"><span class="insight-lbl">Faktor Terkuat Top5</span><span class="insight-val g">' + strongest.name.charAt(0).toUpperCase() + strongest.name.slice(1) + ' (' + strongest.val.toFixed(1) + ')</span></div>';
-  h += '<div class="insight-row"><span class="insight-lbl">Rerata Bottom 5</span><span class="insight-val r">' + allBot5Avg.toFixed(1) + '</span></div>';
-  h += '<div class="insight-row"><span class="insight-lbl">Faktor Terlemah Bot5</span><span class="insight-val r">' + weakest.name.charAt(0).toUpperCase() + weakest.name.slice(1) + ' (' + weakest.val.toFixed(1) + ')</span></div>';
-  h += '</div><div class="insight-note">Kesenjangan ' + gap.toFixed(1) + ' poin — ' + (gap > 30 ? 'distribusi sangat timpang, dominasi saham unggulan kuat' : gap > 15 ? 'distribusi cukup timpang, pemimpin pasar jelas' : gap > 5 ? 'distribusi moderat, persaingan merata' : 'pasar relatif homogen, banyak saham setara') + '</div>';
+  var h = '<div class=\"insight-hdr\"><span class=\"insight-title\">Analisis Leaders \u00b7 ' + configLabel() + '</span><span class=\"insight-badge ' + (gap > 30 ? 'r' : gap > 15 ? 'y' : 'n') + '\">Gap Top5\u2013Bot5: ' + gap.toFixed(1) + '</span></div><div class=\"insight-grid\">';
+  h += '<div class=\"insight-row\"><span class=\"insight-lbl\">Rerata Top 5</span><span class=\"insight-val g\">' + allTop5Avg.toFixed(1) + '</span></div>';
+  h += '<div class=\"insight-row\"><span class=\"insight-lbl\">Faktor Terkuat Top5</span><span class=\"insight-val g\">' + strongest.name.charAt(0).toUpperCase() + strongest.name.slice(1) + ' (' + strongest.val.toFixed(1) + ')</span></div>';
+  h += '<div class=\"insight-row\"><span class=\"insight-lbl\">Rerata Bottom 5</span><span class=\"insight-val r\">' + allBot5Avg.toFixed(1) + '</span></div>';
+  h += '<div class=\"insight-row\"><span class=\"insight-lbl\">Faktor Terlemah Bot5</span><span class=\"insight-val r\">' + weakest.name.charAt(0).toUpperCase() + weakest.name.slice(1) + ' (' + weakest.val.toFixed(1) + ')</span></div>';
+  h += '</div><div class=\"insight-note\">Kesenjangan ' + gap.toFixed(1) + ' poin \u2014 ' + (gap > 30 ? 'distribusi sangat timpang, dominasi saham unggulan kuat' : gap > 15 ? 'distribusi cukup timpang, pemimpin pasar jelas' : gap > 5 ? 'distribusi moderat, persaingan merata' : 'pasar relatif homogen, banyak saham setara') + '</div>';
   document.getElementById('insight-leaders').innerHTML = h;
 
   var top10 = scored.filter(function(d) { return d._rank <= 10; });
@@ -459,13 +559,13 @@ function renderInsights() {
     top10.forEach(function(d) { var p = PF[d.ticker.split('.')[0]]; if (p) { sectors[p.sector] = (sectors[p.sector] || 0) + 1; } });
     var secList = Object.keys(sectors).sort(function(a, b) { return sectors[b] - sectors[a]; });
     var avg10 = function(k) { return top10.reduce(function(s, d) { return s + (+d[k]); }, 0) / n10; };
-    var h2 = '<div class="insight-hdr"><span class="insight-title">Top 10 Ringkasan</span><span class="insight-badge b">' + n10 + ' saham</span></div><div class="insight-grid">';
-    h2 += '<div class="insight-row"><span class="insight-lbl">Rerata Score</span><span class="insight-val">' + avg10('_score').toFixed(1) + '</span></div>';
-    h2 += '<div class="insight-row"><span class="insight-lbl">Quality / Growth</span><span class="insight-val">' + avg10('quality').toFixed(1) + ' / ' + avg10('growth').toFixed(1) + '</span></div>';
-    h2 += '<div class="insight-row"><span class="insight-lbl">Value / Momentum</span><span class="insight-val">' + avg10('value').toFixed(1) + ' / ' + avg10('momentum').toFixed(1) + '</span></div>';
-    h2 += '<div class="insight-row"><span class="insight-lbl">Sektor Dominan</span><span class="insight-val">' + secList[0] + ' (' + sectors[secList[0]] + ')</span></div>';
+    var h2 = '<div class=\"insight-hdr\"><span class=\"insight-title\">Top 10 Ringkasan</span><span class=\"insight-badge b\">' + n10 + ' saham</span></div><div class=\"insight-grid\">';
+    h2 += '<div class=\"insight-row\"><span class=\"insight-lbl\">Rerata Score</span><span class=\"insight-val\">' + avg10('_score').toFixed(1) + '</span></div>';
+    h2 += '<div class=\"insight-row\"><span class=\"insight-lbl\">Quality / Growth</span><span class=\"insight-val\">' + avg10('quality').toFixed(1) + ' / ' + avg10('growth').toFixed(1) + '</span></div>';
+    h2 += '<div class=\"insight-row\"><span class=\"insight-lbl\">Value / Momentum</span><span class=\"insight-val\">' + avg10('value').toFixed(1) + ' / ' + avg10('momentum').toFixed(1) + '</span></div>';
+    h2 += '<div class=\"insight-row\"><span class=\"insight-lbl\">Sektor Dominan</span><span class=\"insight-val\">' + secList[0] + ' (' + sectors[secList[0]] + ')</span></div>';
     h2 += '</div>';
-    if (secList.length > 1) { h2 += '<div class="insight-note">Sektor: ' + secList.map(function(s) { return s + ' (' + sectors[s] + ')'; }).join(' · ') + '</div>'; }
+    if (secList.length > 1) { h2 += '<div class=\"insight-note\">Sektor: ' + secList.map(function(s) { return s + ' (' + sectors[s] + ')'; }).join(' \u00b7 ') + '</div>'; }
     document.getElementById('insight-top10').innerHTML = h2;
   }
 }
@@ -483,7 +583,7 @@ function renderTurnaround() {
   var tk = T.filter(function(r) { return r.context_match || r.transition_match; });
   tk.sort(function(a, b) { return (b.context_match + b.transition_match) - (a.context_match + a.transition_match); });
   var html = tk.map(function(r) {
-    return '<tr><td class="tk tk-click" data-ticker="' + r.ticker.split('.')[0] + '" style="color:' + ac(r.ticker) + '">' + r.ticker.split('.')[0] + '</td><td class="' + (r.context_match ? 'g' : 'r') + '">' + ctxLabel(r) + '</td><td>' + (r.context_match ? r.context_days : 0) + '</td><td class="' + (r.transition_match ? 'g' : 'r') + '">' + trnLabel(r) + '</td><td>' + (r.transition_match ? r.transition_days : 0) + '</td><td>' + fullLabel(r) + '</td><td>' + (r.last_update || '—') + '</td></tr>';
+    return '<tr><td class=\"tk tk-click\" data-ticker=\"' + r.ticker.split('.')[0] + '\" style=\"color:' + ac(r.ticker) + '\">' + r.ticker.split('.')[0] + '</td><td class=\"' + (r.context_match ? 'g' : 'r') + '\">' + ctxLabel(r) + '</td><td>' + (r.context_match ? r.context_days : 0) + '</td><td class=\"' + (r.transition_match ? 'g' : 'r') + '\">' + trnLabel(r) + '</td><td>' + (r.transition_match ? r.transition_days : 0) + '</td><td>' + fullLabel(r) + '</td><td>' + (r.last_update || '\u2014') + '</td></tr>';
   }).join('');
   document.getElementById('tbody-trn').innerHTML = html;
 
@@ -514,12 +614,12 @@ function renderTop() {
   var h = '';
   top10.forEach(function(d) {
     var sym = d.ticker.split('.')[0];
-    h += '<div class="top-candidate" onclick="openPanel(\'' + sym + '\')"><div><span class="tk" style="color:' + ac(d.ticker) + '">' + sym + '</span><span class="flag" style="margin-left:2px">#' + d._rank + '</span></div><div style="display:flex;gap:6px;margin-top:6px">';
+    h += '<div class=\"top-candidate\" onclick=\"openPanel(\\'' + sym + '\\')\"><div><span class=\"tk\" style=\"color:' + ac(d.ticker) + '\">' + sym + '</span><span class=\"flag\" style=\"margin-left:2px\">#' + d._rank + '</span></div><div style=\"display:flex;gap:6px;margin-top:6px\">';
     ['quality', 'growth', 'value', 'momentum'].forEach(function(f) {
       var v = d[f]; var c = v >= 60 ? '#00d68f' : v >= 40 ? '#f59e0b' : '#ef4444';
-      h += '<div style="background:#1e293b;border-radius:4px;padding:2px 6px;font-size:10px;color:' + c + ';min-width:20px;text-align:center">' + f.charAt(0).toUpperCase() + ' ' + (+v).toFixed(0) + '</div>';
+      h += '<div style=\"background:#1e293b;border-radius:4px;padding:2px 6px;font-size:10px;color:' + c + ';min-width:20px;text-align:center\">' + f.charAt(0).toUpperCase() + ' ' + (+v).toFixed(0) + '</div>';
     });
-    h += '</div><div style="display:flex;gap:8px;margin-top:4px;font-size:10px;color:#64748b">';
+    h += '</div><div style=\"display:flex;gap:8px;margin-top:4px;font-size:10px;color:#64748b\">';
     var p = PF[sym]; if (p) { h += '<span>' + p.sector + '</span>'; }
     h += '<span>Score ' + d._score.toFixed(1) + '</span></div></div>';
   });
@@ -530,7 +630,7 @@ renderTop();
 function renderHistory() {
   var h = SK.map(function(r) {
     var sym = r.ticker.split('.')[0];
-    return '<tr><td class="tk" style="color:' + ac(r.ticker) + '">' + sym + '</td><td>' + r.context_days + '</td><td>' + r.transition_days + '</td><td>' + (r.first_context_detected || '—') + '</td><td>' + (r.first_transition_detected || '—') + '</td><td>' + r.total_entries + '</td></tr>';
+    return '<tr><td class=\"tk\" style=\"color:' + ac(r.ticker) + '\">' + sym + '</td><td>' + r.context_days + '</td><td>' + r.transition_days + '</td><td>' + (r.first_context_detected || '\u2014') + '</td><td>' + (r.first_transition_detected || '\u2014') + '</td><td>' + r.total_entries + '</td></tr>';
   }).join('');
   document.getElementById('tbody-history').innerHTML = h;
 }
@@ -549,7 +649,7 @@ function re() {
     var dd = parseFloat(r.drawdown_from_entry) || 0;
     var rules = r.rules || '';
     var esClass = 'es-' + (r.exit_state || 'UNKNOWN').replace(/ /g, '-').toLowerCase();
-    return '<tr><td class="tk" style="color:' + ac(r.ticker) + '">' + sym + '</td><td>' + r.rank + '</td><td class="' + (parseInt(r.rank_change) > 0 ? 'g' : parseInt(r.rank_change) < 0 ? 'r' : '') + '">' + (r.rank_change > 0 ? '+' : '') + r.rank_change + '</td><td><span class="' + esClass + '">' + r.exit_state + '</span></td><td style="font-size:11px">' + rules + '</td><td class="' + (rs20 > 0 ? 'g' : 'r') + '">' + pct(rs20) + '</td><td class="' + (rsChg > 0 ? 'g' : 'r') + '">' + pct(rsChg) + '</td><td class="' + (r.close_above_ma50 === 'TRUE' || r.close_above_ma50 === 'True' ? 'g' : 'r') + '">' + (r.close_above_ma50 === 'TRUE' || r.close_above_ma50 === 'True' ? 'Above' : 'Below') + '</td><td class="' + (r.close_above_ma100 === 'TRUE' || r.close_above_ma100 === 'True' ? 'g' : 'r') + '">' + (r.close_above_ma100 === 'TRUE' || r.close_above_ma100 === 'True' ? 'Above' : 'Below') + '</td><td class="' + (dd < 0 ? 'r' : dd < -5 ? 'o' : 'g') + '">' + (dd > 0 ? '+' : '') + dd.toFixed(1) + '%</td></tr>';
+    return '<tr><td class=\"tk\" style=\"color:' + ac(r.ticker) + '\">' + sym + '</td><td>' + r.rank + '</td><td class=\"' + (parseInt(r.rank_change) > 0 ? 'g' : parseInt(r.rank_change) < 0 ? 'r' : '') + '\">' + (r.rank_change > 0 ? '+' : '') + r.rank_change + '</td><td><span class=\"' + esClass + '\">' + r.exit_state + '</span></td><td style=\"font-size:11px\">' + rules + '</td><td class=\"' + (rs20 > 0 ? 'g' : 'r') + '\">' + pct(rs20) + '</td><td class=\"' + (rsChg > 0 ? 'g' : 'r') + '\">' + pct(rsChg) + '</td><td class=\"' + (r.close_above_ma50 === 'TRUE' || r.close_above_ma50 === 'True' ? 'g' : 'r') + '\">' + (r.close_above_ma50 === 'TRUE' || r.close_above_ma50 === 'True' ? 'Above' : 'Below') + '</td><td class=\"' + (r.close_above_ma100 === 'TRUE' || r.close_above_ma100 === 'True' ? 'g' : 'r') + '\">' + (r.close_above_ma100 === 'TRUE' || r.close_above_ma100 === 'True' ? 'Above' : 'Below') + '</td><td class=\"' + (dd < 0 ? 'r' : dd < -5 ? 'o' : 'g') + '\">' + (dd > 0 ? '+' : '') + dd.toFixed(1) + '%</td></tr>';
   }).join('');
   document.getElementById('tbody-exit').innerHTML = h;
 }
@@ -576,13 +676,13 @@ function renderComparisonCards() {
   ['config_b', 'config_f', 'ihsg'].forEach(function(cfg) {
     var d = scores[cfg];
     var label = cfg === 'config_b' ? 'Config B (Q25/G30/V10/M35)' : cfg === 'config_f' ? 'Config F (Q25/G10/V30/M35)' : 'IHSG';
-    h += '<div class="card"><div class="card-label">' + label + '</div><div style="margin-top:8px">';
-    h += '<div class="insight-row"><span class="insight-lbl">CAGR</span><span class="insight-val ' + (d.cagr > 0 ? 'g' : 'r') + '">' + (d.cagr >= 0 ? '+' : '') + d.cagr.toFixed(2) + '%</span></div>';
-    h += '<div class="insight-row"><span class="insight-lbl">Total Return</span><span class="insight-val ' + (d.total_return >= 0 ? 'g' : 'r') + '">' + (d.total_return >= 0 ? '+' : '') + d.total_return.toFixed(2) + '%</span></div>';
-    h += '<div class="insight-row"><span class="insight-lbl">Max DD</span><span class="insight-val r">' + d.max_dd.toFixed(2) + '%</span></div>';
-    h += '<div class="insight-row"><span class="insight-lbl">Sharpe</span><span class="insight-val ' + (d.sharpe > 0.5 ? 'g' : d.sharpe > 0 ? 'y' : 'r') + '">' + d.sharpe.toFixed(2) + '</span></div>';
-    if (d.volatility) h += '<div class="insight-row"><span class="insight-lbl">Volatility</span><span class="insight-val">' + d.volatility.toFixed(2) + '%</span></div>';
-    if (d.win_rate) h += '<div class="insight-row"><span class="insight-lbl">Win Rate</span><span class="insight-val">' + (d.win_rate * 100).toFixed(1) + '%</span></div>';
+    h += '<div class=\"card\"><div class=\"card-label\">' + label + '</div><div style=\"margin-top:8px\">';
+    h += '<div class=\"insight-row\"><span class=\"insight-lbl\">CAGR</span><span class=\"insight-val ' + (d.cagr > 0 ? 'g' : 'r') + '\">' + (d.cagr >= 0 ? '+' : '') + d.cagr.toFixed(2) + '%</span></div>';
+    h += '<div class=\"insight-row\"><span class=\"insight-lbl\">Total Return</span><span class=\"insight-val ' + (d.total_return >= 0 ? 'g' : 'r') + '\">' + (d.total_return >= 0 ? '+' : '') + d.total_return.toFixed(2) + '%</span></div>';
+    h += '<div class=\"insight-row\"><span class=\"insight-lbl\">Max DD</span><span class=\"insight-val r\">' + d.max_dd.toFixed(2) + '%</span></div>';
+    h += '<div class=\"insight-row\"><span class=\"insight-lbl\">Sharpe</span><span class=\"insight-val ' + (d.sharpe > 0.5 ? 'g' : d.sharpe > 0 ? 'y' : 'r') + '\">' + d.sharpe.toFixed(2) + '</span></div>';
+    if (d.volatility) h += '<div class=\"insight-row\"><span class=\"insight-lbl\">Volatility</span><span class=\"insight-val\">' + d.volatility.toFixed(2) + '%</span></div>';
+    if (d.win_rate) h += '<div class=\"insight-row\"><span class=\"insight-lbl\">Win Rate</span><span class=\"insight-val\">' + (d.win_rate * 100).toFixed(1) + '%</span></div>';
     h += '</div></div>';
   });
   document.getElementById('comparison-cards').innerHTML = h;
@@ -598,10 +698,10 @@ function switchPeriod(period, btn) {
   ['config_b', 'config_f', 'ihsg'].forEach(function(cfg) {
     var d = pd[cfg];
     var label = cfg === 'config_b' ? 'Config B' : cfg === 'config_f' ? 'Config F' : 'IHSG';
-    h += '<div class="card"><div class="card-label">' + label + '</div><div style="margin-top:8px">';
-    h += '<div class="insight-row"><span class="insight-lbl">CAGR</span><span class="insight-val ' + (d.cagr > 0 ? 'g' : 'r') + '">' + (d.cagr >= 0 ? '+' : '') + d.cagr.toFixed(2) + '%</span></div>';
-    h += '<div class="insight-row"><span class="insight-lbl">Max DD</span><span class="insight-val r">' + d.max_dd.toFixed(2) + '%</span></div>';
-    h += '<div class="insight-row"><span class="insight-lbl">Sharpe</span><span class="insight-val ' + (d.sharpe > 0.5 ? 'g' : d.sharpe > 0 ? 'y' : 'r') + '">' + d.sharpe.toFixed(2) + '</span></div>';
+    h += '<div class=\"card\"><div class=\"card-label\">' + label + '</div><div style=\"margin-top:8px\">';
+    h += '<div class=\"insight-row\"><span class=\"insight-lbl\">CAGR</span><span class=\"insight-val ' + (d.cagr > 0 ? 'g' : 'r') + '\">' + (d.cagr >= 0 ? '+' : '') + d.cagr.toFixed(2) + '%</span></div>';
+    h += '<div class=\"insight-row\"><span class=\"insight-lbl\">Max DD</span><span class=\"insight-val r\">' + d.max_dd.toFixed(2) + '%</span></div>';
+    h += '<div class=\"insight-row\"><span class=\"insight-lbl\">Sharpe</span><span class=\"insight-val ' + (d.sharpe > 0.5 ? 'g' : d.sharpe > 0 ? 'y' : 'r') + '\">' + d.sharpe.toFixed(2) + '</span></div>';
     h += '</div></div>';
   });
   document.getElementById('period-cards').innerHTML = h;
@@ -674,12 +774,12 @@ var equityChart, riskChart;
     { date: 'Mar 2025', title: 'Factor System', desc: 'Four-factor scoring system (Quality, Growth, Value, Momentum) implemented.' },
     { date: 'Apr 2025', title: 'V2 Dashboard', desc: 'Complete redesign with turnaround detection, stock profiles, and Chart.js integration.' },
     { date: 'Jun 2025', title: 'Q1 2025 Audit', desc: 'Year-end audit and research review. Growth Factor and scoring weights reviewed.' },
-    { date: 'Apr–May 2026', title: 'Research Phase', desc: 'RESEARCH-013 series: growth reconciliation (013D), period sensitivity (013E), weight optimization.' },
-    { date: 'Jun 2026', title: 'V3 Dashboard · ADR-005', desc: 'Config F (Q25/G10/V30/M35) production config approved. V3 dashboard with config switcher, factor panel, simulation lab, and research timeline.' }
+    { date: 'Apr\u2013May 2026', title: 'Research Phase', desc: 'RESEARCH-013 series: growth reconciliation (013D), period sensitivity (013E), weight optimization.' },
+    { date: 'Jun 2026', title: 'V3 Dashboard \u00b7 ADR-005', desc: 'Config F (Q25/G10/V30/M35) production config approved. V3 dashboard with config switcher, factor panel, simulation lab, and research timeline.' }
   ];
-  var h = '<div class="timeline">';
+  var h = '<div class=\"timeline\">';
   timelineEvents.forEach(function(ev, i) {
-    h += '<div class="tl-item' + (i === timelineEvents.length - 1 ? ' active' : '') + '" onclick="document.querySelector(\'.tl-item.active\').classList.remove(\'active\');this.classList.add(\'active\')"><div class="tl-dot"></div><div class="tl-date">' + ev.date + '</div><div class="tl-title">' + ev.title + '</div><div class="tl-desc">' + ev.desc + '</div></div>';
+    h += '<div class="tl-item' + (i === timelineEvents.length - 1 ? ' active' : '') + '" onclick="document.querySelector(\\'.tl-item.active\\').classList.remove(\\'active\\');this.classList.add(\\'active\\')"><div class="tl-dot"></div><div class="tl-date">' + ev.date + '</div><div class="tl-title">' + ev.title + '</div><div class="tl-desc">' + ev.desc + '</div></div>';
   });
   h += '</div>';
   document.getElementById('timeline-container').innerHTML = h;
@@ -710,7 +810,7 @@ function aiExplain(sym) {
     var strongest = factors.filter(function(f) { return f.val >= 60; }).map(function(f) { return f.name; });
     var weakest = factors.filter(function(f) { return f.val < 40; }).map(function(f) { return f.name; });
     var narrative = d.sym + ' (' + d.profile.sector + ') scores ' + d.score.toFixed(1) + ' with ' + configLabel() + '. Highest factor: ' + topFactor.name + ' (' + topFactor.val.toFixed(1) + '). ';
-    narrative += 'IC ' + (topFactor.ic > 0 ? 'positive' : 'negative') + ' (' + (topFactor.ic > 0 ? '+' : '') + topFactor.ic.toFixed(4) + ') — this factor has been ' + (topFactor.ic > 0.02 ? 'strongly predictive' : topFactor.ic > 0 ? 'modestly predictive' : 'non-predictive') + ' historically. ';
+    narrative += 'IC ' + (topFactor.ic > 0 ? 'positive' : 'negative') + ' (' + (topFactor.ic > 0 ? '+' : '') + topFactor.ic.toFixed(4) + ') \u2014 this factor has been ' + (topFactor.ic > 0.02 ? 'strongly predictive' : topFactor.ic > 0 ? 'modestly predictive' : 'non-predictive') + ' historically. ';
     if (strongest.length > 0) narrative += 'Strengths: ' + strongest.join(', ') + '. ';
     if (weakest.length > 0) narrative += 'Weaknesses: ' + weakest.join(', ') + '. ';
     if (d.exit) narrative += 'Exit state: ' + d.exit.exit_state + '.';
@@ -727,24 +827,24 @@ function renderScoreBreakdown(d) {
     { key: 'value', name: FNAMES.value, val: d.leader.value, weight: w.value, ic: IC.value.ic, role: IC.value.role },
     { key: 'momentum', name: FNAMES.momentum, val: d.leader.momentum, weight: w.momentum, ic: IC.momentum.ic, role: IC.momentum.role }
   ];
-  var h = '<div class="card-label">Score Breakdown · ' + configLabel() + '</div><div class="breakdown-grid">';
+  var h = '<div class=\"card-label\">Score Breakdown \u00b7 ' + configLabel() + '</div><div class=\"breakdown-grid\">';
   factors.forEach(function(f) {
     var weighted = f.val * f.weight;
     var scoreClass = f.val >= 60 ? 'g' : f.val >= 40 ? 'y' : 'r';
     var barC = f.val >= 60 ? '#00d68f' : f.val >= 40 ? '#f59e0b' : '#ef4444';
-    h += '<div class="breakdown-row"><div class="bf-hdr"><span>' + f.name + '</span><span class="' + scoreClass + '">' + f.val.toFixed(1) + ' × ' + (f.weight * 100).toFixed(0) + '% = ' + weighted.toFixed(1) + '</span></div>';
-    h += '<div class="bar"><div class="bar-track"><div class="bar-fill" style="width:' + Math.min(f.val, 100) + '%;background:' + barC + '"></div></div></div>';
-    h += '<div style="font-size:10px;color:#64748b;margin-top:2px">IC ' + (f.ic > 0 ? '+' : '') + f.ic.toFixed(4) + ' · ' + f.role + '</div></div>';
+    h += '<div class=\"breakdown-row\"><div class=\"bf-hdr\"><span>' + f.name + '</span><span class=\"' + scoreClass + '\">' + f.val.toFixed(1) + ' \u00d7 ' + (f.weight * 100).toFixed(0) + '% = ' + weighted.toFixed(1) + '</span></div>';
+    h += '<div class=\"bar\"><div class=\"bar-track\"><div class=\"bar-fill\" style=\"width:' + Math.min(f.val, 100) + '%;background:' + barC + '\"></div></div></div>';
+    h += '<div style=\"font-size:10px;color:#64748b;margin-top:2px\">IC ' + (f.ic > 0 ? '+' : '') + f.ic.toFixed(4) + ' \u00b7 ' + f.role + '</div></div>';
   });
   var total = factors.reduce(function(s, f) { return s + f.val * f.weight; }, 0);
-  h += '<div class="breakdown-total">Final Score: <span class="' + (total >= 60 ? 'g' : total >= 40 ? 'y' : 'r') + '">' + total.toFixed(1) + '</span> / 100</div>';
+  h += '<div class=\"breakdown-total\">Final Score: <span class=\"' + (total >= 60 ? 'g' : total >= 40 ? 'y' : 'r') + '\">' + total.toFixed(1) + '</span> / 100</div>';
   h += '</div>';
   return h;
 }
 
 function renderFundamentals(fd) {
-  if (!fd) return '<div class="card-sub">No fundamental data available.</div>';
-  var h = '<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px 16px;margin-top:8px">';
+  if (!fd) return '<div class=\"card-sub\">No fundamental data available.</div>';
+  var h = '<div style=\"display:grid;grid-template-columns:1fr 1fr;gap:6px 16px;margin-top:8px\">';
   var shown = ['market_cap', 'pe_ttm', 'pbv', 'roe', 'debt_to_equity', 'current_ratio', 'revenue_growth', 'net_profit_margin', 'dividend_yield', 'eps_growth_1y'];
   var labels = { market_cap: 'Market Cap', pe_ttm: 'P/E TTM', pbv: 'P/BV', roe: 'ROE', debt_to_equity: 'D/E', current_ratio: 'Current Ratio', revenue_growth: 'Rev Growth', net_profit_margin: 'Net Margin', dividend_yield: 'Div Yield', eps_growth_1y: 'EPS Growth 1Y' };
   shown.forEach(function(k) {
@@ -754,7 +854,7 @@ function renderFundamentals(fd) {
       if (k === 'roe' || k === 'revenue_growth' || k === 'net_profit_margin' || k === 'eps_growth_1y') { cls = v > 0 ? 'g' : 'r'; }
       if (k === 'debt_to_equity') { cls = v < 1 ? 'g' : v < 2 ? 'y' : 'r'; }
       if (k === 'pe_ttm') { cls = v > 0 && v < 30 ? 'g' : v > 0 ? 'y' : 'r'; }
-      h += '<div class="insight-row"><span class="insight-lbl">' + (labels[k] || k) + '</span><span class="insight-val ' + cls + '">' + (typeof v === 'number' ? (v % 1 === 0 ? v.toLocaleString() : v.toFixed(2)) : v) + '</span></div>';
+      h += '<div class=\"insight-row\"><span class=\"insight-lbl\">' + (labels[k] || k) + '</span><span class=\"insight-val ' + cls + '\">' + (typeof v === 'number' ? (v % 1 === 0 ? v.toLocaleString() : v.toFixed(2)) : v) + '</span></div>';
     }
   });
   h += '</div>';
@@ -763,12 +863,12 @@ function renderFundamentals(fd) {
 
 function renderAlignment(sym) {
   var pf = PF[sym];
-  if (!pf) return '<div class="card-sub">No profile data.</div>';
-  var h = '<div class="card-label">Sector & Industry Alignment</div><div style="margin-top:6px;display:grid;grid-template-columns:1fr 1fr;gap:6px 16px">';
-  h += '<div class="insight-row"><span class="insight-lbl">Sector</span><span class="insight-val">' + (pf.sector || '—') + '</span></div>';
-  h += '<div class="insight-row"><span class="insight-lbl">Industry</span><span class="insight-val">' + (pf.industry || '—') + '</span></div>';
-  if (pf.sector_rank) h += '<div class="insight-row"><span class="insight-lbl">Sector Rank</span><span class="insight-val">#' + pf.sector_rank + '</span></div>';
-  if (pf.peers) h += '<div class="insight-row"><span class="insight-lbl">Peers</span><span class="insight-val" style="font-size:11px">' + pf.peers.join(', ') + '</span></div>';
+  if (!pf) return '<div class=\"card-sub\">No profile data.</div>';
+  var h = '<div class=\"card-label\">Sector & Industry Alignment</div><div style=\"margin-top:6px;display:grid;grid-template-columns:1fr 1fr;gap:6px 16px\">';
+  h += '<div class=\"insight-row\"><span class=\"insight-lbl\">Sector</span><span class=\"insight-val\">' + (pf.sector || '\u2014') + '</span></div>';
+  h += '<div class=\"insight-row\"><span class=\"insight-lbl\">Industry</span><span class=\"insight-val\">' + (pf.industry || '\u2014') + '</span></div>';
+  if (pf.sector_rank) h += '<div class=\"insight-row\"><span class=\"insight-lbl\">Sector Rank</span><span class=\"insight-val\">#' + pf.sector_rank + '</span></div>';
+  if (pf.peers) h += '<div class=\"insight-row\"><span class=\"insight-lbl\">Peers</span><span class=\"insight-val\" style=\"font-size:11px\">' + pf.peers.join(', ') + '</span></div>';
   h += '</div>';
   return h;
 }
@@ -779,12 +879,12 @@ function openPanel(sym) {
   document.getElementById('ptk').style.color = ac(sym + '.JK');
   document.getElementById('pname').textContent = d.profile ? d.profile.name || d.profile.sector || '' : '';
   var body = document.getElementById('pbody');
-  body.innerHTML = '<div class="ai-explain">' + aiExplain(sym) + '</div>';
+  body.innerHTML = '<div class=\"ai-explain\">' + aiExplain(sym) + '</div>';
   body.innerHTML += renderScoreBreakdown(d);
-  body.innerHTML += '<div style="margin-top:12px">' + renderFundamentals(d.fundamentals) + '</div>';
-  body.innerHTML += '<div style="margin-top:12px">' + renderAlignment(sym) + '</div>';
+  body.innerHTML += '<div style=\"margin-top:12px\">' + renderFundamentals(d.fundamentals) + '</div>';
+  body.innerHTML += '<div style=\"margin-top:12px\">' + renderAlignment(sym) + '</div>';
   if (d.exit) {
-    body.innerHTML += '<div style="margin-top:12px"><div class="card-label">Exit Status</div><div style="margin-top:6px"><span class="es-' + d.exit.exit_state.toLowerCase().replace(/ /g, '-') + '">' + d.exit.exit_state + '</span> — ' + (d.exit.rules || 'No rules triggered') + '</div></div>';
+    body.innerHTML += '<div style=\"margin-top:12px\"><div class=\"card-label\">Exit Status</div><div style=\"margin-top:6px\"><span class=\"es-' + d.exit.exit_state.toLowerCase().replace(/ /g, '-') + '\">' + d.exit.exit_state + '</span> \u2014 ' + (d.exit.rules || 'No rules triggered') + '</div></div>';
   }
   document.getElementById('overlay').classList.add('active');
   document.getElementById('panel').classList.add('active');
@@ -803,4 +903,133 @@ document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { clo
 
 console.log('ISI Dashboard V3 loaded. Config:', activeConfig, 'Tickers:', L.length);
 </script>
-</body></html>
+</body></html>"""
+
+def build_html(leaders, turnaround, summary, history, streaks, report_date, exit_data=None, profiles=None, fundamentals=None, radar_status=None, today=None, config_weights=None, warehouse_info=None):
+    summary_data = summary if isinstance(summary, dict) else {}
+    cw_b = CONFIG_B_WEIGHTS
+    cw_f = config_weights if config_weights else {"quality": 0.25, "growth": 0.10, "value": 0.30, "momentum": 0.35}
+    wi = warehouse_info if warehouse_info else get_warehouse_info()
+
+    leaders_json = json.dumps(leaders)
+    turnaround_json = json.dumps(turnaround)
+    summary_json = json.dumps(summary_data)
+    streaks_json = json.dumps(streaks)
+    exit_json = json.dumps(exit_data if exit_data else [])
+    profiles_json = json.dumps(profiles if profiles else {})
+    fundamentals_json = json.dumps(fundamentals if fundamentals else {})
+    cw_b_json = json.dumps(cw_b)
+    cw_f_json = json.dumps(cw_f)
+    warehouse_json = json.dumps(wi)
+    ic_json = json.dumps(IC_VALUES)
+    bt_json = json.dumps(BACKTEST_RESULTS)
+    fcolors_json = json.dumps(FACTOR_COLORS)
+    fnames_json = json.dumps(FACTOR_LABELS)
+
+    warehouse_range = f"{wi.get('start', '2022-01')} \u2192 {wi.get('end', '2026-05')} ({wi.get('months', 53)}mo)"
+
+    display_date = today if today else report_date
+
+    ctx_match_count = summary_data.get('context_match_count', 0)
+    trn_match_count = summary_data.get('transition_match_count', 0)
+
+    file_age_leaders = file_age(LEADERS_FILE, report_date)
+    file_age_turnaround = file_age(TURNAROUND_FILE, report_date)
+    file_age_exit = file_age(EXIT_FILE, report_date)
+    universe_size = summary_data.get('universe_size', 0)
+    report_date_val = summary_data.get('date', 'N/A')
+    history_len = len(history)
+    history_len = max(history_len, len(streaks))
+
+    substitutions = {
+        'leaders_json': leaders_json,
+        'turnaround_json': turnaround_json,
+        'summary_json': summary_json,
+        'streaks_json': streaks_json,
+        'exit_json': exit_json,
+        'profiles_json': profiles_json,
+        'fundamentals_json': fundamentals_json,
+        'cw_b_json': cw_b_json,
+        'cw_f_json': cw_f_json,
+        'warehouse_json': warehouse_json,
+        'ic_json': ic_json,
+        'bt_json': bt_json,
+        'fcolors_json': fcolors_json,
+        'fnames_json': fnames_json,
+        'warehouse_range': warehouse_range,
+        'report_date': display_date or '',
+        'ctx_match_count': str(ctx_match_count),
+        'trn_match_count': str(trn_match_count),
+        'file_age_leaders': file_age_leaders,
+        'file_age_turnaround': file_age_turnaround,
+        'file_age_exit': file_age_exit,
+        'universe_size': str(universe_size),
+        'report_date_val': report_date_val,
+        'history_len': str(history_len),
+    }
+
+    html = TEMPLATE
+    for k, v in substitutions.items():
+        html = html.replace('{' + k + '}', str(v))
+
+    return html
+
+
+def main():
+    import os
+    from datetime import datetime
+
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    project_dir = os.path.dirname(base_dir)
+    data_dir = os.path.join(project_dir, "data", "current")
+
+    def load_csv(path):
+        if not os.path.exists(path):
+            return []
+        with open(path, newline="", encoding="utf-8-sig") as f:
+            return list(csv.DictReader(f))
+
+    def load_json(path):
+        if not os.path.exists(path):
+            return {}
+        with open(path, encoding="utf-8") as f:
+            return json.load(f)
+
+    leaders = load_csv(os.path.join(data_dir, "leaders_latest.csv"))
+    turnaround = load_csv(os.path.join(data_dir, "turnaround_latest.csv"))
+    exit_data = load_csv(os.path.join(data_dir, "exit_watchlist_latest.csv"))
+    summary_data = load_csv(os.path.join(data_dir, "summary_latest.csv"))
+    summary_data = summary_data[0] if summary_data else {}
+    streaks = load_csv(os.path.join(data_dir, "streaks_history.csv"))
+    profiles = load_json(os.path.join(project_dir, "data", "current", "stock_profiles.json"))
+    fundamentals = load_json(os.path.join(project_dir, "data", "current", "fundamentals.json"))
+    scoring_weights = load_json(os.path.join(project_dir, "config", "scoring_weights.json"))
+
+    config_weights = {
+        "quality": float(scoring_weights.get("quality", 0.25)),
+        "growth": float(scoring_weights.get("growth", 0.10)),
+        "value": float(scoring_weights.get("value", 0.30)),
+        "momentum": float(scoring_weights.get("momentum", 0.35)),
+    }
+
+    warehouse_info = get_warehouse_info()
+    history = load_csv(os.path.join(project_dir, "database", "historical", "turnaround_history.csv"))
+    report_date = summary_data.get("date", datetime.now().strftime("%Y-%m-%d"))
+
+    html = build_html(
+        leaders, turnaround, summary_data, history, streaks, report_date,
+        exit_data=exit_data,
+        profiles=profiles,
+        fundamentals=fundamentals,
+        config_weights=config_weights,
+        warehouse_info=warehouse_info,
+    )
+
+    output_path = os.path.join(project_dir, "dashboard", "index.html")
+    with open(output_path, "w", encoding="utf-8") as f:
+        f.write(html)
+    print(f"[OK] Dashboard V3 written to {output_path} ({len(html)} bytes)")
+
+
+if __name__ == "__main__":
+    main()

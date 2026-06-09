@@ -269,6 +269,19 @@ tr:hover td{{background:#1a1e24}}
 .insight-badge.b{{background:#0c1929;color:#60a5fa;border:1px solid #1e3a5f}}
 .insight-badge.n{{background:#171b20;color:#9CA3AF;border:1px solid #222830}}
 .insight-note{{font-size:10px;color:#64748b;margin-top:5px;line-height:1.4;padding-top:4px;border-top:1px solid #1a1f26}}
+.card-click{{cursor:pointer;transition:all .15s}}
+.card-click:hover{{border-color:#00c26f;transform:translateY(-1px);box-shadow:0 2px 8px rgba(0,194,111,.08)}}
+.card-click.active{{border-color:#00c26f;background:#0a1f14}}
+.fltr-info{{display:none;margin-bottom:1rem;padding:10px 12px;background:#12151a;border:1px solid #1a1f26;border-radius:6px}}
+.fltr-info.show{{display:block}}
+.fltr-hdr{{font-size:9px;font-family:'Space Mono',monospace;color:#C9D1D9;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;font-weight:600;display:flex;align-items:center;justify-content:space-between}}
+.fltr-close{{background:transparent;border:none;color:#9CA3AF;cursor:pointer;font-size:12px;font-family:'Space Mono',monospace}}
+.fltr-close:hover{{color:#F5F7FA}}
+.fltr-list{{display:flex;flex-wrap:wrap;gap:4px}}
+.fltr-tag{{padding:3px 10px;background:#1a1e24;border:1px solid #222830;border-radius:4px;font-size:11px;font-family:'Space Mono',monospace;color:#F5F7FA}}
+.fltr-tag:hover{{background:#222830}}
+.toast{{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#171b20;border:1px solid #222830;border-radius:8px;padding:10px 18px;font-size:12px;font-family:'Space Mono',monospace;color:#C9D1D9;z-index:200;display:none;max-width:90vw;box-shadow:0 4px 12px rgba(0,0,0,.4);line-height:1.6;white-space:pre-line}}
+.toast.show{{display:block}}
 </style>
 </head>
 <body>
@@ -319,20 +332,22 @@ tr:hover td{{background:#1a1e24}}
 <div class="tc" id="t2">
   <div class="section-title">Today's Snapshot</div>
   <div class="card-grid">
-    <div class="card"><div class="card-label">SAHAM TERTEKAN<span class="tip" title="What does this mean?&#10;Stock is still under heavy pressure.&#10;&#10;How is it calculated?&#10;Price is far below previous highs&#10;and volatility remains elevated.&#10;&#10;Research Source:&#10;Research-009B">?</span></div><div class="card-val g">{ctx_count}</div><div class="card-sub">Saham yang jatuh berat dan masih dalam kondisi tertekan</div></div>
-    <div class="card"><div class="card-label">MULAI MEMBAIK<span class="tip" title="What does this mean?&#10;Stock is starting to recover.&#10;&#10;How is it calculated?&#10;Current strength is better than it was&#10;during the previous two months.&#10;&#10;Research Source:&#10;Research-008B / Research-009B">?</span></div><div class="card-val y">{trn_count}</div><div class="card-sub">Saham dengan kekuatan relatif yang mulai meningkat</div></div>
-    <div class="card"><div class="card-label">KANDIDAT TURNAROUND<span class="tip" title="What does this mean?&#10;Distressed stocks that are beginning&#10;to show signs of recovery.&#10;&#10;How is it calculated?&#10;Stock meets BOTH conditions:&#10;1. Under heavy pressure (Context Match)&#10;2. Improving relative strength (Transition Match)&#10;&#10;Research Source:&#10;Research-008B / Research-009B">?</span></div><div class="card-val b">{full_count}</div><div class="card-sub">Saham tertekan yang mulai menunjukkan pemulihan</div></div>
+    <div class="card card-click" data-filter="ctx"><div class="card-label">SAHAM TERTEKAN<span class="tip" onclick="showTip(event,this)" data-tip-key="ctx">?</span></div><div class="card-val g">{ctx_count}</div><div class="card-sub">Saham yang jatuh berat dan masih dalam kondisi tertekan</div></div>
+    <div class="card card-click" data-filter="trn"><div class="card-label">MULAI MEMBAIK<span class="tip" onclick="showTip(event,this)" data-tip-key="trn">?</span></div><div class="card-val y">{trn_count}</div><div class="card-sub">Saham dengan kekuatan relatif yang mulai meningkat</div></div>
+    <div class="card card-click" data-filter="full"><div class="card-label">KANDIDAT TURNAROUND<span class="tip" onclick="showTip(event,this)" data-tip-key="full">?</span></div><div class="card-val b">{full_count}</div><div class="card-sub">Saham tertekan yang mulai menunjukkan pemulihan</div></div>
     <div class="card"><div class="card-label">Universe</div><div class="card-val">{summary_data.get('universe_size', 0)}</div><div class="card-sub">IDX30 tickers</div></div>
   </div>
+  <div class="fltr-info" id="fltr-cards"></div>
   <div class="section-title">Signal Diagnostics</div>
   <div class="card-grid">
-    <div class="card"><div class="card-label">KEKUATAN MULAI NAIK<span class="tip" title="What does this mean?&#10;Stocks starting to outperform the market.&#10;&#10;How is it calculated?&#10;RS_CHANGE_60D &gt; 0&#10;Relative strength improved over 60 days.&#10;&#10;Research Source:&#10;Research-009">?</span></div><div class="card-val g">{sig.get('rs_change_60d_positive_count', 0)}</div><div class="card-sub">Saham yang mulai outperform pasar</div></div>
-    <div class="card"><div class="card-label">MINAT BELI MENINGKAT<span class="tip" title="What does this mean?&#10;Trading activity is increasing.&#10;&#10;How is it calculated?&#10;Current volume is at least&#10;30% higher than normal.&#10;&#10;Research Source:&#10;Research-008B">?</span></div><div class="card-val y">{sig.get('volume_ratio_high_count', 0)}</div><div class="card-sub">Aktivitas perdagangan di atas normal</div></div>
-    <div class="card"><div class="card-label">DI ATAS TREND PENDEK<span class="tip" title="What does this mean?&#10;Price has moved above&#10;its short-term trend.&#10;&#10;How is it calculated?&#10;Current price is above&#10;its average price over&#10;the last 20 trading days.&#10;&#10;Research Source:&#10;Research-009B">?</span></div><div class="card-val">{sig.get('above_ma20_count', 0)}</div><div class="card-sub">Harga di atas rata-rata 20 hari</div></div>
-    <div class="card"><div class="card-label">PANTUL DARI DASAR<span class="tip" title="What does this mean?&#10;Stock has rebounded from&#10;a recent low.&#10;&#10;How is it calculated?&#10;Price is more than 10%&#10;above the lowest point&#10;of the last 60 trading days.&#10;&#10;Research Source:&#10;Research-008B">?</span></div><div class="card-val g">{sig.get('recovery_gt_10pct_count', 0)}</div><div class="card-sub">Memantul &gt;10% dari level terendah 60 hari</div></div>
-    <div class="card"><div class="card-label">RATA-RATA PENURUNAN<span class="tip" title="Rata-rata penurunan semua saham dari harga tertinggi masing-masing.&#10;&#10;(Perhitungan:&#10;Mean Drawdown_252D&#10;— seluruh universe IDX30)">?</span></div><div class="card-val r">{sig.get('avg_drawdown_252d', 0)}%</div><div class="card-sub">Rata-rata penurunan dari harga tertinggi</div></div>
-    <div class="card"><div class="card-label">RATA-RATA GEJOLAK<span class="tip" title="Intensitas pergerakan harga rata-rata — semakin tinggi semakin berisiko.&#10;&#10;(Perhitungan:&#10;Mean Volatility_60D&#10;— seluruh universe IDX30)">?</span></div><div class="card-val y">{sig.get('avg_volatility_60d', 0)}%</div><div class="card-sub">Intensitas pergerakan harga rata-rata</div></div>
+    <div class="card card-click" data-filter="rs-pos"><div class="card-label">KEKUATAN MULAI NAIK<span class="tip" onclick="showTip(event,this)" data-tip-key="rs-pos">?</span></div><div class="card-val g">{sig.get('rs_change_60d_positive_count', 0)}</div><div class="card-sub">Saham yang mulai outperform pasar</div></div>
+    <div class="card card-click" data-filter="vol-high"><div class="card-label">MINAT BELI MENINGKAT<span class="tip" onclick="showTip(event,this)" data-tip-key="vol-high">?</span></div><div class="card-val y">{sig.get('volume_ratio_high_count', 0)}</div><div class="card-sub">Aktivitas perdagangan di atas normal</div></div>
+    <div class="card"><div class="card-label">DI ATAS TREND PENDEK<span class="tip" onclick="showTip(event,this)" data-tip-key="above-ma20">?</span></div><div class="card-val">{sig.get('above_ma20_count', 0)}</div><div class="card-sub">Harga di atas rata-rata 20 hari</div></div>
+    <div class="card card-click" data-filter="recovery"><div class="card-label">PANTUL DARI DASAR<span class="tip" onclick="showTip(event,this)" data-tip-key="recovery">?</span></div><div class="card-val g">{sig.get('recovery_gt_10pct_count', 0)}</div><div class="card-sub">Memantul &gt;10% dari level terendah 60 hari</div></div>
+    <div class="card"><div class="card-label">RATA-RATA PENURUNAN<span class="tip" onclick="showTip(event,this)" data-tip-key="avg-dd">?</span></div><div class="card-val r">{sig.get('avg_drawdown_252d', 0)}%</div><div class="card-sub">Rata-rata penurunan dari harga tertinggi</div></div>
+    <div class="card"><div class="card-label">RATA-RATA GEJOLAK<span class="tip" onclick="showTip(event,this)" data-tip-key="avg-vol">?</span></div><div class="card-val y">{sig.get('avg_volatility_60d', 0)}%</div><div class="card-sub">Intensitas pergerakan harga rata-rata</div></div>
   </div>
+  <div class="fltr-info" id="fltr-sig"></div>
   <div class="section-title">Top Candidates</div>
   <table>
     <thead><tr>
@@ -852,6 +867,82 @@ function closePanel(){{
 
 document.addEventListener('keydown',function(e){{if(e.key==='Escape')closePanel()}})
 document.addEventListener('click',function(e){{var t=e.target.closest('.tk-click');if(t){{var tkr=t.getAttribute('data-ticker')||t.textContent.trim();e.stopPropagation();openPanel(tkr)}}}})
+
+/* CARD FILTER — Daily Summary card clicks */
+(function(){{
+  var filterMap={{\
+    ctx: {{label:'SAHAM TERTEKAN (Context Match)', fn:function(d){{return d.context_match}}}},\
+    trn: {{label:'MULAI MEMBAIK (Transition Match)', fn:function(d){{return d.transition_match}}}},\
+    full: {{label:'KANDIDAT TURNAROUND (Full Match)', fn:function(d){{return d.context_match&&d.transition_match}}}},\
+    'rs-pos': {{label:'KEKUATAN MULAI NAIK (RS Change 60D &gt; 0)', fn:function(d){{return d.rs_change_60d>0}}}},\
+    'vol-high': {{label:'MINAT BELI MENINGKAT (Volume Ratio &ge; 1.3)', fn:function(d){{return d.volume_ratio>=1.3}}}},\
+    recovery: {{label:'PANTUL DARI DASAR (Recovery &gt; 10%)', fn:function(d){{return d.recovery_from_60d_low>10}}}}\
+  }}
+  var activeFilter=null
+  function render(filterType,containerId){{
+    var m=filterMap[filterType],el=document.getElementById(containerId)
+    if(!m){{el.classList.remove('show');return}}
+    var filtered=T.filter(m.fn)
+    var html='<div class="fltr-hdr"><span>'+m.label+' &mdash; '+filtered.length+' saham</span><span class="fltr-close" data-cid="'+containerId+'">&#10005;</span></div>'
+    html+='<div class="fltr-list">'
+    filtered.forEach(function(d){{
+      var ticker=d.ticker.split('.')[0]
+      var c=ac(d.ticker)
+      html+='<span class="fltr-tag tk-click" data-ticker="'+ticker+'" style="cursor:pointer;color:'+c+'">'+ticker+'</span>'
+    }})
+    html+='</div>'
+    el.innerHTML=html
+    el.classList.add('show')
+  }}
+  document.addEventListener('click',function(e){{
+    var cls=e.target.closest('.fltr-close')
+    if(cls){{var id=cls.getAttribute('data-cid');if(id){{document.getElementById(id).classList.remove('show');document.querySelectorAll('.card-click.active').forEach(function(c){{c.classList.remove('active')}});activeFilter=null}}}}
+    var crd=e.target.closest('.card-click[data-filter]')
+    if(crd){{
+      var f=crd.getAttribute('data-filter')
+      var container=crd.closest('.card-grid').nextElementSibling
+      if(container&&container.classList.contains('fltr-info')){{
+        if(activeFilter===f&&container.classList.contains('show')){{
+          container.classList.remove('show')
+          crd.classList.remove('active')
+          activeFilter=null
+        }}else{{
+          document.querySelectorAll('.card-click.active').forEach(function(c){{c.classList.remove('active')}})
+          crd.classList.add('active')
+          render(f,container.id)
+          activeFilter=f
+        }}
+      }}
+    }}
+  }})
+}})();
+
+/* TOOLTIP POPUP — for ? marks (Bahasa Indonesia) */
+var toastEl=null
+var TIPS={{
+  ctx: 'Apa artinya?\\nSaham masih dalam tekanan berat.\\n\\nBagaimana cara menghitungnya?\\nHarga jauh di bawah harga tertinggi sebelumnya\\ndan volatilitas masih tinggi.\\n\\nSumber Riset:\\nResearch-009B',
+  trn: 'Apa artinya?\\nSaham mulai menunjukkan pemulihan.\\n\\nBagaimana cara menghitungnya?\\nKekuatan relatif saat ini lebih baik\\ndaripada dua bulan sebelumnya.\\n\\nSumber Riset:\\nResearch-008B / Research-009B',
+  full: 'Apa artinya?\\nSaham tertekan yang mulai menunjukkan\\ntanda-tanda pemulihan.\\n\\nBagaimana cara menghitungnya?\\nMemenuhi DUA kondisi:\\n1. Tekanan berat (Context Match)\\n2. Kekuatan relatif membaik (Transition Match)\\n\\nSumber Riset:\\nResearch-008B / Research-009B',
+  'rs-pos': 'Apa artinya?\\nSaham mulai mengungguli pasar.\\n\\nBagaimana cara menghitungnya?\\nRS_CHANGE_60D &gt; 0\\nKekuatan relatif meningkat selama 60 hari.\\n\\nSumber Riset:\\nResearch-009',
+  'vol-high': 'Apa artinya?\\nAktivitas perdagangan meningkat.\\n\\nBagaimana cara menghitungnya?\\nVolume saat ini setidaknya\\n30% lebih tinggi dari normal.\\n\\nSumber Riset:\\nResearch-008B',
+  'above-ma20': 'Apa artinya?\\nHarga bergerak di atas\\ntren jangka pendeknya.\\n\\nBagaimana cara menghitungnya?\\nHarga saat ini di atas\\nharga rata-rata 20 hari terakhir.\\n\\nSumber Riset:\\nResearch-009B',
+  recovery: 'Apa artinya?\\nSaham memantul dari\\ntitik terendah baru-baru ini.\\n\\nBagaimana cara menghitungnya?\\nHarga lebih dari 10%\\ndi atas titik terendah\\n60 hari terakhir.\\n\\nSumber Riset:\\nResearch-008B',
+  'avg-dd': 'Rata-rata penurunan semua saham dari harga tertinggi masing-masing.\\n\\n(Perhitungan:\\nRata-rata Drawdown_252D\\n— seluruh universe IDX30)',
+  'avg-vol': 'Intensitas pergerakan harga rata-rata — semakin tinggi semakin berisiko.\\n\\n(Perhitungan:\\nRata-rata Volatilitas_60D\\n— seluruh universe IDX30)'
+}}
+function showTip(ev,el){{
+  ev.stopPropagation()
+  var key=el.getAttribute('data-tip-key')
+  var txt=key&&TIPS[key]?TIPS[key]:el.getAttribute('data-tip')||el.getAttribute('title')||''
+  if(!toastEl){{
+    toastEl=document.createElement('div')
+    toastEl.className='toast'
+    document.body.appendChild(toastEl)
+  }}
+  toastEl.textContent=txt
+  toastEl.classList.add('show')
+  setTimeout(function(){{toastEl.classList.remove('show')}},4000)
+}}
 </script>
 </body>
 </html>'''

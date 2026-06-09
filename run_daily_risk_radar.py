@@ -219,7 +219,7 @@ def evaluate_emergency_brake():
             ratio    = curr_vol / ma20_vol if ma20_vol > 0 else 1.0
 
             if ratio >= 2.0:
-                vol_status = "Anomali Lonjakan!"
+                vol_status = "Volume Lonjakan"
             elif ratio < 1.0:
                 vol_status = "Sepi"
             else:

@@ -381,27 +381,21 @@ tr:hover td{background:#111b26}
 </div>
 <script src="data/data.js"></script>
 <script>
-var L, T, SM, SK, EX, PF, FD, CW_B, CW_F, WI, IC, BT, FCOLORS, FNAMES, RS;
-var BM = (function() {
-  var ml = WI.month_labels || WI.labels || [];
-  var eb = WI.equity_b || WI.config_b || [];
-  var ef = WI.equity_f || WI.config_f || [];
-  var ei = WI.equity_i || WI.ihsg || [];
-  var o = { labels: [], config_b: [], config_f: [], ihsg: [] };
-  for (var i = 0; i < ml.length; i++) {
-    o.labels.push(ml[i]);
-    o.config_b.push(Math.round((eb[i] || 0) * 1000000));
-    o.config_f.push(Math.round((ef[i] || 0) * 1000000));
-    o.ihsg.push(Math.round((ei[i] || 0) * 1000000));
-  }
-  return o;
-})();
+var L, T, SM, SK, EX, PF, FD, CW_B, CW_F, WI, IC, BT, FCOLORS, FNAMES, RS, BM;
 var BM_M = (function() {
+  if (!BM || !BM.length) return [];
+  var labels = [], cb = [], cf = [], ih = [];
+  for (var i = 0; i < BM.length; i++) {
+    labels.push(BM[i].date);
+    cb.push(BM[i].config_b);
+    cf.push(BM[i].config_f);
+    ih.push(BM[i].ihsg);
+  }
+  BM = { labels: labels, config_b: cb, config_f: cf, ihsg: ih };
   var out = [];
   for (var i = 0; i < BM.labels.length; i++) {
-    var cb = BM.config_b[i], cf = BM.config_f[i], ih = BM.ihsg[i];
-    var pb = i > 0 ? BM.config_b[i-1] : cb, pf2 = i > 0 ? BM.config_f[i-1] : cf, pi = i > 0 ? BM.ihsg[i-1] : ih;
-    out.push({ label: BM.labels[i], config_b: cb, config_f: cf, ihsg: ih, ret_b: (cb/pb-1)*100, ret_f: (cf/pf2-1)*100, ret_i: (ih/pi-1)*100 });
+    var pb = i > 0 ? BM.config_b[i-1] : BM.config_b[i], pf2 = i > 0 ? BM.config_f[i-1] : BM.config_f[i], pi = i > 0 ? BM.ihsg[i-1] : BM.ihsg[i];
+    out.push({ label: BM.labels[i], config_b: BM.config_b[i], config_f: BM.config_f[i], ihsg: BM.ihsg[i], ret_b: (BM.config_b[i]/pb-1)*100, ret_f: (BM.config_f[i]/pf2-1)*100, ret_i: (BM.ihsg[i]/pi-1)*100 });
   }
   return out;
 })();

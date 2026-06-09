@@ -822,7 +822,7 @@ function tickerData(sym) {
   L.forEach(function(d) { if (d.ticker === tk) l = d; });
   T.forEach(function(d) { if (d.ticker === tk) td = d; });
   if (PF[sym]) pf = PF[sym];
-  if (FD[sym]) fd = FD[sym];
+  if (FD[tk]) fd = FD[tk];
   EX.forEach(function(d) { if (d.ticker === tk) ed = d; });
   var score = l ? computeFinalScore(l, w) : 0;
   return { ticker: tk, sym: sym, leader: l, turnaround: td, profile: pf, fundamentals: fd, exit: ed, score: score };
@@ -1137,8 +1137,15 @@ def main():
     summary_data = load_csv(os.path.join(data_dir, "summary_latest.csv"))
     summary_data = summary_data[0] if summary_data else {}
     streaks = load_csv(os.path.join(data_dir, "streaks_history.csv"))
-    profiles = load_json(os.path.join(project_dir, "data", "current", "stock_profiles.json"))
-    fundamentals = load_json(os.path.join(project_dir, "data", "current", "fundamentals.json"))
+
+    profiles = load_json(os.path.join(project_dir, "data", "state", "company_profiles.json"))
+    fundamentals = load_json(os.path.join(project_dir, "output", "raw", "fundamentals.json"))
+    raw_growth = load_json(os.path.join(project_dir, "output", "raw", "growth.json"))
+    for tk in fundamentals:
+        if tk in raw_growth:
+            fundamentals[tk]['revenue_growth'] = raw_growth[tk].get('revenue_growth')
+            fundamentals[tk]['earnings_growth'] = raw_growth[tk].get('earnings_growth')
+
     scoring_weights = load_json(os.path.join(project_dir, "config", "scoring_weights.json"))
 
     config_weights = {

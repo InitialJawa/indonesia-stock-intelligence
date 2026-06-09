@@ -1072,10 +1072,10 @@ def main():
     print("  Generating HTML...")
     html = build_html(leaders, turnaround, summary, history, streaks, report_date, exit_data, profiles, fundamentals, radar_status, today=date_str)
     V2_DIR.mkdir(parents=True, exist_ok=True)
-    output_path = V2_DIR / 'index.html'
+    output_path = V2_DIR / 'index_v2.html'
     with open(output_path, 'w', encoding='utf-8') as f:
         f.write(html)
-    print(f"  Written: {output_path.resolve()}")
+    print(f"  Written: {output_path.resolve()} (V2 fallback — V3 is the active dashboard)")
     print("=== Dashboard V2 Complete ===")
 
 if __name__ == '__main__':

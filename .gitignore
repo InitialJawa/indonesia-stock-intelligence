@@ -18,6 +18,14 @@ config/settings.json
 *.diff
 old_*.html
 insight_*.html
+temp_*.py
+check_*.py
+extract_*.py
+find_*.py
+output/check.js
+
+# Data files (only data.js committed)
+dashboard/data/*.json
 
 # OS files
 Thumbs.db

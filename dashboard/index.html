@@ -209,47 +209,44 @@ tr:hover td{background:#111b26}
 .radar-badge.safe{background:#064e2e;color:#00d68f;border:1px solid #166534}
 .radar-badge.warning{background:#3b2a04;color:#fbbf24;border:1px solid #5c4308}
 .radar-badge.danger{background:#3b0a0a;color:#ef4444;border:1px solid #5c1515}
-/* Market tab */
-.mkt-hero{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;background:#0f1729;border:1px solid #1e293b;border-radius:12px;padding:18px 22px;margin-bottom:14px;gap:12px}
-.mkt-hero-left{display:flex;flex-direction:column;gap:6px}
-.mkt-hero-center{text-align:center}
-.mkt-hero-right{text-align:right}
-.mkt-hero-status{display:inline-block;padding:6px 20px;font-size:13px;font-weight:700;font-family:'Space Mono',monospace;border-radius:100px;letter-spacing:.04em}
-.mkt-hero-status.safe{background:#064e2e;color:#00d68f;border:1px solid #166534}
-.mkt-hero-status.warning{background:#3b2a04;color:#fbbf24;border:1px solid #5c4308}
-.mkt-hero-status.danger{background:#3b0a0a;color:#ef4444;border:1px solid #5c1515}
-.mkt-hero-action{display:inline-block;padding:6px 20px;font-size:13px;font-weight:700;font-family:'Space Mono',monospace;border-radius:100px;letter-spacing:.04em}
-.mkt-hero-action.accumulate{background:#064e2e;color:#00d68f;border:1px solid #166534}
-.mkt-hero-action.hold{background:#0c1929;color:#60a5fa;border:1px solid #1e3a5f}
-.mkt-hero-action.wait{background:#3b2a04;color:#fbbf24;border:1px solid #5c4308}
-.mkt-hero-action.reduce{background:#3b0a0a;color:#ef4444;border:1px solid #5c1515}
-.mkt-hero-action.buy{background:#064e2e;color:#00d68f;border:1px solid #166534}
-.mkt-hero-deployment-lbl{font-size:9px;color:#64748b;text-transform:uppercase;letter-spacing:.1em;font-family:'Space Mono',monospace}
-.mkt-hero-deployment-val{font-size:32px;font-weight:700;font-family:'Space Mono',monospace;line-height:1.2}
-.mkt-hero-regime{display:inline-block;padding:6px 20px;font-size:13px;font-weight:700;font-family:'Space Mono',monospace;border-radius:100px;letter-spacing:.04em}
-.mkt-hero-regime.risk-on{background:#064e2e;color:#00d68f;border:1px solid #166534}
-.mkt-hero-regime.risk-off{background:#3b0a0a;color:#ef4444;border:1px solid #5c1515}
-.mkt-section{margin-bottom:14px}
-.mkt-section-title{font-size:10px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;border-bottom:1px solid #1e293b;padding-bottom:4px}
-.mkt-why-list{background:#0f1729;border:1px solid #1e293b;border-radius:8px;padding:12px 16px}
-.mkt-why-item{font-size:12px;padding:4px 0;display:flex;align-items:center;gap:8px;line-height:1.5}
-.mkt-why-item .icon{font-size:14px;flex-shrink:0}
-.mkt-metrics{display:flex;flex-direction:column;gap:8px}
-.mkt-metric-row{display:grid;grid-template-columns:120px 1fr 36px;align-items:center;gap:10px}
-.mkt-metric-label{font-size:10px;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;font-family:'Space Mono',monospace;white-space:nowrap}
-.mkt-metric-bar{height:8px;background:#1e293b;border-radius:4px;overflow:hidden}
-.mkt-metric-fill{height:100%;border-radius:4px;transition:width .4s ease}
-.mkt-metric-val{font-size:11px;font-weight:700;font-family:'Space Mono',monospace;text-align:right}
-.mkt-context-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
-.mkt-context-item{background:#0f1729;border:1px solid #1e293b;border-radius:8px;padding:12px;text-align:center}
-.mkt-context-item .lbl{font-size:9px;color:#64748b;text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px}
-.mkt-context-item .val{font-size:20px;font-weight:700;font-family:'Space Mono',monospace;line-height:1.3}
-.mkt-context-item .chg{font-size:10px;font-family:'Space Mono',monospace;margin-top:2px}
-.mkt-context-item .chg.up{color:#00d68f}
-.mkt-context-item .chg.down{color:#ef4444}
-.mkt-context-item .chg-row{display:flex;justify-content:center;gap:8px;margin-top:3px}
-.mkt-context-item .chg-lbl{font-size:8px;color:#4b5563;text-transform:uppercase;letter-spacing:.05em}
-.mkt-summary-box{background:#0f1729;border:1px solid #1e293b;border-radius:8px;padding:12px 16px;font-size:12px;color:#9CA3AF;line-height:1.5;max-height:80px;overflow:hidden}
+/* Market tab V4 */
+.mkt-v4-hero{display:grid;grid-template-columns:1fr 1fr 1fr;background:#0f1729;border:1px solid #1e293b;border-radius:12px;padding:18px 16px;margin-bottom:14px;text-align:center}
+.mkt-v4-hero-item{display:flex;flex-direction:column;align-items:center;gap:4px}
+.mkt-v4-hero-item+.mkt-v4-hero-item{border-left:1px solid #1e293b}
+.mkt-v4-hero-lbl{font-size:9px;color:#64748b;text-transform:uppercase;letter-spacing:.1em;font-family:'Space Mono',monospace}
+.mkt-v4-hero-badge{display:inline-block;padding:5px 16px;font-size:14px;font-weight:700;font-family:'Space Mono',monospace;border-radius:100px;letter-spacing:.04em}
+.mkt-v4-hero-badge.risk-on{background:#064e2e;color:#00d68f;border:1px solid #166534}
+.mkt-v4-hero-badge.netral{background:#3b2a04;color:#fbbf24;border:1px solid #5c4308}
+.mkt-v4-hero-badge.risk-off{background:#3b0a0a;color:#ef4444;border:1px solid #5c1515}
+.mkt-v4-hero-badge.akumulasi{background:#064e2e;color:#00d68f;border:1px solid #166534}
+.mkt-v4-hero-badge.tahan{background:#0c1929;color:#60a5fa;border:1px solid #1e3a5f}
+.mkt-v4-hero-badge.tunggu{background:#3b2a04;color:#fbbf24;border:1px solid #5c4308}
+.mkt-v4-hero-badge.kurangi{background:#3b0a0a;color:#ef4444;border:1px solid #5c1515}
+.mkt-v4-hero-val{font-size:30px;font-weight:700;font-family:'Space Mono',monospace;line-height:1.2}
+.mkt-v4-hero-sub{font-size:10px;color:#64748b;font-family:'Space Mono',monospace;margin-top:2px}
+.mkt-v4-section{margin-bottom:14px}
+.mkt-v4-section-title{font-size:10px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;border-bottom:1px solid #1e293b;padding-bottom:4px}
+.mkt-v4-why{background:#0f1729;border:1px solid #1e293b;border-radius:8px;padding:10px 14px}
+.mkt-v4-why-item{font-size:11px;padding:3px 0;display:flex;align-items:center;gap:7px;line-height:1.5}
+.mkt-v4-why-item .ico{font-size:13px;flex-shrink:0}
+.mkt-v4-why-conclusion{font-size:11px;font-weight:600;margin-top:6px;padding:6px 14px;background:#0f1729;border:1px solid #1e293b;border-radius:6px;text-align:center}
+.mkt-v4-table{width:100%;border-collapse:collapse;font-size:11px;font-family:'Space Mono',monospace}
+.mkt-v4-table th{text-align:left;padding:6px 10px;color:#64748b;font-weight:600;font-size:9px;text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid #1e293b}
+.mkt-v4-table td{padding:5px 10px;border-bottom:1px solid #111b26}
+.mkt-v4-table tbody tr:hover{background:#111b26}
+.mkt-v4-table .up{color:#00d68f}
+.mkt-v4-table .down{color:#ef4444}
+.mkt-v4-table .na{color:#4b5563}
+.mkt-v4-tooltip{font-size:9px;color:#4b5563;margin-top:4px;font-style:italic}
+.mkt-v4-context{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.mkt-v4-context-card{background:#0f1729;border:1px solid #1e293b;border-radius:8px;padding:12px 14px;text-align:center}
+.mkt-v4-context-card .lbl{font-size:9px;color:#64748b;text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px}
+.mkt-v4-context-card .val{font-size:20px;font-weight:700;font-family:'Space Mono',monospace;line-height:1.3}
+.mkt-v4-context-card .chg{font-size:10px;font-family:'Space Mono',monospace;margin-top:3px}
+.mkt-v4-context-card .chg.g{color:#00d68f}
+.mkt-v4-context-card .chg.r{color:#ef4444}
+.mkt-v4-context-card .chg span{margin:0 4px}
+.mkt-v4-summary{background:#0f1729;border:1px solid #1e293b;border-radius:8px;padding:10px 14px;font-size:11px;color:#9CA3AF;line-height:1.5}
 </style>
 </head>
 <body>
@@ -276,38 +273,61 @@ tr:hover td{background:#111b26}
 
 <div class="tc active" id="t0">
 
-<div class="mkt-hero">
-  <div class="mkt-hero-left">
-    <div id="mkt-hero-status" class="mkt-hero-status warning">WARNING</div>
-    <div id="mkt-hero-action" class="mkt-hero-action reduce">REDUCE</div>
+<div class="mkt-v4-hero">
+  <div class="mkt-v4-hero-item">
+    <div class="mkt-v4-hero-lbl">STATUS PASAR</div>
+    <div id="mkt-v4-status" class="mkt-v4-hero-badge risk-off">RISK OFF</div>
   </div>
-  <div class="mkt-hero-center">
-    <div class="mkt-hero-deployment-lbl">CAPITAL DEPLOYMENT</div>
-    <div id="mkt-hero-deployment" class="mkt-hero-deployment-val" style="color:#ef4444">29%</div>
+  <div class="mkt-v4-hero-item">
+    <div class="mkt-v4-hero-lbl">AKSI</div>
+    <div id="mkt-v4-action" class="mkt-v4-hero-badge kurangi">KURANGI</div>
   </div>
-  <div class="mkt-hero-right">
-    <div id="mkt-hero-regime" class="mkt-hero-regime risk-off">RISK OFF</div>
+  <div class="mkt-v4-hero-item">
+    <div class="mkt-v4-hero-lbl">ALOKASI MODAL</div>
+    <div id="mkt-v4-alokasi" class="mkt-v4-hero-val">29%</div>
+    <div id="mkt-v4-trend" class="mkt-v4-hero-sub">Defensif</div>
   </div>
 </div>
 
-<div class="mkt-section">
-  <div class="mkt-section-title">Why?</div>
-  <div id="mkt-why" class="mkt-why-list"></div>
+<div class="mkt-v4-section">
+  <div class="mkt-v4-section-title">Mengapa Sistem Mengambil Keputusan Ini?</div>
+  <div id="mkt-v4-why" class="mkt-v4-why"></div>
+  <div id="mkt-v4-why-conclusion" class="mkt-v4-why-conclusion"></div>
 </div>
 
-<div class="mkt-section">
-  <div class="mkt-section-title">Market Metrics</div>
-  <div id="mkt-metrics" class="mkt-metrics"></div>
+<div class="mkt-v4-section">
+  <div class="mkt-v4-section-title">Kesehatan Internal ISI</div>
+  <table class="mkt-v4-table">
+    <thead><tr><th>Metrik</th><th>Nilai</th><th>Trend</th></tr></thead>
+    <tbody id="mkt-v4-internal"></tbody>
+  </table>
+  <div class="mkt-v4-tooltip">Score Gap = rata-rata skor Top5 dikurangi rata-rata skor Bottom5.</div>
 </div>
 
-<div class="mkt-section">
-  <div class="mkt-section-title">Market Context</div>
-  <div id="mkt-context" class="mkt-context-grid"></div>
+<div class="mkt-v4-section">
+  <div class="mkt-v4-section-title">ISI vs IHSG</div>
+  <table class="mkt-v4-table">
+    <thead><tr><th>Periode</th><th>ISI</th><th>IHSG</th><th>Alpha</th></tr></thead>
+    <tbody id="mkt-v4-vs"></tbody>
+  </table>
 </div>
 
-<div class="mkt-section">
-  <div class="mkt-section-title">AI Summary</div>
-  <div id="mkt-summary" class="mkt-summary-box"></div>
+<div class="mkt-v4-section">
+  <div class="mkt-v4-section-title">Konteks Pasar</div>
+  <div id="mkt-v4-context" class="mkt-v4-context"></div>
+</div>
+
+<div class="mkt-v4-section">
+  <div class="mkt-v4-section-title">Timeline Regime</div>
+  <table class="mkt-v4-table">
+    <thead><tr><th>Tanggal</th><th>Regime</th><th>Aksi</th></tr></thead>
+    <tbody id="mkt-v4-timeline"></tbody>
+  </table>
+</div>
+
+<div class="mkt-v4-section">
+  <div class="mkt-v4-section-title">Ringkasan AI</div>
+  <div id="mkt-v4-summary" class="mkt-v4-summary"></div>
 </div>
 
 </div>
@@ -1060,97 +1080,145 @@ function renderMarket() {
   var cd = RS && RS.capital_deployment !== undefined ? RS.capital_deployment : null;
   var dm = RS && RS.detail_message ? RS.detail_message : '';
 
-  // Hero: status + action + deployment + regime
-  var sCls = (s || 'safe').toLowerCase();
-  document.getElementById('mkt-hero-status').className = 'mkt-hero-status ' + sCls;
-  document.getElementById('mkt-hero-status').textContent = s;
-  var aCls = (a || 'hold').toLowerCase();
-  document.getElementById('mkt-hero-action').className = 'mkt-hero-action ' + aCls;
-  document.getElementById('mkt-hero-action').textContent = a;
-  var cdEl = document.getElementById('mkt-hero-deployment');
+  // ── 1. Hero ────────────────────────────────────────
+  var statusMap = { SAFE: 'RISK ON', WARNING: 'NETRAL', DANGER: 'RISK OFF' };
+  var statusClsMap = { SAFE: 'risk-on', WARNING: 'netral', DANGER: 'risk-off' };
+  var actionMap = { ACCUMULATE: 'AKUMULASI', HOLD: 'TAHAN', WAIT: 'TUNGGU', REDUCE: 'KURANGI' };
+  var actionClsMap = { ACCUMULATE: 'akumulasi', HOLD: 'tahan', WAIT: 'tunggu', REDUCE: 'kurangi' };
+  var trendMap = { SAFE: 'Ekspansif', WARNING: 'Selektif', DANGER: 'Defensif' };
+  var si = statusMap[s] || '—';
+  var sc = statusClsMap[s] || '';
+  var ai = actionMap[a] || a;
+  var ac = actionClsMap[a] || '';
+  document.getElementById('mkt-v4-status').className = 'mkt-v4-hero-badge ' + sc;
+  document.getElementById('mkt-v4-status').textContent = si;
+  document.getElementById('mkt-v4-action').className = 'mkt-v4-hero-badge ' + ac;
+  document.getElementById('mkt-v4-action').textContent = ai;
+  var alEl = document.getElementById('mkt-v4-alokasi');
   if (cd !== null) {
-    cdEl.textContent = cd + '%';
-    cdEl.style.color = cd >= 60 ? '#00d68f' : cd >= 40 ? '#fbbf24' : '#ef4444';
+    alEl.textContent = cd + '%';
+    alEl.style.color = cd >= 60 ? '#00d68f' : cd >= 40 ? '#fbbf24' : '#ef4444';
   }
-  var regime = 'NEUTRAL', regimeCls = 'risk-on';
-  if (rc && rc.score_gap !== undefined) {
-    var isRiskOn = rc.score_gap > 15 && rc.breadth_above_60 > 30 && (rc.top5_turnover || 0) < 40;
-    var isRiskOff = rc.score_gap < 8 || rc.breadth_below_40 > 30 || (rc.top5_turnover || 0) > 55;
-    if (isRiskOn && !isRiskOff) { regime = 'RISK ON'; regimeCls = 'risk-on'; }
-    else if (isRiskOff) { regime = 'RISK OFF'; regimeCls = 'risk-off'; }
-  }
-  var reEl = document.getElementById('mkt-hero-regime');
-  reEl.className = 'mkt-hero-regime ' + regimeCls;
-  reEl.textContent = regime;
+  document.getElementById('mkt-v4-trend').textContent = trendMap[s] || '—';
 
-  // Why? — generate bullets from radar_context
+  // ── 2. Why ─────────────────────────────────────────
   var bullets = [];
   if (rc) {
     if (rc.score_gap !== undefined) {
       var g = rc.score_gap;
-      if (g > 25) bullets.push({ icon: '&#10003;', text: 'Score Gap <b>' + g.toFixed(1) + '</b> — wide dispersion, strong leadership signal', ok: true });
-      else if (g > 15) bullets.push({ icon: '&#9888;', text: 'Score Gap <b>' + g.toFixed(1) + '</b> — moderate, selective stock picking needed', ok: false });
-      else bullets.push({ icon: '&#9888;', text: 'Score Gap <b>' + g.toFixed(1) + '</b> — narrow, market lacks clear leaders', ok: false });
+      if (g > 25) bullets.push({ ico: '&#10003;', text: 'Score Gap masih kuat (<b>' + g.toFixed(1) + '</b>)', ok: true });
+      else if (g > 15) bullets.push({ ico: '&#9888;', text: 'Score Gap melemah (<b>' + g.toFixed(1) + '</b>)', ok: false });
+      else bullets.push({ ico: '&#9888;', text: 'Score Gap sempit (<b>' + g.toFixed(1) + '</b>) — pasar tidak memiliki pemimpin jelas', ok: false });
     }
     var tot = rc.watchlist_count || 1;
     var b60 = rc.breadth_above_60 || 0;
-    if (b60 / tot > 0.4) bullets.push({ icon: '&#10003;', text: 'Breadth <b>' + b60 + '/' + tot + '</b> above 60 — broad participation', ok: true });
-    else bullets.push({ icon: '&#9888;', text: 'Breadth <b>' + b60 + '/' + tot + '</b> above 60 — limited, narrow leadership', ok: false });
+    if (b60 / tot > 0.4) bullets.push({ ico: '&#10003;', text: 'Breadth luas (<b>' + b60 + '/' + tot + '</b> di atas 60)', ok: true });
+    else bullets.push({ ico: '&#9888;', text: 'Breadth terbatas (<b>' + b60 + '/' + tot + '</b> di atas 60)', ok: false });
     var b40 = rc.breadth_below_40 || 0;
-    if (b40 / tot > 0.3) bullets.push({ icon: '&#9888;', text: '<b>' + b40 + '/' + tot + '</b> stocks below 40 — significant tail weakness', ok: false });
+    if (b40 / tot > 0.3) bullets.push({ ico: '&#9888;', text: '<b>' + b40 + '/' + tot + '</b> saham di bawah 40 — ekor melemah signifikan', ok: false });
     if (rc.top5_turnover !== undefined && rc.top5_turnover > 3) {
-      bullets.push({ icon: '&#9888;', text: 'Top5 turnover <b>' + rc.top5_turnover + '</b> — high rotation, low stability', ok: false });
+      bullets.push({ ico: '&#9888;', text: 'Turnover Top5 meningkat (<b>' + rc.top5_turnover + '</b>) — rotasi tinggi', ok: false });
     }
-    if (rc.weakest_factor && rc.weakest_factor_score !== undefined) {
+    if (rc.weakest_factor && rc.weakest_factor_score !== undefined && rc.weakest_factor_score < 50) {
       var wf = rc.weakest_factor.charAt(0).toUpperCase() + rc.weakest_factor.slice(1);
-      if (rc.weakest_factor_score < 50) bullets.push({ icon: '&#9888;', text: wf + ' weakest at <b>' + rc.weakest_factor_score.toFixed(1) + '</b> — dragging factor', ok: false });
+      bullets.push({ ico: '&#9888;', text: wf + ' melemah (<b>' + rc.weakest_factor_score.toFixed(1) + '</b>) — faktor penarik', ok: false });
     }
   }
-  if (bullets.length === 0) bullets.push({ icon: '&#9888;', text: 'Insufficient data', ok: false });
+  if (bullets.length === 0) bullets.push({ ico: '&#9888;', text: 'Data tidak mencukupi', ok: false });
   var bh = bullets.map(function(b) {
-    return '<div class="mkt-why-item"><span class="icon" style="color:' + (b.ok ? '#00d68f' : '#fbbf24') + '">' + b.icon + '</span><span>' + b.text + '</span></div>';
+    return '<div class="mkt-v4-why-item"><span class="ico" style="color:' + (b.ok ? '#00d68f' : '#fbbf24') + '">' + b.ico + '</span><span>' + b.text + '</span></div>';
   }).join('');
-  document.getElementById('mkt-why').innerHTML = bh;
+  document.getElementById('mkt-v4-why').innerHTML = bh;
 
-  // Market Metrics — compact progress bars for health/opportunity/risk/confidence
-  var metrics = [
-    { label: 'Market Health', val: RS ? RS.market_health : null },
-    { label: 'Opportunity', val: RS ? RS.opportunity : null },
-    { label: 'Risk', val: RS ? RS.risk : null },
-    { label: 'Confidence', val: RS ? RS.confidence : null }
-  ];
-  var mh = '';
-  metrics.forEach(function(m) {
-    if (m.val === null || m.val === undefined) return;
-    var c = m.val >= 60 ? '#00d68f' : m.val >= 40 ? '#fbbf24' : '#ef4444';
-    mh += '<div class="mkt-metric-row">';
-    mh += '<div class="mkt-metric-label">' + m.label + '</div>';
-    mh += '<div class="mkt-metric-bar"><div class="mkt-metric-fill" style="width:' + Math.min(m.val, 100) + '%;background:' + c + '"></div></div>';
-    mh += '<div class="mkt-metric-val" style="color:' + c + '">' + m.val + '</div>';
-    mh += '</div>';
-  });
-  document.getElementById('mkt-metrics').innerHTML = mh;
+  // Conclusion
+  var concl = s === 'SAFE' ? 'Peluang lebih besar daripada risiko. Kondisi pasar mendukung akumulasi.' :
+              s === 'DANGER' ? 'Risiko lebih besar daripada peluang. Disarankan pendekatan defensif.' :
+              'Peluang dan risiko berimbang. Disarankan selektif.';
+  document.getElementById('mkt-v4-why-conclusion').textContent = concl;
 
-  // Market Context — IHSG, USDIDR, Gold, Oil
+  // ── 3. Internal Health ─────────────────────────────
+  var trendIcon = function(v) {
+    if (v === undefined || v === null) return '<span class="na">—</span>';
+    return v > 0 ? '<span class="up">&#9650;</span>' : v < 0 ? '<span class="down">&#9660;</span>' : '<span class="na">&#9654;</span>';
+  };
+  var internalRows = '';
+  if (rc) {
+    var metrics = [
+      { label: 'Score Gap', val: rc.score_gap !== undefined ? rc.score_gap.toFixed(1) : '—', tr: rc.score_gap_5d_change },
+      { label: 'Breadth >70', val: rc.breadth_above_70 !== undefined ? rc.breadth_above_70 : '—', tr: null },
+      { label: 'Breadth >60', val: rc.breadth_above_60 !== undefined ? rc.breadth_above_60 : '—', tr: null },
+      { label: 'Top5 Avg Score', val: rc.top5_avg_score !== undefined ? rc.top5_avg_score.toFixed(1) : '—', tr: null },
+      { label: 'Top5 Turnover', val: rc.top5_turnover !== undefined ? rc.top5_turnover : '—', tr: null }
+    ];
+    metrics.forEach(function(m) {
+      internalRows += '<tr><td>' + m.label + '</td><td>' + m.val + '</td><td>' + trendIcon(m.tr) + '</td></tr>';
+    });
+  }
+  document.getElementById('mkt-v4-internal').innerHTML = internalRows;
+
+  // ── 4. ISI vs IHSG ─────────────────────────────────
+  var vsRows = '';
+  if (BM && BM_M && BM_M.length > 0) {
+    var n = BM_M.length;
+    function periodReturns(startIdx, endIdx) {
+      var isi = 0, ihsg = 0;
+      for (var i = startIdx; i <= endIdx; i++) {
+        isi += BM_M[i].ret_f || 0;
+        ihsg += BM_M[i].ret_i || 0;
+      }
+      var alpha = isi - ihsg;
+      return { isi: isi.toFixed(2), ihsg: ihsg.toFixed(2), alpha: (alpha >= 0 ? '+' : '') + alpha.toFixed(2), pos: alpha >= 0 };
+    }
+    var p1 = periodReturns(n - 1, n - 1);
+    var p3 = periodReturns(Math.max(0, n - 3), n - 1);
+    var ytdStart = -1;
+    for (var i = 0; i < n; i++) { if (BM.labels[i] && BM.labels[i].indexOf('2026') >= 0) { ytdStart = i; break; } }
+    var pYtd = ytdStart >= 0 ? periodReturns(ytdStart, n - 1) : { isi: '—', ihsg: '—', alpha: '—', pos: true };
+    var pAll = periodReturns(0, n - 1);
+    var periods = [
+      { label: '1 Bulan', data: p1 },
+      { label: '3 Bulan', data: p3 },
+      { label: 'YTD', data: pYtd },
+      { label: 'Sejak 2022', data: pAll }
+    ];
+    periods.forEach(function(p) {
+      vsRows += '<tr><td>' + p.label + '</td><td class="' + (parseFloat(p.data.isi) >= 0 ? 'up' : 'down') + '">' + (parseFloat(p.data.isi) >= 0 ? '+' : '') + p.data.isi + '%</td><td class="' + (parseFloat(p.data.ihsg) >= 0 ? 'up' : 'down') + '">' + (parseFloat(p.data.ihsg) >= 0 ? '+' : '') + p.data.ihsg + '%</td><td class="' + (p.data.pos ? 'up' : 'down') + '">' + p.data.alpha + '%</td></tr>';
+    });
+  }
+  document.getElementById('mkt-v4-vs').innerHTML = vsRows;
+
+  // ── 5. Context ─────────────────────────────────────
   if (typeof MKT !== 'undefined' && MKT) {
     var assets = [
-      { key: 'ihsg', lbl: 'IHSG', val: MKT.ihsg.value.toLocaleString(), d: MKT.ihsg.daily, m: MKT.ihsg.monthly, pfx: '' },
-      { key: 'usdidr', lbl: 'USD/IDR', val: MKT.usdidr.value.toLocaleString(), d: MKT.usdidr.daily, m: MKT.usdidr.monthly, pfx: '' },
-      { key: 'gold', lbl: 'Gold', val: '$' + MKT.gold.value.toLocaleString(), d: MKT.gold.daily, m: MKT.gold.monthly, pfx: '' },
-      { key: 'oil', lbl: 'Oil', val: '$' + MKT.oil.value, d: MKT.oil.daily, m: MKT.oil.monthly, pfx: '' }
+      { lbl: 'IHSG', val: MKT.ihsg.value.toLocaleString(), d: MKT.ihsg.daily, m: MKT.ihsg.monthly },
+      { lbl: 'USD/IDR', val: MKT.usdidr.value.toLocaleString(), d: MKT.usdidr.daily, m: MKT.usdidr.monthly }
     ];
     var ch = '';
     assets.forEach(function(x) {
-      ch += '<div class="mkt-context-item"><div class="lbl">' + x.lbl + '</div><div class="val">' + x.val + '</div>';
-      ch += '<div class="chg-row"><span class="chg ' + (x.d >= 0 ? 'up' : 'down') + '">' + (x.d > 0 ? '+' : '') + x.d + '%</span><span class="chg-lbl">D</span>';
-      ch += '<span class="chg ' + (x.m >= 0 ? 'up' : 'down') + '">' + (x.m > 0 ? '+' : '') + x.m + '%</span><span class="chg-lbl">M</span></div>';
+      ch += '<div class="mkt-v4-context-card"><div class="lbl">' + x.lbl + '</div><div class="val">' + x.val + '</div>';
+      ch += '<div class="chg"><span class="' + (x.d >= 0 ? 'g' : 'r') + '">' + (x.d > 0 ? '+' : '') + x.d + '%</span><span style="color:#4b5563"> Harian</span>';
+      ch += ' &middot; <span class="' + (x.m >= 0 ? 'g' : 'r') + '">' + (x.m > 0 ? '+' : '') + x.m + '%</span><span style="color:#4b5563"> Bulanan</span></div>';
       ch += '</div>';
     });
-    document.getElementById('mkt-context').innerHTML = ch;
+    document.getElementById('mkt-v4-context').innerHTML = ch;
   }
 
-  // AI Summary
-  document.getElementById('mkt-summary').textContent = dm;
+  // ── 6. Timeline ────────────────────────────────────
+  var tlRows = '';
+  var tgl = 'Hari Ini';
+  var regimeLabel = statusMap[s] || '—';
+  var regimeCls = s === 'SAFE' ? 'up' : s === 'DANGER' ? 'down' : '';
+  var actionLabel = actionMap[a] || a;
+  var actionCls = a === 'ACCUMULATE' ? 'up' : a === 'REDUCE' ? 'down' : '';
+  tlRows += '<tr><td>' + tgl + '</td><td class="' + regimeCls + '">' + regimeLabel + '</td><td class="' + actionCls + '">' + actionLabel + '</td></tr>';
+  // Historical data not yet available
+  for (var d = 1; d <= 4; d++) {
+    tlRows += '<tr><td class="na">' + d + ' hari lalu</td><td class="na">—</td><td class="na">—</td></tr>';
+  }
+  document.getElementById('mkt-v4-timeline').innerHTML = tlRows;
+
+  // ── 7. AI Summary ──────────────────────────────────
+  document.getElementById('mkt-v4-summary').textContent = dm;
 }
 
 function renderAll() {

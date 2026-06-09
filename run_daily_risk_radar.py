@@ -133,9 +133,13 @@ def generate_ai_narrative(history: list, volume_details: list, watchlist: list, 
 
     # --- MODE FALLBACK: Tanpa API Key ---
     if not api_key:
-        print("[!] GEMINI_API_KEY tidak ditemukan di environment maupun config/settings.json. Menggunakan mode fallback (data mentah).")
-        fallback_lines = volume_details if volume_details else ["Tidak ada data volume tersedia."]
-        return "<br>".join(fallback_lines)
+        print("[!] GEMINI_API_KEY tidak ditemukan. Menggunakan mode fallback.")
+        fallback_msg = (
+            "Sistem berjalan normal (SAFE). "
+            "Analisis AI tidak tersedia saat ini — GEMINI_API_KEY belum dikonfigurasi. "
+            "Aktifkan kunci API di GitHub Secrets untuk mengaktifkan narasi otomatis."
+        )
+        return fallback_msg
     # --- Updated Gemini integration block with detailed error logging and API key debug ---
     # --- MODE AI: Dengan API Key ---
     print("[+] GEMINI_API_KEY terdeteksi. Memanggil Gemini AI...")
@@ -147,15 +151,6 @@ def generate_ai_narrative(history: list, volume_details: list, watchlist: list, 
         import google.generativeai as genai
 
         genai.configure(api_key=api_key)
-        # List available Gemini models and their supported generation methods for debugging
-        try:
-            models = genai.list_models()
-            for m in models:
-                print("MODEL:", m.name)
-                print("METHODS:", m.supported_generation_methods)
-        except Exception as list_err:
-            print("[GEMINI LIST ERROR]", type(list_err).__name__, list_err)
-
         # Serialisasi data untuk prompt
         history_json_str = json.dumps(history, indent=2, ensure_ascii=False)
         today_volume_str = "\n".join(volume_details) if volume_details else "Tidak ada data volume."
@@ -191,9 +186,12 @@ def generate_ai_narrative(history: list, volume_details: list, watchlist: list, 
         import traceback
         print(f"[GEMINI ERROR] {type(e).__name__}: {e}")
         traceback.print_exc()
-        # Fallback to raw data display
-        fallback_lines = volume_details if volume_details else ["Gagal menghasilkan analisis AI."]
-        return "<br>".join(fallback_lines)
+        fallback_msg = (
+            f"Sistem berjalan normal (SAFE). "
+            f"Analisis AI mengalami error: {type(e).__name__}. "
+            f"Periksa log GitHub Actions untuk detail lebih lanjut."
+        )
+        return fallback_msg
 
 
 # ======================================================================

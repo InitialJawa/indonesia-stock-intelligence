@@ -1,6 +1,6 @@
 {
-    "last_update": "2026-06-09 17:25",
+    "last_update": "2026-06-09 17:27",
     "status": "SAFE",
     "anomalies": [],
-    "detail_message": "PTBA.JK: Volume 1.1x (Wajar)<br>BBNI.JK: Volume 3.2x (Volume Lonjakan)<br>INDF.JK: Volume 1.2x (Wajar)<br>ASII.JK: Volume 1.0x (Wajar)<br>ITMG.JK: Volume 2.8x (Volume Lonjakan)"
+    "detail_message": "Sistem berjalan normal (SAFE). Analisis AI tidak tersedia saat ini — GEMINI_API_KEY belum dikonfigurasi. Aktifkan kunci API di GitHub Secrets untuk mengaktifkan narasi otomatis."
 }

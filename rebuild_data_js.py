@@ -14,7 +14,7 @@ for fname, vname, fb in zip(files, vars, fallbacks):
         path = base + fname
         if os.path.exists(path):
             try:
-                with open(path) as f:
+                with open(path, encoding='utf-8') as f:
                     content = json.dumps(json.load(f), separators=(',', ':'))
                 break
             except (json.JSONDecodeError, ValueError):
@@ -26,7 +26,7 @@ for fname, vname, fb in zip(files, vars, fallbacks):
         lines.append(f'var {vname} = {json.dumps(fb, separators=(",",":"))};')
         print(f'WARN: {fname} not found in {", ".join(dirs)} — var {vname} set to fallback')
 
-with open('dashboard/data/data.js', 'w') as f:
+with open('dashboard/data/data.js', 'w', encoding='utf-8') as f:
     f.write('\n'.join(lines) + '\n')
 
 print(f'data.js rebuilt with {len(vars)} variables ({len(skipped)} skipped)')

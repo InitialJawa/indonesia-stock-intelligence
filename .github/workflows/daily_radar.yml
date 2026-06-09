@@ -75,7 +75,7 @@ jobs:
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add dashboard/index.html dashboard/data/market.json dashboard/data/radar.json dashboard/data/data.js dashboard/data/backtest_monthly.json docs/index.html docs/data/ scripts/data_fetcher.py scripts/generate_turnaround_watchlist.py scripts/generate_exit_watchlist.py scripts/generate_dashboard_v2.py scripts/generate_dashboard_v3.py scripts/validate_market_pipeline.py run_daily_risk_radar.py gen_market.py rebuild_data_js.py data/ current/ database/historical/turnaround_history.csv output/daily_radar_status.json
+          git add -A
           if git diff --staged --quiet; then
             echo "No changes to commit."
           else

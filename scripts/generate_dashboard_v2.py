@@ -249,7 +249,6 @@ tr:hover td{{background:#1a1e24}}
 .conc-label{{font-size:10px;font-family:'Space Mono',monospace;color:#9CA3AF;letter-spacing:.08em;font-weight:600}}
 .conc-body{{display:flex;gap:16px;flex-wrap:wrap}}
 .conc-col{{flex:1;min-width:200px}}
-.conc-sub{{font-size:9px;font-family:'Space Mono',monospace;color:#C9D1D9;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;font-weight:700}}
 .conc-list{{list-style:none;padding:0;margin:0}}
 .conc-list li{{font-size:11px;color:#C9D1D9;padding:2px 0 2px 12px;position:relative;line-height:1.5}}
 .conc-list li::before{{content:'\2022';position:absolute;left:0;color:#00c26f}}
@@ -571,7 +570,7 @@ const RADAR_STATUS='{radar_status_escaped}';
 const RADAR_LABEL='{radar_status_label}';
 (function(){{
   var c=RADAR_LABEL==='SAFE'?'s-hijau':RADAR_LABEL==='CAUTION'?'s-kuning':'s-merah'
-  var h='<div class="conc"><div class="conc-hdr"><span class="conc-status '+c+'">'+RADAR_LABEL+'</span><span class="conc-label">KESIMPULAN AI — GEMINI</span></div><div class="conc-body"><div class="conc-col" style="min-width:100%"><div class="conc-sub">Analisis Hari Ini</div><div style="font-size:12px;color:#C9D1D9;line-height:1.6;padding:4px 0">'+RADAR_STATUS+'</div></div></div></div>'
+  var h='<div class="conc"><div class="conc-hdr"><span class="conc-status '+c+'">'+RADAR_LABEL+'</span><span class="conc-label">KESIMPULAN AI — GEMINI</span></div><div class="conc-body"><div class="conc-col" style="min-width:100%"><div style="font-size:12px;color:#C9D1D9;line-height:1.6;padding:4px 0">'+RADAR_STATUS+'</div></div></div></div>'
   document.getElementById('conclusion').innerHTML=h
 }})();
 

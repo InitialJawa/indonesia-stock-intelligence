@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>ISI Dashboard V3 | Read-Only</title>
+<title>ISI Dashboard V3.2 | Read-Only</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
 <style>
@@ -251,7 +251,7 @@ tr:hover td{background:#111b26}
 </head>
 <body>
 <div class="hdr">
-<div class="logo">ISI <span>|</span> Read-Only Dashboard <span style="font-size:10px;color:#3b82f6">V3</span></div>
+<div class="logo">ISI <span>|</span> Read-Only Dashboard <span style="font-size:10px;color:#3b82f6">V3.2</span></div>
 <div class="status-bar">
 <span class="pill prod">Config F (Q25/G10/V30/M35)</span>
 <span class="pill res">Config B (Q25/G30/V10/M35)</span>
@@ -862,7 +862,8 @@ function exportCSV() {
     { date: 'Apr 2025', title: 'V2 Dashboard', desc: 'Complete redesign with turnaround detection, stock profiles, and Chart.js integration.' },
     { date: 'Jun 2025', title: 'Q1 2025 Audit', desc: 'Year-end audit and research review. Growth Factor and scoring weights reviewed.' },
     { date: 'AprΓÇôMay 2026', title: 'Research Phase', desc: 'RESEARCH-013 series: growth reconciliation (013D), period sensitivity (013E), weight optimization.' },
-    { date: 'Jun 2026', title: 'V3 Dashboard ┬╖ ADR-005', desc: 'Config F (Q25/G10/V30/M35) production config approved. V3 dashboard with config switcher, factor panel, simulation lab, and research timeline.' }
+    { date: 'Jun 2026', title: 'V3 Dashboard ┬╖ ADR-005', desc: 'Config F (Q25/G10/V30/M35) production config approved. V3 dashboard with config switcher, factor panel, simulation lab, and research timeline.' },
+    { date: 'Jun 2026', title: 'V3.2 · Market Pipeline', desc: 'Market tab integrated with live yfinance data (IHSG, USDIDR), AI regime analysis, freshness bar, and pipeline diagnostics. Pipeline V3 with data.js compilation, rebuild_data_js dual-directory fallback, and V2 fallback at index_v2.html.' }
   ];
   var h = '<div class="timeline">';
   timelineEvents.forEach(function(ev, i) {

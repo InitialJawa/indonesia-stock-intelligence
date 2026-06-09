@@ -178,7 +178,13 @@ tr:hover td{background:#111b26}
 .sim-range::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:14px;height:14px;border-radius:50%;background:#3b82f6;border:2px solid #0a0e14;cursor:pointer;pointer-events:auto}
 .sim-range::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:#3b82f6;border:2px solid #0a0e14;cursor:pointer;pointer-events:auto}
 .sim-range-labels{display:flex;justify-content:space-between;font-size:10px;color:#64748b;font-family:'Space Mono',monospace;margin-top:2px}
-.sim-summary{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;margin:12px 0}
+.sim-summary{min-width:220px;max-width:260px;display:flex;flex-direction:column;gap:6px}
+.sim-summary .card{padding:8px 10px;margin:0}
+.sim-summary .card-label{font-size:9px}
+.sim-summary .insight-row{font-size:10px;padding:2px 0}
+.sim-summary .insight-lbl{font-size:9px}
+.sim-chart-wrap{display:flex;gap:12px;align-items:stretch}
+.sim-chart-wrap .chart-container{flex:1;min-width:0}
 .sim-table-wrap{max-height:400px;overflow-y:auto;margin-top:8px}
 .sim-table{width:100%;border-collapse:collapse;font-size:11px}
 .sim-table th{position:sticky;top:0;background:#0a0e14;color:#64748b;font-family:'Space Mono',monospace;text-align:left;padding:6px 8px;border-bottom:1px solid #1e293b;letter-spacing:.04em}
@@ -342,8 +348,10 @@ tr:hover td{background:#111b26}
   <input type="range" class="sim-range" id="sim-range-start" min="0" max="0" value="0">
   <input type="range" class="sim-range" id="sim-range-end" min="0" max="0" value="0">
 </div>
+<div class="sim-chart-wrap">
 <div class="chart-container"><canvas id="simChart"></canvas></div>
 <div class="sim-summary" id="sim-summary"></div>
+</div>
 <div class="sub-tab-nav">
 <button class="sub-tab-btn active" onclick="stSubSim(0,this)">Chart</button>
 <button class="sub-tab-btn" onclick="stSubSim(1,this)">Monthly Data</button>

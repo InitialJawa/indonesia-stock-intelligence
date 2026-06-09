@@ -1192,11 +1192,6 @@ def main():
     write_json("fcolors.json", FACTOR_COLORS)
     write_json("fnames.json", FACTOR_LABELS)
 
-    docs_path = os.path.join(project_dir, "docs", "index.html")
-    with open(docs_path, "w", encoding="utf-8") as f:
-        f.write(html)
-
-    print(f"[OK] Dashboard V3 written to docs/index.html ({len(html)} bytes)")
     print(f"[OK] 14 data files written to {data_dir_out}")
 
 

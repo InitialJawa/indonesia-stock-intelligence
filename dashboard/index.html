@@ -640,6 +640,10 @@ function st(tabIdx, btn) {
 
 function renderTurnaround() {
   var arr = T.value || T;
+  var ctxCount = arr.filter(function(r) { return matchBool(r.context_match); }).length;
+  var trnCount = arr.filter(function(r) { return matchBool(r.transition_match); }).length;
+  var cards = document.querySelectorAll('#t2-ctx .card-val');
+  if (cards.length >= 2) { cards[0].textContent = ctxCount; cards[1].textContent = trnCount; }
   var tk = arr.filter(function(r) { return matchBool(r.context_match) || matchBool(r.transition_match); });
   tk.sort(function(a, b) { return (matchBool(b.context_match) + matchBool(b.transition_match)) - (matchBool(a.context_match) + matchBool(a.transition_match)); });
   var html = tk.map(function(r) {

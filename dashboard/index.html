@@ -368,9 +368,10 @@ function sc(v) { return v >= 60 ? 'high' : v >= 40 ? 'mid' : 'low'; }
 function bar(v, k) { var n = +v; return '<div class="bar"><div class="bar-track"><div class="bar-fill" style="width:' + Math.min(n, 100) + '%;background:' + k + '"></div></div><span class="bv">' + n.toFixed(1) + '</span></div>'; }
 function badge(v, t) { return v ? '<span class="badge ' + t + '">Yes</span>' : '<span class="badge bg-gray">No</span>'; }
 function pct(v) { var n = +v; return (n > 0 ? '+' : '') + n.toFixed(1) + '%'; }
-function ctxLabel(r) { return r.context_match ? '<span class="badge bg-green">YES</span>' : '<span class="badge bg-gray">NO</span>'; }
-function trnLabel(r) { return r.transition_match ? '<span class="badge bg-yellow">YES</span>' : '<span class="badge bg-gray">NO</span>'; }
-function fullLabel(r) { return (r.context_match && r.transition_match) ? '<span class="badge bg-blue">FULL</span>' : r.context_match ? '<span class="badge bg-green">CTX</span>' : r.transition_match ? '<span class="badge bg-yellow">TRN</span>' : '<span class="badge bg-gray">—</span>'; }
+function matchBool(v) { return v === true || v === 'True'; }
+function ctxLabel(r) { return matchBool(r.context_match) ? '<span class="badge bg-green">YES</span>' : '<span class="badge bg-gray">NO</span>'; }
+function trnLabel(r) { return matchBool(r.transition_match) ? '<span class="badge bg-yellow">YES</span>' : '<span class="badge bg-gray">NO</span>'; }
+function fullLabel(r) { var cm = matchBool(r.context_match), tm = matchBool(r.transition_match); return cm && tm ? '<span class="badge bg-blue">FULL</span>' : cm ? '<span class="badge bg-green">CTX</span>' : tm ? '<span class="badge bg-yellow">TRN</span>' : '<span class="badge bg-gray">—</span>'; }
 
 function computeFinalScore(r, w) { return r.quality * w.quality + r.growth * w.growth + r.value * w.value + r.momentum * w.momentum; }
 
@@ -384,7 +385,7 @@ function ac(t) {
   if (ld && score >= 70 && ed && ed.exit_state === 'HEALTHY') return '#00ff88';
   if (ld && score >= 60 && ed && ed.exit_state === 'EXIT RISK') return '#ffcc33';
   if (ld && score >= 60 && ed && ed.exit_state === 'EXIT') return '#ff5555';
-  if (td && td.context_match && td.transition_match && (!ed || ed.exit_state !== 'EXIT')) return '#4da3ff';
+  if (td && matchBool(td.context_match) && matchBool(td.transition_match) && (!ed || ed.exit_state !== 'EXIT')) return '#4da3ff';
   return '#cccccc';
 }
 
@@ -466,10 +467,13 @@ function st(tabIdx, btn) {
 
 function renderTurnaround() {
   var arr = T.value || T;
-  var tk = arr.filter(function(r) { return r.context_match || r.transition_match; });
-  tk.sort(function(a, b) { return (b.context_match + b.transition_match) - (a.context_match + a.transition_match); });
+  var tk = arr.filter(function(r) { return matchBool(r.context_match) || matchBool(r.transition_match); });
+  tk.sort(function(a, b) { return (matchBool(b.context_match) + matchBool(b.transition_match)) - (matchBool(a.context_match) + matchBool(a.transition_match)); });
   var html = tk.map(function(r) {
-    return '<tr><td class="tk tk-click" data-ticker="' + r.ticker.split('.')[0] + '" style="color:' + ac(r.ticker) + '">' + r.ticker.split('.')[0] + '</td><td class="' + (r.context_match ? 'g' : 'r') + '">' + ctxLabel(r) + '</td><td>' + (r.context_match ? r.context_days : 0) + '</td><td class="' + (r.transition_match ? 'g' : 'r') + '">' + trnLabel(r) + '</td><td>' + (r.transition_match ? r.transition_days : 0) + '</td><td>' + fullLabel(r) + '</td><td>' + (r.last_update || '—') + '</td></tr>';
+    var cm = matchBool(r.context_match), tm = matchBool(r.transition_match);
+    var cd = cm && r.context_days != null ? r.context_days : '—';
+    var td = tm && r.transition_days != null ? r.transition_days : '—';
+    return '<tr><td class="tk tk-click" data-ticker="' + r.ticker.split('.')[0] + '" style="color:' + ac(r.ticker) + '">' + r.ticker.split('.')[0] + '</td><td class="' + (cm ? 'g' : 'r') + '">' + ctxLabel(r) + '</td><td>' + cd + '</td><td class="' + (tm ? 'g' : 'r') + '">' + trnLabel(r) + '</td><td>' + td + '</td><td>' + fullLabel(r) + '</td><td>' + (r.last_update || '—') + '</td></tr>';
   }).join('');
   document.getElementById('tbody-trn').innerHTML = html;
 
@@ -663,7 +667,7 @@ function tickerData(sym) {
 
 function aiExplain(d) {
   var lines = [];
-  if (d.turnaround && d.turnaround.context_match && d.turnaround.transition_match) {
+  if (d.turnaround && matchBool(d.turnaround.context_match) && matchBool(d.turnaround.transition_match)) {
     lines.push('<div class="panel-status turnaround"><b>KANDIDAT TURNAROUND</b>');
     lines.push('<div style="margin-top:6px;font-size:11px;color:#9CA3AF;font-weight:400">');
     if (d.turnaround.drawdown_252d < -20) lines.push('<span class="panel-bullet">&#8226;</span>Deep drawdown');

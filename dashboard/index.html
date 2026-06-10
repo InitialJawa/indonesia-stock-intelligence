@@ -258,32 +258,8 @@ tr:hover td{background:var(--bg-elevated)}
 .mkt-v4-context-card .chg span{margin:0 4px}
 .mkt-v4-summary{background:var(--bg-surface);border:1px solid var(--bg-border);border-radius:var(--radius-lg);padding:10px 14px;font-size:12px;color:var(--text-secondary);line-height:1.5}
 
-/* Market Metrics 2x2 grid */
-.mkt-v4-metrics{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px}
-.mkt-v4-metric{background:var(--bg-surface);border:1px solid var(--bg-border);border-radius:var(--radius-lg);padding:12px 14px;text-align:center}
-.mkt-v4-metric-lbl{font-size:10px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
-.mkt-v4-metric-val{font-size:26px;font-weight:600;line-height:1.2;font-variant-numeric:tabular-nums}
-.mkt-v4-metric-sub{font-size:10px;color:var(--text-muted);margin-top:2px}
-
-/* Mobile timeline cards */
-.mkt-v4-tl-card{background:var(--bg-surface);border:1px solid var(--bg-border);border-radius:var(--radius-lg);padding:14px;margin-bottom:8px;display:flex;flex-direction:column;gap:6px}
-.mkt-v4-tl-card-top{display:flex;align-items:center;gap:8px}
-.mkt-v4-tl-badge{display:inline-block;padding:4px 12px;font-size:12px;font-weight:500;border-radius:var(--radius-sm);letter-spacing:.03em}
-.mkt-v4-tl-badge.green{background:var(--green-muted);color:var(--green-strong);border:1px solid var(--green-border)}
-.mkt-v4-tl-badge.yellow{background:var(--amber-muted);color:var(--amber-strong);border:1px solid var(--amber-border)}
-.mkt-v4-tl-badge.red{background:var(--red-muted);color:var(--red-strong);border:1px solid var(--red-border)}
-.mkt-v4-tl-badge.blue{background:var(--blue-muted);color:var(--blue-strong);border:1px solid var(--blue-border)}
-.mkt-v4-tl-badge.orange{background:#2D1F0A;color:#D4860B;border:1px solid #9E6A03}
-.mkt-v4-tl-date{font-size:11px;color:var(--text-muted);margin-left:auto}
-.mkt-v4-tl-ihsg{font-size:13px;font-weight:500;font-variant-numeric:tabular-nums}
-.mkt-v4-tl-note{font-size:12px;color:var(--text-secondary);line-height:1.5}
-.mkt-v4-tl-more{display:flex;justify-content:center;margin-top:8px}
-.mkt-v4-tl-more button{background:transparent;border:1px solid var(--bg-border);color:var(--text-secondary);padding:10px 20px;border-radius:var(--radius-md);font-size:13px;cursor:pointer;transition:all .15s;font-family:inherit}
-.mkt-v4-tl-more button:hover{border-color:var(--blue-strong);color:var(--blue-strong)}
-.mkt-v4-timeline-mobile{display:none}
-
 /* ── Mobile Optimizations ────────────────────────── */
-@media(max-width:1024px){
+@media(max-width:768px){
   body{padding:0 16px 80px}
   .hdr{padding:10px 12px;flex-direction:column;align-items:stretch;gap:6px}
   .status-bar{flex-wrap:wrap;justify-content:flex-start}
@@ -340,9 +316,6 @@ tr:hover td{background:var(--bg-elevated)}
   .mkt-v4-table td:first-child,.mkt-v4-table th:first-child{position:sticky;left:0;z-index:3;background:var(--bg-surface)}
   .mkt-v4-table th:first-child{z-index:4}
   .mkt-v4-table td:last-child{font-size:12px;white-space:normal;max-width:200px}
-  .mkt-v4-metrics{grid-template-columns:1fr}
-  .mkt-v4-timeline-desktop{display:none}
-  .mkt-v4-timeline-mobile{display:block}
   .section-title{margin-bottom:10px}
   .chart-container{padding:12px}
   .filter-input{width:100%}
@@ -355,9 +328,8 @@ tr:hover td{background:var(--bg-elevated)}
 @media(max-width:768px) and (pointer:coarse){
   .bn-btn,.tab-btn,.cfg-btn,.period-btn,.sim-period-btn,.sub-tab-btn,.sim-export,.panel-close,.filter-input{cursor:default}
 }
-@media(min-width:1025px){
+@media(min-width:769px){
   .bottom-nav{display:none}
-  .mkt-v4-timeline-mobile{display:none}
 }
 </style>
 </head>
@@ -428,8 +400,6 @@ tr:hover td{background:var(--bg-elevated)}
 
 <div class="tc active" id="t0">
 
-<div class="mkt-v4-metrics" id="mkt-v4-metrics"></div>
-
 <div class="mkt-v4-hero">
   <div class="mkt-v4-hero-item">
     <div class="mkt-v4-hero-lbl">STATUS PASAR</div>
@@ -477,15 +447,12 @@ tr:hover td{background:var(--bg-elevated)}
   <div id="mkt-v4-context-timestamp" style="color:var(--text-muted);font-size:12px;margin-top:8px"></div>
 </div>
 
-<div class="mkt-v4-section" id="mkt-v4-timeline-section">
+<div class="mkt-v4-section">
   <div class="mkt-v4-section-title">Timeline Regime</div>
-  <div class="mkt-v4-timeline-desktop">
-    <table class="mkt-v4-table">
-      <thead><tr><th>Tanggal</th><th>Regime</th><th>Aksi</th><th>Catatan</th></tr></thead>
-      <tbody id="mkt-v4-timeline"></tbody>
-    </table>
-  </div>
-  <div class="mkt-v4-timeline-mobile" id="mkt-v4-timeline-mobile"></div>
+  <table class="mkt-v4-table">
+    <thead><tr><th>Tanggal</th><th>Regime</th><th>Aksi</th><th>Catatan</th></tr></thead>
+    <tbody id="mkt-v4-timeline"></tbody>
+  </table>
 </div>
 
 <div class="mkt-v4-section">
@@ -1279,9 +1246,6 @@ function renderMarket() {
   var cd = RS && RS.capital_deployment !== undefined ? RS.capital_deployment : null;
   var dm = RS && RS.detail_message ? RS.detail_message : '';
 
-  // ── 1a. Metrics ─────────────────────────────────────
-  renderMarketMetrics(rc);
-
   // ── 1. Hero ────────────────────────────────────────
   var statusMap = { SAFE: 'RISK ON', WARNING: 'NETRAL', DANGER: 'RISK OFF' };
   var statusClsMap = { SAFE: 'risk-on', WARNING: 'netral', DANGER: 'risk-off' };
@@ -1422,29 +1386,13 @@ function renderMarket() {
 var liveMarketData = null;
 var regimeHistory = [];
 
-function renderMarketMetrics(rc) {
-  var m = [
-    { lbl: 'Market Health', val: rc && rc.top5_avg_score !== undefined ? rc.top5_avg_score.toFixed(1) : (RS && RS.market_health !== undefined ? RS.market_health : '—'), sub: 'Top5 avg score', cls: 'g' },
-    { lbl: 'Opportunity', val: RS && RS.opportunity !== undefined ? RS.opportunity : '—', sub: 'peluang', cls: 'g' },
-    { lbl: 'Risk', val: RS && RS.risk !== undefined ? RS.risk : '—', sub: 'risiko', cls: 'r' },
-    { lbl: 'Confidence', val: RS && RS.confidence !== undefined ? RS.confidence : '—', sub: 'keyakinan', cls: '' }
-  ];
-  var html = '';
-  m.forEach(function(x) {
-    var vc = typeof x.val === 'number' ? (x.val >= 60 ? 'g' : x.val >= 40 ? 'y' : 'r') : '';
-    html += '<div class="mkt-v4-metric"><div class="mkt-v4-metric-lbl">' + x.lbl + '</div><div class="mkt-v4-metric-val ' + vc + '">' + x.val + '</div><div class="mkt-v4-metric-sub">' + x.sub + '</div></div>';
-  });
-  document.getElementById('mkt-v4-metrics').innerHTML = html;
-}
-
 function renderTimeline() {
   var s = RS && RS.status ? RS.status : '—';
   var a = RS && RS.action ? RS.action : '—';
   var statusMap = { SAFE: 'RISK ON', WARNING: 'NETRAL', DANGER: 'RISK OFF' };
   var actionMap = { ACCUMULATE: 'AKUMULASI', HOLD: 'TAHAN', WAIT: 'TUNGGU', REDUCE: 'KURANGI' };
-  var actionClsMap = { ACCUMULATE: 'green', HOLD: 'blue', WAIT: 'yellow', REDUCE: 'orange', DEFENSIF: 'red' };
+  var tlRows = '';
   var todayStr = new Date().toISOString().slice(0, 10);
-  var isMobile = window.innerWidth < 1024;
 
   function noteStr(n, ihsg, chg) {
     var parts = [];
@@ -1453,66 +1401,30 @@ function renderTimeline() {
     return parts.length ? parts.join(' — ') : '—';
   }
 
-  function regimeBadgeCls(r) {
-    if (r === 'RISK ON') return 'green';
-    if (r === 'RISK OFF') return 'red';
-    return 'yellow';
+  function row(date, regime, action, note, cls) {
+    var rCls = cls || (regime === 'RISK ON' ? 'up' : regime === 'RISK OFF' ? 'down' : '');
+    var aCls = cls || (action === 'AKUMULASI' ? 'up' : action === 'KURANGI' ? 'down' : '');
+    return '<tr><td>' + date + '</td><td class="' + rCls + '">' + regime + '</td><td class="' + aCls + '">' + action + '</td><td style="font-size:12px;color:var(--text-secondary);max-width:260px">' + note + '</td></tr>';
   }
 
-  function actionBadgeCls(a) {
-    return actionClsMap[a] || '';
-  }
-
-  // ── Desktop table ──
-  var tlRows = '';
-  tlRows += '<tr><td>Hari Ini</td><td class="' + (s === 'SAFE' ? 'up' : s === 'DANGER' ? 'down' : '') + '">' + (statusMap[s] || '—') + '</td><td class="' + (a === 'ACCUMULATE' ? 'up' : a === 'REDUCE' ? 'down' : '') + '">' + (actionMap[a] || a) + '</td><td style="font-size:12px;color:var(--text-secondary);max-width:260px">' + (MKT && MKT.ihsg ? noteStr('', MKT.ihsg.value, MKT.ihsg.daily) : '') + '</td></tr>';
-  for (var i = 0; i < regimeHistory.length; i++) {
-    if (regimeHistory[i].date === todayStr) continue;
-    var e = regimeHistory[i];
-    tlRows += '<tr><td>' + e.date + '</td><td class="' + (e.regime === 'RISK ON' ? 'up' : e.regime === 'RISK OFF' ? 'down' : '') + '">' + e.regime + '</td><td class="' + (e.action === 'AKUMULASI' ? 'up' : e.action === 'KURANGI' ? 'down' : '') + '">' + e.action + '</td><td style="font-size:12px;color:var(--text-secondary);max-width:260px">' + noteStr(e.note, e.ihsg_close, e.change_pct) + '</td></tr>';
-  }
-  document.getElementById('mkt-v4-timeline').innerHTML = tlRows;
-
-  // ── Mobile cards ──
-  var maxCards = 7;
-  var cards = '';
-  function formatDate(d) {
-    var p = d.split('-');
-    var months = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
-    return parseInt(p[2]) + ' ' + months[parseInt(p[1])-1] + ' ' + p[0];
-  }
-
-  cards += '<div class="mkt-v4-tl-card">';
-  cards += '<div class="mkt-v4-tl-card-top">';
-  cards += '<span class="mkt-v4-tl-badge ' + regimeBadgeCls(statusMap[s] || '—') + '">' + (statusMap[s] || '—') + '</span>';
-  cards += '<span class="mkt-v4-tl-badge ' + actionBadgeCls(actionClsMap[a] || a) + '">' + (actionMap[a] || a) + '</span>';
-  cards += '<span class="mkt-v4-tl-date">' + todayStr.split('-').reverse().join('/') + '</span>';
-  cards += '</div>';
-  if (MKT && MKT.ihsg) cards += '<div class="mkt-v4-tl-ihsg g">IHSG ' + MKT.ihsg.value.toLocaleString() + ' (' + (MKT.ihsg.daily > 0 ? '+' : '') + MKT.ihsg.daily + '%)</div>';
-  cards += '</div>';
+  var todayNote = '';
+  if (MKT && MKT.ihsg) todayNote = noteStr('', MKT.ihsg.value, MKT.ihsg.daily);
+  tlRows += row('Hari Ini', statusMap[s] || '—', actionMap[a] || a, todayNote);
 
   var count = 0;
-  for (var i = 0; i < regimeHistory.length && count < maxCards; i++) {
+  for (var i = 0; i < regimeHistory.length && count < 4; i++) {
     if (regimeHistory[i].date === todayStr) continue;
     var e = regimeHistory[i];
-    cards += '<div class="mkt-v4-tl-card">';
-    cards += '<div class="mkt-v4-tl-card-top">';
-    cards += '<span class="mkt-v4-tl-badge ' + regimeBadgeCls(e.regime) + '">' + e.regime + '</span>';
-    cards += '<span class="mkt-v4-tl-badge ' + actionBadgeCls(e.action) + '">' + e.action + '</span>';
-    cards += '<span class="mkt-v4-tl-date">' + formatDate(e.date) + '</span>';
-    cards += '</div>';
-    var ihsgLine = e.ihsg_close != null ? 'IHSG ' + e.ihsg_close.toLocaleString() + (e.change_pct != null ? ' (' + (e.change_pct > 0 ? '+' : '') + e.change_pct.toFixed(2) + '%)' : '') : '';
-    if (ihsgLine) cards += '<div class="mkt-v4-tl-ihsg ' + (e.change_pct >= 0 ? 'g' : 'r') + '">' + ihsgLine + '</div>';
-    if (e.note) cards += '<div class="mkt-v4-tl-note">' + e.note + '</div>';
-    cards += '</div>';
+    tlRows += row(e.date, e.regime, e.action, noteStr(e.note, e.ihsg_close, e.change_pct));
     count++;
   }
 
-  if (regimeHistory.length > maxCards) {
-    cards += '<div class="mkt-v4-tl-more"><button onclick="st(3,document.querySelectorAll(\'.tab-btn\')[3])">Lihat histori lengkap</button></div>';
+  while (count < 4) {
+    count++;
+    tlRows += '<tr><td class="na">' + count + ' hari lalu</td><td class="na">—</td><td class="na">—</td><td class="na">—</td></tr>';
   }
 
-  document.getElementById('mkt-v4-timeline-mobile').innerHTML = cards;
+  document.getElementById('mkt-v4-timeline').innerHTML = tlRows;
 }
 
 function fetchRegimeHistory() {

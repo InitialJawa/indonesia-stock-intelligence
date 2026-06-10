@@ -1,21 +1,21 @@
 {
-    "last_update": "2026-06-10 08:57",
+    "last_update": "2026-06-10 08:59",
     "status": "SAFE",
-    "market_health": 51,
+    "market_health": 54,
     "opportunity": 74,
-    "risk": 32,
-    "confidence": 66,
-    "capital_deployment": 43,
+    "risk": 24,
+    "confidence": 72,
+    "capital_deployment": 47,
     "action": "WAIT",
-    "rationale": "Score gap 40.6 poin menunjukkan pemisahan kualitas yang jelas antara top5 dan bottom5. Faktor dominan: Growth (80.0). Faktor terlemah: Quality (60.0). Breadth terbatas (1 saham >=70). 1 dari 5 saham watchlist volume sepi — likuiditas rendah.",
-    "detail_message": "Score gap 40.6 poin menunjukkan pemisahan kualitas yang jelas antara top5 dan bottom5. Faktor dominan: Growth (80.0). Faktor terlemah: Quality (60.0). Breadth terbatas (1 saham >=70). 1 dari 5 saham watchlist volume sepi — likuiditas rendah.",
+    "rationale": "Score gap 40.6 poin menunjukkan pemisahan kualitas yang jelas antara top5 dan bottom5. Faktor dominan: Growth (80.0). Faktor terlemah: Quality (60.0). Breadth terbatas (1 saham >=70).",
+    "detail_message": "Score gap 40.6 poin menunjukkan pemisahan kualitas yang jelas antara top5 dan bottom5. Faktor dominan: Growth (80.0). Faktor terlemah: Quality (60.0). Breadth terbatas (1 saham >=70).",
     "anomalies": [],
     "radar_context": {
         "production_config": "Config F",
         "top5_avg_score": 66.8,
         "bot5_avg_score": 26.2,
         "score_gap": 40.6,
-        "score_gap_5d_change": 0,
+        "score_gap_5d_change": 2,
         "breadth_above_70": 1,
         "breadth_above_60": 7,
         "breadth_below_40": 7,
@@ -27,10 +27,10 @@
         "watchlist_count": 5
     },
     "volume_details": [
-        "PTBA.JK: Volume 1.2x (Wajar)",
+        "PTBA.JK: Volume 1.3x (Wajar)",
         "BBNI.JK: Volume 3.1x (Volume Lonjakan)",
         "INDF.JK: Volume 1.2x (Wajar)",
-        "ASII.JK: Volume 1.0x (Sepi)",
+        "ASII.JK: Volume 1.0x (Wajar)",
         "ITMG.JK: Volume 1.5x (Wajar)"
     ]
 }

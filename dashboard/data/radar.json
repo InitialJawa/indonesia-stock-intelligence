@@ -1,14 +1,14 @@
 {
-    "last_update": "2026-06-10 08:00",
+    "last_update": "2026-06-10 08:21",
     "status": "SAFE",
-    "market_health": 60,
-    "opportunity": 70,
-    "risk": 55,
-    "confidence": 58,
-    "capital_deployment": 65,
+    "market_health": 61,
+    "opportunity": 81,
+    "risk": 35,
+    "confidence": 70,
+    "capital_deployment": 68,
     "action": "ACCUMULATE",
-    "rationale": "Pasar menunjukkan polarisasi kuat dengan score_gap 40.6, mengindikasikan perbedaan jelas antara saham kuat dan lemah. Namun, breadth pasar terbatas; hanya 1 saham di atas 70, dan 7 saham di bawah 40, menunjukkan kelemahan yang meluas. Volume hari ini mencatat 1 lonjakan (BBNI) tetapi juga 2 saham sepi (INDF, ASII), melanjutkan tren volume sepi 2 hari terakhir, yang meningkatkan risiko likuiditas. Faktor Growth dominan dengan skor 80, menawarkan peluang terfokus. Perubahan score_gap -2 mengisyaratkan sedikit penurunan momentum. Dengan probabilitas risiko moderat dan peluang terfokus, ACCUMULATE secara selektif, dengan fokus perlindungan modal.",
-    "detail_message": "Pasar menunjukkan polarisasi kuat dengan score_gap 40.6, mengindikasikan perbedaan jelas antara saham kuat dan lemah. Namun, breadth pasar terbatas; hanya 1 saham di atas 70, dan 7 saham di bawah 40, menunjukkan kelemahan yang meluas. Volume hari ini mencatat 1 lonjakan (BBNI) tetapi juga 2 saham sepi (INDF, ASII), melanjutkan tren volume sepi 2 hari terakhir, yang meningkatkan risiko likuiditas. Faktor Growth dominan dengan skor 80, menawarkan peluang terfokus. Perubahan score_gap -2 mengisyaratkan sedikit penurunan momentum. Dengan probabilitas risiko moderat dan peluang terfokus, ACCUMULATE secara selektif, dengan fokus perlindungan modal.",
+    "rationale": "Meskipun terdapat divergensi pasar yang signifikan (score gap 40.6) dan banyak saham lemah (7 di bawah 40), tren 5 hari menunjukkan gap menyempit (-2), mengurangi risiko sistemik. Peluang terfokus pada saham dengan skor tinggi (top5 avg 66.8) dan faktor Growth yang kuat (80). Namun, breadth pasar masih sempit (hanya 1 di atas 70) dan volume sepi di beberapa saham (2 hari ini, meningkat dari 0 dalam 5 hari terakhir) menunjukkan likuiditas yang terbatas di sebagian pasar. Dengan risiko yang terkendali dan peluang yang teridentifikasi, akumulasi modal secara selektif direkomendasikan.",
+    "detail_message": "Meskipun terdapat divergensi pasar yang signifikan (score gap 40.6) dan banyak saham lemah (7 di bawah 40), tren 5 hari menunjukkan gap menyempit (-2), mengurangi risiko sistemik. Peluang terfokus pada saham dengan skor tinggi (top5 avg 66.8) dan faktor Growth yang kuat (80). Namun, breadth pasar masih sempit (hanya 1 di atas 70) dan volume sepi di beberapa saham (2 hari ini, meningkat dari 0 dalam 5 hari terakhir) menunjukkan likuiditas yang terbatas di sebagian pasar. Dengan risiko yang terkendali dan peluang yang teridentifikasi, akumulasi modal secara selektif direkomendasikan.",
     "anomalies": [],
     "radar_context": {
         "production_config": "Config F",
@@ -27,10 +27,10 @@
         "watchlist_count": 5
     },
     "volume_details": [
-        "PTBA.JK: Volume 1.0x (Wajar)",
-        "BBNI.JK: Volume 2.6x (Volume Lonjakan)",
-        "INDF.JK: Volume 0.9x (Sepi)",
+        "PTBA.JK: Volume 1.1x (Wajar)",
+        "BBNI.JK: Volume 2.7x (Volume Lonjakan)",
+        "INDF.JK: Volume 1.0x (Sepi)",
         "ASII.JK: Volume 0.8x (Sepi)",
-        "ITMG.JK: Volume 1.1x (Wajar)"
+        "ITMG.JK: Volume 1.3x (Wajar)"
     ]
 }

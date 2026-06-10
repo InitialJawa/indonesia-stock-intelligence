@@ -381,7 +381,7 @@
     "ticker": "UNTR.JK",
     "fundamentals": {
       "pe": 6.5010667,
-      "pb": 0.8185319,
+      "pb": 0.8038982,
       "roe": 0.12315,
       "der": 25.751,
       "net_margin": 0.0,
@@ -392,7 +392,7 @@
     },
     "quality": 7.39,
     "growth": -13.25,
-    "value": 68.78,
+    "value": 69.89,
     "momentum": 0.0
   },
   {
@@ -435,7 +435,7 @@
     "ticker": "SMGR.JK",
     "fundamentals": {
       "pe": 47.681923,
-      "pb": 0.25134203,
+      "pb": 0.2518229,
       "roe": 0.00438,
       "der": 21.137,
       "net_margin": 0.0,
@@ -446,7 +446,7 @@
     },
     "quality": 0.26,
     "growth": -38.04,
-    "value": 199.98,
+    "value": 199.6,
     "momentum": 0.0
   },
   {

@@ -311,9 +311,11 @@ tr:hover td{background:var(--bg-elevated)}
   .period-btn,.sim-period-btn{padding:8px 14px;min-height:44px;font-size:13px}
   .tab-btn{padding:10px 14px !important;font-size:13px;min-height:44px}
   .sub-tab-btn{padding:10px 12px;font-size:13px;min-height:44px}
+  .mkt-v4-table{min-width:480px}
   .mkt-v4-table th,.mkt-v4-table td{padding:8px 8px;font-size:13px}
   .mkt-v4-table td:first-child,.mkt-v4-table th:first-child{position:sticky;left:0;z-index:3;background:var(--bg-surface)}
   .mkt-v4-table th:first-child{z-index:4}
+  .mkt-v4-table td:last-child{font-size:12px;white-space:normal;max-width:200px}
   .section-title{margin-bottom:10px}
   .chart-container{padding:12px}
   .filter-input{width:100%}
@@ -448,7 +450,7 @@ tr:hover td{background:var(--bg-elevated)}
 <div class="mkt-v4-section">
   <div class="mkt-v4-section-title">Timeline Regime</div>
   <table class="mkt-v4-table">
-    <thead><tr><th>Tanggal</th><th>Regime</th><th>Aksi</th></tr></thead>
+    <thead><tr><th>Tanggal</th><th>Regime</th><th>Aksi</th><th>Catatan</th></tr></thead>
     <tbody id="mkt-v4-timeline"></tbody>
   </table>
 </div>
@@ -1392,24 +1394,34 @@ function renderTimeline() {
   var tlRows = '';
   var todayStr = new Date().toISOString().slice(0, 10);
 
-  function row(date, regime, action, cls) {
-    var rCls = cls || (regime === 'RISK ON' ? 'up' : regime === 'RISK OFF' ? 'down' : '');
-    var aCls = cls || (action === 'AKUMULASI' ? 'up' : action === 'KURANGI' ? 'down' : '');
-    return '<tr><td>' + date + '</td><td class="' + rCls + '">' + regime + '</td><td class="' + aCls + '">' + action + '</td></tr>';
+  function noteStr(n, ihsg, chg) {
+    var parts = [];
+    if (ihsg != null) parts.push('IHSG ' + ihsg.toLocaleString() + (chg != null ? ' (' + (chg > 0 ? '+' : '') + chg.toFixed(2) + '%)' : ''));
+    if (n) parts.push(n);
+    return parts.length ? parts.join(' — ') : '—';
   }
 
-  tlRows += row('Hari Ini', statusMap[s] || '—', actionMap[a] || a);
+  function row(date, regime, action, note, cls) {
+    var rCls = cls || (regime === 'RISK ON' ? 'up' : regime === 'RISK OFF' ? 'down' : '');
+    var aCls = cls || (action === 'AKUMULASI' ? 'up' : action === 'KURANGI' ? 'down' : '');
+    return '<tr><td>' + date + '</td><td class="' + rCls + '">' + regime + '</td><td class="' + aCls + '">' + action + '</td><td style="font-size:12px;color:var(--text-secondary);max-width:260px">' + note + '</td></tr>';
+  }
+
+  var todayNote = '';
+  if (MKT && MKT.ihsg) todayNote = noteStr('', MKT.ihsg.value, MKT.ihsg.daily);
+  tlRows += row('Hari Ini', statusMap[s] || '—', actionMap[a] || a, todayNote);
 
   var count = 0;
   for (var i = 0; i < regimeHistory.length && count < 4; i++) {
     if (regimeHistory[i].date === todayStr) continue;
-    tlRows += row(regimeHistory[i].date, regimeHistory[i].regime, regimeHistory[i].action);
+    var e = regimeHistory[i];
+    tlRows += row(e.date, e.regime, e.action, noteStr(e.note, e.ihsg_close, e.change_pct));
     count++;
   }
 
   while (count < 4) {
     count++;
-    tlRows += '<tr><td class="na">' + count + ' hari lalu</td><td class="na">—</td><td class="na">—</td></tr>';
+    tlRows += '<tr><td class="na">' + count + ' hari lalu</td><td class="na">—</td><td class="na">—</td><td class="na">—</td></tr>';
   }
 
   document.getElementById('mkt-v4-timeline').innerHTML = tlRows;

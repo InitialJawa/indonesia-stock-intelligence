@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>ISI Dashboard V3.2 | Stockbit Dark</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
 <style>
@@ -254,6 +257,78 @@ tr:hover td{background:var(--bg-elevated)}
 .mkt-v4-context-card .chg{font-size:12px;margin-top:3px}
 .mkt-v4-context-card .chg span{margin:0 4px}
 .mkt-v4-summary{background:var(--bg-surface);border:1px solid var(--bg-border);border-radius:var(--radius-lg);padding:10px 14px;font-size:12px;color:var(--text-secondary);line-height:1.5}
+
+/* ── Mobile Optimizations ────────────────────────── */
+@media(max-width:768px){
+  body{padding:0 16px 80px}
+  .hdr{padding:10px 12px;flex-direction:column;align-items:stretch;gap:6px}
+  .status-bar{flex-wrap:wrap;justify-content:flex-start}
+  .tab-nav{display:none}
+  .bottom-nav{display:flex;position:fixed;bottom:0;left:0;right:0;z-index:1000;background:var(--bg-surface);border-top:1px solid var(--bg-border);padding:4px 0 env(safe-area-inset-bottom,4px);justify-content:space-around;transform:translateZ(0);-webkit-transform:translateZ(0);overflow:hidden}
+  .bn-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;padding:6px 2px;border:none;background:transparent;color:var(--text-secondary);font-size:10px;cursor:pointer;transition:color .15s;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+  .bn-btn svg{width:22px;height:22px;fill:currentColor}
+  .bn-btn span{font-size:9px;line-height:1;font-weight:500}
+  .bn-btn.active{color:var(--blue-strong)}
+  .bn-more{flex:0 0 auto;padding:6px 10px}
+  .bn-more-panel{position:fixed;bottom:0;left:0;right:0;z-index:1001;background:var(--bg-surface);border-top:1px solid var(--bg-border);border-radius:var(--radius-lg) var(--radius-lg) 0 0;padding:12px 16px calc(12px + env(safe-area-inset-bottom,12px));display:none;transform:translateY(100%);transition:transform .2s ease;box-shadow:0 -4px 20px rgba(0,0,0,.5)}
+  .bn-more-panel.open{display:block;transform:translateY(0)}
+  .bn-more-panel .bn-btn{flex-direction:row;gap:10px;padding:10px 12px;width:100%;font-size:13px;justify-content:flex-start;border-radius:var(--radius-md)}
+  .bn-more-panel .bn-btn:hover{background:var(--bg-elevated)}
+  .bn-overlay{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.5);display:none}
+  .bn-overlay.open{display:block}
+  .tc{padding:12px 0}
+  .section-title{font-size:13px}
+  .card{padding:14px}
+  .card-grid{grid-template-columns:1fr}
+  .mkt-v4-hero{grid-template-columns:1fr;padding:14px 12px;gap:8px}
+  .mkt-v4-hero-item+.mkt-v4-hero-item{border-left:none;border-top:1px solid var(--bg-border);padding-top:8px}
+  .mkt-v4-hero-badge{font-size:14px;padding:6px 16px}
+  .mkt-v4-hero-val{font-size:24px}
+  .mkt-v4-context{flex-direction:column}
+  .mkt-v4-context-card{padding:14px 12px}
+  .mkt-v4-context-card .val{font-size:18px}
+  .factor-grid{grid-template-columns:repeat(2,1fr)}
+  .comp-grid{grid-template-columns:1fr}
+  .insight-grid{grid-template-columns:1fr}
+  .radar-grid{grid-template-columns:repeat(3,1fr)}
+  .radar-card{padding:8px 10px}
+  .radar-card-val{font-size:16px}
+  .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;scroll-behavior:smooth}
+  table{font-size:13px;min-width:auto}
+  th,td{padding:10px 8px;min-height:44px}
+  th{font-size:11px;position:sticky;top:0;z-index:2}
+  td{font-size:13px}
+  table td:first-child,table th:first-child{position:sticky;left:0;z-index:3;background:var(--bg-base)}
+  table th:first-child{z-index:4}
+  table tr:hover td:first-child{background:var(--bg-elevated)}
+  .tk{font-size:13px}
+  .sf{font-size:13px}
+  .cfg-nav{flex-wrap:wrap}
+  .cfg-btn{padding:10px 16px;font-size:14px;min-height:44px;flex:1;text-align:center}
+  .sim-chart-wrap{flex-direction:column}
+  .sim-summary{max-width:none;min-width:0}
+  .sim-row{flex-wrap:wrap}
+  .period-btn,.sim-period-btn{padding:8px 14px;min-height:44px;font-size:13px}
+  .tab-btn{padding:10px 14px !important;font-size:13px;min-height:44px}
+  .sub-tab-btn{padding:10px 12px;font-size:13px;min-height:44px}
+  .mkt-v4-table th,.mkt-v4-table td{padding:8px 8px;font-size:13px}
+  .mkt-v4-table td:first-child,.mkt-v4-table th:first-child{position:sticky;left:0;z-index:3;background:var(--bg-surface)}
+  .mkt-v4-table th:first-child{z-index:4}
+  .section-title{margin-bottom:10px}
+  .chart-container{padding:12px}
+  .filter-input{width:100%}
+  .panel{width:100%;right:-100%}
+  .panel-hdr{padding:12px 16px}
+  .panel-body{padding:12px 16px}
+  .bn-overlay{display:none}
+  .overlay{z-index:999}
+}
+@media(max-width:768px) and (pointer:coarse){
+  .bn-btn,.tab-btn,.cfg-btn,.period-btn,.sim-period-btn,.sub-tab-btn,.sim-export,.panel-close,.filter-input{cursor:default}
+}
+@media(min-width:769px){
+  .bottom-nav{display:none}
+}
 </style>
 </head>
 <body>
@@ -276,6 +351,49 @@ tr:hover td{background:var(--bg-elevated)}
 <button class="tab-btn" onclick="st(5,this)">Diagnostics</button>
 <button class="tab-btn" onclick="st(6,this)">Simulation Lab</button>
 <button class="tab-btn" onclick="st(7,this)">Research</button>
+</div>
+
+<div class="bottom-nav" id="bottomNav">
+  <button class="bn-btn active" data-tab="0" onclick="st(0,document.querySelectorAll('.tab-btn')[0])">
+    <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+    <span>Market</span>
+  </button>
+  <button class="bn-btn" data-tab="1" onclick="st(1,document.querySelectorAll('.tab-btn')[1])">
+    <svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+    <span>Leaders</span>
+  </button>
+  <button class="bn-btn" data-tab="2" onclick="st(2,document.querySelectorAll('.tab-btn')[2])">
+    <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM5 19V5h6v14H5zm14 0h-6v-7h6v7zm0-9h-6V5h6v5z"/></svg>
+    <span>Turnaround</span>
+  </button>
+  <button class="bn-btn" data-tab="3" onclick="st(3,document.querySelectorAll('.tab-btn')[3])">
+    <svg viewBox="0 0 24 24"><path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
+    <span>History</span>
+  </button>
+  <button class="bn-btn" data-tab="4" onclick="st(4,document.querySelectorAll('.tab-btn')[4])">
+    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+    <span>Exit</span>
+  </button>
+  <button class="bn-btn bn-more" id="bnMoreBtn" onclick="toggleMoreNav()">
+    <svg viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+    <span>More</span>
+  </button>
+</div>
+
+<div class="bn-overlay" id="bnOverlay" onclick="toggleMoreNav()"></div>
+<div class="bn-more-panel" id="bnMorePanel">
+  <button class="bn-btn" data-tab="5" onclick="st(5,document.querySelectorAll('.tab-btn')[5]);toggleMoreNav()">
+    <svg viewBox="0 0 24 24"><path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/></svg>
+    <span>Diagnostics</span>
+  </button>
+  <button class="bn-btn" data-tab="6" onclick="st(6,document.querySelectorAll('.tab-btn')[6]);toggleMoreNav()">
+    <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
+    <span>Simulation Lab</span>
+  </button>
+  <button class="bn-btn" data-tab="7" onclick="st(7,document.querySelectorAll('.tab-btn')[7]);toggleMoreNav()">
+    <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+    <span>Research</span>
+  </button>
 </div>
 
 <div class="tc active" id="t0">
@@ -344,7 +462,7 @@ tr:hover td{background:var(--bg-elevated)}
 
 <div class="tc" id="t1">
 <div class="section-title">Leaders · Config Switcher</div>
-<div style="display:flex;gap:6px;align-items:center;margin-bottom:10px">
+<div class="cfg-nav" style="display:flex;gap:6px;align-items:center;margin-bottom:10px">
 <span class="cfg-label">Active Config:</span>
 <button class="cfg-btn active-prod" id="cfg-prod" onclick="switchConfig('prod')">Config F (Q25/G10/V30/M35)</button>
 <button class="cfg-btn" id="cfg-res" onclick="switchConfig('res')">Config B (Q25/G30/V10/M35)</button>
@@ -643,8 +761,27 @@ function st(tabIdx, btn) {
   btn.classList.add('active');
   document.querySelectorAll('.tc').forEach(function(c) { c.classList.remove('active'); });
   document.getElementById('t' + tabIdx).classList.add('active');
+  document.querySelectorAll('.bn-btn').forEach(function(b) { b.classList.remove('active'); });
+  var bn = document.querySelector('.bn-btn[data-tab="' + tabIdx + '"]');
+  if (bn) bn.classList.add('active');
   if (tabIdx === 2) { renderTurnaround(); }
 }
+
+function toggleMoreNav() {
+  var p = document.getElementById('bnMorePanel');
+  var o = document.getElementById('bnOverlay');
+  var isOpen = p.classList.contains('open');
+  p.classList.toggle('open');
+  o.classList.toggle('open');
+  document.body.style.overflow = isOpen ? '' : 'hidden';
+}
+document.addEventListener('click', function(e) {
+  var mp = document.getElementById('bnMorePanel');
+  var mb = document.getElementById('bnMoreBtn');
+  if (mp.classList.contains('open') && !mp.contains(e.target) && !mb.contains(e.target)) {
+    toggleMoreNav();
+  }
+});
 
 function renderTurnaround() {
   var arr = T.value || T;
@@ -1371,5 +1508,12 @@ document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { clo
 renderAll();
 setInterval(fetchLiveMarket, 300000);
 setInterval(fetchRegimeHistory, 300000);
+var rt;
+window.addEventListener('resize', function() {
+  clearTimeout(rt);
+  rt = setTimeout(function() {
+    if (simChart) simChart.resize();
+  }, 200);
+});
 </script>
 </body></html>

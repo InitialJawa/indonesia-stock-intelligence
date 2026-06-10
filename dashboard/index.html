@@ -104,10 +104,9 @@ th{text-align:left;padding:8px 12px;font-size:10px;font-weight:600;color:rgba(25
 td{padding:10px 12px;border-bottom:0.5px solid rgba(255,255,255,0.06);vertical-align:middle;font-variant-numeric:tabular-nums;font-size:13px;color:rgba(255,255,255,0.8)}
 table tbody tr:nth-child(odd) td{background:rgba(255,255,255,0.025)}
 td:first-child{color:rgba(255,255,255,0.55)}
-.bar{display:flex;align-items:center;gap:6px}
-.bar-track{flex:1;height:4px;background:rgba(255,255,255,0.1);border-radius:2px;overflow:hidden;max-width:70px}
-.bar-fill{height:100%;border-radius:2px;transition:width .3s}
-.bv{font-size:11px;color:rgba(255,255,255,0.3);min-width:24px;text-align:right;font-variant-numeric:tabular-nums}
+.bar{display:inline-flex;align-items:center;gap:5px}
+.bar-dot{width:7px;height:7px;border-radius:50%;opacity:0.6;flex-shrink:0}
+.bv{font-size:12px;color:rgba(255,255,255,0.35);font-variant-numeric:tabular-nums}
 .cfg-nav{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
 .cfg-btn{padding:6px 14px;font-size:12px;font-weight:500;border-radius:100px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.5);cursor:pointer;transition:all .15s;font-family:inherit}
 .cfg-btn.active-prod{background:rgba(48,209,88,0.15);color:#30D158;border-color:rgba(48,209,88,0.3)}
@@ -324,7 +323,8 @@ td:first-child{color:rgba(255,255,255,0.55)}
   .bn-more-panel{max-width:400px}
   .mkt-v4-grid{display:grid;grid-template-columns:3fr 2fr;gap:24px;align-items:start}
   .mkt-v4-grid .mkt-v4-section{margin-bottom:16px}
-  .mkt-v4-grid .mkt-v4-why{max-width:none}
+  .mkt-v4-grid>div{min-width:0}
+.mkt-v4-grid .mkt-v4-why{max-width:none}
   .mkt-v4-grid .mkt-v4-why-conclusion{max-width:none}
   #mkt-freshness{max-width:600px}
 }
@@ -380,10 +380,17 @@ td:first-child{color:rgba(255,255,255,0.55)}
 <div id="mkt-freshness" style="margin-bottom:10px;font-size:12px;color:rgba(255,255,255,0.5);display:flex;align-items:center;gap:8px"></div>
 
 <div class="mkt-v4-grid">
+<div>
 <div class="mkt-v4-section">
   <div class="mkt-v4-section-title">Mengapa Sistem Mengambil Keputusan Ini?</div>
   <div id="mkt-v4-why" class="mkt-v4-why"></div>
   <div id="mkt-v4-why-conclusion" class="mkt-v4-why-conclusion"></div>
+</div>
+<div class="mkt-v4-section">
+  <div class="mkt-v4-section-title">Konteks Pasar</div>
+  <div id="mkt-v4-context" class="mkt-v4-context"></div>
+  <div id="mkt-v4-context-timestamp" style="color:rgba(255,255,255,0.3);font-size:12px;margin-top:8px"></div>
+</div>
 </div>
 <div>
 <div class="mkt-v4-section">
@@ -402,12 +409,6 @@ td:first-child{color:rgba(255,255,255,0.55)}
   </table>
 </div>
 </div>
-</div>
-
-<div class="mkt-v4-section">
-  <div class="mkt-v4-section-title">Konteks Pasar</div>
-  <div id="mkt-v4-context" class="mkt-v4-context"></div>
-  <div id="mkt-v4-context-timestamp" style="color:rgba(255,255,255,0.3);font-size:12px;margin-top:8px"></div>
 </div>
 
 <div class="mkt-v4-section">
@@ -473,29 +474,19 @@ td:first-child{color:rgba(255,255,255,0.55)}
 </div>
 
 <div class="tc" id="t4">
-<div class="section-title">Exit Monitor · Rule-Based Exit Signals</div>
-<div class="card" style="margin-bottom:12px">
-<div class="card-label" id="legend-label">LEGENDA EXIT MONITOR</div>
-<div id="legend-body" style="display:flex;flex-wrap:wrap;gap:3px 10px;margin-top:8px;font-size:11px;color:rgba(255,255,255,0.5)">
-<span onclick="showLegendPopup(event,'A')" style="cursor:pointer" title="Klik untuk detail"><span class="badge" style="background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.7);border:none;font-size:10px">A</span> Rank Turun (&gt;10)</span>
-<span onclick="showLegendPopup(event,'B')" style="cursor:pointer" title="Klik untuk detail"><span class="badge" style="background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.7);border:none;font-size:10px">B</span> Momentum Lemah (RS20&lt;0 &amp; RS Chg&lt;0)</span>
-<span onclick="showLegendPopup(event,'C')" style="cursor:pointer" title="Klik untuk detail"><span class="badge" style="background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.7);border:none;font-size:10px">C</span> MA50 Rusak (Close&lt;MA50)</span>
-<span onclick="showLegendPopup(event,'D')" style="cursor:pointer" title="Klik untuk detail"><span class="badge" style="background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.7);border:none;font-size:10px">D</span> Pelemahan (Close&lt;MA100 / DD&gt;15%)</span>
-<span onclick="showLegendPopup(event,'RC')" style="cursor:pointer" title="Klik untuk detail"><span class="badge" style="background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.7);border:none;font-size:10px">RC</span> Perubahan Rank</span>
-<span onclick="showLegendPopup(event,'RS20')" style="cursor:pointer" title="Klik untuk detail"><span class="badge" style="background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.7);border:none;font-size:10px">RS20</span> RS 20 Hari</span>
-<span onclick="showLegendPopup(event,'RSΔ')" style="cursor:pointer" title="Klik untuk detail"><span class="badge" style="background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.7);border:none;font-size:10px">RSΔ</span> Perubahan RS</span>
-<span onclick="showLegendPopup(event,'MA')" style="cursor:pointer" title="Klik untuk detail"><span class="badge" style="background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.7);border:none;font-size:10px">MA</span> vs MA50/100</span>
-<span onclick="showLegendPopup(event,'DD')" style="cursor:pointer" title="Klik untuk detail"><span class="badge" style="background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.7);border:none;font-size:10px">DD</span> Drawdown Entry</span>
+<div class="section-title" style="display:flex;align-items:center;gap:8px">Exit Monitor · Rule-Based Exit Signals
+<span id="legend-trigger" style="position:relative;display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.4);font-size:11px;font-weight:600;cursor:help" onmouseenter="showLegendTooltip(event)" onmouseleave="hideLegendTooltip()" onclick="event.stopPropagation()">i</span>
 </div>
-</div>
+<div id="legend-tooltip" style="display:none;position:absolute;z-index:999;background:rgba(20,20,20,0.97);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:10px 12px;max-width:280px;box-shadow:0 4px 16px rgba(0,0,0,0.5);pointer-events:auto;font-size:11px;line-height:1.7;color:rgba(255,255,255,0.7)" onclick="event.stopPropagation()"></div>
 <div id="legend-popup" style="display:none;position:fixed;z-index:9999;background:rgba(20,20,20,0.97);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:12px 16px;max-width:300px;box-shadow:0 8px 32px rgba(0,0,0,0.6);backdrop-filter:blur(8px);pointer-events:auto" onclick="event.stopPropagation()"></div>
+<div id="legend-body" style="display:none"></div>
 <div style="margin-bottom:10px;display:flex;gap:6px;flex-wrap:wrap">
-<button class="tab-btn active" onclick="ef('all',this)" style="padding:5px 14px">All</button>
-<button class="tab-btn" onclick="ef('EXIT',this)" style="padding:5px 14px;color:#FF453A">Exit</button>
-<button class="tab-btn" onclick="ef('EXIT RISK',this)" style="padding:5px 14px;color:#FF9F0A">Exit Risk</button>
-<button class="tab-btn" onclick="ef('WEAKENING',this)" style="padding:5px 14px;color:#FF9F0A">Weakening</button>
-<button class="tab-btn" onclick="ef('EXIT WATCH',this)" style="padding:5px 14px;color:#0A84FF">Exit Watch</button>
-<button class="tab-btn" onclick="ef('HEALTHY',this)" style="padding:5px 14px;color:#30D158">Healthy</button>
+<button class="ios-filter-btn active" onclick="ef('all',this)">All</button>
+<button class="ios-filter-btn" onclick="ef('EXIT',this)">Exit</button>
+<button class="ios-filter-btn" onclick="ef('EXIT RISK',this)">Exit Risk</button>
+<button class="ios-filter-btn" onclick="ef('WEAKENING',this)">Weakening</button>
+<button class="ios-filter-btn" onclick="ef('EXIT WATCH',this)">Exit Watch</button>
+<button class="ios-filter-btn" onclick="ef('HEALTHY',this)">Healthy</button>
 </div>
 <div class="table-wrap">
 <table>
@@ -676,13 +667,13 @@ function getWeights() { return activeConfig === 'prod' ? CW_F : CW_B; }
 function configLabel() { return activeConfig === 'prod' ? 'Config F' : 'Config B'; }
 
 function sc(v) { return v >= 60 ? 'high' : v >= 40 ? 'mid' : 'low'; }
-function bar(v, k) { var n = +v; return '<div class="bar"><div class="bar-track"><div class="bar-fill" style="width:' + Math.min(n, 100) + '%;background:' + k + '"></div></div><span class="bv">' + n.toFixed(1) + '</span></div>'; }
+function bar(v, k) { var n = +v; return '<span class="bar"><span class="bar-dot" style="background:' + k + '"></span><span class="bv">' + n.toFixed(1) + '</span></span>'; }
 function badge(v, t) { return v ? '<span class="badge ' + t + '">Yes</span>' : '<span class="badge gray">No</span>'; }
 function pct(v) { var n = +v; return (n > 0 ? '+' : '') + n.toFixed(1) + '%'; }
 function matchBool(v) { return v === true || v === 'True'; }
-function ctxLabel(r) { return matchBool(r.context_match) ? '<span class="badge green">YES</span>' : '<span class="badge gray">NO</span>'; }
-function trnLabel(r) { return matchBool(r.transition_match) ? '<span class="badge yellow">YES</span>' : '<span class="badge gray">NO</span>'; }
-function fullLabel(r) { var cm = matchBool(r.context_match), tm = matchBool(r.transition_match); return cm && tm ? '<span class="badge blue">FULL</span>' : cm ? '<span class="badge green">CTX</span>' : tm ? '<span class="badge yellow">TRN</span>' : '<span class="badge gray">—</span>'; }
+function ctxLabel(r) { return matchBool(r.context_match) ? '<span style="color:#30D158;font-weight:500">YES</span>' : '<span style="color:rgba(255,255,255,0.3)">—</span>'; }
+function trnLabel(r) { return matchBool(r.transition_match) ? '<span style="color:#30D158;font-weight:500">YES</span>' : '<span style="color:rgba(255,255,255,0.3)">—</span>'; }
+function fullLabel(r) { var cm = matchBool(r.context_match), tm = matchBool(r.transition_match); return cm && tm ? '<span class="badge blue">FULL</span>' : cm || tm ? '<span style="color:rgba(255,255,255,0.5)">Partial</span>' : '<span style="color:rgba(255,255,255,0.2)">—</span>'; }
 
 function computeFinalScore(r, w) { return r.quality * w.quality + r.growth * w.growth + r.value * w.value + r.momentum * w.momentum; }
 
@@ -819,7 +810,7 @@ function renderTurnaround() {
   tk.sort(function(a, b) { return (matchBool(b.context_match) + matchBool(b.transition_match)) - (matchBool(a.context_match) + matchBool(a.transition_match)); });
   var html = tk.map(function(r) {
     var cm = matchBool(r.context_match), tm = matchBool(r.transition_match);
-    return '<tr><td class="tk tk-click" data-ticker="' + r.ticker.split('.')[0] + '" style="color:' + ac(r.ticker) + '">' + r.ticker.split('.')[0] + '</td><td class="' + (cm ? 'g' : 'r') + '">' + ctxLabel(r) + '</td><td class="' + (tm ? 'g' : 'r') + '">' + trnLabel(r) + '</td><td>' + fullLabel(r) + '</td><td>' + (r.last_update || '—') + '</td></tr>';
+    return '<tr><td class="tk tk-click" data-ticker="' + r.ticker.split('.')[0] + '" style="color:' + ac(r.ticker) + '">' + r.ticker.split('.')[0] + '</td><td>' + ctxLabel(r) + '</td><td>' + trnLabel(r) + '</td><td>' + fullLabel(r) + '</td><td>' + (r.last_update || '—') + '</td></tr>';
   }).join('');
   document.getElementById('tbody-trn').innerHTML = html;
   renderMobileTurnaround();
@@ -854,11 +845,17 @@ function renderMobileTurnaround() {
 }
 
 function renderHistory() {
+  var el = document.getElementById('tbody-history');
+  if (!el) return;
+  if (!SK || SK.length === 0) {
+    el.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px 16px;color:rgba(255,255,255,0.3);font-size:14px;border:none"><div style="font-size:32px;margin-bottom:12px;opacity:0.2">📊</div><div style="font-weight:500;margin-bottom:4px;color:rgba(255,255,255,0.5)">Belum Ada Data Persistensi</div><div style="font-size:12px;color:rgba(255,255,255,0.3);line-height:1.6">Data akan muncul secara otomatis setelah sistem<br>mendeteksi pergerakan tren harian.</div></td></tr>';
+    return;
+  }
   var h = SK.map(function(r) {
     var sym = r.ticker.split('.')[0];
     return '<tr><td class="tk" style="color:' + ac(r.ticker) + '">' + sym + '</td><td class="' + (+r.context_days >= 3 ? 'g' : +r.context_days > 0 ? 'y' : 'r') + '">' + r.context_days + '</td><td class="' + (+r.transition_days >= 3 ? 'g' : +r.transition_days > 0 ? 'y' : 'r') + '">' + r.transition_days + '</td><td>' + (r.first_context_detected || '—') + '</td><td>' + (r.first_transition_detected || '—') + '</td><td class="' + (+r.total_entries >= 3 ? 'g' : +r.total_entries > 0 ? 'y' : 'r') + '">' + r.total_entries + '</td></tr>';
   }).join('');
-  document.getElementById('tbody-history').innerHTML = h;
+  el.innerHTML = h;
 }
 
 var es = { key: null, dir: 'asc' };
@@ -880,7 +877,7 @@ function re() {
 }
 function ef(v, btn) {
   window._ef = v;
-  document.querySelectorAll('#t4 .tab-btn').forEach(function(b) { b.classList.remove('active'); });
+  document.querySelectorAll('#t4 .ios-filter-btn').forEach(function(b) { b.classList.remove('active'); });
   btn.classList.add('active');
   re();
   renderMobileExit();
@@ -976,10 +973,22 @@ function updateLegendContext(v) {
     }
   };
   var c = ctx[v] || ctx['all'];
-  var label = document.getElementById('legend-label');
   var body = document.getElementById('legend-body');
-  if (label) label.textContent = c.title;
   if (body) body.innerHTML = c.body;
+}
+function showLegendTooltip(e) {
+  var tip = document.getElementById('legend-tooltip');
+  var body = document.getElementById('legend-body');
+  if (!tip || !body) return;
+  tip.innerHTML = body.innerHTML || 'Tidak ada legenda.';
+  var rect = document.getElementById('legend-trigger').getBoundingClientRect();
+  tip.style.left = rect.right + 8 + 'px';
+  tip.style.top = Math.max(4, rect.top - 4) + 'px';
+  tip.style.display = 'block';
+}
+function hideLegendTooltip() {
+  var tip = document.getElementById('legend-tooltip');
+  if (tip) tip.style.display = 'none';
 }
 function renderMobileExit() {
   var flt = window._ef || 'all';
@@ -1085,8 +1094,8 @@ function renderSimChart() {
         }
       },
       scales: {
-        x: { grid: { color: '#E5E5EA' }, ticks: { color: '#8E8E93', font: { size: 11 } } },
-        y: { grid: { color: '#E5E5EA' }, ticks: { color: '#8E8E93', font: { size: 11 }, callback: function(v) { return 'Rp' + (v/1e6).toFixed(0) + 'M'; } } }
+        x: { grid: { color: 'rgba(255,255,255,0.06)' }, border: { color: 'rgba(255,255,255,0.08)' }, ticks: { color: '#8E8E93', font: { size: 11 } } },
+        y: { grid: { color: 'rgba(255,255,255,0.06)' }, border: { color: 'rgba(255,255,255,0.08)' }, ticks: { color: '#8E8E93', font: { size: 11 }, callback: function(v) { return 'Rp' + (v/1e6).toFixed(0) + 'M'; } } }
       }
     }
   });

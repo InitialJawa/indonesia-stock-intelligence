@@ -282,6 +282,7 @@ td{padding:10px 12px;border-bottom:0.5px solid rgba(255,255,255,0.06);vertical-a
   .bn-more-panel{max-width:100%}
 }
 </style>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
 </head>
 <body>
 <div class="ios-wrap">
@@ -574,7 +575,7 @@ td{padding:10px 12px;border-bottom:0.5px solid rgba(255,255,255,0.06);vertical-a
 
 <div id="mobile-root"></div>
 
-<script src="data/data.js?v=3.2"></script>
+<script src="data/data.js?v=3.3"></script>
 <script>
 var L, T, SM, SK, EX, PF, FD, CW_B, CW_F, WI, IC, BT, FCOLORS, FNAMES, RS, BM, MKT;
 var BM_M = (function() {
@@ -684,7 +685,7 @@ function renderMobileLeaders() {
     '</div>';
   scored.forEach(function(r) {
     var sym = r.ticker.split('.')[0];
-    html += '<div class="m-card m-leader-card"><div class="m-card-row"><span class="lbl">#' + r._rank + '</span><span class="val tk-click" data-ticker="' + sym + '" style="color:' + (typeof ac === 'function' ? ac(r.ticker) : 'var(--text-primary)') + '">' + sym + (r._rank <= 5 ? ' ★' : '') + '</span></div>' +
+    html += '<div class="m-card m-leader-card"><div class="m-card-row"><span class="lbl">#' + r._rank + '</span><span class="val tk-click" data-ticker="' + sym + '" style="color:' + (typeof ac === 'function' ? ac(r.ticker) : 'rgba(255,255,255,0.8)') + '">' + sym + (r._rank <= 5 ? ' ★' : '') + '</span></div>' +
       '<div class="m-card-row"><span class="lbl">Score</span><span class="val" style="color:' + (r._score >= 70 ? '#3FB950' : r._score >= 50 ? '#D29922' : '#F85149') + '">' + r._score.toFixed(1) + '</span></div>' +
       '<div class="factors"><div class="factor"><div class="lbl">Quality</div><div class="val" style="color:' + (r.quality >= 60 ? '#3FB950' : r.quality >= 40 ? '#D29922' : '#F85149') + '">' + (+r.quality).toFixed(0) + '</div></div>' +
       '<div class="factor"><div class="lbl">Growth</div><div class="val" style="color:' + (r.growth >= 60 ? '#3FB950' : r.growth >= 40 ? '#D29922' : '#F85149') + '">' + (+r.growth).toFixed(0) + '</div></div>' +
@@ -784,10 +785,10 @@ function renderMobileTurnaround() {
     var sym = r.ticker.split('.')[0];
     var cm = typeof matchBool === 'function' ? matchBool(r.context_match) : r.context_match;
     var tm = typeof matchBool === 'function' ? matchBool(r.transition_match) : r.transition_match;
-    html2 += '<div class="m-card"><div class="m-card-row"><span class="val tk-click" data-ticker="' + sym + '" style="color:' + (typeof ac === 'function' ? ac(r.ticker) : 'var(--text-primary)') + ';font-size:14px">' + sym + '</span><span></span></div>' +
+    html2 += '<div class="m-card"><div class="m-card-row"><span class="val tk-click" data-ticker="' + sym + '" style="color:' + (typeof ac === 'function' ? ac(r.ticker) : 'rgba(255,255,255,0.8)') + ';font-size:14px">' + sym + '</span><span></span></div>' +
       '<div class="m-card-row"><span class="lbl">Context</span><span class="val" style="color:' + (cm ? '#3FB950' : '#F85149') + '">' + (typeof ctxLabel === 'function' ? ctxLabel(r) : (cm ? 'Match' : 'No Match')) + '</span></div>' +
       '<div class="m-card-row"><span class="lbl">Transition</span><span class="val" style="color:' + (tm ? '#3FB950' : '#F85149') + '">' + (typeof trnLabel === 'function' ? trnLabel(r) : (tm ? 'Match' : 'No Match')) + '</span></div>' +
-      (r.last_update ? '<div class="m-card-row"><span class="lbl">Updated</span><span class="val" style="font-size:12px;color:var(--text-tertiary)">' + r.last_update + '</span></div>' : '') +
+      (r.last_update ? '<div class="m-card-row"><span class="lbl">Updated</span><span class="val" style="font-size:12px;color:rgba(255,255,255,0.4)">' + r.last_update + '</span></div>' : '') +
       '</div>';
   });
   el.innerHTML = html2;
@@ -940,17 +941,17 @@ function renderMobileExit() {
     var esClass = (r.exit_state || 'UNKNOWN').replace(/ /g, '-').toLowerCase();
     html += '<div class="m-card"><div class="m-card-row">' +
       '<span class="lbl" style="color:' + (+r.rank <= 10 ? '#30D158' : +r.rank <= 20 ? '#FF9F0A' : '#FF453A') + '">#' + r.rank + '</span>' +
-      '<span class="val tk-click" data-ticker="' + sym + '" style="color:' + (typeof ac === 'function' ? ac(r.ticker) : 'var(--text-primary)') + '">' + sym + '</span>' +
+      '<span class="val tk-click" data-ticker="' + sym + '" style="color:' + (typeof ac === 'function' ? ac(r.ticker) : 'rgba(255,255,255,0.8)') + '">' + sym + '</span>' +
       '</div>' +
       '<div class="m-card-row"><span class="lbl">State</span><span><span class="m-exit-state ' + esClass + '">' + r.exit_state + '</span></span></div>' +
-      '<div class="m-card-row"><span class="lbl">Rank Change</span><span class="val" style="color:' + (parseInt(r.rank_change) > 0 ? '#3FB950' : parseInt(r.rank_change) < 0 ? '#F85149' : 'var(--text-primary)') + '">' + (r.rank_change > 0 ? '+' : '') + r.rank_change + '</span></div>' +
+      '<div class="m-card-row"><span class="lbl">Rank Change</span><span class="val" style="color:' + (parseInt(r.rank_change) > 0 ? '#3FB950' : parseInt(r.rank_change) < 0 ? '#F85149' : 'rgba(255,255,255,0.8)') + '">' + (r.rank_change > 0 ? '+' : '') + r.rank_change + '</span></div>' +
       '<div class="m-exit-detail">' +
       '<div class="item"><span class="lbl">RS 20D</span><span class="val" style="color:' + (rs20 > 0 ? '#3FB950' : '#F85149') + '">' + rs20.toFixed(1) + '%</span></div>' +
       '<div class="item"><span class="lbl">DD Entry</span><span class="val" style="color:' + (dd > -5 ? '#3FB950' : '#D29922') + '">' + (dd > 0 ? '+' : '') + dd.toFixed(1) + '%</span></div>' +
       '<div class="item"><span class="lbl">MA50</span><span class="val" style="color:' + ((r.close_above_ma50 === 'TRUE' || r.close_above_ma50 === 'True') ? '#3FB950' : '#F85149') + '">' + ((r.close_above_ma50 === 'TRUE' || r.close_above_ma50 === 'True') ? 'Above' : 'Below') + '</span></div>' +
       '<div class="item"><span class="lbl">MA100</span><span class="val" style="color:' + ((r.close_above_ma100 === 'TRUE' || r.close_above_ma100 === 'True') ? '#3FB950' : '#F85149') + '">' + ((r.close_above_ma100 === 'TRUE' || r.close_above_ma100 === 'True') ? 'Above' : 'Below') + '</span></div>' +
       '</div>' +
-      (r.rules ? '<div style="font-size:11px;color:var(--text-tertiary);margin-top:4px;padding-top:4px;border-top:1px solid var(--bg-separator)">' + r.rules + '</div>' : '') +
+      (r.rules ? '<div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:4px;padding-top:4px;border-top:1px solid rgba(255,255,255,0.08)">' + r.rules + '</div>' : '') +
       '</div>';
   });
   var el = document.getElementById('m-c4');
@@ -1165,28 +1166,28 @@ function aiExplain(d) {
   var lines = [];
   if (d.turnaround && matchBool(d.turnaround.context_match) && matchBool(d.turnaround.transition_match)) {
     lines.push('<div class="panel-status turnaround"><b>KANDIDAT TURNAROUND</b>');
-    lines.push('<div style="margin-top:6px;font-size:11px;color:var(--text-secondary);font-weight:400">');
+    lines.push('<div style="margin-top:6px;font-size:11px;color:rgba(255,255,255,0.6);font-weight:400">');
     if (d.turnaround.drawdown_252d < -20) lines.push('<span class="panel-bullet">&#8226;</span>Deep drawdown');
     if (d.turnaround.distance_from_high_252d < -15) lines.push('<span class="panel-bullet">&#8226;</span>Far from previous high');
     if (d.turnaround.rs_change_60d > 0) lines.push('<span class="panel-bullet">&#8226;</span>Improving RS60');
     if (d.turnaround.volume_ratio > 1.3) lines.push('<span class="panel-bullet">&#8226;</span>Elevated volume');
     if (d.turnaround.recovery_from_60d_low > 5) lines.push('<span class="panel-bullet">&#8226;</span>Pemulihan dari dasar');
     lines.push('</div></div>');
-    lines.push('<div style="font-size:11px;color:var(--text-secondary);margin-top:6px;line-height:1.5">Stock remains high risk but shows early signs of accumulation.</div>');
+    lines.push('<div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:6px;line-height:1.5">Stock remains high risk but shows early signs of accumulation.</div>');
     return lines.join('');
   }
   if (d.exit && d.exit.exit_state === 'EXIT') {
     lines.push('<div class="panel-status exit"><b>SINYAL EXIT AKTIF</b>');
-    lines.push('<div style="margin-top:6px;font-size:11px;color:var(--text-secondary);font-weight:400">');
+    lines.push('<div style="margin-top:6px;font-size:11px;color:rgba(255,255,255,0.6);font-weight:400">');
     lines.push('<span class="panel-bullet">&#8226;</span>Exit state: ' + d.exit.exit_state);
     lines.push('<span class="panel-bullet">&#8226;</span>Rules: ' + d.exit.triggered_rules);
     lines.push('</div></div>');
-    lines.push('<div style="font-size:11px;color:var(--text-secondary);margin-top:6px;line-height:1.5">Stock shows sustained weakness across multiple indicators.</div>');
+    lines.push('<div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:6px;line-height:1.5">Stock shows sustained weakness across multiple indicators.</div>');
     return lines.join('');
   }
   if (d.leader && d.leader.rank <= 5) {
     lines.push('<div class="panel-status portfolio"><b>PORTOFOLIO AKTIF</b>');
-    lines.push('<div style="margin-top:6px;font-size:11px;color:var(--text-secondary);font-weight:400">');
+    lines.push('<div style="margin-top:6px;font-size:11px;color:rgba(255,255,255,0.6);font-weight:400">');
     lines.push('<span class="panel-bullet">&#8226;</span>Top 5 in ' + configLabel() + ' ranking');
     lines.push('<span class="panel-bullet">&#8226;</span>Saat ini masuk portofolio');
     lines.push('</div></div>');
@@ -1213,7 +1214,7 @@ function renderScoreBreakdown(d) {
     var barC = f.val >= 60 ? '#3FB950' : f.val >= 40 ? '#D29922' : '#F85149';
     h += '<div class="breakdown-row"><div class="bf-hdr"><span>' + f.name + '</span><span class="' + scoreClass + '">' + f.val.toFixed(1) + ' × ' + (f.weight * 100).toFixed(0) + '% = ' + weighted.toFixed(1) + '</span></div>';
     h += '<div class="bar"><div class="bar-track"><div class="bar-fill" style="width:' + Math.min(f.val, 100) + '%;background:' + barC + '"></div></div></div>';
-    h += '<div style="font-size:10px;color:var(--text-secondary);margin-top:2px">IC ' + (f.ic > 0 ? '+' : '') + f.ic.toFixed(4) + ' · ' + f.role + '</div></div>';
+    h += '<div style="font-size:10px;color:rgba(255,255,255,0.6);margin-top:2px">IC ' + (f.ic > 0 ? '+' : '') + f.ic.toFixed(4) + ' · ' + f.role + '</div></div>';
   });
   var total = factors.reduce(function(s, f) { return s + f.val * f.weight; }, 0);
   h += '<div class="breakdown-total">Final Score: <span class="' + (total >= 60 ? 'g' : total >= 40 ? 'y' : 'r') + '">' + total.toFixed(1) + '</span> / 100</div>';
@@ -1417,7 +1418,7 @@ function renderMarket() {
   }
   if (bullets.length === 0) bullets.push({ ico: '&#9888;', text: 'Data tidak mencukupi', ok: false });
   var bh = bullets.map(function(b) {
-    return '<div class="mkt-v4-why-item"><span class="ico" style="color:' + (b.ok ? '#3FB950' : '#D29922') + '">' + b.ico + '</span><span>' + b.text + '</span></div>';
+    return '<div class="mkt-v4-why-item"><span class="ico" style="color:' + (b.ok ? '#30D158' : '#FF453A') + '">' + b.ico + '</span><span>' + b.text + '</span></div>';
   }).join('');
   document.getElementById('mkt-v4-why').innerHTML = bh;
 
@@ -1489,9 +1490,9 @@ function renderMarket() {
     ];
     var ch = '';
     assets.forEach(function(x) {
-      ch += '<div class="mkt-v4-context-card"><div class="lbl">' + x.lbl + '</div><div class="val">' + x.val + '</div>';
-      ch += '<div class="chg"><span class="' + (x.d >= 0 ? 'g' : 'r') + '">' + (x.d > 0 ? '+' : '') + x.d + '%</span><span style="color:var(--text-tertiary)"> Harian</span>';
-      ch += ' &middot; <span class="' + (x.m >= 0 ? 'g' : 'r') + '">' + (x.m > 0 ? '+' : '') + x.m + '%</span><span style="color:var(--text-tertiary)"> Bulanan</span></div>';
+      ch += '<div class="mkt-v4-context-card"><div class="lbl">' + x.lbl + '</div><div class="val" style="color:' + (x.d >= 0 ? '#30D158' : '#FF453A') + '">' + x.val + '</div>';
+      ch += '<div class="chg"><span class="' + (x.d >= 0 ? 'g' : 'r') + '">' + (x.d > 0 ? '+' : '') + x.d + '%</span><span style="color:rgba(255,255,255,0.4)"> Harian</span>';
+      ch += ' &middot; <span class="' + (x.m >= 0 ? 'g' : 'r') + '">' + (x.m > 0 ? '+' : '') + x.m + '%</span><span style="color:rgba(255,255,255,0.4)"> Bulanan</span></div>';
       ch += '</div>';
     });
     document.getElementById('mkt-v4-context').innerHTML = ch;
@@ -1530,7 +1531,7 @@ function renderTimeline() {
   function row(date, regime, action, note, cls) {
     var rCls = cls || (regime === 'RISK ON' ? 'up' : regime === 'RISK OFF' ? 'down' : '');
     var aCls = cls || (action === 'AKUMULASI' ? 'up' : action === 'KURANGI' ? 'down' : '');
-    return '<tr><td>' + date + '</td><td class="' + rCls + '">' + regime + '</td><td class="' + aCls + '">' + action + '</td><td style="font-size:12px;color:var(--text-secondary);max-width:260px">' + note + '</td></tr>';
+    return '<tr><td>' + date + '</td><td class="' + rCls + '">' + regime + '</td><td class="' + aCls + '">' + action + '</td><td style="font-size:12px;color:rgba(255,255,255,0.6);max-width:260px">' + note + '</td></tr>';
   }
 
   var todayNote = '';
@@ -1570,10 +1571,10 @@ function renderLiveMarket() {
   ];
   var ch = '';
   assets.forEach(function(x) {
-    ch += '<div class="mkt-v4-context-card"><div class="lbl">' + x.lbl + '</div><div class="val">' + x.val + '</div>';
-    ch += '<div class="chg"><span class="' + (x.d >= 0 ? 'g' : 'r') + '">' + (x.d > 0 ? '+' : '') + x.d + '%</span><span style="color:var(--text-tertiary)"> Harian</span>';
+    ch += '<div class="mkt-v4-context-card"><div class="lbl">' + x.lbl + '</div><div class="val" style="color:' + (x.d >= 0 ? '#30D158' : '#FF453A') + '">' + x.val + '</div>';
+    ch += '<div class="chg"><span class="' + (x.d >= 0 ? 'g' : 'r') + '">' + (x.d > 0 ? '+' : '') + x.d + '%</span><span style="color:rgba(255,255,255,0.4)"> Harian</span>';
     if (x.m !== null) {
-      ch += ' &middot; <span class="' + (x.m >= 0 ? 'g' : 'r') + '">' + (x.m > 0 ? '+' : '') + x.m + '%</span><span style="color:var(--text-tertiary)"> Bulanan</span>';
+      ch += ' &middot; <span class="' + (x.m >= 0 ? 'g' : 'r') + '">' + (x.m > 0 ? '+' : '') + x.m + '%</span><span style="color:rgba(255,255,255,0.4)"> Bulanan</span>';
     }
     ch += '</div>';
   });
@@ -1706,7 +1707,7 @@ function renderMobile() {
     ];
     liveHtml += '<div class="m-section-title">Live Market</div><div class="m-ctx-grid">';
     assets.forEach(function(x) {
-      liveHtml += '<div class="m-card" style="margin-bottom:0"><div class="m-card-lbl">' + x.lbl + '</div><div style="font-size:18px;font-weight:600">' + x.val + '</div><div style="font-size:12px;' + (x.d >= 0 ? 'color:#3FB950' : 'color:#F85149') + '">' + (x.d > 0 ? '+' : '') + x.d + '%</div></div>';
+      liveHtml += '<div class="m-card" style="margin-bottom:0"><div class="m-card-lbl">' + x.lbl + '</div><div style="font-size:18px;font-weight:600;color:' + (x.d >= 0 ? '#30D158' : '#FF453A') + '">' + x.val + '</div><div style="font-size:12px;' + (x.d >= 0 ? 'color:#3FB950' : 'color:#F85149') + '">' + (x.d > 0 ? '+' : '') + x.d + '%</div></div>';
     });
     liveHtml += '</div>';
   }
@@ -1715,7 +1716,7 @@ function renderMobile() {
   var freshHtml = '';
   var lu = MKT && MKT.market_last_update ? MKT.market_last_update : '';
   if (lu) {
-    freshHtml += '<div style="font-size:10px;color:var(--text-tertiary);text-align:center;margin-top:8px">Last update: ' + lu.split(' ')[0] + '</div>';
+    freshHtml += '<div style="font-size:10px;color:rgba(255,255,255,0.4);text-align:center;margin-top:8px">Last update: ' + lu.split(' ')[0] + '</div>';
   }
 
   var mktHtml =
@@ -1723,9 +1724,9 @@ function renderMobile() {
       '<div class="m-hero-card"><div class="m-hero-lbl">Status</div><div class="m-hero-val" style="color:' + statusColor + '">' + si + '</div></div>' +
       '<div class="m-hero-card"><div class="m-hero-lbl">Action</div><div class="m-hero-val" style="color:' + actionColor + '">' + ai + '</div></div>' +
       '<div class="m-hero-card"><div class="m-hero-lbl">Alokasi</div><div class="m-hero-val" style="color:' + cdColor + '">' + (cd !== null ? cd + '%' : '—') + '</div></div>' +
-      '<div class="m-hero-card"><div class="m-hero-lbl">Trend</div><div class="m-hero-val" style="color:var(--text-primary)">' + ti + '</div></div>' +
+      '<div class="m-hero-card"><div class="m-hero-lbl">Trend</div><div class="m-hero-val" style="color:rgba(255,255,255,0.8)">' + ti + '</div></div>' +
     '</div></div>' +
-    '<div class="m-card"><div class="m-card-title">Mengapa?</div>' + (bullets || '<div class="m-card-row"><span style="color:var(--text-secondary);font-size:12px">Data tidak mencukupi</span></div>') + '</div>' +
+    '<div class="m-card"><div class="m-card-title">Mengapa?</div>' + (bullets || '<div class="m-card-row"><span style="color:rgba(255,255,255,0.6);font-size:12px">Data tidak mencukupi</span></div>') + '</div>' +
     '<div class="m-section-title">Internal Health</div><div class="m-metrics">' + intHtml + '</div>' +
     vsHtml + liveHtml + freshHtml;
 
@@ -1741,7 +1742,7 @@ function renderMobile() {
   scored.forEach(function(r) {
     var sym = r.ticker.split('.')[0];
     var scCls = r._score >= 70 ? '#3FB950' : r._score >= 50 ? '#D29922' : '#F85149';
-    leadersHtml += '<div class="m-card m-leader-card"><div class="m-card-row"><span class="lbl">#' + r._rank + '</span><span class="val tk-click" data-ticker="' + sym + '" style="color:' + (typeof ac === 'function' ? ac(r.ticker) : 'var(--text-primary)') + '">' + sym + (r._rank <= 5 ? ' ★' : '') + '</span></div>' +
+    leadersHtml += '<div class="m-card m-leader-card"><div class="m-card-row"><span class="lbl">#' + r._rank + '</span><span class="val tk-click" data-ticker="' + sym + '" style="color:' + (typeof ac === 'function' ? ac(r.ticker) : 'rgba(255,255,255,0.8)') + '">' + sym + (r._rank <= 5 ? ' ★' : '') + '</span></div>' +
       '<div class="m-card-row"><span class="lbl">Score</span><span class="val" style="color:' + scCls + '">' + r._score.toFixed(1) + '</span></div>' +
       '<div class="factors"><div class="factor"><div class="lbl">Quality</div><div class="val" style="color:' + (r.quality >= 60 ? '#3FB950' : r.quality >= 40 ? '#D29922' : '#F85149') + '">' + (+r.quality).toFixed(0) + '</div></div>' +
       '<div class="factor"><div class="lbl">Growth</div><div class="val" style="color:' + (r.growth >= 60 ? '#3FB950' : r.growth >= 40 ? '#D29922' : '#F85149') + '">' + (+r.growth).toFixed(0) + '</div></div>' +
@@ -1768,11 +1769,11 @@ function renderMobile() {
     var sym = r.ticker.split('.')[0];
     var cm = typeof matchBool === 'function' ? matchBool(r.context_match) : r.context_match;
     var tm = typeof matchBool === 'function' ? matchBool(r.transition_match) : r.transition_match;
-    taHtml += '<div class="m-card"><div class="m-card-row"><span class="val tk-click" data-ticker="' + sym + '" style="color:' + (typeof ac === 'function' ? ac(r.ticker) : 'var(--text-primary)') + ';font-size:14px">' + sym + '</span><span></span></div>' +
+    taHtml += '<div class="m-card"><div class="m-card-row"><span class="val tk-click" data-ticker="' + sym + '" style="color:' + (typeof ac === 'function' ? ac(r.ticker) : 'rgba(255,255,255,0.8)') + ';font-size:14px">' + sym + '</span><span></span></div>' +
       '<div class="m-card-row"><span class="lbl">Context</span><span class="val" style="color:' + (cm ? '#3FB950' : '#F85149') + '">' + (typeof ctxLabel === 'function' ? ctxLabel(r) : (cm ? 'Match' : 'No Match')) + '</span></div>' +
       '<div class="m-card-row"><span class="lbl">Transition</span><span class="val" style="color:' + (tm ? '#3FB950' : '#F85149') + '">' + (typeof trnLabel === 'function' ? trnLabel(r) : (tm ? 'Match' : 'No Match')) + '</span></div>' +
       '<div class="m-card-row"><span class="lbl">Full</span><span class="val">' + (typeof fullLabel === 'function' ? fullLabel(r) : '—') + '</span></div>' +
-      (r.last_update ? '<div class="m-card-row"><span class="lbl">Updated</span><span class="val" style="font-size:12px;color:var(--text-tertiary)">' + r.last_update + '</span></div>' : '') +
+      (r.last_update ? '<div class="m-card-row"><span class="lbl">Updated</span><span class="val" style="font-size:12px;color:rgba(255,255,255,0.4)">' + r.last_update + '</span></div>' : '') +
       '</div>';
   });
 
@@ -1795,17 +1796,17 @@ function renderMobile() {
     var esClass = (r.exit_state || 'UNKNOWN').replace(/ /g, '-').toLowerCase();
     exitHtml += '<div class="m-card"><div class="m-card-row">' +
       '<span class="lbl" style="color:' + (+r.rank <= 10 ? '#30D158' : +r.rank <= 20 ? '#FF9F0A' : '#FF453A') + '">#' + r.rank + '</span>' +
-      '<span class="val tk-click" data-ticker="' + sym + '" style="color:' + (typeof ac === 'function' ? ac(r.ticker) : 'var(--text-primary)') + '">' + sym + '</span>' +
+      '<span class="val tk-click" data-ticker="' + sym + '" style="color:' + (typeof ac === 'function' ? ac(r.ticker) : 'rgba(255,255,255,0.8)') + '">' + sym + '</span>' +
       '</div>' +
       '<div class="m-card-row"><span class="lbl">State</span><span><span class="m-exit-state ' + esClass + '">' + r.exit_state + '</span></span></div>' +
-      '<div class="m-card-row"><span class="lbl">Rank Change</span><span class="val" style="color:' + (parseInt(r.rank_change) > 0 ? '#3FB950' : parseInt(r.rank_change) < 0 ? '#F85149' : 'var(--text-primary)') + '">' + (r.rank_change > 0 ? '+' : '') + r.rank_change + '</span></div>' +
+      '<div class="m-card-row"><span class="lbl">Rank Change</span><span class="val" style="color:' + (parseInt(r.rank_change) > 0 ? '#3FB950' : parseInt(r.rank_change) < 0 ? '#F85149' : 'rgba(255,255,255,0.8)') + '">' + (r.rank_change > 0 ? '+' : '') + r.rank_change + '</span></div>' +
       '<div class="m-exit-detail">' +
       '<div class="item"><span class="lbl">RS 20D</span><span class="val" style="color:' + (rs20 > 0 ? '#3FB950' : '#F85149') + '">' + rs20.toFixed(1) + '%</span></div>' +
       '<div class="item"><span class="lbl">DD Entry</span><span class="val" style="color:' + (dd > -5 ? '#3FB950' : '#D29922') + '">' + (dd > 0 ? '+' : '') + dd.toFixed(1) + '%</span></div>' +
       '<div class="item"><span class="lbl">MA50</span><span class="val" style="color:' + ((r.close_above_ma50 === 'TRUE' || r.close_above_ma50 === 'True') ? '#3FB950' : '#F85149') + '">' + ((r.close_above_ma50 === 'TRUE' || r.close_above_ma50 === 'True') ? 'Above' : 'Below') + '</span></div>' +
       '<div class="item"><span class="lbl">MA100</span><span class="val" style="color:' + ((r.close_above_ma100 === 'TRUE' || r.close_above_ma100 === 'True') ? '#3FB950' : '#F85149') + '">' + ((r.close_above_ma100 === 'TRUE' || r.close_above_ma100 === 'True') ? 'Above' : 'Below') + '</span></div>' +
       '</div>' +
-      (r.rules ? '<div style="font-size:11px;color:var(--text-tertiary);margin-top:4px;padding-top:4px;border-top:1px solid var(--bg-separator)">' + r.rules + '</div>' : '') +
+      (r.rules ? '<div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:4px;padding-top:4px;border-top:1px solid rgba(255,255,255,0.08)">' + r.rules + '</div>' : '') +
       '</div>';
   });
 
@@ -1918,7 +1919,7 @@ function renderMobileMarket() {
     ];
     liveHtml += '<div class="m-section-title">Live Market</div><div class="m-ctx-grid">';
     assets.forEach(function(x) {
-      liveHtml += '<div class="m-card" style="margin-bottom:0"><div class="m-card-lbl">' + x.lbl + '</div><div style="font-size:18px;font-weight:600">' + x.val + '</div><div style="font-size:12px;' + (x.d >= 0 ? 'color:#3FB950' : 'color:#F85149') + '">' + (x.d > 0 ? '+' : '') + x.d + '%</div></div>';
+      liveHtml += '<div class="m-card" style="margin-bottom:0"><div class="m-card-lbl">' + x.lbl + '</div><div style="font-size:18px;font-weight:600;color:' + (x.d >= 0 ? '#30D158' : '#FF453A') + '">' + x.val + '</div><div style="font-size:12px;' + (x.d >= 0 ? 'color:#3FB950' : 'color:#F85149') + '">' + (x.d > 0 ? '+' : '') + x.d + '%</div></div>';
     });
     liveHtml += '</div>';
   }

@@ -1,21 +1,21 @@
 {
-    "last_update": "2026-06-09 21:23",
-    "status": "SAFE",
-    "market_health": 51,
-    "opportunity": 74,
-    "risk": 30,
-    "confidence": 67,
-    "capital_deployment": 44,
-    "action": "WAIT",
-    "rationale": "Score gap 40.6 poin menunjukkan pemisahan kualitas yang jelas antara top5 dan bottom5. Faktor dominan: Growth (80.0). Faktor terlemah: Quality (60.0). Breadth terbatas (1 saham >=70).",
-    "detail_message": "Score gap 40.6 poin menunjukkan pemisahan kualitas yang jelas antara top5 dan bottom5. Faktor dominan: Growth (80.0). Faktor terlemah: Quality (60.0). Breadth terbatas (1 saham >=70).",
+    "last_update": "2026-06-10 07:48",
+    "status": "WARNING",
+    "market_health": 38,
+    "opportunity": 48,
+    "risk": 78,
+    "confidence": 28,
+    "capital_deployment": 30,
+    "action": "REDUCE",
+    "rationale": "Score gap 40.6 menunjukkan divergensi pasar yang signifikan, dengan saham-saham teratas dan terbawah memiliki kinerja yang sangat berbeda. Breadth pasar sangat lemah, hanya 1 saham di atas 70 dan 7 saham di bawah 40, mengindikasikan kurangnya dukungan pasar yang luas. Volume hari ini menunjukkan 2 saham di watchlist sepi, meningkat dari hari-hari sebelumnya, dan hanya 1 saham mengalami lonjakan volume (BBNI.JK). Ini menandakan likuiditas yang menurun di beberapa area. Faktor Growth dominan (80.0), namun faktor Quality yang lemah (60.0) menjadi perhatian serius bagi perlindungan modal. Perubahan score gap 5 hari terakhir sebesar -2 menunjukkan gap sedikit menyempit, namun ini tidak cukup untuk mengimbangi risiko yang ada. Dengan probabilitas keuntungan yang terbatas dan risk/reward yang tidak menguntungkan, keputusan untuk mengurangi modal adalah langkah yang tepat untuk melindungi aset investor.",
+    "detail_message": "Score gap 40.6 menunjukkan divergensi pasar yang signifikan, dengan saham-saham teratas dan terbawah memiliki kinerja yang sangat berbeda. Breadth pasar sangat lemah, hanya 1 saham di atas 70 dan 7 saham di bawah 40, mengindikasikan kurangnya dukungan pasar yang luas. Volume hari ini menunjukkan 2 saham di watchlist sepi, meningkat dari hari-hari sebelumnya, dan hanya 1 saham mengalami lonjakan volume (BBNI.JK). Ini menandakan likuiditas yang menurun di beberapa area. Faktor Growth dominan (80.0), namun faktor Quality yang lemah (60.0) menjadi perhatian serius bagi perlindungan modal. Perubahan score gap 5 hari terakhir sebesar -2 menunjukkan gap sedikit menyempit, namun ini tidak cukup untuk mengimbangi risiko yang ada. Dengan probabilitas keuntungan yang terbatas dan risk/reward yang tidak menguntungkan, keputusan untuk mengurangi modal adalah langkah yang tepat untuk melindungi aset investor.",
     "anomalies": [],
     "radar_context": {
         "production_config": "Config F",
         "top5_avg_score": 66.8,
         "bot5_avg_score": 26.2,
         "score_gap": 40.6,
-        "score_gap_5d_change": 0,
+        "score_gap_5d_change": -2,
         "breadth_above_70": 1,
         "breadth_above_60": 7,
         "breadth_below_40": 7,
@@ -27,10 +27,10 @@
         "watchlist_count": 5
     },
     "volume_details": [
-        "PTBA.JK: Volume 1.1x (Wajar)",
-        "BBNI.JK: Volume 3.2x (Volume Lonjakan)",
-        "INDF.JK: Volume 1.2x (Wajar)",
-        "ASII.JK: Volume 1.0x (Wajar)",
-        "ITMG.JK: Volume 2.8x (Volume Lonjakan)"
+        "PTBA.JK: Volume 1.0x (Wajar)",
+        "BBNI.JK: Volume 2.5x (Volume Lonjakan)",
+        "INDF.JK: Volume 0.8x (Sepi)",
+        "ASII.JK: Volume 0.8x (Sepi)",
+        "ITMG.JK: Volume 1.1x (Wajar)"
     ]
 }

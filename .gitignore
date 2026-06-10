@@ -24,8 +24,9 @@ extract_*.py
 find_*.py
 output/check.js
 
-# Data files (only data.js committed)
+# Data files (only data.js and live_market.json committed)
 dashboard/data/*.json
+!dashboard/data/live_market.json
 
 # OS files
 Thumbs.db

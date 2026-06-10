@@ -669,7 +669,6 @@ function switchConfig(cfg) {
   document.getElementById('cfg-res').className = 'cfg-btn' + (cfg === 'res' ? ' active-res' : '');
   renderLeaders();
   renderInsights();
-  renderTop();
   renderMobileLeaders();
 }
 function renderMobileLeaders() {
@@ -687,10 +686,10 @@ function renderMobileLeaders() {
     var sym = r.ticker.split('.')[0];
     html += '<div class="m-card m-leader-card"><div class="m-card-row"><span class="lbl">#' + r._rank + '</span><span class="val tk-click" data-ticker="' + sym + '" style="color:' + (typeof ac === 'function' ? ac(r.ticker) : 'var(--text-primary)') + '">' + sym + (r._rank <= 5 ? ' ★' : '') + '</span></div>' +
       '<div class="m-card-row"><span class="lbl">Score</span><span class="val" style="color:' + (r._score >= 70 ? '#3FB950' : r._score >= 50 ? '#D29922' : '#F85149') + '">' + r._score.toFixed(1) + '</span></div>' +
-      '<div class="factors"><div class="factor"><div class="lbl">Quality</div><div class="val" style="color:' + (r.quality >= 60 ? '#3FB950' : r.quality >= 40 ? '#D29922' : '#F85149') + '">' + r.quality.toFixed(0) + '</div></div>' +
-      '<div class="factor"><div class="lbl">Growth</div><div class="val" style="color:' + (r.growth >= 60 ? '#3FB950' : r.growth >= 40 ? '#D29922' : '#F85149') + '">' + r.growth.toFixed(0) + '</div></div>' +
-      '<div class="factor"><div class="lbl">Value</div><div class="val" style="color:' + (r.value >= 60 ? '#3FB950' : r.value >= 40 ? '#D29922' : '#F85149') + '">' + r.value.toFixed(0) + '</div></div>' +
-      '<div class="factor"><div class="lbl">Momentum</div><div class="val" style="color:' + (r.momentum >= 60 ? '#3FB950' : r.momentum >= 40 ? '#D29922' : '#F85149') + '">' + r.momentum.toFixed(0) + '</div></div>' +
+      '<div class="factors"><div class="factor"><div class="lbl">Quality</div><div class="val" style="color:' + (r.quality >= 60 ? '#3FB950' : r.quality >= 40 ? '#D29922' : '#F85149') + '">' + (+r.quality).toFixed(0) + '</div></div>' +
+      '<div class="factor"><div class="lbl">Growth</div><div class="val" style="color:' + (r.growth >= 60 ? '#3FB950' : r.growth >= 40 ? '#D29922' : '#F85149') + '">' + (+r.growth).toFixed(0) + '</div></div>' +
+      '<div class="factor"><div class="lbl">Value</div><div class="val" style="color:' + (r.value >= 60 ? '#3FB950' : r.value >= 40 ? '#D29922' : '#F85149') + '">' + (+r.value).toFixed(0) + '</div></div>' +
+      '<div class="factor"><div class="lbl">Momentum</div><div class="val" style="color:' + (r.momentum >= 60 ? '#3FB950' : r.momentum >= 40 ? '#D29922' : '#F85149') + '">' + (+r.momentum).toFixed(0) + '</div></div>' +
       '</div></div>';
   });
   el.innerHTML = html;
@@ -1741,10 +1740,10 @@ function renderMobile() {
     var scCls = r._score >= 70 ? '#3FB950' : r._score >= 50 ? '#D29922' : '#F85149';
     leadersHtml += '<div class="m-card m-leader-card"><div class="m-card-row"><span class="lbl">#' + r._rank + '</span><span class="val tk-click" data-ticker="' + sym + '" style="color:' + (typeof ac === 'function' ? ac(r.ticker) : 'var(--text-primary)') + '">' + sym + (r._rank <= 5 ? ' ★' : '') + '</span></div>' +
       '<div class="m-card-row"><span class="lbl">Score</span><span class="val" style="color:' + scCls + '">' + r._score.toFixed(1) + '</span></div>' +
-      '<div class="factors"><div class="factor"><div class="lbl">Quality</div><div class="val" style="color:' + (r.quality >= 60 ? '#3FB950' : r.quality >= 40 ? '#D29922' : '#F85149') + '">' + r.quality.toFixed(0) + '</div></div>' +
-      '<div class="factor"><div class="lbl">Growth</div><div class="val" style="color:' + (r.growth >= 60 ? '#3FB950' : r.growth >= 40 ? '#D29922' : '#F85149') + '">' + r.growth.toFixed(0) + '</div></div>' +
-      '<div class="factor"><div class="lbl">Value</div><div class="val" style="color:' + (r.value >= 60 ? '#3FB950' : r.value >= 40 ? '#D29922' : '#F85149') + '">' + r.value.toFixed(0) + '</div></div>' +
-      '<div class="factor"><div class="lbl">Momentum</div><div class="val" style="color:' + (r.momentum >= 60 ? '#3FB950' : r.momentum >= 40 ? '#D29922' : '#F85149') + '">' + r.momentum.toFixed(0) + '</div></div>' +
+      '<div class="factors"><div class="factor"><div class="lbl">Quality</div><div class="val" style="color:' + (r.quality >= 60 ? '#3FB950' : r.quality >= 40 ? '#D29922' : '#F85149') + '">' + (+r.quality).toFixed(0) + '</div></div>' +
+      '<div class="factor"><div class="lbl">Growth</div><div class="val" style="color:' + (r.growth >= 60 ? '#3FB950' : r.growth >= 40 ? '#D29922' : '#F85149') + '">' + (+r.growth).toFixed(0) + '</div></div>' +
+      '<div class="factor"><div class="lbl">Value</div><div class="val" style="color:' + (r.value >= 60 ? '#3FB950' : r.value >= 40 ? '#D29922' : '#F85149') + '">' + (+r.value).toFixed(0) + '</div></div>' +
+      '<div class="factor"><div class="lbl">Momentum</div><div class="val" style="color:' + (r.momentum >= 60 ? '#3FB950' : r.momentum >= 40 ? '#D29922' : '#F85149') + '">' + (+r.momentum).toFixed(0) + '</div></div>' +
       '</div></div>';
   });
 

@@ -464,6 +464,7 @@ ISI/
 - [x] RESEARCH-012: Portfolio Decision Layer — CLOSED FAILED (event-level gains do not survive portfolio integration)
 - [x] BUG-005: Dashboard Timestamp Drift — dashboard now displays `report_date` from pipeline outputs instead of `datetime.now()` UTC build timestamp
 - [x] UI-001: Dashboard visual overhaul — Market tab restructured to 55/45 balanced grid with card-component design (#141416 bg, #232325 border, 12px radius). Leaders tab: asymmetric text alignment (#/Ticker left, Score/Q/G/V/M right), supporting data dimmed to #666, row padding 12px. Container max-width 1240px. All sections wrapped in card-component. Research tab (t7) removed. Exit Monitor legend collapsed to tooltip. Progress bars replaced with colored dots.
+- [x] BUG-006: History tab empty — `docs/data/streaks.json` was `[]` because `compute_streaks.py` hadn't been run. Ran `compute_streaks.py` (30 tickers from `turnaround_history.csv`), rebuilt `dashboard/data/data.js` via `rebuild_data_js.py`, bumped cache version `v3.3→v3.4`.
 
 ### BACKLOG TEKNIS
 - [ ] Monthly archive restoration — update `research/tools/` to read from `docs/archive/`

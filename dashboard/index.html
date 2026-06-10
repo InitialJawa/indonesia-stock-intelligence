@@ -271,7 +271,7 @@ td{padding:10px 12px;border-bottom:0.5px solid rgba(255,255,255,0.06);vertical-a
 .bn-more-panel .bn-btn:active{background:rgba(255,255,255,0.06)}
 .bn-overlay{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.5);display:none}
 .bn-overlay.open{display:block}
-#mobile-root{display:none !important}
+#mobile-root{display:none}
 .filter-input{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:8px 12px;color:#fff;font-size:14px;width:100%;margin-bottom:10px;outline:none;font-family:inherit}
 .filter-input::placeholder{color:rgba(255,255,255,0.3)}
 ::-webkit-scrollbar{display:none}
@@ -280,6 +280,55 @@ td{padding:10px 12px;border-bottom:0.5px solid rgba(255,255,255,0.06);vertical-a
   .ios-wrap{max-width:100%}
   .panel{max-width:100%}
   .bn-more-panel{max-width:100%}
+}
+@media(min-width:768px){
+  .ios-wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+  .ios-hdr{padding:18px 0 12px;border-bottom:0.5px solid rgba(255,255,255,0.08)}
+  .ios-hdr .logo{font-size:20px}
+  .ios-hdr .logo span{font-size:14px}
+  .ios-scroll-inner{padding:0}
+  .tab-nav{display:flex;gap:4px;padding:12px 0 8px;border-bottom:0.5px solid rgba(255,255,255,0.08);margin-bottom:16px;overflow-x:auto}
+  .tab-btn{font-size:13px;padding:8px 16px;border-radius:8px;border:1px solid transparent;color:rgba(255,255,255,0.5);background:transparent;transition:all .15s}
+  .tab-btn:hover{color:rgba(255,255,255,0.8);background:rgba(255,255,255,0.04)}
+  .tab-btn.active{color:#fff;background:rgba(10,132,255,0.15);border-color:rgba(10,132,255,0.3);font-weight:600}
+  .ios-tab-bar{display:none}
+  .tc{padding:0}
+  .card-grid{grid-template-columns:1fr 1fr 1fr}
+  .mkt-v4-hero{max-width:600px}
+  .comp-grid{grid-template-columns:repeat(4,1fr)}
+  .table-wrap{overflow-x:visible}
+  table{font-size:14px}
+  td,th{padding:10px 16px}
+  .section-title{font-size:17px;margin-bottom:12px}
+  .mkt-v4-section{margin-bottom:24px}
+  .ios-section{margin-bottom:36px}
+  .panel{max-width:480px;border-radius:16px}
+  .chart-container{padding:20px}
+  .card{padding:16px 20px}
+  .ios-card{padding:16px 20px}
+  .ios-metric-group{grid-template-columns:1fr 1fr 1fr;max-width:600px}
+  .ios-group{max-width:600px}
+  .fd-grid{grid-template-columns:1fr 1fr 1fr}
+  .breakdown-grid{max-width:400px}
+  .mkt-v4-why{max-width:600px}
+  .ios-scroll{padding:0 0 24px}
+  .cfg-nav{flex-wrap:nowrap}
+  .ios-filter-bar{flex-wrap:wrap}
+  .insight-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  #t5 .card-grid{grid-template-columns:1fr 1fr 1fr}
+  #t5 .wide-card{grid-column:1/-1}
+  #t5 .table-wrap{max-width:900px}
+  #t6 .sub-tab-nav{margin-bottom:12px}
+  #t6 .sub-tc .card-grid{grid-template-columns:1fr 1fr}
+  #t6 .table-wrap{margin-top:12px}
+  .bn-more-panel{max-width:400px}
+}
+@media(min-width:1024px){
+  .ios-wrap{max-width:1400px}
+  .card-grid{grid-template-columns:1fr 1fr 1fr 1fr}
+  .comp-grid{grid-template-columns:repeat(6,1fr)}
+  #t5 .card-grid{grid-template-columns:1fr 1fr 1fr 1fr}
+  .ios-metric-group{grid-template-columns:1fr 1fr 1fr 1fr;max-width:none}
 }
 </style>
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -291,6 +340,16 @@ td{padding:10px 12px;border-bottom:0.5px solid rgba(255,255,255,0.06);vertical-a
     <div style="display:flex;align-items:center;gap:8px">
       <div class="dt" id="header-date"></div>
     </div>
+  </div>
+  <div class="tab-nav" id="desktop-nav">
+    <button class="tab-btn active" data-tab="0" onclick="st(0,this)">Market</button>
+    <button class="tab-btn" data-tab="1" onclick="st(1,this)">Leaders</button>
+    <button class="tab-btn" data-tab="2" onclick="st(2,this)">Turnaround</button>
+    <button class="tab-btn" data-tab="3" onclick="st(3,this)">History</button>
+    <button class="tab-btn" data-tab="4" onclick="st(4,this)">Exit Monitor</button>
+    <button class="tab-btn" data-tab="5" onclick="st(5,this)">Diagnostics</button>
+    <button class="tab-btn" data-tab="6" onclick="st(6,this)">Sim Lab</button>
+    <button class="tab-btn" data-tab="7" onclick="st(7,this)">Research</button>
   </div>
   <div class="ios-scroll">
     <div class="ios-scroll-inner">
@@ -722,7 +781,9 @@ function renderInsights() {
 }
 
 function st(tabIdx, btn) {
-  if (btn) btn.classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+  var dtn = document.querySelector('.tab-btn[data-tab="' + tabIdx + '"]');
+  if (dtn) dtn.classList.add('active');
   document.querySelectorAll('.tc').forEach(function(c) { c.classList.remove('active'); });
   document.getElementById('t' + tabIdx).classList.add('active');
   document.querySelectorAll('.bn-btn').forEach(function(b) { b.classList.remove('active'); });

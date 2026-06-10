@@ -1,14 +1,14 @@
 {
-    "last_update": "2026-06-10 08:40",
+    "last_update": "2026-06-10 08:42",
     "status": "SAFE",
-    "market_health": 65,
+    "market_health": 72,
     "opportunity": 78,
-    "risk": 38,
-    "confidence": 68,
+    "risk": 34,
+    "confidence": 69,
     "capital_deployment": 70,
     "action": "ACCUMULATE",
-    "rationale": "Score gap yang tinggi (40.6) dan terus meningkat (+2 dalam 5 hari) menunjukkan divergensi pasar yang signifikan, dengan modal terkonsentrasi pada segelintir saham kuat. Breadth pasar mengkhawatirkan; jumlah saham di atas 60 sama dengan yang di bawah 40 (masing-masing 7), menandakan pasar yang terpecah. Faktor 'Growth' sangat dominan (80), sementara 'Quality' adalah yang terlemah (60), mengindikasikan preferensi pasar terhadap pertumbuhan yang berpotensi lebih berisiko. Namun, volume BBNI.JK yang melonjak konsisten selama 5 hari dan berkurangnya saham sepi menunjukkan adanya minat selektif. Dengan probabilitas penguatan di segmen tertentu, akumulasi selektif dapat dipertimbangkan, namun dengan kewaspadaan tinggi terhadap risiko divergensi.",
-    "detail_message": "Score gap yang tinggi (40.6) dan terus meningkat (+2 dalam 5 hari) menunjukkan divergensi pasar yang signifikan, dengan modal terkonsentrasi pada segelintir saham kuat. Breadth pasar mengkhawatirkan; jumlah saham di atas 60 sama dengan yang di bawah 40 (masing-masing 7), menandakan pasar yang terpecah. Faktor 'Growth' sangat dominan (80), sementara 'Quality' adalah yang terlemah (60), mengindikasikan preferensi pasar terhadap pertumbuhan yang berpotensi lebih berisiko. Namun, volume BBNI.JK yang melonjak konsisten selama 5 hari dan berkurangnya saham sepi menunjukkan adanya minat selektif. Dengan probabilitas penguatan di segmen tertentu, akumulasi selektif dapat dipertimbangkan, namun dengan kewaspadaan tinggi terhadap risiko divergensi.",
+    "rationale": "Pasar menunjukkan bifurkasi signifikan dengan score_gap 40.6, dan tren ini memburuk dengan peningkatan 2 poin dalam 5 hari. Breadth pasar sempit, hanya 1 saham di atas 70 dan 7 saham di bawah 40, mengindikasikan kekuatan terkonsentrasi. Faktor 'Growth' dominan (80.0), namun faktor 'Quality' yang lemah (60.0) meningkatkan risiko. Volume BBNI.JK konsisten lonjakan selama 5 hari, menunjukkan minat spesifik, sementara ASII.JK sepi. Meskipun ada peluang di saham tertentu, struktur pasar secara keseluruhan menunjukkan risiko yang meningkat karena kekuatan yang tidak merata. Oleh karena itu, penambahan modal harus selektif dan hati-hati.",
+    "detail_message": "Pasar menunjukkan bifurkasi signifikan dengan score_gap 40.6, dan tren ini memburuk dengan peningkatan 2 poin dalam 5 hari. Breadth pasar sempit, hanya 1 saham di atas 70 dan 7 saham di bawah 40, mengindikasikan kekuatan terkonsentrasi. Faktor 'Growth' dominan (80.0), namun faktor 'Quality' yang lemah (60.0) meningkatkan risiko. Volume BBNI.JK konsisten lonjakan selama 5 hari, menunjukkan minat spesifik, sementara ASII.JK sepi. Meskipun ada peluang di saham tertentu, struktur pasar secara keseluruhan menunjukkan risiko yang meningkat karena kekuatan yang tidak merata. Oleh karena itu, penambahan modal harus selektif dan hati-hati.",
     "anomalies": [],
     "radar_context": {
         "production_config": "Config F",
@@ -27,7 +27,7 @@
         "watchlist_count": 5
     },
     "volume_details": [
-        "PTBA.JK: Volume 1.1x (Wajar)",
+        "PTBA.JK: Volume 1.2x (Wajar)",
         "BBNI.JK: Volume 2.8x (Volume Lonjakan)",
         "INDF.JK: Volume 1.2x (Wajar)",
         "ASII.JK: Volume 0.9x (Sepi)",

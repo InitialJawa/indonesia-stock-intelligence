@@ -1234,18 +1234,8 @@ function renderMarket() {
   fetchLiveMarket();
 
   // ── 6. Timeline ────────────────────────────────────
-  var tlRows = '';
-  var tgl = 'Hari Ini';
-  var regimeLabel = statusMap[s] || '—';
-  var regimeCls = s === 'SAFE' ? 'up' : s === 'DANGER' ? 'down' : '';
-  var actionLabel = actionMap[a] || a;
-  var actionCls = a === 'ACCUMULATE' ? 'up' : a === 'REDUCE' ? 'down' : '';
-  tlRows += '<tr><td>' + tgl + '</td><td class="' + regimeCls + '">' + regimeLabel + '</td><td class="' + actionCls + '">' + actionLabel + '</td></tr>';
-  // Historical data not yet available
-  for (var d = 1; d <= 4; d++) {
-    tlRows += '<tr><td class="na">' + d + ' hari lalu</td><td class="na">—</td><td class="na">—</td></tr>';
-  }
-  document.getElementById('mkt-v4-timeline').innerHTML = tlRows;
+  renderTimeline();
+  fetchRegimeHistory();
 
   // ── 7. AI Summary ──────────────────────────────────
   document.getElementById('mkt-v4-summary').textContent = dm;
@@ -1255,6 +1245,45 @@ function renderMarket() {
 }
 
 var liveMarketData = null;
+var regimeHistory = [];
+
+function renderTimeline() {
+  var s = RS && RS.status ? RS.status : '—';
+  var a = RS && RS.action ? RS.action : '—';
+  var statusMap = { SAFE: 'RISK ON', WARNING: 'NETRAL', DANGER: 'RISK OFF' };
+  var actionMap = { ACCUMULATE: 'AKUMULASI', HOLD: 'TAHAN', WAIT: 'TUNGGU', REDUCE: 'KURANGI' };
+  var tlRows = '';
+  var todayStr = new Date().toISOString().slice(0, 10);
+
+  function row(date, regime, action, cls) {
+    var rCls = cls || (regime === 'RISK ON' ? 'up' : regime === 'RISK OFF' ? 'down' : '');
+    var aCls = cls || (action === 'AKUMULASI' ? 'up' : action === 'KURANGI' ? 'down' : '');
+    return '<tr><td>' + date + '</td><td class="' + rCls + '">' + regime + '</td><td class="' + aCls + '">' + action + '</td></tr>';
+  }
+
+  tlRows += row('Hari Ini', statusMap[s] || '—', actionMap[a] || a);
+
+  var count = 0;
+  for (var i = 0; i < regimeHistory.length && count < 4; i++) {
+    if (regimeHistory[i].date === todayStr) continue;
+    tlRows += row(regimeHistory[i].date, regimeHistory[i].regime, regimeHistory[i].action);
+    count++;
+  }
+
+  while (count < 4) {
+    count++;
+    tlRows += '<tr><td class="na">' + count + ' hari lalu</td><td class="na">—</td><td class="na">—</td></tr>';
+  }
+
+  document.getElementById('mkt-v4-timeline').innerHTML = tlRows;
+}
+
+function fetchRegimeHistory() {
+  fetch('data/regime_history.json')
+    .then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+    .then(function(d) { regimeHistory = d; renderTimeline(); })
+    .catch(function(e) { console.warn('fetchRegimeHistory:', e); });
+}
 
 function renderLiveMarket() {
   if (!liveMarketData) return;
@@ -1341,5 +1370,6 @@ document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { clo
 
 renderAll();
 setInterval(fetchLiveMarket, 300000);
+setInterval(fetchRegimeHistory, 300000);
 </script>
 </body></html>

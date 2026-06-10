@@ -1214,7 +1214,7 @@ function renderMarket() {
   document.getElementById('mkt-v4-vs').innerHTML = vsRows;
 
   // ── 5. Context ─────────────────────────────────────
-  if (typeof MKT !== 'undefined' && MKT) {
+  if (typeof MKT !== 'undefined' && MKT && MKT.ihsg && MKT.usdidr) {
     var assets = [
       { lbl: 'IHSG', val: MKT.ihsg.value.toLocaleString(), d: MKT.ihsg.daily, m: MKT.ihsg.monthly },
       { lbl: 'USD/IDR', val: MKT.usdidr.value.toLocaleString(), d: MKT.usdidr.daily, m: MKT.usdidr.monthly }

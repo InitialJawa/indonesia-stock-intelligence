@@ -717,7 +717,7 @@ function renderInsights() {
   h += '<div class="insight-row"><span class="insight-lbl">Faktor Terkuat Top5</span><span class="insight-val g">' + strongest.name.charAt(0).toUpperCase() + strongest.name.slice(1) + ' (' + strongest.val.toFixed(1) + ')</span></div>';
   h += '<div class="insight-row"><span class="insight-lbl">Rerata Bottom 5</span><span class="insight-val r">' + allBot5Avg.toFixed(1) + '</span></div>';
   h += '<div class="insight-row"><span class="insight-lbl">Faktor Terlemah Bot5</span><span class="insight-val r">' + weakest.name.charAt(0).toUpperCase() + weakest.name.slice(1) + ' (' + weakest.val.toFixed(1) + ')</span></div>';
-  h += '</div><div class="insight-note">Kesenjangan ' + gap.toFixed(1) + ' poin — ' + (gap > 30 ? 'distribusi sangat timpang, dominasi saham unggulan kuat' : gap > 15 ? 'distribusi cukup timpang, pemimpin pasar jelas' : gap > 5 ? 'distribusi moderat, persaingan merata' : 'pasar relatif homogen, banyak saham setara') + '</div>';
+  h += '</div><div class="insight-note">Kesenjangan <span class="' + (gap > 30 ? 'r' : gap > 15 ? 'y' : 'g') + '">' + gap.toFixed(1) + '</span> poin — ' + (gap > 30 ? 'distribusi sangat timpang, dominasi saham unggulan kuat' : gap > 15 ? 'distribusi cukup timpang, pemimpin pasar jelas' : gap > 5 ? 'distribusi moderat, persaingan merata' : 'pasar relatif homogen, banyak saham setara') + '</div>';
   document.getElementById('insight-leaders').innerHTML = h;
 }
 
@@ -772,8 +772,8 @@ function renderMobileTurnaround() {
   var ctxCount2 = arr.filter(function(r) { return typeof matchBool === 'function' ? matchBool(r.context_match) : r.context_match; }).length;
   var trnCount2 = arr.filter(function(r) { return typeof matchBool === 'function' ? matchBool(r.transition_match) : r.transition_match; }).length;
   var html2 = '<div class="m-ctx-grid">' +
-    '<div class="m-card" style="margin-bottom:0;text-align:center"><div class="m-card-lbl">Context Match</div><div style="font-size:24px;font-weight:600;color:#3FB950">' + ctxCount2 + '</div></div>' +
-    '<div class="m-card" style="margin-bottom:0;text-align:center"><div class="m-card-lbl">Transition Match</div><div style="font-size:24px;font-weight:600;color:#D29922">' + trnCount2 + '</div></div>' +
+    '<div class="m-card" style="margin-bottom:0;text-align:center"><div class="m-card-lbl">Context Match</div><div style="font-size:24px;font-weight:600;color:' + (ctxCount2 > 0 ? '#30D158' : '#FF453A') + '">' + ctxCount2 + '</div></div>' +
+    '<div class="m-card" style="margin-bottom:0;text-align:center"><div class="m-card-lbl">Transition Match</div><div style="font-size:24px;font-weight:600;color:' + (trnCount2 > 0 ? '#30D158' : '#FF453A') + '">' + trnCount2 + '</div></div>' +
     '</div>';
   var filtered = arr.filter(function(r) { return (typeof matchBool === 'function' ? matchBool(r.context_match) : r.context_match) || (typeof matchBool === 'function' ? matchBool(r.transition_match) : r.transition_match); });
   filtered.sort(function(a, b) {
@@ -1049,7 +1049,7 @@ function renderSimSummary(si, ei) {
     h += '<div class="insight-row"><span class="insight-lbl">CAGR</span><span class="insight-val ' + (s.cagr > 0 ? 'g' : 'r') + '">' + (s.cagr >= 0 ? '+' : '') + s.cagr.toFixed(2) + '%</span></div>';
     h += '<div class="insight-row"><span class="insight-lbl">Sharpe</span><span class="insight-val ' + (s.sharpe > 0.5 ? 'g' : s.sharpe > 0 ? 'y' : 'r') + '">' + s.sharpe.toFixed(2) + '</span></div>';
     h += '<div class="insight-row"><span class="insight-lbl">Max DD</span><span class="insight-val r">' + s.maxDD.toFixed(2) + '%</span></div>';
-    h += '<div class="insight-row"><span class="insight-lbl">Win Rate</span><span class="insight-val">' + s.winRate.toFixed(1) + '%</span></div>';
+    h += '<div class="insight-row"><span class="insight-lbl">Win Rate</span><span class="insight-val ' + (s.winRate > 50 ? 'g' : s.winRate > 30 ? 'y' : 'r') + '">' + s.winRate.toFixed(1) + '%</span></div>';
     h += '</div></div>';
   });
   document.getElementById('sim-summary').innerHTML = h;
@@ -1236,8 +1236,8 @@ function renderFundamentals(fd) {
   function fmt(l, v, u) {
     if (v === null || v === undefined) return '<div class="fd-item"><span class="fd-label">' + l + '</span><span class="fd-na">Tidak tersedia</span></div>';
     var f = Number(v);
-    if (u === '%') return '<div class="fd-item"><span class="fd-label">' + l + '</span><span class="fd-val">' + (f * 100).toFixed(1) + '%</span></div>';
-    if (u === 'dy') return '<div class="fd-item"><span class="fd-label">' + l + '</span><span class="fd-val">' + f.toFixed(1) + '%</span></div>';
+    if (u === '%') return '<div class="fd-item"><span class="fd-label">' + l + '</span><span class="fd-val" style="color:' + (f > 0 ? '#30D158' : f < 0 ? '#FF453A' : '') + '">' + (f > 0 ? '+' : '') + (f * 100).toFixed(1) + '%</span></div>';
+    if (u === 'dy') return '<div class="fd-item"><span class="fd-label">' + l + '</span><span class="fd-val" style="color:' + (f > 3 ? '#30D158' : f > 0 ? '#FF9F0A' : '#FF453A') + '">' + f.toFixed(1) + '%</span></div>';
     if (u === 'x') return '<div class="fd-item"><span class="fd-label">' + l + '</span><span class="fd-val">' + f.toFixed(1) + 'x</span></div>';
     if (u === 'mc') return '<div class="fd-item"><span class="fd-label">' + l + '</span><span class="fd-val">' + fmtMarketCap(f) + '</span></div>';
     return '<div class="fd-item"><span class="fd-label">' + l + '</span><span class="fd-val">' + f.toFixed(1) + '</span></div>';
@@ -1841,7 +1841,7 @@ function renderMobile() {
     '<div class="m-exit-detail">' +
     '<div class="item"><span class="lbl">Status</span><span class="val">' + (s || '—') + '</span></div>' +
     '<div class="item"><span class="lbl">Action</span><span class="val">' + (a || '—') + '</span></div>' +
-    '<div class="item"><span class="lbl">Alokasi</span><span class="val">' + (cd !== null ? cd + '%' : '—') + '</span></div>' +
+    '<div class="item"><span class="lbl">Alokasi</span><span class="val" style="color:' + cdColor + '">' + (cd !== null ? cd + '%' : '—') + '</span></div>' +
     '<div class="item"><span class="lbl">Leaders</span><span class="val">' + (L ? L.length : '0') + '</span></div>' +
     '<div class="item"><span class="lbl">Exit Watch</span><span class="val">' + (EX ? EX.length : '0') + '</span></div>' +
     '<div class="item"><span class="lbl">Turnaround</span><span class="val">' + (taArr ? taArr.length : '0') + '</span></div>' +
@@ -1871,7 +1871,7 @@ function renderMobile() {
         '<div class="item"><span class="lbl">CAGR</span><span class="val" style="color:' + (st.cagr > 0 ? '#3FB950' : '#F85149') + '">' + (st.cagr >= 0 ? '+' : '') + st.cagr.toFixed(2) + '%</span></div>' +
         '<div class="item"><span class="lbl">Sharpe</span><span class="val" style="color:' + (st.sharpe > 0.5 ? '#3FB950' : st.sharpe > 0 ? '#D29922' : '#F85149') + '">' + st.sharpe.toFixed(2) + '</span></div>' +
         '<div class="item"><span class="lbl">Max DD</span><span class="val" style="color:#F85149">' + st.maxDD.toFixed(2) + '%</span></div>' +
-        '<div class="item"><span class="lbl">Win Rate</span><span class="val">' + st.winRate.toFixed(1) + '%</span></div>' +
+        '<div class="item"><span class="lbl">Win Rate</span><span class="val" style="color:' + (st.winRate > 50 ? '#30D158' : st.winRate > 30 ? '#FF9F0A' : '#FF453A') + '">' + st.winRate.toFixed(1) + '%</span></div>' +
         '</div></div>';
     });
   }

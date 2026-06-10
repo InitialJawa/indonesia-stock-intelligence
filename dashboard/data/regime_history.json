@@ -2,10 +2,10 @@
   {
     "date": "2026-06-10",
     "regime": "RISK ON",
-    "action": "AKUMULASI",
-    "ihsg_close": 5923.1,
-    "change_pct": 10.88,
-    "note": "IHSG 5923 (menguat signifikan, +10.88%); score gap 41 (sangat timpang); 7/5 saham >60"
+    "action": "TUNGGU",
+    "ihsg_close": 5920.54,
+    "change_pct": 10.83,
+    "note": "IHSG 5921 (menguat signifikan, +10.83%); score gap 41 (sangat timpang); 7/5 saham >60"
   },
   {
     "date": "2026-06-09",

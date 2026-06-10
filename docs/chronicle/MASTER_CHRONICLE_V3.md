@@ -463,6 +463,7 @@ ISI/
 - [x] IMPLEMENT-003 — Dashboard regression recovery (Insight Layer V1 TDZ crash, append-only mandate, ENGINEERING RULE-005)
 - [x] RESEARCH-012: Portfolio Decision Layer — CLOSED FAILED (event-level gains do not survive portfolio integration)
 - [x] BUG-005: Dashboard Timestamp Drift — dashboard now displays `report_date` from pipeline outputs instead of `datetime.now()` UTC build timestamp
+- [x] UI-001: Dashboard visual overhaul — Market tab restructured to 55/45 balanced grid with card-component design (#141416 bg, #232325 border, 12px radius). Leaders tab: asymmetric text alignment (#/Ticker left, Score/Q/G/V/M right), supporting data dimmed to #666, row padding 12px. Container max-width 1240px. All sections wrapped in card-component. Research tab (t7) removed. Exit Monitor legend collapsed to tooltip. Progress bars replaced with colored dots.
 
 ### BACKLOG TEKNIS
 - [ ] Monthly archive restoration — update `research/tools/` to read from `docs/archive/`

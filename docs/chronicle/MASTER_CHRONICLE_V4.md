@@ -1,6 +1,6 @@
 # MASTER_CHRONICLE_V4 — Indonesia Stock Intelligence
 
-**Generated:** 2026-06-09
+**Generated:** 2026-06-10
 **Previous:** `docs/chronicle/MASTER_CHRONICLE_V3.md`, `docs/chronicle/MASTER_CHRONICLE_V4_PATCH.md`
 **Location:** All chronicles moved to `docs/chronicle/`
 **Purpose:** Single source of truth — read this first before any code changes
@@ -446,6 +446,9 @@ Research-supported results. Do NOT modify without new evidence.
     No universally superior configuration found.
 16. **Year hardcoding causes data staleness** — `END_YEAR = 2025` meant warehouse silently
     excluded 6 months of available data. Use `datetime.now().year` for auto-extension.
+17. **Separate live market data from daily pipeline** — `live_market.json` updates every 30min
+    via `live_market.yml` and refreshes on dashboard via `fetch()` + `setInterval(5min)`. No
+    data.js rebuild needed. IHSG/USDIDR always current even if pipeline hasn't run today.
 
 ---
 
@@ -462,7 +465,9 @@ ISI/
 │   ├── data_fetcher.py               Daily price fetcher
 │   ├── generate_turnaround_watchlist.py   Turnaround signal generator
 │   ├── generate_exit_watchlist.py         Exit state machine
-│   └── generate_dashboard_v2.py           Dashboard HTML generator
+│   ├── generate_dashboard_v2.py           Dashboard HTML generator
+│   ├── generate_dashboard_v3.py           V3 Dashboard JSON generator
+│   └── update_market_only.py             Lightweight IHSG/USDIDR fetcher (no ranking/radar)
 │
 ├── Factor Scoring (scoring/)
 │   ├── quality_score.py              Quality factor
@@ -489,12 +494,14 @@ ISI/
 │   └── output/                       Raw data, scores, history prices
 │
 ├── Dashboard (dashboard/index.html)
+│   ├── Tab 01: Market               IHSG/USDIDR live fetch (via live_market.json, 5min refresh)
 │   ├── Tab 01: Leaders              Config F ranking with color-coded alignment
 │   ├── Tab 02: Turnaround           Context/Transition signals
 │   ├── Tab 03: Daily Summary        Signal diagnostics
 │   ├── Tab 04: History              Streak tracking
 │   ├── Tab 05: Diagnostics          Pipeline health
 │   ├── Tab 06: Exit Monitor         Rule-based exit states
+│   ├── Tab 07: Simulation Lab       Backtest simulation (Config B vs F vs IHSG)
 │   └── Kesimpulan Hari Ini         Narrative analysis
 │
 ├── Core Data
@@ -537,6 +544,7 @@ ISI/
 | Turnaround Signals | `data/current/turnaround_latest.csv` | `scripts/generate_turnaround_watchlist.py` |
 | Exit Watchlist | `data/current/exit_watchlist_latest.csv` | `scripts/generate_exit_watchlist.py` |
 | Dashboard | `dashboard/index.html` | `scripts/generate_dashboard_v2.py` |
+| Live Market Data | `dashboard/data/live_market.json` | `scripts/update_market_only.py` |
 | Warehouse V3 (original) | `warehouse_historical/warehouse_v3.csv` | `build_warehouse_v3.py` |
 | Warehouse V3 (growth fix) | `warehouse_historical/warehouse_v3_growth_fix.csv` | `build_warehouse_v3_growth_fix.py` |
 
@@ -547,6 +555,7 @@ ISI/
 | Workflow | Schedule | Actions | Outputs |
 |----------|----------|---------|---------|
 | `daily_radar.yml` | 16:30 WIB daily | Fetch prices, compute turnaround, compute exits, generate dashboard | `dashboard/index.html`, `data/current/`, `data/state/` |
+| `live_market.yml` | Every 30 min | Fetch IHSG + USDIDR via yfinance, commit live_market.json | `dashboard/data/live_market.json` |
 | `monthly_pipeline.yml` | 1st of month | Fetch fundamentals, score all factors, generate dashboard | `output/raw/*.json`, `output/scores/*.json`, `dashboard/index.html`, `data/` |
 
 ---
@@ -592,6 +601,12 @@ ISI/
 - [x] OOS weight comparison bug fix (.get(key,50) fallback repaired)
 - [x] Growth reconciliation — earnings-only adopted universally
 - [x] Warehouse rebuild: `v3` and `v3_growth_fix` both extended through 2026-05
+
+### ✓ Completed in V4.1 (2026-06-10)
+- [x] FEATURE-MARKET-001 — Live IHSG/USDIDR fetch on dashboard load, 5min refresh
+- [x] Dashboard redesign — Stockbit-inspired dark theme per DESIGN.md
+- [x] Simulation curves — Monthly fluctuation (noise) instead of smooth CAGR compounding
+- [x] Market panel guard fix — Prevent crash when MKT data missing
 
 ### ✓ Completed (pre-V4)
 - [x] Repository Phase 1 — Documentation consolidation & archival

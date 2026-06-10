@@ -658,7 +658,7 @@ function renderLeaders() {
   scored.sort(function(a, b) { return b._score - a._score; });
   scored.forEach(function(r, i) { r._rank = i + 1; });
   var html = scored.map(function(r) {
-    return '<tr><td class="tk" style="color:var(--text-tertiary);font-size:11px">' + r._rank + '</td><td class="tk tk-click" data-ticker="' + r.ticker.split('.')[0] + '" style="color:' + ac(r.ticker) + '">' + r.ticker.split('.')[0] + (r._rank <= 5 ? '<span class="flag">★</span>' : '') + '</td><td class="sf ' + sc(r._score) + '">' + r._score.toFixed(1) + '</td><td>' + bar(r.quality, FCOLORS.quality) + '</td><td>' + bar(r.growth, FCOLORS.growth) + '</td><td>' + bar(r.value, FCOLORS.value) + '</td><td>' + bar(r.momentum, FCOLORS.momentum) + '</td><td></td></tr>';
+    return '<tr><td class="tk" style="font-size:11px;color:' + (r._rank <= 5 ? '#30D158' : r._rank <= 10 ? '#FF9F0A' : 'rgba(255,255,255,0.3)') + '">' + r._rank + '</td><td class="tk tk-click" data-ticker="' + r.ticker.split('.')[0] + '" style="color:' + ac(r.ticker) + '">' + r.ticker.split('.')[0] + (r._rank <= 5 ? '<span class="flag">★</span>' : '') + '</td><td class="sf ' + sc(r._score) + '">' + r._score.toFixed(1) + '</td><td>' + bar(r.quality, FCOLORS.quality) + '</td><td>' + bar(r.growth, FCOLORS.growth) + '</td><td>' + bar(r.value, FCOLORS.value) + '</td><td>' + bar(r.momentum, FCOLORS.momentum) + '</td><td></td></tr>';
   }).join('');
   document.getElementById('tbody-leaders').innerHTML = html;
 }
@@ -796,7 +796,7 @@ function renderMobileTurnaround() {
 function renderHistory() {
   var h = SK.map(function(r) {
     var sym = r.ticker.split('.')[0];
-    return '<tr><td class="tk" style="color:' + ac(r.ticker) + '">' + sym + '</td><td>' + r.context_days + '</td><td>' + r.transition_days + '</td><td>' + (r.first_context_detected || '—') + '</td><td>' + (r.first_transition_detected || '—') + '</td><td>' + r.total_entries + '</td></tr>';
+    return '<tr><td class="tk" style="color:' + ac(r.ticker) + '">' + sym + '</td><td class="' + (+r.context_days >= 3 ? 'g' : +r.context_days > 0 ? 'y' : 'r') + '">' + r.context_days + '</td><td class="' + (+r.transition_days >= 3 ? 'g' : +r.transition_days > 0 ? 'y' : 'r') + '">' + r.transition_days + '</td><td>' + (r.first_context_detected || '—') + '</td><td>' + (r.first_transition_detected || '—') + '</td><td class="' + (+r.total_entries >= 3 ? 'g' : +r.total_entries > 0 ? 'y' : 'r') + '">' + r.total_entries + '</td></tr>';
   }).join('');
   document.getElementById('tbody-history').innerHTML = h;
 }
@@ -814,7 +814,7 @@ function re() {
     var dd = parseFloat(r.drawdown_from_entry) || 0;
     var rules = r.rules || '';
     var esClass = 'es-' + (r.exit_state || 'UNKNOWN').replace(/ /g, '-').toLowerCase();
-    return '<tr><td class="tk" style="color:' + ac(r.ticker) + '">' + sym + '</td><td>' + r.rank + '</td><td class="' + (parseInt(r.rank_change) > 0 ? 'g' : parseInt(r.rank_change) < 0 ? 'r' : '') + '">' + (r.rank_change > 0 ? '+' : '') + r.rank_change + '</td><td><span class="' + esClass + '">' + r.exit_state + '</span></td><td style="font-size:11px">' + rules + '</td><td class="' + (rs20 > 0 ? 'g' : 'r') + '">' + pct(rs20) + '</td><td class="' + (rsChg > 0 ? 'g' : 'r') + '">' + pct(rsChg) + '</td><td class="' + (r.close_above_ma50 === 'TRUE' || r.close_above_ma50 === 'True' ? 'g' : 'r') + '">' + (r.close_above_ma50 === 'TRUE' || r.close_above_ma50 === 'True' ? 'Above' : 'Below') + '</td><td class="' + (r.close_above_ma100 === 'TRUE' || r.close_above_ma100 === 'True' ? 'g' : 'r') + '">' + (r.close_above_ma100 === 'TRUE' || r.close_above_ma100 === 'True' ? 'Above' : 'Below') + '</td><td class="' + (dd < 0 ? 'r' : dd < -5 ? 'o' : 'g') + '">' + (dd > 0 ? '+' : '') + dd.toFixed(1) + '%</td></tr>';
+    return '<tr><td class="tk" style="color:' + ac(r.ticker) + '">' + sym + '</td><td class="' + (+r.rank <= 10 ? 'g' : +r.rank <= 20 ? 'y' : 'r') + '">' + r.rank + '</td><td class="' + (parseInt(r.rank_change) > 0 ? 'g' : parseInt(r.rank_change) < 0 ? 'r' : '') + '">' + (r.rank_change > 0 ? '+' : '') + r.rank_change + '</td><td><span class="' + esClass + '">' + r.exit_state + '</span></td><td style="font-size:11px">' + rules + '</td><td class="' + (rs20 > 0 ? 'g' : 'r') + '">' + pct(rs20) + '</td><td class="' + (rsChg > 0 ? 'g' : 'r') + '">' + pct(rsChg) + '</td><td class="' + (r.close_above_ma50 === 'TRUE' || r.close_above_ma50 === 'True' ? 'g' : 'r') + '">' + (r.close_above_ma50 === 'TRUE' || r.close_above_ma50 === 'True' ? 'Above' : 'Below') + '</td><td class="' + (r.close_above_ma100 === 'TRUE' || r.close_above_ma100 === 'True' ? 'g' : 'r') + '">' + (r.close_above_ma100 === 'TRUE' || r.close_above_ma100 === 'True' ? 'Above' : 'Below') + '</td><td class="' + (dd < 0 ? 'r' : dd < -5 ? 'o' : 'g') + '">' + (dd > 0 ? '+' : '') + dd.toFixed(1) + '%</td></tr>';
   }).join('');
   document.getElementById('tbody-exit').innerHTML = h;
 }
@@ -939,7 +939,7 @@ function renderMobileExit() {
     var dd = parseFloat(r.drawdown_from_entry) || 0;
     var esClass = (r.exit_state || 'UNKNOWN').replace(/ /g, '-').toLowerCase();
     html += '<div class="m-card"><div class="m-card-row">' +
-      '<span class="lbl">#' + r.rank + '</span>' +
+      '<span class="lbl" style="color:' + (+r.rank <= 10 ? '#30D158' : +r.rank <= 20 ? '#FF9F0A' : '#FF453A') + '">#' + r.rank + '</span>' +
       '<span class="val tk-click" data-ticker="' + sym + '" style="color:' + (typeof ac === 'function' ? ac(r.ticker) : 'var(--text-primary)') + '">' + sym + '</span>' +
       '</div>' +
       '<div class="m-card-row"><span class="lbl">State</span><span><span class="m-exit-state ' + esClass + '">' + r.exit_state + '</span></span></div>' +
@@ -1321,7 +1321,7 @@ function openPanel(sym) {
   }
   // Dashboard status
   html += '<div class="panel-section"><div class="panel-section-title">STATUS DASHBOARD</div>';
-  if (d.leader) html += '<div class="panel-row"><span class="panel-label">Peringkat Leader</span><span class="panel-val">#' + d.leader.rank + '</span></div>';
+  if (d.leader) html += '<div class="panel-row"><span class="panel-label">Peringkat Leader</span><span class="panel-val" style="color:' + (+d.leader.rank <= 5 ? '#30D158' : +d.leader.rank <= 10 ? '#FF9F0A' : '#FF453A') + '">#' + d.leader.rank + '</span></div>';
   if (d.turnaround) html += '<div class="panel-row"><span class="panel-label">Status Turnaround</span><span class="panel-val">' + (d.turnaround.context_match ? 'Context' : '—') + (d.turnaround.transition_match ? ' / Transition' : '') + '</span></div>';
   if (d.exit) html += '<div class="panel-row"><span class="panel-label">Status Exit</span><span class="panel-val">' + d.exit.exit_state + '</span></div>';
   html += '</div>';
@@ -1347,9 +1347,9 @@ function openPanel(sym) {
   // Position vs MA
   if (d.exit) {
     html += '<div class="panel-section"><div class="panel-section-title">POSISI TERHADAP MA</div>';
-    html += '<div class="panel-row"><span class="panel-label">vs MA20</span><span class="panel-val">' + (d.exit.ma20 != null ? (+d.exit.close < +d.exit.ma20 ? '<span style="color:var(--red)">DI BAWAH</span>' : '<span style="color:var(--green)">DI ATAS</span>') : '—') + '</span></div>';
-    html += '<div class="panel-row"><span class="panel-label">vs MA50</span><span class="panel-val">' + (d.exit.ma50 != null ? (+d.exit.close < +d.exit.ma50 ? '<span style="color:var(--red)">DI BAWAH</span>' : '<span style="color:var(--green)">DI ATAS</span>') : '—') + '</span></div>';
-    html += '<div class="panel-row"><span class="panel-label">vs MA100</span><span class="panel-val">' + (d.exit.ma100 != null ? (+d.exit.close < +d.exit.ma100 ? '<span style="color:var(--red)">DI BAWAH</span>' : '<span style="color:var(--green)">DI ATAS</span>') : '—') + '</span></div>';
+    html += '<div class="panel-row"><span class="panel-label">vs MA20</span><span class="panel-val">' + (d.exit.ma20 != null ? (+d.exit.close < +d.exit.ma20 ? '<span style="color:#FF453A">DI BAWAH</span>' : '<span style="color:#30D158">DI ATAS</span>') : '—') + '</span></div>';
+    html += '<div class="panel-row"><span class="panel-label">vs MA50</span><span class="panel-val">' + (d.exit.ma50 != null ? (+d.exit.close < +d.exit.ma50 ? '<span style="color:#FF453A">DI BAWAH</span>' : '<span style="color:#30D158">DI ATAS</span>') : '—') + '</span></div>';
+    html += '<div class="panel-row"><span class="panel-label">vs MA100</span><span class="panel-val">' + (d.exit.ma100 != null ? (+d.exit.close < +d.exit.ma100 ? '<span style="color:#FF453A">DI BAWAH</span>' : '<span style="color:#30D158">DI ATAS</span>') : '—') + '</span></div>';
     html += '</div>';
   }
   // Alignment
@@ -1397,22 +1397,22 @@ function renderMarket() {
   if (rc) {
     if (rc.score_gap !== undefined) {
       var g = rc.score_gap;
-      if (g > 25) bullets.push({ ico: '&#10003;', text: 'Score Gap masih kuat (<b>' + g.toFixed(1) + '</b>)', ok: true });
-      else if (g > 15) bullets.push({ ico: '&#9888;', text: 'Score Gap melemah (<b>' + g.toFixed(1) + '</b>)', ok: false });
-      else bullets.push({ ico: '&#9888;', text: 'Score Gap sempit (<b>' + g.toFixed(1) + '</b>) — pasar tidak memiliki pemimpin jelas', ok: false });
+      if (g > 25) bullets.push({ ico: '&#10003;', text: 'Score Gap masih kuat (<b style="color:#30D158">' + g.toFixed(1) + '</b>)', ok: true });
+      else if (g > 15) bullets.push({ ico: '&#9888;', text: 'Score Gap melemah (<b style="color:#FF9F0A">' + g.toFixed(1) + '</b>)', ok: false });
+      else bullets.push({ ico: '&#9888;', text: 'Score Gap sempit (<b style="color:#FF453A">' + g.toFixed(1) + '</b>) — pasar tidak memiliki pemimpin jelas', ok: false });
     }
     var tot = rc.watchlist_count || 1;
     var b60 = rc.breadth_above_60 || 0;
-    if (b60 / tot > 0.4) bullets.push({ ico: '&#10003;', text: 'Breadth luas (<b>' + b60 + '/' + tot + '</b> di atas 60)', ok: true });
-    else bullets.push({ ico: '&#9888;', text: 'Breadth terbatas (<b>' + b60 + '/' + tot + '</b> di atas 60)', ok: false });
+    if (b60 / tot > 0.4) bullets.push({ ico: '&#10003;', text: 'Breadth luas (<b style="color:#30D158">' + b60 + '/' + tot + '</b> di atas 60)', ok: true });
+    else bullets.push({ ico: '&#9888;', text: 'Breadth terbatas (<b style="color:#FF9F0A">' + b60 + '/' + tot + '</b> di atas 60)', ok: false });
     var b40 = rc.breadth_below_40 || 0;
-    if (b40 / tot > 0.3) bullets.push({ ico: '&#9888;', text: '<b>' + b40 + '/' + tot + '</b> saham di bawah 40 — ekor melemah signifikan', ok: false });
+    if (b40 / tot > 0.3) bullets.push({ ico: '&#9888;', text: '<b style="color:#FF453A">' + b40 + '/' + tot + '</b> saham di bawah 40 — ekor melemah signifikan', ok: false });
     if (rc.top5_turnover !== undefined && rc.top5_turnover > 3) {
-      bullets.push({ ico: '&#9888;', text: 'Turnover Top5 meningkat (<b>' + rc.top5_turnover + '</b>) — rotasi tinggi', ok: false });
+      bullets.push({ ico: '&#9888;', text: 'Turnover Top5 meningkat (<b style="color:#FF9F0A">' + rc.top5_turnover + '</b>) — rotasi tinggi', ok: false });
     }
     if (rc.weakest_factor && rc.weakest_factor_score !== undefined && rc.weakest_factor_score < 50) {
       var wf = rc.weakest_factor.charAt(0).toUpperCase() + rc.weakest_factor.slice(1);
-      bullets.push({ ico: '&#9888;', text: wf + ' melemah (<b>' + rc.weakest_factor_score.toFixed(1) + '</b>) — faktor penarik', ok: false });
+      bullets.push({ ico: '&#9888;', text: wf + ' melemah (<b style="color:#FF453A">' + rc.weakest_factor_score.toFixed(1) + '</b>) — faktor penarik', ok: false });
     }
   }
   if (bullets.length === 0) bullets.push({ ico: '&#9888;', text: 'Data tidak mencukupi', ok: false });
@@ -1435,14 +1435,15 @@ function renderMarket() {
   var internalRows = '';
   if (rc) {
     var metrics = [
-      { label: 'Score Gap', val: rc.score_gap !== undefined ? rc.score_gap.toFixed(1) : '—', tr: rc.score_gap_5d_change },
-      { label: 'Breadth >70', val: rc.breadth_above_70 !== undefined ? rc.breadth_above_70 : '—', tr: null },
-      { label: 'Breadth >60', val: rc.breadth_above_60 !== undefined ? rc.breadth_above_60 : '—', tr: null },
-      { label: 'Top5 Avg Score', val: rc.top5_avg_score !== undefined ? rc.top5_avg_score.toFixed(1) : '—', tr: null },
-      { label: 'Top5 Turnover', val: rc.top5_turnover !== undefined ? rc.top5_turnover : '—', tr: null }
+      { label: 'Score Gap', val: rc.score_gap !== undefined ? rc.score_gap.toFixed(1) : '—', tr: rc.score_gap_5d_change, ok: rc.score_gap >= 25, warn: rc.score_gap >= 15 },
+      { label: 'Breadth >70', val: rc.breadth_above_70 !== undefined ? rc.breadth_above_70 : '—', tr: null, ok: rc.breadth_above_70 >= 5, warn: rc.breadth_above_70 >= 2 },
+      { label: 'Breadth >60', val: rc.breadth_above_60 !== undefined ? rc.breadth_above_60 : '—', tr: null, ok: rc.breadth_above_60 >= 10, warn: rc.breadth_above_60 >= 5 },
+      { label: 'Top5 Avg Score', val: rc.top5_avg_score !== undefined ? rc.top5_avg_score.toFixed(1) : '—', tr: null, ok: rc.top5_avg_score >= 70, warn: rc.top5_avg_score >= 55 },
+      { label: 'Top5 Turnover', val: rc.top5_turnover !== undefined ? rc.top5_turnover : '—', tr: null, ok: false, warn: rc.top5_turnover <= 3 }
     ];
     metrics.forEach(function(m) {
-      internalRows += '<tr><td>' + m.label + '</td><td>' + m.val + '</td><td>' + trendIcon(m.tr) + '</td></tr>';
+      var cl = m.val === '—' ? '' : m.ok ? 'g' : m.warn ? 'y' : 'r';
+      internalRows += '<tr><td>' + m.label + '</td><td class="' + cl + '">' + m.val + '</td><td>' + trendIcon(m.tr) + '</td></tr>';
     });
   }
   document.getElementById('mkt-v4-internal').innerHTML = internalRows;
@@ -1601,8 +1602,8 @@ function renderMarketFreshness() {
   var diffStr = diffHours < 1 ? Math.round(diffHours * 60) + 'm ago' : Math.round(diffHours) + 'h ago';
   var stale = diffHours > 24;
   var color = stale ? '#F85149' : diffHours > 12 ? '#D29922' : '#3FB950';
-  var warn = stale ? '<span style="color:var(--red);font-weight:600;margin-left:8px;padding:2px 8px;background:var(--red-bg);border:1px solid var(--red);border-radius:4px">STALE DATA</span>' : '';
-  el.innerHTML = '<span class="pill" style="background:var(--bg-primary);border:1px solid var(--bg-separator);color:var(--text-tertiary)">Last update: ' + lu + '</span><span style="color:' + color + '">' + diffStr + '</span>' + warn;
+  var warn = stale ? '<span style="color:#F85149;font-weight:600;margin-left:8px;padding:2px 8px;background:rgba(248,81,73,0.1);border:1px solid #F85149;border-radius:4px">STALE DATA</span>' : '';
+  el.innerHTML = '<span class="pill" style="background:rgba(30,30,30,0.8);border:1px solid rgba(255,255,255,0.08);color:rgba(255,255,255,0.4)">Last update: ' + lu + '</span><span style="color:' + color + '">' + diffStr + '</span>' + warn;
 }
 
 function renderMarketDiagnostics() {
@@ -1650,14 +1651,14 @@ function renderMobile() {
     if (rc.score_gap !== undefined) {
       var gap = rc.score_gap;
       var gapOk = gap > 25;
-      bullets += '<div class="m-card-row" style="padding:4px 0"><span style="color:' + (gapOk ? '#3FB950' : '#D29922') + ';font-size:14px">' + (gapOk ? '&#10003;' : '&#9888;') + '</span><span class="val" style="font-size:12px;font-weight:400;flex:1;margin-left:8px">Score Gap <b>' + gap.toFixed(1) + '</b></span></div>';
+      bullets += '<div class="m-card-row" style="padding:4px 0"><span style="color:' + (gapOk ? '#3FB950' : '#D29922') + ';font-size:14px">' + (gapOk ? '&#10003;' : '&#9888;') + '</span><span class="val" style="font-size:12px;font-weight:400;flex:1;margin-left:8px">Score Gap <b style="color:' + (gap > 25 ? '#30D158' : gap > 15 ? '#FF9F0A' : '#FF453A') + '">' + gap.toFixed(1) + '</b></span></div>';
     }
     var tot = rc.watchlist_count || 1;
     var b60 = rc.breadth_above_60 || 0;
     var b60Ok = b60 / tot > 0.4;
-    bullets += '<div class="m-card-row" style="padding:4px 0"><span style="color:' + (b60Ok ? '#3FB950' : '#D29922') + ';font-size:14px">' + (b60Ok ? '&#10003;' : '&#9888;') + '</span><span class="val" style="font-size:12px;font-weight:400;flex:1;margin-left:8px">Breadth <b>' + b60 + '/' + tot + '</b> >60</span></div>';
+    bullets += '<div class="m-card-row" style="padding:4px 0"><span style="color:' + (b60Ok ? '#3FB950' : '#D29922') + ';font-size:14px">' + (b60Ok ? '&#10003;' : '&#9888;') + '</span><span class="val" style="font-size:12px;font-weight:400;flex:1;margin-left:8px">Breadth <b style="color:' + (b60Ok ? '#30D158' : '#FF9F0A') + '">' + b60 + '/' + tot + '</b> >60</span></div>';
     if (rc.weakest_factor && rc.weakest_factor_score !== undefined) {
-      bullets += '<div class="m-card-row" style="padding:4px 0"><span style="color:#D29922;font-size:14px">&#9888;</span><span class="val" style="font-size:12px;font-weight:400;flex:1;margin-left:8px">' + rc.weakest_factor.charAt(0).toUpperCase() + rc.weakest_factor.slice(1) + ' <b>' + rc.weakest_factor_score.toFixed(1) + '</b></span></div>';
+      bullets += '<div class="m-card-row" style="padding:4px 0"><span style="color:#D29922;font-size:14px">&#9888;</span><span class="val" style="font-size:12px;font-weight:400;flex:1;margin-left:8px">' + rc.weakest_factor.charAt(0).toUpperCase() + rc.weakest_factor.slice(1) + ' <b style="color:#FF453A">' + rc.weakest_factor_score.toFixed(1) + '</b></span></div>';
     }
   }
 
@@ -1665,13 +1666,14 @@ function renderMobile() {
   var intHtml = '';
   if (rc) {
     var im = [
-      { lbl: 'Score Gap', val: rc.score_gap !== undefined ? rc.score_gap.toFixed(1) : '—' },
-      { lbl: 'Breadth >70', val: rc.breadth_above_70 !== undefined ? rc.breadth_above_70 : '—' },
-      { lbl: 'Top5 Avg', val: rc.top5_avg_score !== undefined ? rc.top5_avg_score.toFixed(1) : '—' },
-      { lbl: 'Turnover', val: rc.top5_turnover !== undefined ? rc.top5_turnover : '—' }
+      { lbl: 'Score Gap', val: rc.score_gap !== undefined ? rc.score_gap.toFixed(1) : '—', ok: rc.score_gap >= 25, warn: rc.score_gap >= 15 },
+      { lbl: 'Breadth >70', val: rc.breadth_above_70 !== undefined ? rc.breadth_above_70 : '—', ok: rc.breadth_above_70 >= 5, warn: rc.breadth_above_70 >= 2 },
+      { lbl: 'Top5 Avg', val: rc.top5_avg_score !== undefined ? rc.top5_avg_score.toFixed(1) : '—', ok: rc.top5_avg_score >= 70, warn: rc.top5_avg_score >= 55 },
+      { lbl: 'Turnover', val: rc.top5_turnover !== undefined ? rc.top5_turnover : '—', ok: false, warn: rc.top5_turnover <= 3 }
     ];
     im.forEach(function(m) {
-      intHtml += '<div class="m-metric"><div class="m-metric-lbl">' + m.lbl + '</div><div class="m-metric-val" style="font-size:18px">' + m.val + '</div></div>';
+      var mc = m.val === '—' ? '' : m.ok ? '#30D158' : m.warn ? '#FF9F0A' : '#FF453A';
+      intHtml += '<div class="m-metric"><div class="m-metric-lbl">' + m.lbl + '</div><div class="m-metric-val" style="font-size:18px;color:' + mc + '">' + m.val + '</div></div>';
     });
   }
 
@@ -1792,7 +1794,7 @@ function renderMobile() {
     var dd = parseFloat(r.drawdown_from_entry) || 0;
     var esClass = (r.exit_state || 'UNKNOWN').replace(/ /g, '-').toLowerCase();
     exitHtml += '<div class="m-card"><div class="m-card-row">' +
-      '<span class="lbl">#' + r.rank + '</span>' +
+      '<span class="lbl" style="color:' + (+r.rank <= 10 ? '#30D158' : +r.rank <= 20 ? '#FF9F0A' : '#FF453A') + '">#' + r.rank + '</span>' +
       '<span class="val tk-click" data-ticker="' + sym + '" style="color:' + (typeof ac === 'function' ? ac(r.ticker) : 'var(--text-primary)') + '">' + sym + '</span>' +
       '</div>' +
       '<div class="m-card-row"><span class="lbl">State</span><span><span class="m-exit-state ' + esClass + '">' + r.exit_state + '</span></span></div>' +

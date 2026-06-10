@@ -13,6 +13,11 @@ config/settings.json
 
 # AI Assistant workspace files
 .gemini/
+.opencode/
+
+# Temp debug files
+setup-skills.ps1
+test_panel.js
 
 # Temp / Debug files
 *.diff

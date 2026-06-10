@@ -100,8 +100,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sa
 .card-row:last-child{border:none}
 .table-wrap{overflow-x:auto;border-radius:16px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.07)}
 table{width:100%;border-collapse:collapse;font-size:13px}
-th{text-align:left;padding:8px 12px;font-size:11px;font-weight:500;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:.05em;border-bottom:0.5px solid rgba(255,255,255,0.06);cursor:pointer;user-select:none;white-space:nowrap;background:transparent}
+th{text-align:left;padding:8px 12px;font-size:10px;font-weight:600;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:.08em;border-bottom:0.5px solid rgba(255,255,255,0.06);cursor:pointer;user-select:none;white-space:nowrap;background:transparent}
 td{padding:10px 12px;border-bottom:0.5px solid rgba(255,255,255,0.06);vertical-align:middle;font-variant-numeric:tabular-nums;font-size:13px;color:rgba(255,255,255,0.8)}
+table tbody tr:nth-child(odd) td{background:rgba(255,255,255,0.025)}
+td:first-child{color:rgba(255,255,255,0.55)}
 .bar{display:flex;align-items:center;gap:6px}
 .bar-track{flex:1;height:4px;background:rgba(255,255,255,0.1);border-radius:2px;overflow:hidden;max-width:70px}
 .bar-fill{height:100%;border-radius:2px;transition:width .3s}
@@ -148,8 +150,10 @@ td{padding:10px 12px;border-bottom:0.5px solid rgba(255,255,255,0.06);vertical-a
 .mkt-v4-why-item .ico{font-size:14px;flex-shrink:0;margin-top:1px}
 .mkt-v4-why-conclusion{font-size:13px;font-weight:500;margin-top:8px;padding:8px 12px;background:rgba(255,255,255,0.06);border-radius:10px;text-align:center;color:rgba(255,255,255,0.8)}
 .mkt-v4-table{width:100%;border-collapse:collapse;font-size:13px}
-.mkt-v4-table th{text-align:left;padding:8px 10px;color:rgba(255,255,255,0.3);font-weight:500;font-size:10px;text-transform:uppercase;letter-spacing:.05em;border-bottom:0.5px solid rgba(255,255,255,0.06);background:transparent}
+.mkt-v4-table th{text-align:left;padding:8px 10px;color:rgba(255,255,255,0.5);font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.08em;border-bottom:0.5px solid rgba(255,255,255,0.06);background:transparent}
 .mkt-v4-table td{padding:8px 10px;border-bottom:0.5px solid rgba(255,255,255,0.06);font-variant-numeric:tabular-nums;font-size:13px;color:rgba(255,255,255,0.8)}
+.mkt-v4-table td:first-child{color:rgba(255,255,255,0.55)}
+.mkt-v4-table tbody tr:nth-child(odd) td{background:rgba(255,255,255,0.025)}
 .mkt-v4-tooltip{font-size:11px;color:rgba(255,255,255,0.3);margin-top:4px}
 .mkt-v4-context{display:flex;gap:6px}
 .mkt-v4-context .mkt-v4-context-card{flex:1;min-width:0}
@@ -161,6 +165,13 @@ td{padding:10px 12px;border-bottom:0.5px solid rgba(255,255,255,0.06);vertical-a
 .insight-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;flex-wrap:wrap;gap:6px}
 .insight-title{font-size:13px;font-weight:600;color:#fff}
 .insight-badge{font-size:11px;padding:3px 10px;border-radius:100px;font-weight:500}
+.alpha-badge{display:inline-block;padding:2px 10px;border-radius:100px;font-size:12px;font-weight:600;font-variant-numeric:tabular-nums}
+.alpha-badge.pos{background:rgba(48,209,88,0.15);color:#30D158;border:1px solid rgba(48,209,88,0.3)}
+.alpha-badge.neg{background:rgba(255,69,58,0.15);color:#FF453A;border:1px solid rgba(255,69,58,0.3)}
+.trend-icon{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:6px;font-size:12px;font-weight:700}
+.trend-icon.up{background:rgba(48,209,88,0.12);color:#30D158}
+.trend-icon.down{background:rgba(255,69,58,0.12);color:#FF453A}
+.trend-icon.flat{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.3)}
 .insight-badge.r{background:rgba(255,69,58,0.15);color:#FF453A}
 .insight-badge.y{background:rgba(255,159,10,0.15);color:#FF9F0A}
 .insight-badge.n{background:rgba(48,209,88,0.15);color:#30D158}
@@ -187,16 +198,7 @@ td{padding:10px 12px;border-bottom:0.5px solid rgba(255,255,255,0.06);vertical-a
 .es-weakening{color:#FF9F0A;font-weight:500;font-size:11px;padding:2px 8px;background:rgba(255,159,10,0.15);border-radius:100px;border:1px solid rgba(255,159,10,0.3);display:inline-block}
 .es-exit-watch{color:#0A84FF;font-weight:500;font-size:11px;padding:2px 8px;background:rgba(10,132,255,0.15);border-radius:100px;border:1px solid rgba(10,132,255,0.3);display:inline-block}
 .es-healthy{color:#30D158;font-weight:500;font-size:11px;padding:2px 8px;background:rgba(48,209,88,0.15);border-radius:100px;border:1px solid rgba(48,209,88,0.3);display:inline-block}
-.timeline{position:relative;padding:12px 0}
-.timeline::before{content:'';position:absolute;left:10px;top:0;bottom:0;width:1.5px;background:rgba(255,255,255,0.1)}
-.tl-item{position:relative;padding:4px 0 16px 32px;cursor:pointer;transition:opacity .15s}
-.tl-item:active{opacity:.7}
-.tl-item.active .tl-title{color:#0A84FF}
-.tl-dot{position:absolute;left:4px;top:6px;width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.15);transition:all .15s}
-.tl-item.active .tl-dot{background:#0A84FF;border-color:#0A84FF;box-shadow:0 0 6px rgba(10,132,255,0.4)}
-.tl-date{font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:2px}
-.tl-title{font-size:15px;font-weight:600;letter-spacing:-.2px;color:#fff;margin-bottom:3px}
-.tl-desc{font-size:13px;color:rgba(255,255,255,0.5);line-height:1.5}
+
 .sim-row{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:8px}
 .sim-label{font-size:12px;color:rgba(255,255,255,0.4);white-space:nowrap}
 .sim-slider-wrap{position:relative;height:32px;margin:4px 0 10px}
@@ -349,7 +351,6 @@ td{padding:10px 12px;border-bottom:0.5px solid rgba(255,255,255,0.06);vertical-a
     <button class="tab-btn" data-tab="4" onclick="st(4,this)">Exit Monitor</button>
     <button class="tab-btn" data-tab="5" onclick="st(5,this)">Diagnostics</button>
     <button class="tab-btn" data-tab="6" onclick="st(6,this)">Sim Lab</button>
-    <button class="tab-btn" data-tab="7" onclick="st(7,this)">Research</button>
   </div>
   <div class="ios-scroll">
     <div class="ios-scroll-inner">
@@ -572,11 +573,6 @@ td{padding:10px 12px;border-bottom:0.5px solid rgba(255,255,255,0.06);vertical-a
 </div>
 </div>
 
-<div class="tc" id="t7">
-<div class="section-title">Research Timeline · ISI Project History</div>
-<div id="timeline-container"></div>
-</div>
-
 <div class="overlay" id="overlay" onclick="closePanel()"></div>
 <div class="panel" id="panel">
 <div class="panel-hdr">
@@ -625,10 +621,6 @@ td{padding:10px 12px;border-bottom:0.5px solid rgba(255,255,255,0.06);vertical-a
   <button class="bn-btn" data-tab="6" onclick="st(6,this);toggleMoreNav()">
     <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
     <span>Simulation Lab</span>
-  </button>
-  <button class="bn-btn" data-tab="7" onclick="st(7,this);toggleMoreNav()">
-    <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
-    <span>Research</span>
   </button>
 </div>
 
@@ -1192,23 +1184,6 @@ function exportCSV() {
 }
 
 (function() {
-  var timelineEvents = [
-    { date: 'Nov 2024', title: 'ISI Project Started', desc: 'Initial data collection and scoring prototype for Indonesia stock screening.' },
-    { date: 'Dec 2024', title: 'Turnaround Detection', desc: 'Context/transition matching algorithm developed for identifying potential reversals.' },
-    { date: 'Jan 2025', title: 'V1 Dashboard', desc: 'First dashboard with leaders ranking, exit monitor, and basic insights.' },
-    { date: 'Mar 2025', title: 'Factor System', desc: 'Four-factor scoring system (Quality, Growth, Value, Momentum) implemented.' },
-    { date: 'Apr 2025', title: 'V2 Dashboard', desc: 'Complete redesign with turnaround detection, stock profiles, and Chart.js integration.' },
-    { date: 'Jun 2025', title: 'Q1 2025 Audit', desc: 'Year-end audit and research review. Growth Factor and scoring weights reviewed.' },
-    { date: 'Apr–May 2026', title: 'Research Phase', desc: 'RESEARCH-013 series: growth reconciliation (013D), period sensitivity (013E), weight optimization.' },
-    { date: 'Jun 2026', title: 'V3 Dashboard · ADR-005', desc: 'Config F (Q25/G10/V30/M35) production config approved. V3 dashboard with config switcher, factor panel, simulation lab, and research timeline.' },
-    { date: 'Jun 2026', title: 'V3.2 Locked', desc: 'Dashboard/index.html restored from f99ec9a as locked V3.2. Market tab, AI analysis, freshness bar preserved. UTF-8 clean.' }
-  ];
-  var h = '<div class="timeline">';
-  timelineEvents.forEach(function(ev, i) {
-    h += '<div class="tl-item' + (i === timelineEvents.length - 1 ? ' active' : '') + '" onclick="document.querySelector(\'.tl-item.active\').classList.remove(\'active\');this.classList.add(\'active\')"><div class="tl-dot"></div><div class="tl-date">' + ev.date + '</div><div class="tl-title">' + ev.title + '</div><div class="tl-desc">' + ev.desc + '</div></div>';
-  });
-  h += '</div>';
-  document.getElementById('timeline-container').innerHTML = h;
 })();
 
 function tickerData(sym) {
@@ -1491,8 +1466,8 @@ function renderMarket() {
 
   // ── 3. Internal Health ─────────────────────────────
   var trendIcon = function(v) {
-    if (v === undefined || v === null) return '<span class="na">—</span>';
-    return v > 0 ? '<span class="up">&#9650;</span>' : v < 0 ? '<span class="down">&#9660;</span>' : '<span class="na">&#9654;</span>';
+    if (v === undefined || v === null) return '<span class="trend-icon flat">→</span>';
+    return v > 0 ? '<span class="trend-icon up">↑</span>' : v < 0 ? '<span class="trend-icon down">↓</span>' : '<span class="trend-icon flat">→</span>';
   };
   var internalRows = '';
   if (rc) {
@@ -1536,7 +1511,9 @@ function renderMarket() {
       { label: 'Sejak 2022', data: pAll }
     ];
     periods.forEach(function(p) {
-      vsRows += '<tr><td>' + p.label + '</td><td class="' + (parseFloat(p.data.isi) >= 0 ? 'up' : 'down') + '">' + (parseFloat(p.data.isi) >= 0 ? '+' : '') + p.data.isi + '%</td><td class="' + (parseFloat(p.data.ihsg) >= 0 ? 'up' : 'down') + '">' + (parseFloat(p.data.ihsg) >= 0 ? '+' : '') + p.data.ihsg + '%</td><td class="' + (p.data.pos ? 'up' : 'down') + '">' + p.data.alpha + '%</td></tr>';
+      var aVal = parseFloat(p.data.alpha) || 0;
+      var alphaBadge = '<span class="alpha-badge ' + (aVal >= 0 ? 'pos' : 'neg') + '">' + p.data.alpha + '%</span>';
+      vsRows += '<tr><td>' + p.label + '</td><td class="' + (parseFloat(p.data.isi) >= 0 ? 'up' : 'down') + '">' + (parseFloat(p.data.isi) >= 0 ? '+' : '') + p.data.isi + '%</td><td class="' + (parseFloat(p.data.ihsg) >= 0 ? 'up' : 'down') + '">' + (parseFloat(p.data.ihsg) >= 0 ? '+' : '') + p.data.ihsg + '%</td><td>' + alphaBadge + '</td></tr>';
     });
   }
   document.getElementById('mkt-v4-vs').innerHTML = vsRows;

@@ -31,7 +31,7 @@ than new panels.
 | Config B (Q25/G30/V10/M35) | **RESEARCH** | Aggressive benchmark. See RESEARCH-013E |
 | Top 5 Portfolio | PRODUCTION | Equal weight, monthly rebalance |
 | Daily Pipeline | PRODUCTION | GitHub Actions, runs 16:30 WIB |
-| Dashboard | ACTIVE | 6 tabs + Kesimpulan Hari Ini + Insight panels (append-only) |
+| Dashboard V4 | ACTIVE | iOS mobile UI, 7 sections, Exit Monitor legend popup, Context/Transition Tracker |
 | Turnaround Watchlist | RESEARCH MONITORING | Paper trading only |
 | Exit Monitor V1.1 | ACTIVE | Rule-based, Version C thresholds |
 | Data Quality Audit | COMPLETED | AUDIT-001 + AUDIT-002: PBV & DY fixes applied |
@@ -607,6 +607,14 @@ ISI/
 - [x] Dashboard redesign — Stockbit-inspired dark theme per DESIGN.md
 - [x] Simulation curves — Monthly fluctuation (noise) instead of smooth CAGR compounding
 - [x] Market panel guard fix — Prevent crash when MKT data missing
+
+### ✓ Completed in V4.2 (2026-06-10) — Dashboard V4
+- [x] **iOS-style mobile UI** — Full rewrite to mobile-first layout (max-width:390px, card-based sections)
+- [x] **Exit Monitor legend compact + popup** — Horizontal flex legend with clickable popup showing full A/B/C/D/RC/RS20/RSΔ/MA/DD descriptions
+- [x] **Context-sensitive filter legend** — Legend body changes per filter tab (Exit/Exit Risk/Weakening/Exit Watch/Healthy)
+- [x] **Context/Transition Tracker simplified** — Removed sub-tab nav, merged into single view below summary cards
+- [x] **Leader config bug fixed** — Default changed to 'prod' (Config F), labels reflect actual weights
+- [x] **All CSS variables replaced** — Hardcoded rgba values throughout for consistent iOS dark theme
 
 ### ✓ Completed (pre-V4)
 - [x] Repository Phase 1 — Documentation consolidation & archival

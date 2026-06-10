@@ -1,5 +1,5 @@
 {
-    "last_update": "2026-06-10 12:45",
+    "last_update": "2026-06-10 13:09",
     "status": "SAFE",
     "market_health": 51,
     "opportunity": 74,
@@ -15,7 +15,7 @@
         "top5_avg_score": 66.8,
         "bot5_avg_score": 26.2,
         "score_gap": 40.6,
-        "score_gap_5d_change": -2,
+        "score_gap_5d_change": 0,
         "breadth_above_70": 1,
         "breadth_above_60": 7,
         "breadth_below_40": 7,

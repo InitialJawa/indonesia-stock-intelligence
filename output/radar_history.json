@@ -69,7 +69,7 @@
         }
     },
     {
-        "tanggal": "2026-06-09",
+        "tanggal": "2026-06-10",
         "jumlah_saham_sedang_anget": 5,
         "watchlist_tickers": [
             "PTBA.JK",
@@ -81,13 +81,13 @@
         "ringkasan_volume_hari_itu": {
             "status_sistem": "SAFE",
             "saham_anomali_lonjakan": 0,
-            "saham_volume_sepi": 0,
+            "saham_volume_sepi": 2,
             "detail": [
-                "PTBA.JK: Volume 1.1x (Wajar)",
-                "BBNI.JK: Volume 3.2x (Volume Lonjakan)",
-                "INDF.JK: Volume 1.2x (Wajar)",
-                "ASII.JK: Volume 1.0x (Wajar)",
-                "ITMG.JK: Volume 2.8x (Volume Lonjakan)"
+                "PTBA.JK: Volume 1.0x (Wajar)",
+                "BBNI.JK: Volume 2.5x (Volume Lonjakan)",
+                "INDF.JK: Volume 0.8x (Sepi)",
+                "ASII.JK: Volume 0.8x (Sepi)",
+                "ITMG.JK: Volume 1.1x (Wajar)"
             ]
         }
     },
@@ -107,8 +107,8 @@
             "saham_volume_sepi": 2,
             "detail": [
                 "PTBA.JK: Volume 1.0x (Wajar)",
-                "BBNI.JK: Volume 2.5x (Volume Lonjakan)",
-                "INDF.JK: Volume 0.8x (Sepi)",
+                "BBNI.JK: Volume 2.6x (Volume Lonjakan)",
+                "INDF.JK: Volume 0.9x (Sepi)",
                 "ASII.JK: Volume 0.8x (Sepi)",
                 "ITMG.JK: Volume 1.1x (Wajar)"
             ]

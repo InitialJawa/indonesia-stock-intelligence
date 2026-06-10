@@ -324,6 +324,7 @@ tr:hover td{background:var(--bg-elevated)}
 <div class="mkt-v4-section">
   <div class="mkt-v4-section-title">Konteks Pasar</div>
   <div id="mkt-v4-context" class="mkt-v4-context"></div>
+  <div id="mkt-v4-context-timestamp" style="color:var(--text-muted);font-size:12px;margin-top:8px"></div>
 </div>
 
 <div class="mkt-v4-section">
@@ -1214,7 +1215,9 @@ function renderMarket() {
   document.getElementById('mkt-v4-vs').innerHTML = vsRows;
 
   // ── 5. Context ─────────────────────────────────────
-  if (typeof MKT !== 'undefined' && MKT && MKT.ihsg && MKT.usdidr) {
+  if (liveMarketData) {
+    renderLiveMarket();
+  } else if (typeof MKT !== 'undefined' && MKT && MKT.ihsg && MKT.usdidr) {
     var assets = [
       { lbl: 'IHSG', val: MKT.ihsg.value.toLocaleString(), d: MKT.ihsg.daily, m: MKT.ihsg.monthly },
       { lbl: 'USD/IDR', val: MKT.usdidr.value.toLocaleString(), d: MKT.usdidr.daily, m: MKT.usdidr.monthly }
@@ -1228,6 +1231,7 @@ function renderMarket() {
     });
     document.getElementById('mkt-v4-context').innerHTML = ch;
   }
+  fetchLiveMarket();
 
   // ── 6. Timeline ────────────────────────────────────
   var tlRows = '';
@@ -1248,6 +1252,37 @@ function renderMarket() {
 
   // ── 8. Freshness ───────────────────────────────────
   renderMarketFreshness();
+}
+
+var liveMarketData = null;
+
+function renderLiveMarket() {
+  if (!liveMarketData) return;
+  var el = document.getElementById('mkt-v4-context');
+  if (!el) return;
+  var assets = [
+    { lbl: 'IHSG', val: liveMarketData.ihsg.price.toLocaleString(), d: liveMarketData.ihsg.change_pct, m: MKT && MKT.ihsg ? MKT.ihsg.monthly : null },
+    { lbl: 'USD/IDR', val: liveMarketData.usdidr.price.toLocaleString(), d: liveMarketData.usdidr.change_pct, m: MKT && MKT.usdidr ? MKT.usdidr.monthly : null }
+  ];
+  var ch = '';
+  assets.forEach(function(x) {
+    ch += '<div class="mkt-v4-context-card"><div class="lbl">' + x.lbl + '</div><div class="val">' + x.val + '</div>';
+    ch += '<div class="chg"><span class="' + (x.d >= 0 ? 'g' : 'r') + '">' + (x.d > 0 ? '+' : '') + x.d + '%</span><span style="color:var(--text-muted)"> Harian</span>';
+    if (x.m !== null) {
+      ch += ' &middot; <span class="' + (x.m >= 0 ? 'g' : 'r') + '">' + (x.m > 0 ? '+' : '') + x.m + '%</span><span style="color:var(--text-muted)"> Bulanan</span>';
+    }
+    ch += '</div>';
+  });
+  el.innerHTML = ch;
+  var tEl = document.getElementById('mkt-v4-context-timestamp');
+  if (tEl) tEl.textContent = liveMarketData.ihsg.timestamp;
+}
+
+function fetchLiveMarket() {
+  fetch('data/live_market.json')
+    .then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+    .then(function(d) { liveMarketData = d; renderLiveMarket(); })
+    .catch(function(e) { console.warn('fetchLiveMarket:', e); });
 }
 
 function renderMarketFreshness() {
@@ -1305,5 +1340,6 @@ document.addEventListener('click', function(e) {
 document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { closePanel(); } });
 
 renderAll();
+setInterval(fetchLiveMarket, 300000);
 </script>
 </body></html>

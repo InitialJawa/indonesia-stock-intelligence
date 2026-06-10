@@ -1619,7 +1619,8 @@ function renderMarketDiagnostics() {
   d('diag-regime', RS && RS.status ? RS.status : '—', RS && RS.status === 'SAFE' ? '#3FB950' : RS && RS.status === 'DANGER' ? '#F85149' : '#D29922', RS && RS.action ? 'action: ' + RS.action : '');
   d('diag-ai-status', RS && RS.detail_message ? (RS.detail_message.length + ' chars') : 'EMPTY', RS && RS.detail_message ? '#3FB950' : '#F85149', RS && RS.detail_message ? 'AI narrative loaded' : 'no AI summary');
   d('diag-datajs', typeof MKT !== 'undefined' && typeof RS !== 'undefined' ? 'OK' : 'MISSING', '#3FB950', '');
-  d('diag-pipeline-run', lu, '#8B949E', 'market_last_update');
+  var plu = MKT && MKT.market_last_update ? MKT.market_last_update : (MKT && MKT.last_update ? MKT.last_update : '—');
+  d('diag-pipeline-run', plu, '#8B949E', 'market_last_update');
 }
 
 function renderMobile() {

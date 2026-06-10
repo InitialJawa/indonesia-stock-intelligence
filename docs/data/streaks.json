@@ -1,1 +1,242 @@
-[]
+[
+  {
+    "ticker": "BRPT.JK",
+    "context_days": 4,
+    "transition_days": 4,
+    "first_context_detected": "2026-06-07",
+    "first_transition_detected": "2026-06-07",
+    "total_entries": 4
+  },
+  {
+    "ticker": "ASII.JK",
+    "context_days": 4,
+    "transition_days": 4,
+    "first_context_detected": "2026-06-07",
+    "first_transition_detected": "2026-06-07",
+    "total_entries": 4
+  },
+  {
+    "ticker": "EXCL.JK",
+    "context_days": 4,
+    "transition_days": 4,
+    "first_context_detected": "2026-06-07",
+    "first_transition_detected": "2026-06-07",
+    "total_entries": 4
+  },
+  {
+    "ticker": "TLKM.JK",
+    "context_days": 1,
+    "transition_days": 4,
+    "first_context_detected": "2026-06-10",
+    "first_transition_detected": "2026-06-07",
+    "total_entries": 4
+  },
+  {
+    "ticker": "CPIN.JK",
+    "context_days": 0,
+    "transition_days": 4,
+    "first_context_detected": "2026-06-07",
+    "first_transition_detected": "2026-06-07",
+    "total_entries": 4
+  },
+  {
+    "ticker": "MDKA.JK",
+    "context_days": 4,
+    "transition_days": 0,
+    "first_context_detected": "2026-06-07",
+    "first_transition_detected": "\u2014",
+    "total_entries": 4
+  },
+  {
+    "ticker": "ANTM.JK",
+    "context_days": 4,
+    "transition_days": 0,
+    "first_context_detected": "2026-06-07",
+    "first_transition_detected": "\u2014",
+    "total_entries": 4
+  },
+  {
+    "ticker": "AMMN.JK",
+    "context_days": 4,
+    "transition_days": 0,
+    "first_context_detected": "2026-06-07",
+    "first_transition_detected": "\u2014",
+    "total_entries": 4
+  },
+  {
+    "ticker": "TPIA.JK",
+    "context_days": 4,
+    "transition_days": 0,
+    "first_context_detected": "2026-06-07",
+    "first_transition_detected": "\u2014",
+    "total_entries": 4
+  },
+  {
+    "ticker": "ESSA.JK",
+    "context_days": 4,
+    "transition_days": 0,
+    "first_context_detected": "2026-06-07",
+    "first_transition_detected": "\u2014",
+    "total_entries": 4
+  },
+  {
+    "ticker": "MAPI.JK",
+    "context_days": 0,
+    "transition_days": 4,
+    "first_context_detected": "\u2014",
+    "first_transition_detected": "2026-06-07",
+    "total_entries": 4
+  },
+  {
+    "ticker": "AKRA.JK",
+    "context_days": 0,
+    "transition_days": 4,
+    "first_context_detected": "\u2014",
+    "first_transition_detected": "2026-06-07",
+    "total_entries": 4
+  },
+  {
+    "ticker": "BMRI.JK",
+    "context_days": 0,
+    "transition_days": 4,
+    "first_context_detected": "\u2014",
+    "first_transition_detected": "2026-06-07",
+    "total_entries": 4
+  },
+  {
+    "ticker": "ITMG.JK",
+    "context_days": 0,
+    "transition_days": 4,
+    "first_context_detected": "\u2014",
+    "first_transition_detected": "2026-06-07",
+    "total_entries": 4
+  },
+  {
+    "ticker": "BBNI.JK",
+    "context_days": 0,
+    "transition_days": 4,
+    "first_context_detected": "\u2014",
+    "first_transition_detected": "2026-06-07",
+    "total_entries": 4
+  },
+  {
+    "ticker": "ICBP.JK",
+    "context_days": 0,
+    "transition_days": 4,
+    "first_context_detected": "\u2014",
+    "first_transition_detected": "2026-06-07",
+    "total_entries": 4
+  },
+  {
+    "ticker": "INTP.JK",
+    "context_days": 0,
+    "transition_days": 4,
+    "first_context_detected": "\u2014",
+    "first_transition_detected": "2026-06-07",
+    "total_entries": 4
+  },
+  {
+    "ticker": "BBCA.JK",
+    "context_days": 0,
+    "transition_days": 4,
+    "first_context_detected": "\u2014",
+    "first_transition_detected": "2026-06-07",
+    "total_entries": 4
+  },
+  {
+    "ticker": "BBRI.JK",
+    "context_days": 0,
+    "transition_days": 4,
+    "first_context_detected": "\u2014",
+    "first_transition_detected": "2026-06-07",
+    "total_entries": 4
+  },
+  {
+    "ticker": "INDF.JK",
+    "context_days": 0,
+    "transition_days": 4,
+    "first_context_detected": "\u2014",
+    "first_transition_detected": "2026-06-07",
+    "total_entries": 4
+  },
+  {
+    "ticker": "GOTO.JK",
+    "context_days": 0,
+    "transition_days": 4,
+    "first_context_detected": "\u2014",
+    "first_transition_detected": "2026-06-07",
+    "total_entries": 4
+  },
+  {
+    "ticker": "SIDO.JK",
+    "context_days": 0,
+    "transition_days": 4,
+    "first_context_detected": "\u2014",
+    "first_transition_detected": "2026-06-07",
+    "total_entries": 4
+  },
+  {
+    "ticker": "MIKA.JK",
+    "context_days": 0,
+    "transition_days": 4,
+    "first_context_detected": "\u2014",
+    "first_transition_detected": "2026-06-07",
+    "total_entries": 4
+  },
+  {
+    "ticker": "HEAL.JK",
+    "context_days": 0,
+    "transition_days": 4,
+    "first_context_detected": "\u2014",
+    "first_transition_detected": "2026-06-07",
+    "total_entries": 4
+  },
+  {
+    "ticker": "KLBF.JK",
+    "context_days": 0,
+    "transition_days": 4,
+    "first_context_detected": "\u2014",
+    "first_transition_detected": "2026-06-07",
+    "total_entries": 4
+  },
+  {
+    "ticker": "UNTR.JK",
+    "context_days": 0,
+    "transition_days": 2,
+    "first_context_detected": "\u2014",
+    "first_transition_detected": "2026-06-09",
+    "total_entries": 4
+  },
+  {
+    "ticker": "PGAS.JK",
+    "context_days": 0,
+    "transition_days": 0,
+    "first_context_detected": "\u2014",
+    "first_transition_detected": "\u2014",
+    "total_entries": 4
+  },
+  {
+    "ticker": "ADRO.JK",
+    "context_days": 0,
+    "transition_days": 0,
+    "first_context_detected": "\u2014",
+    "first_transition_detected": "\u2014",
+    "total_entries": 4
+  },
+  {
+    "ticker": "PTBA.JK",
+    "context_days": 0,
+    "transition_days": 0,
+    "first_context_detected": "\u2014",
+    "first_transition_detected": "\u2014",
+    "total_entries": 4
+  },
+  {
+    "ticker": "SMGR.JK",
+    "context_days": 0,
+    "transition_days": 0,
+    "first_context_detected": "\u2014",
+    "first_transition_detected": "2026-06-09",
+    "total_entries": 4
+  }
+]

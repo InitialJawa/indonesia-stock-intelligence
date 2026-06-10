@@ -284,13 +284,14 @@ td:first-child{color:rgba(255,255,255,0.55)}
   .bn-more-panel{max-width:100%}
 }
 @media(min-width:768px){
-  .ios-wrap{max-width:1200px;margin:0 auto;padding:0 24px}
-  .ios-hdr{padding:18px 0 12px;border-bottom:0.5px solid rgba(255,255,255,0.08)}
+  .ios-wrap{max-width:1100px;margin:0 auto;padding:0 24px}
+  .ios-hdr{padding:16px 0 10px;border-bottom:0.5px solid rgba(255,255,255,0.08)}
   .ios-hdr .logo{font-size:20px}
   .ios-hdr .logo span{font-size:14px}
+  .ios-hdr .dt{display:none}
   .ios-scroll-inner{padding:0}
-  .tab-nav{display:flex;gap:4px;padding:12px 0 8px;border-bottom:0.5px solid rgba(255,255,255,0.08);margin-bottom:16px;overflow-x:auto}
-  .tab-btn{font-size:13px;padding:8px 16px;border-radius:8px;border:1px solid transparent;color:rgba(255,255,255,0.5);background:transparent;transition:all .15s}
+  .tab-nav{display:flex;align-items:center;gap:2px;padding:10px 0 8px;border-bottom:0.5px solid rgba(255,255,255,0.08);margin-bottom:16px;overflow-x:auto;flex-wrap:nowrap}
+  .tab-btn{font-size:13px;padding:7px 12px;border-radius:6px;border:1px solid transparent;color:rgba(255,255,255,0.5);background:transparent;transition:all .15s;white-space:nowrap}
   .tab-btn:hover{color:rgba(255,255,255,0.8);background:rgba(255,255,255,0.04)}
   .tab-btn.active{color:#fff;background:rgba(10,132,255,0.15);border-color:rgba(10,132,255,0.3);font-weight:600}
   .ios-tab-bar{display:none}
@@ -298,21 +299,18 @@ td:first-child{color:rgba(255,255,255,0.55)}
   .card-grid{grid-template-columns:1fr 1fr 1fr}
   .mkt-v4-hero{max-width:600px}
   .comp-grid{grid-template-columns:repeat(4,1fr)}
-  .table-wrap{overflow-x:visible}
-  table{font-size:14px}
-  td,th{padding:10px 16px}
-  .section-title{font-size:17px;margin-bottom:12px}
-  .mkt-v4-section{margin-bottom:24px}
+  .table-wrap{overflow-x:visible;max-width:700px}
+  td,th{padding:8px 12px;white-space:nowrap}
+  .mkt-v4-section{margin-bottom:20px}
   .ios-section{margin-bottom:36px}
   .panel{max-width:480px;border-radius:16px}
   .chart-container{padding:20px}
-  .card{padding:16px 20px}
-  .ios-card{padding:16px 20px}
+  .card{padding:14px 18px}
+  .ios-card{padding:14px 18px}
   .ios-metric-group{grid-template-columns:1fr 1fr 1fr;max-width:600px}
   .ios-group{max-width:600px}
   .fd-grid{grid-template-columns:1fr 1fr 1fr}
   .breakdown-grid{max-width:400px}
-  .mkt-v4-why{max-width:600px}
   .ios-scroll{padding:0 0 24px}
   .cfg-nav{flex-wrap:nowrap}
   .ios-filter-bar{flex-wrap:wrap}
@@ -324,9 +322,14 @@ td:first-child{color:rgba(255,255,255,0.55)}
   #t6 .sub-tc .card-grid{grid-template-columns:1fr 1fr}
   #t6 .table-wrap{margin-top:12px}
   .bn-more-panel{max-width:400px}
+  .mkt-v4-grid{display:grid;grid-template-columns:3fr 2fr;gap:24px;align-items:start}
+  .mkt-v4-grid .mkt-v4-section{margin-bottom:16px}
+  .mkt-v4-grid .mkt-v4-why{max-width:none}
+  .mkt-v4-grid .mkt-v4-why-conclusion{max-width:none}
+  #mkt-freshness{max-width:600px}
 }
 @media(min-width:1024px){
-  .ios-wrap{max-width:1400px}
+  .ios-wrap{max-width:1100px}
   .card-grid{grid-template-columns:1fr 1fr 1fr 1fr}
   .comp-grid{grid-template-columns:repeat(6,1fr)}
   #t5 .card-grid{grid-template-columns:1fr 1fr 1fr 1fr}
@@ -351,6 +354,7 @@ td:first-child{color:rgba(255,255,255,0.55)}
     <button class="tab-btn" data-tab="4" onclick="st(4,this)">Exit Monitor</button>
     <button class="tab-btn" data-tab="5" onclick="st(5,this)">Diagnostics</button>
     <button class="tab-btn" data-tab="6" onclick="st(6,this)">Sim Lab</button>
+    <span class="dt" id="desktop-date" style="margin-left:auto;font-size:13px;color:rgba(255,255,255,0.4)"></span>
   </div>
   <div class="ios-scroll">
     <div class="ios-scroll-inner">
@@ -375,12 +379,13 @@ td:first-child{color:rgba(255,255,255,0.55)}
 
 <div id="mkt-freshness" style="margin-bottom:10px;font-size:12px;color:rgba(255,255,255,0.5);display:flex;align-items:center;gap:8px"></div>
 
+<div class="mkt-v4-grid">
 <div class="mkt-v4-section">
   <div class="mkt-v4-section-title">Mengapa Sistem Mengambil Keputusan Ini?</div>
   <div id="mkt-v4-why" class="mkt-v4-why"></div>
   <div id="mkt-v4-why-conclusion" class="mkt-v4-why-conclusion"></div>
 </div>
-
+<div>
 <div class="mkt-v4-section">
   <div class="mkt-v4-section-title">Kesehatan Internal ISI</div>
   <table class="mkt-v4-table">
@@ -389,13 +394,14 @@ td:first-child{color:rgba(255,255,255,0.55)}
   </table>
   <div class="mkt-v4-tooltip">Score Gap = rata-rata skor Top5 dikurangi rata-rata skor Bottom5.</div>
 </div>
-
 <div class="mkt-v4-section">
   <div class="mkt-v4-section-title">ISI vs IHSG</div>
   <table class="mkt-v4-table">
     <thead><tr><th>Periode</th><th>ISI</th><th>IHSG</th><th>Alpha</th></tr></thead>
     <tbody id="mkt-v4-vs"></tbody>
   </table>
+</div>
+</div>
 </div>
 
 <div class="mkt-v4-section">
@@ -1970,11 +1976,12 @@ function renderAll() {
   var _fns = [renderMarket, renderLeaders, renderTurnaround, renderInsights, renderHistory, re, renderMarketDiagnostics];
   for (var _i = 0; _i < _fns.length; _i++) { try { _fns[_i](); } catch(e) { console.warn('renderAll: ' + (_fns[_i].name || 'fn' + _i) + ' failed:', e); } }
   try {
+    var lu = MKT && MKT.market_last_update ? MKT.market_last_update : (MKT && MKT.last_update ? MKT.last_update : '');
+    var dt = lu ? lu.split(' ')[0] : '—';
     var hd = document.getElementById('header-date');
-    if (hd) {
-      var lu = MKT && MKT.market_last_update ? MKT.market_last_update : (MKT && MKT.last_update ? MKT.last_update : '');
-      hd.textContent = lu ? lu.split(' ')[0] : '—';
-    }
+    if (hd) hd.textContent = dt;
+    var dd = document.getElementById('desktop-date');
+    if (dd) dd.textContent = dt;
   } catch(e) { console.warn('header-date update failed:', e); }
   try { initSlider(); } catch(e) { console.warn('initSlider failed:', e); }
   try { var _st = localStorage.getItem('simTab'); if (_st === '0' || _st === '1') stSubSim(parseInt(_st)); } catch(e) {}

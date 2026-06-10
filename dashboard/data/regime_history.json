@@ -1,35 +1,8 @@
 [
   {
-    "date": "2026-06-02",
-    "ihsg_close": 6195.43,
-    "change_pct": 1.11,
+    "date": "2026-06-10",
     "regime": "RISK ON",
-    "action": "AKUMULASI",
-    "note": "IHSG rebound ke zona hijau, 281 saham menguat"
-  },
-  {
-    "date": "2026-06-03",
-    "ihsg_close": 5941.07,
-    "change_pct": -4.11,
-    "regime": "RISK OFF",
-    "action": "KURANGI",
-    "note": "Koreksi terdalam Asia-Pacific, terendah 5 tahun terakhir"
-  },
-  {
-    "date": "2026-06-04",
-    "ihsg_close": 5839.79,
-    "change_pct": -1.70,
-    "regime": "RISK OFF",
-    "action": "HOLD",
-    "note": "Lanjut turun, rupiah sempat ke atas Rp18.000/USD"
-  },
-  {
-    "date": "2026-06-05",
-    "ihsg_close": 5594.76,
-    "change_pct": -4.20,
-    "regime": "RISK OFF",
-    "action": "KURANGI",
-    "note": "Penutupan terburuk minggu ini, -8.69% dalam sepekan"
+    "action": "AKUMULASI"
   },
   {
     "date": "2026-06-09",
@@ -48,11 +21,35 @@
     "note": "Rebound terbesar sejak 2020, 678 saham hijau, volume Rp27.8T"
   },
   {
-    "date": "2026-06-10",
-    "ihsg_close": null,
-    "change_pct": null,
+    "date": "2026-06-05",
+    "ihsg_close": 5594.76,
+    "change_pct": -4.2,
+    "regime": "RISK OFF",
+    "action": "KURANGI",
+    "note": "Penutupan terburuk minggu ini, -8.69% dalam sepekan"
+  },
+  {
+    "date": "2026-06-04",
+    "ihsg_close": 5839.79,
+    "change_pct": -1.7,
+    "regime": "RISK OFF",
+    "action": "HOLD",
+    "note": "Lanjut turun, rupiah sempat ke atas Rp18.000/USD"
+  },
+  {
+    "date": "2026-06-03",
+    "ihsg_close": 5941.07,
+    "change_pct": -4.11,
+    "regime": "RISK OFF",
+    "action": "KURANGI",
+    "note": "Koreksi terdalam Asia-Pacific, terendah 5 tahun terakhir"
+  },
+  {
+    "date": "2026-06-02",
+    "ihsg_close": 6195.43,
+    "change_pct": 1.11,
     "regime": "RISK ON",
     "action": "AKUMULASI",
-    "note": "Prediksi naik terbatas, potensi koreksi ke 5.184-5.282"
+    "note": "IHSG rebound ke zona hijau, 281 saham menguat"
   }
 ]

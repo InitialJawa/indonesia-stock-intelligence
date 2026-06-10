@@ -1,21 +1,21 @@
 {
-    "last_update": "2026-06-10 08:28",
+    "last_update": "2026-06-10 08:40",
     "status": "SAFE",
-    "market_health": 58,
-    "opportunity": 72,
-    "risk": 68,
-    "confidence": 55,
-    "capital_deployment": 62,
+    "market_health": 65,
+    "opportunity": 78,
+    "risk": 38,
+    "confidence": 68,
+    "capital_deployment": 70,
     "action": "ACCUMULATE",
-    "rationale": "Pasar menunjukkan polarisasi signifikan dengan score_gap 40.6, mengindikasikan divergensi kuat antara saham terbaik dan terburuk. Hanya 7 saham di atas skor 60, namun juga 7 saham di bawah 40, menegaskan selektivitas pasar. Faktor 'Growth' dominan (80), namun 'Quality' lemah (60), meningkatkan risiko. Volume hari ini menunjukkan lonjakan pada BBNI.JK, namun ASII.JK sepi. Selama 5 hari terakhir, tidak ada lonjakan volume anomali yang signifikan secara luas, dan beberapa saham menunjukkan volume sepi. Perubahan score_gap nol mengindikasikan stabilitas divergensi. Keputusan: ACCUMULATE, namun sangat selektif pada saham dengan fundamental kuat dan momentum volume.",
-    "detail_message": "Pasar menunjukkan polarisasi signifikan dengan score_gap 40.6, mengindikasikan divergensi kuat antara saham terbaik dan terburuk. Hanya 7 saham di atas skor 60, namun juga 7 saham di bawah 40, menegaskan selektivitas pasar. Faktor 'Growth' dominan (80), namun 'Quality' lemah (60), meningkatkan risiko. Volume hari ini menunjukkan lonjakan pada BBNI.JK, namun ASII.JK sepi. Selama 5 hari terakhir, tidak ada lonjakan volume anomali yang signifikan secara luas, dan beberapa saham menunjukkan volume sepi. Perubahan score_gap nol mengindikasikan stabilitas divergensi. Keputusan: ACCUMULATE, namun sangat selektif pada saham dengan fundamental kuat dan momentum volume.",
+    "rationale": "Score gap yang tinggi (40.6) dan terus meningkat (+2 dalam 5 hari) menunjukkan divergensi pasar yang signifikan, dengan modal terkonsentrasi pada segelintir saham kuat. Breadth pasar mengkhawatirkan; jumlah saham di atas 60 sama dengan yang di bawah 40 (masing-masing 7), menandakan pasar yang terpecah. Faktor 'Growth' sangat dominan (80), sementara 'Quality' adalah yang terlemah (60), mengindikasikan preferensi pasar terhadap pertumbuhan yang berpotensi lebih berisiko. Namun, volume BBNI.JK yang melonjak konsisten selama 5 hari dan berkurangnya saham sepi menunjukkan adanya minat selektif. Dengan probabilitas penguatan di segmen tertentu, akumulasi selektif dapat dipertimbangkan, namun dengan kewaspadaan tinggi terhadap risiko divergensi.",
+    "detail_message": "Score gap yang tinggi (40.6) dan terus meningkat (+2 dalam 5 hari) menunjukkan divergensi pasar yang signifikan, dengan modal terkonsentrasi pada segelintir saham kuat. Breadth pasar mengkhawatirkan; jumlah saham di atas 60 sama dengan yang di bawah 40 (masing-masing 7), menandakan pasar yang terpecah. Faktor 'Growth' sangat dominan (80), sementara 'Quality' adalah yang terlemah (60), mengindikasikan preferensi pasar terhadap pertumbuhan yang berpotensi lebih berisiko. Namun, volume BBNI.JK yang melonjak konsisten selama 5 hari dan berkurangnya saham sepi menunjukkan adanya minat selektif. Dengan probabilitas penguatan di segmen tertentu, akumulasi selektif dapat dipertimbangkan, namun dengan kewaspadaan tinggi terhadap risiko divergensi.",
     "anomalies": [],
     "radar_context": {
         "production_config": "Config F",
         "top5_avg_score": 66.8,
         "bot5_avg_score": 26.2,
         "score_gap": 40.6,
-        "score_gap_5d_change": 0,
+        "score_gap_5d_change": 2,
         "breadth_above_70": 1,
         "breadth_above_60": 7,
         "breadth_below_40": 7,
@@ -28,9 +28,9 @@
     },
     "volume_details": [
         "PTBA.JK: Volume 1.1x (Wajar)",
-        "BBNI.JK: Volume 2.7x (Volume Lonjakan)",
-        "INDF.JK: Volume 1.0x (Wajar)",
-        "ASII.JK: Volume 0.8x (Sepi)",
-        "ITMG.JK: Volume 1.3x (Wajar)"
+        "BBNI.JK: Volume 2.8x (Volume Lonjakan)",
+        "INDF.JK: Volume 1.2x (Wajar)",
+        "ASII.JK: Volume 0.9x (Sepi)",
+        "ITMG.JK: Volume 1.4x (Wajar)"
     ]
 }

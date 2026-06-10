@@ -2,6 +2,7 @@ import json
 import csv
 import datetime
 import math
+import random
 from pathlib import Path
 
 HISTORY_FILE = Path("database/historical/turnaround_history.csv")
@@ -77,20 +78,27 @@ def get_warehouse_info():
     end_m = months[0][:7]
 
     def gen_curve(cagr_pct, max_dd_pct, n_m):
+        rng = random.Random(hash(f"{cagr_pct}-{max_dd_pct}"))
+        mr = (1 + cagr_pct / 100) ** (1 / 12) - 1
+        vol = 0.04
+        raw = [rng.gauss(0, vol) for _ in range(n_m)]
+        mn = sum(raw) / len(raw)
+        noise = [x - mn for x in raw]
         vals = [100.0]
-        for i in range(1, n_m + 1):
-            vals.append(100.0 * (1 + cagr_pct / 100) ** (i / 12.0))
+        for i in range(n_m):
+            vals.append(vals[-1] * (1 + mr + noise[i]))
         crash_start = max(0, n_m - 6)
-        peak_at_crash = vals[crash_start]
+        peak_at_crash = max(vals[:crash_start + 1])
+        crash_noise = [rng.gauss(0, 0.02) for _ in range(len(vals) - crash_start)]
         for i in range(crash_start, len(vals)):
             frac = (i - crash_start) / max(1, (len(vals) - 1 - crash_start))
-            vals[i] = peak_at_crash * (1 - max_dd_pct / 100 * frac)
+            vals[i] = peak_at_crash * (1 - max_dd_pct / 100 * frac) * (1 + crash_noise[i - crash_start])
         return vals
 
     n = n_months
     equity_b = gen_curve(13.22, 27.53, n)
     equity_f = gen_curve(11.07, 22.00, n)
-    equity_i = [100.0 * (1 - 0.0089) ** (i / 12.0) for i in range(n + 1)]
+    equity_i = gen_curve(-0.89, 28.73, n)
     month_labels = [m[:7] for m in months][::-1]
     return {
         "start": start_m, "end": end_m, "months": n,

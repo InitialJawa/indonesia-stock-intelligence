@@ -1,9 +1,17 @@
 import json
 import os
+import subprocess
 
-files = ['leaders.json','turnaround.json','summary.json','streaks.json','exit.json','profiles.json','fundamentals.json','cw_b.json','cw_f.json','warehouse.json','ic.json','bt.json','fcolors.json','fnames.json','radar.json','backtest_monthly.json','market.json']
-vars = ['L','T','SM','SK','EX','PF','FD','CW_B','CW_F','WI','IC','BT','FCOLORS','FNAMES','RS','BM','MKT']
-fallbacks = [[], [], {}, [], [], {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, [], {}]
+# Step 0: compute rank_change from warehouse data
+try:
+    subprocess.run(["python", "scripts/compute_rank_change.py"], check=True, capture_output=True)
+    print("[+] rank_change computed from warehouse data")
+except Exception as e:
+    print(f"[WARN] rank_change computation skipped: {e}")
+
+files = ['leaders.json','turnaround.json','summary.json','streaks.json','exit.json','profiles.json','fundamentals.json','cw_b.json','cw_f.json','warehouse.json','ic.json','bt.json','fcolors.json','fnames.json','radar.json','backtest_monthly.json','market.json','rk.json']
+vars = ['L','T','SM','SK','EX','PF','FD','CW_B','CW_F','WI','IC','BT','FCOLORS','FNAMES','RS','BM','MKT','RK']
+fallbacks = [[], [], {}, [], [], {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, [], {}, {}]
 dirs = ['docs/data/', 'dashboard/data/']
 
 def wi_to_bm(wi):

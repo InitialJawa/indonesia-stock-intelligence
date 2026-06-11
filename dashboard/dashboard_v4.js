@@ -315,6 +315,16 @@ function renderLeaders() {
     const cfs = (r, w) => r.quality * w.quality + r.growth * w.growth + r.value * w.value + r.momentum * w.momentum;
     const scored = L.map(r => ({ ...r, _score: typeof computeFinalScore === 'function' ? computeFinalScore(r, w) : cfs(r, w) }));
     scored.sort((a,b) => b._score - a._score);
+
+    // Merge rank_change from RK (warehouse-derived) + EX fallback
+    const rkMap = {};
+    if (typeof RK !== 'undefined') Object.assign(rkMap, RK);
+    if (typeof EX !== 'undefined') {
+        EX.forEach(e => { if (rkMap[e.ticker] === undefined) rkMap[e.ticker] = Number(e.rank_change || 0); });
+    }
+    scored.forEach(r => {
+        if (rkMap[r.ticker] !== undefined) r.rank_change = rkMap[r.ticker];
+    });
     
     // SECTION 1: HEADER
     const cfgTitle = document.getElementById('v4-ld-config-title');
@@ -392,7 +402,7 @@ function renderLeaders() {
                 <td>${colorize(r.value)}</td>
                 <td>${colorize(r.momentum)}</td>
                 <td><span class="${conv.class}">${conv.text}</span></td>
-                <td><span class="rot-unc">-</span></td>
+                <td>${(() => { const c = r.rank_change||0; if (c > 5) return '<span class="rot-new">★ NEW</span>'; if (c > 0) return `<span class="rot-up">↑ UP (${c})</span>`; if (c < 0) return `<span class="rot-down">↓ DOWN (${Math.abs(c)})</span>`; return '<span class="rot-unc">→ UNCHANGED</span>'; })()}</td>
             </tr>`;
         });
         html += '</tbody></table></div>';

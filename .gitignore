@@ -34,6 +34,9 @@ dashboard/data/*.json
 !dashboard/data/live_market.json
 !dashboard/data/regime_history.json
 
+# Generated rank snapshots
+data/history/
+
 # OS files
 Thumbs.db
 .DS_Store

@@ -528,6 +528,7 @@ def main():
     try:
         import subprocess
         subprocess.run(["python", "scripts/generate_dashboard_v3.py"], check=True)
+        subprocess.run(["python", "rebuild_data_js.py"], check=True)
     except Exception as e:
         print(f"[!] Warning: Gagal memperbarui dashboard HTML: {e}")
 

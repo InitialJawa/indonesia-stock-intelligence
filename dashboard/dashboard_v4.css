@@ -591,6 +591,54 @@ h1, h2, h3, h4, h5, h6 { font-weight: 600; margin-bottom: 0.5rem; }
 .rot-unc { color: var(--text-secondary); }
 
 /* --- Bottom Sheet UI --- */
+/* Bottom Sheet Metrics Grid */
+.bs-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.bs-metric-card {
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.bs-metric-val {
+  font-size: 1.125rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.3;
+}
+
+.bs-metric-sub {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.bs-summary {
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: var(--text-secondary);
+  padding: 0.5rem 0.75rem;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  margin-top: 0;
+}
+
+@media (max-width: 480px) {
+  .bs-metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 .bottom-sheet {
   position: fixed;
   bottom: 0;

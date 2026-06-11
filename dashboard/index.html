@@ -265,33 +265,35 @@
             <div class="bs-content-area">
                 <!-- Overview Tab -->
                 <div id="bs-tab-overview" class="bs-tab-content active">
-                    <div class="grid-2" style="margin-bottom: 1rem;">
-                        <div>
-                            <div class="text-sm text-secondary">Rank</div>
-                            <div id="bs-rank" class="metric-val" style="color:var(--color-risk-on);">--</div>
+                    <div class="bs-metrics-grid">
+                        <div class="bs-metric-card">
+                            <div class="text-xs text-secondary">RANK</div>
+                            <div id="bs-rank" class="bs-metric-val" style="color:var(--color-risk-on);">--</div>
                         </div>
-                        <div>
-                            <div class="text-sm text-secondary">Score</div>
-                            <div id="bs-score" class="metric-val">--</div>
+                        <div class="bs-metric-card">
+                            <div class="text-xs text-secondary">SCORE</div>
+                            <div id="bs-score" class="bs-metric-val">--</div>
                         </div>
-                        <div>
-                            <div class="text-sm text-secondary">Sector</div>
-                            <div id="bs-sector" style="font-weight: 500;">--</div>
-                        </div>
-                        <div>
-                            <div class="text-sm text-secondary">Industry</div>
-                            <div id="bs-industry" style="font-weight: 500;">--</div>
-                        </div>
-                        <div>
-                            <div class="text-sm text-secondary">Conviction</div>
-                            <div id="bs-conviction" style="font-weight: 500;">--</div>
-                        </div>
-                        <div>
-                            <div class="text-sm text-secondary">Market Cap</div>
-                            <div id="bs-mcap" style="font-weight: 500;">--</div>
+                        <div class="bs-metric-card">
+                            <div class="text-xs text-secondary">CONVICTION</div>
+                            <div id="bs-conviction" class="bs-metric-val">--</div>
                         </div>
                     </div>
-                    <div class="text-sm" id="bs-summary" style="line-height: 1.5; color: var(--text-secondary);">--</div>
+                    <div class="bs-metrics-grid" style="margin-bottom:0;">
+                        <div class="bs-metric-card">
+                            <div class="text-xs text-secondary">SECTOR</div>
+                            <div id="bs-sector" class="bs-metric-sub">--</div>
+                        </div>
+                        <div class="bs-metric-card">
+                            <div class="text-xs text-secondary">INDUSTRY</div>
+                            <div id="bs-industry" class="bs-metric-sub">--</div>
+                        </div>
+                        <div class="bs-metric-card">
+                            <div class="text-xs text-secondary">MARKET CAP</div>
+                            <div id="bs-mcap" class="bs-metric-sub">--</div>
+                        </div>
+                    </div>
+                    <div id="bs-summary" class="bs-summary">--</div>
                 </div>
 
                 <!-- Factors Tab -->

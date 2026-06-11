@@ -279,9 +279,9 @@ function renderMarket() {
 }
 
 function getConviction(score, rank, gap) {
-    if (score >= 70 && gap >= 2) return { text: 'HIGH', class: 'conviction-high' };
-    if (score >= 60) return { text: 'MEDIUM', class: 'conviction-medium' };
-    return { text: 'LOW', class: 'conviction-low' };
+    if (score >= 70 && gap >= 2) return { text: 'HIGH', class: 'conviction-badge conviction-high' };
+    if (score >= 60) return { text: 'MEDIUM', class: 'conviction-badge conviction-medium' };
+    return { text: 'LOW', class: 'conviction-badge conviction-low' };
 }
 
 function getExplanation(r) {
@@ -359,7 +359,7 @@ function renderLeaders() {
                     <div class="opp-header">
                         <div>
                             <div class="opp-ticker">${sym}</div>
-                            <div class="badge ${conv.class}" style="margin-top:0.5rem;">${conv.text}</div>
+                            <div class="${conv.class}" style="margin-top:0.5rem;">${conv.text}</div>
                         </div>
                         <div class="opp-score">${r._score.toFixed(1)}</div>
                     </div>
@@ -391,7 +391,7 @@ function renderLeaders() {
                 <td>${colorize(r.growth)}</td>
                 <td>${colorize(r.value)}</td>
                 <td>${colorize(r.momentum)}</td>
-                <td><span class="badge ${conv.class}">${conv.text}</span></td>
+                <td><span class="${conv.class}">${conv.text}</span></td>
                 <td><span class="rot-unc">-</span></td>
             </tr>`;
         });
@@ -793,7 +793,7 @@ function openBottomSheet(ticker) {
     const conv = getConviction(score, rank, gap);
     const convEl = document.getElementById('bs-conviction');
     if (convEl) {
-        convEl.innerHTML = `<span class="badge ${conv.class}">${conv.text}</span>`;
+        convEl.innerHTML = `<span class="${conv.class}">${conv.text}</span>`;
     }
 
     // Market Cap

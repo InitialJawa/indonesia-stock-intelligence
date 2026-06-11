@@ -3,7 +3,7 @@
 
 let activeConfig = 'prod';
 let viewModes = {
-    leaders: 'cards',
+    leaders: 'table',
     turnaround: 'cards',
     exit: 'cards'
 };
@@ -61,6 +61,14 @@ function toggleView(tab, mode) {
     
     viewModes[tab] = mode;
     console.log(`Switched ${tab} to ${mode} view`);
+    
+    // Update active button state
+    const toggleContainer = document.getElementById(`v4-${tab === 'leaders' ? 'ld' : tab}-view-toggle`);
+    if (toggleContainer) {
+        toggleContainer.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+        const btn = toggleContainer.querySelector(`button[onclick="toggleView('${tab}', '${mode}')"]`);
+        if (btn) btn.classList.add('active');
+    }
     
     // Re-render specific tab
     if(tab === 'leaders') renderLeaders();
@@ -347,7 +355,7 @@ function renderLeaders() {
                 </div>`;
                 
             html += `
-                <div class="card opp-card">
+                <div class="card opp-card interactive-card" onclick="openBottomSheet('${sym}')">
                     <div class="opp-header">
                         <div>
                             <div class="opp-ticker">${sym}</div>
@@ -368,14 +376,15 @@ function renderLeaders() {
         cont.innerHTML = html;
     } else {
         // MATRIX VIEW
-        let html = '<div class="card" style="overflow-x:auto;"><table class="factor-matrix"><thead><tr><th>Ticker</th><th>Score</th><th>Quality</th><th>Growth</th><th>Value</th><th>Momentum</th><th>Conviction</th></tr></thead><tbody>';
+        let html = '<div class="card" style="overflow-x:auto;"><table class="factor-matrix"><thead><tr><th>Rank</th><th>Ticker</th><th>Score</th><th>Q</th><th>G</th><th>V</th><th>M</th><th>Conviction</th><th>Rotation</th></tr></thead><tbody>';
         scored.forEach((r, idx) => {
             const gap = idx < scored.length - 1 ? r._score - scored[idx+1]._score : 0;
             const conv = getConviction(r._score, idx+1, gap);
             const sym = r.ticker.split('.')[0];
             const colorize = (v) => `<span style="color:var(--color-${v>=60?'risk-on':v>=40?'netral':'risk-off'})">${Number(v).toFixed(1)}</span>`;
             
-            html += `<tr>
+            html += `<tr class="interactive-row" onclick="openBottomSheet('${sym}')">
+                <td class="font-bold text-secondary">#${idx+1}</td>
                 <td class="font-bold text-primary">${sym}</td>
                 <td class="font-bold">${colorize(r._score)}</td>
                 <td>${colorize(r.quality)}</td>
@@ -383,6 +392,7 @@ function renderLeaders() {
                 <td>${colorize(r.value)}</td>
                 <td>${colorize(r.momentum)}</td>
                 <td><span class="badge ${conv.class}">${conv.text}</span></td>
+                <td><span class="rot-unc">-</span></td>
             </tr>`;
         });
         html += '</tbody></table></div>';
@@ -756,3 +766,214 @@ function renderIntelligencePanel() {
 
 // Boot
 loadData();
+
+// --- Bottom Sheet Logic ---
+let bsCurrentTicker = '';
+
+function openBottomSheet(ticker) {
+    bsCurrentTicker = ticker;
+    document.getElementById('bs-ticker').textContent = ticker;
+    
+    // Get PF data
+    const pfData = (typeof PF !== 'undefined' && PF[ticker]) ? PF[ticker] : {};
+    document.getElementById('bs-name').textContent = pfData.name || '--';
+    document.getElementById('bs-sector').textContent = pfData.sector || '--';
+    document.getElementById('bs-industry').textContent = pfData.industry || '--';
+    document.getElementById('bs-summary').textContent = pfData.summary || '--';
+    
+    // Get L data
+    const lData = (typeof L !== 'undefined') ? L.find(r => r.ticker.split('.')[0] === ticker) || {} : {};
+    const score = Number(lData.final_score || 0);
+    document.getElementById('bs-rank').textContent = lData.rank ? `#${lData.rank}` : '--';
+    document.getElementById('bs-score').textContent = score ? score.toFixed(1) : '--';
+    
+    // Conviction
+    const rank = Number(lData.rank || 0);
+    const gap = lData.score_gap_to_next ? Number(lData.score_gap_to_next) : 2;
+    const conv = getConviction(score, rank, gap);
+    const convEl = document.getElementById('bs-conviction');
+    if (convEl) {
+        convEl.innerHTML = `<span class="badge ${conv.class}">${conv.text}</span>`;
+    }
+
+    // Market Cap
+    const fdTickerKey = ticker.includes('.') ? ticker : ticker + '.JK';
+    const fdData = (typeof FD !== 'undefined' && FD[fdTickerKey]) ? FD[fdTickerKey] : {};
+    document.getElementById('bs-mcap').textContent = fdData.market_cap ? `Rp ${(fdData.market_cap/1e12).toFixed(1)} T` : '--';
+    
+    // Factor bars
+    const setBar = (id, val) => {
+        document.getElementById(`bs-f-${id}-val`).textContent = val ? Number(val).toFixed(1) : '--';
+        const el = document.getElementById(`bs-f-${id}`);
+        if(el) {
+            el.style.width = val ? `${val}%` : '0%';
+            el.style.backgroundColor = `var(--color-${val>=60?'risk-on':val>=40?'netral':'risk-off'})`;
+        }
+    };
+    setBar('q', lData.quality);
+    setBar('g', lData.growth);
+    setBar('v', lData.value);
+    setBar('m', lData.momentum);
+
+    // Factor explanation
+    const factors = [
+        {name:'Quality', val:Number(lData.quality||0)},
+        {name:'Growth', val:Number(lData.growth||0)},
+        {name:'Value', val:Number(lData.value||0)},
+        {name:'Momentum', val:Number(lData.momentum||0)}
+    ];
+    const sorted = [...factors].sort((a,b)=>b.val-a.val);
+    const strong = sorted[0], weak = sorted[3];
+    const fEl = document.getElementById('bs-factors-text');
+    if (fEl && score) {
+        let expl = `Strongest: ${strong.name} (${strong.val.toFixed(1)}). Weakest: ${weak.name} (${weak.val.toFixed(1)}). `;
+        if (strong.val > 70 && weak.val > 50) expl += `All factors above threshold — balanced profile.`;
+        else if (strong.val > 70) expl += `${strong.name} is dominant but ${weak.name} needs monitoring.`;
+        else expl += `Moderate factor scores — no extreme concentration.`;
+        fEl.textContent = expl;
+    } else if (fEl) {
+        fEl.textContent = 'No factor data available.';
+    }
+
+    // AI Insight
+    if (lData.rank) {
+        document.getElementById('bs-ai-insight').textContent = `${ticker} currently ranks #${lData.rank} driven primarily by strong ${sorted[0].name} (${sorted[0].val.toFixed(1)}). The algorithm detects ${conv.text.toLowerCase()} conviction based on its factor profile.`;
+    } else {
+        document.getElementById('bs-ai-insight').textContent = "No algorithmic ranking data available.";
+    }
+    
+    // Show sheet
+    document.getElementById('v4-bottom-sheet').classList.add('open');
+    document.getElementById('bs-overlay').classList.add('open');
+    
+    // Reset to overview tab
+    switchBsTab('overview');
+}
+
+function closeBottomSheet() {
+    const sheet = document.getElementById('v4-bottom-sheet');
+    const overlay = document.getElementById('bs-overlay');
+    if(sheet) sheet.classList.remove('open');
+    if(overlay) overlay.classList.remove('open');
+}
+
+function switchBsTab(tab) {
+    document.querySelectorAll('.bs-tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.bs-tab-content').forEach(c => c.classList.remove('active'));
+    
+    const btn = document.querySelector(`.bs-tab-btn[onclick="switchBsTab('${tab}')"]`);
+    if(btn) btn.classList.add('active');
+    
+    const content = document.getElementById(`bs-tab-${tab}`);
+    if(content) content.classList.add('active');
+}
+
+function openExternal(site) {
+    if(!bsCurrentTicker) return;
+    const t = bsCurrentTicker;
+    if(site === 'tv') window.open(`https://www.tradingview.com/chart/?symbol=IDX:${t}`, '_blank');
+    if(site === 'gf') window.open(`https://www.google.com/finance/quote/${t}:IDX`, '_blank');
+    if(site === 'yf') window.open(`https://finance.yahoo.com/quote/${t}.JK`, '_blank');
+}
+
+// Close on escape key
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeBottomSheet();
+});
+
+// --- Drag-to-Dismiss for Bottom Sheet (Mobile) ---
+(function() {
+    const sheet = document.getElementById('v4-bottom-sheet');
+    if (!sheet) return;
+
+    let startY = 0;
+    let currentY = 0;
+    let isDragging = false;
+    let dragHistory = [];
+    const threshold = 120;
+    const DRAG_HANDLE_SELECTOR = '.bs-handle, .bs-header';
+
+    function isMobile() {
+        return window.innerWidth <= 1024;
+    }
+
+    function getTranslateY(el) {
+        const match = el.style.transform.match(/translateY\(([-\d.]+)px\)/);
+        return match ? parseFloat(match[1]) : 0;
+    }
+
+    function onTouchStart(e) {
+        if (!isMobile() || !sheet.classList.contains('open')) return;
+        const target = e.target.closest(DRAG_HANDLE_SELECTOR);
+        if (!target) return;
+
+        isDragging = true;
+        startY = e.touches[0].clientY;
+        currentY = startY;
+        dragHistory = [{ y: startY, t: performance.now() }];
+        sheet.classList.add('dragging');
+    }
+
+    function onTouchMove(e) {
+        if (!isDragging) return;
+        currentY = e.touches[0].clientY;
+        const delta = currentY - startY;
+        if (delta < 0) return;
+
+        dragHistory.push({ y: currentY, t: performance.now() });
+        if (dragHistory.length > 10) dragHistory.shift();
+
+        sheet.style.transform = `translateY(${delta}px)`;
+
+        const overlay = document.getElementById('bs-overlay');
+        if (overlay) {
+            const opacity = Math.max(0, 1 - delta / 500);
+            const scale = Math.max(0.95, 1 - delta / 2000);
+            overlay.style.opacity = opacity;
+            overlay.style.transform = `scale(${scale})`;
+        }
+    }
+
+    function onTouchEnd() {
+        if (!isDragging) return;
+        isDragging = false;
+        sheet.classList.remove('dragging');
+
+        const delta = currentY - startY;
+
+        let velocity = 0;
+        if (dragHistory.length >= 2) {
+            const first = dragHistory[0];
+            const last = dragHistory[dragHistory.length - 1];
+            const dt = (last.t - first.t) || 1;
+            velocity = (last.y - first.y) / dt * 1000;
+        }
+
+        const overlay = document.getElementById('bs-overlay');
+        if (delta > threshold || velocity > 800) {
+            sheet.style.transform = `translateY(100%)`;
+            if (overlay) {
+                overlay.style.opacity = '0';
+                overlay.style.transform = 'scale(0.95)';
+            }
+            setTimeout(() => {
+                closeBottomSheet();
+                sheet.style.transform = '';
+                if (overlay) {
+                    overlay.style.opacity = '';
+                    overlay.style.transform = '';
+                }
+            }, 250);
+        } else {
+            sheet.style.transform = 'translateY(0)';
+            if (overlay) {
+                overlay.style.opacity = '1';
+                overlay.style.transform = 'scale(1)';
+            }
+        }
+    }
+
+    sheet.addEventListener('touchstart', onTouchStart, { passive: true });
+    sheet.addEventListener('touchmove', onTouchMove, { passive: true });
+    sheet.addEventListener('touchend', onTouchEnd, { passive: true });
+})();

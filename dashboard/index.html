@@ -246,6 +246,108 @@
             <button class="mobile-nav-btn" onclick="switchTab('exit')">Protection</button>
             <button class="mobile-nav-btn" onclick="switchTab('simulation')">Sim</button>
         </nav>
+        <!-- BOTTOM SHEET -->
+        <div id="v4-bottom-sheet" class="bottom-sheet">
+            <div class="bs-handle" onclick="closeBottomSheet()"></div>
+            <div class="bs-header">
+                <div>
+                    <h2 id="bs-ticker" style="margin: 0;">--</h2>
+                    <div id="bs-name" class="text-sm text-secondary">--</div>
+                </div>
+                <button class="bs-close" onclick="closeBottomSheet()">✕</button>
+            </div>
+            
+            <div class="bs-tabs">
+                <button class="bs-tab-btn active" onclick="switchBsTab('overview')">Overview</button>
+                <button class="bs-tab-btn" onclick="switchBsTab('factors')">Factors</button>
+            </div>
+
+            <div class="bs-content-area">
+                <!-- Overview Tab -->
+                <div id="bs-tab-overview" class="bs-tab-content active">
+                    <div class="grid-2" style="margin-bottom: 1rem;">
+                        <div>
+                            <div class="text-sm text-secondary">Rank</div>
+                            <div id="bs-rank" class="metric-val" style="color:var(--color-risk-on);">--</div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-secondary">Score</div>
+                            <div id="bs-score" class="metric-val">--</div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-secondary">Sector</div>
+                            <div id="bs-sector" style="font-weight: 500;">--</div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-secondary">Industry</div>
+                            <div id="bs-industry" style="font-weight: 500;">--</div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-secondary">Conviction</div>
+                            <div id="bs-conviction" style="font-weight: 500;">--</div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-secondary">Market Cap</div>
+                            <div id="bs-mcap" style="font-weight: 500;">--</div>
+                        </div>
+                    </div>
+                    <div class="text-sm" id="bs-summary" style="line-height: 1.5; color: var(--text-secondary);">--</div>
+                </div>
+
+                <!-- Factors Tab -->
+                <div id="bs-tab-factors" class="bs-tab-content">
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <div>
+                            <div style="display:flex; justify-content:space-between; margin-bottom:0.25rem;">
+                                <span class="text-sm">Quality</span>
+                                <span id="bs-f-q-val" class="text-sm" style="font-weight:bold;">--</span>
+                            </div>
+                            <div class="progress-bar"><div id="bs-f-q" class="progress-fill" style="width:0%;"></div></div>
+                        </div>
+                        <div>
+                            <div style="display:flex; justify-content:space-between; margin-bottom:0.25rem;">
+                                <span class="text-sm">Growth</span>
+                                <span id="bs-f-g-val" class="text-sm" style="font-weight:bold;">--</span>
+                            </div>
+                            <div class="progress-bar"><div id="bs-f-g" class="progress-fill" style="width:0%;"></div></div>
+                        </div>
+                        <div>
+                            <div style="display:flex; justify-content:space-between; margin-bottom:0.25rem;">
+                                <span class="text-sm">Value</span>
+                                <span id="bs-f-v-val" class="text-sm" style="font-weight:bold;">--</span>
+                            </div>
+                            <div class="progress-bar"><div id="bs-f-v" class="progress-fill" style="width:0%;"></div></div>
+                        </div>
+                        <div>
+                            <div style="display:flex; justify-content:space-between; margin-bottom:0.25rem;">
+                                <span class="text-sm">Momentum</span>
+                                <span id="bs-f-m-val" class="text-sm" style="font-weight:bold;">--</span>
+                            </div>
+                            <div class="progress-bar"><div id="bs-f-m" class="progress-fill" style="width:0%;"></div></div>
+                        </div>
+                    </div>
+                    <div id="bs-factor-explanation" style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border-color);">
+                        <div class="text-sm text-secondary" style="margin-bottom:0.5rem; font-weight:600;">FACTOR ANALYSIS</div>
+                        <p id="bs-factors-text" class="text-sm" style="margin:0; line-height:1.5; color: var(--text-secondary);">--</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Insight -->
+            <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border-color);">
+                <div class="text-sm text-secondary" style="margin-bottom:0.5rem; font-weight:600;">AI INSIGHT</div>
+                <p id="bs-ai-insight" class="text-sm" style="margin:0; line-height:1.5;">--</p>
+            </div>
+
+            <!-- External Links -->
+            <div class="bs-links">
+                <button onclick="openExternal('tv')" class="btn-external">TradingView</button>
+                <button onclick="openExternal('gf')" class="btn-external">Google Finance</button>
+                <button onclick="openExternal('yf')" class="btn-external">Yahoo Finance</button>
+            </div>
+        </div>
+
+        <div id="bs-overlay" class="bs-overlay" onclick="closeBottomSheet()"></div>
     </div>
 
     <!-- Data Sources (Unchanged) -->

@@ -1,12 +1,12 @@
 {
   "ihsg": {
-    "price": 0,
-    "change_pct": 0,
-    "timestamp": "2026-06-11 05:49:02 WIB"
+    "price": 5746.65,
+    "change_pct": 7.57,
+    "timestamp": "2026-06-11 07:11:12 WIB"
   },
   "usdidr": {
-    "price": 17966.0,
-    "change_pct": -1.23,
-    "timestamp": "2026-06-11 05:49:02 WIB"
+    "price": 18031.0,
+    "change_pct": -0.88,
+    "timestamp": "2026-06-11 07:11:12 WIB"
   }
 }

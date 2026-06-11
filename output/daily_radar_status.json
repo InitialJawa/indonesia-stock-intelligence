@@ -1,14 +1,14 @@
 {
-    "last_update": "2026-06-11 12:27",
+    "last_update": "2026-06-11 12:28",
     "status": "SAFE",
-    "market_health": 70,
+    "market_health": 72,
     "opportunity": 78,
     "risk": 34,
     "confidence": 69,
     "capital_deployment": 70,
     "action": "ACCUMULATE",
-    "rationale": "Gap skor 40.6 menunjukkan diferensiasi yang sehat, mendukung seleksi saham. Namun, breadth pasar terbagi: 7 saham di atas 60 dan 7 di bawah 40, mengindikasikan pasar yang tidak merata. Volume hari ini menunjukkan satu lonjakan (ITMG) dan dua saham sepi, bukan sinyal pasar yang luas. Faktor 'Growth' sangat kuat (80.0), menawarkan peluang terarah, sementara 'Quality' (60.0) cukup stabil. Tidak ada perubahan signifikan pada gap skor atau turnover top 5 dalam 5 hari terakhir, dengan status sistem konsisten 'SAFE'. Ini menunjukkan stabilitas, memungkinkan akumulasi modal secara selektif pada peluang yang teridentifikasi, dengan tetap memprioritaskan perlindungan modal.",
-    "detail_message": "Gap skor 40.6 menunjukkan diferensiasi yang sehat, mendukung seleksi saham. Namun, breadth pasar terbagi: 7 saham di atas 60 dan 7 di bawah 40, mengindikasikan pasar yang tidak merata. Volume hari ini menunjukkan satu lonjakan (ITMG) dan dua saham sepi, bukan sinyal pasar yang luas. Faktor 'Growth' sangat kuat (80.0), menawarkan peluang terarah, sementara 'Quality' (60.0) cukup stabil. Tidak ada perubahan signifikan pada gap skor atau turnover top 5 dalam 5 hari terakhir, dengan status sistem konsisten 'SAFE'. Ini menunjukkan stabilitas, memungkinkan akumulasi modal secara selektif pada peluang yang teridentifikasi, dengan tetap memprioritaskan perlindungan modal.",
+    "rationale": "Score gap 40.6 menunjukkan diferensiasi sehat, mendukung seleksi. Namun, breadth pasar terpecah dengan 7 saham di atas 60 dan 7 di bawah 40, bukan reli luas. Volume watchlist menunjukkan 2 saham sepi dan 1 lonjakan (ITMG.JK), mengindikasikan minat tidak merata. Faktor Growth kuat (80.0) menawarkan peluang terfokus, tetapi Quality terlemah (60.0). Perubahan score gap 5 hari nol dan data historis yang identik mengurangi keyakinan pada dinamika pasar atau kualitas data. Meskipun sistem 'SAFE', kehati-hatian tetap prioritas. Rekomendasi: ACCUMULATE secara selektif, fokus pada saham Growth yang kuat, dengan manajemen risiko ketat.",
+    "detail_message": "Score gap 40.6 menunjukkan diferensiasi sehat, mendukung seleksi. Namun, breadth pasar terpecah dengan 7 saham di atas 60 dan 7 di bawah 40, bukan reli luas. Volume watchlist menunjukkan 2 saham sepi dan 1 lonjakan (ITMG.JK), mengindikasikan minat tidak merata. Faktor Growth kuat (80.0) menawarkan peluang terfokus, tetapi Quality terlemah (60.0). Perubahan score gap 5 hari nol dan data historis yang identik mengurangi keyakinan pada dinamika pasar atau kualitas data. Meskipun sistem 'SAFE', kehati-hatian tetap prioritas. Rekomendasi: ACCUMULATE secara selektif, fokus pada saham Growth yang kuat, dengan manajemen risiko ketat.",
     "anomalies": [],
     "radar_context": {
         "production_config": "Config F",

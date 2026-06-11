@@ -251,7 +251,7 @@ h1, h2, h3, h4, h5, h6 { font-weight: 600; margin-bottom: 0.5rem; }
   .terminal-layout {
     grid-template-columns: 1fr;
     height: auto;
-    overflow-y: auto;
+    overflow-y: visible;
   }
   
   .sidebar, .right-panel {
@@ -260,6 +260,7 @@ h1, h2, h3, h4, h5, h6 { font-weight: 600; margin-bottom: 0.5rem; }
 
   .main-content {
     padding: 1rem;
+    overflow-y: visible;
   }
 
   .grid-4 {
@@ -285,6 +286,13 @@ h1, h2, h3, h4, h5, h6 { font-weight: 600; margin-bottom: 0.5rem; }
     justify-content: space-around;
     z-index: 1000;
   }
+
+  body {
+    padding-bottom: 70px; /* Space for mobile nav */
+    overflow-y: auto;
+    height: auto;
+  }
+
   .mobile-nav-btn {
     background: none;
     border: none;

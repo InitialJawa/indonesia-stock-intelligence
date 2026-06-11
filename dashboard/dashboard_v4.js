@@ -837,9 +837,11 @@ function openBottomSheet(ticker) {
 
     // AI Insight
     if (lData.rank) {
-        document.getElementById('bs-ai-insight').textContent = `${ticker} currently ranks #${lData.rank} driven primarily by strong ${sorted[0].name} (${sorted[0].val.toFixed(1)}). The algorithm detects ${conv.text.toLowerCase()} conviction based on its factor profile.`;
+        const convIndo = { HIGH: 'TINGGI', MEDIUM: 'SEDANG', LOW: 'RENDAH' };
+        const factorIndo = { Quality: 'Quality', Growth: 'Growth', Value: 'Value', Momentum: 'Momentum' };
+        document.getElementById('bs-ai-insight').textContent = `${ticker} peringkat #${lData.rank} dengan skor ${score.toFixed(1)}. Faktor terkuat: ${sorted[0].name} (${sorted[0].val.toFixed(1)}). Keyakinan sistem: ${convIndo[conv.text] || conv.text}.`;
     } else {
-        document.getElementById('bs-ai-insight').textContent = "No algorithmic ranking data available.";
+        document.getElementById('bs-ai-insight').textContent = "Data peringkat tidak tersedia.";
     }
     
     // Show sheet

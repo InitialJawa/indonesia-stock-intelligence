@@ -4,11 +4,17 @@ import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const milestones = JSON.parse(fs.readFileSync(path.join(__dirname, "dashboard/dashboard_v7/data/milestones.json"), "utf-8"));
+const milestonesRaw = JSON.parse(fs.readFileSync(path.join(__dirname, "dashboard/dashboard_v7/data/milestones.json"), "utf-8"));
 const factors = JSON.parse(fs.readFileSync(path.join(__dirname, "dashboard/dashboard_v7/data/stock_factors.json"), "utf-8"));
 
+const milestones = milestonesRaw.map(m => ({
+  time: new Date(m.date).getTime(),
+  ihsg: m.ihsg,
+  gold: m.gold,
+  stocks: m.stocks
+}));
+
 // Interpolate daily
-function toUnix(y, m, d) { return new Date(y, m, d).getTime(); }
 function lin(a, b, t) { return a + (b - a) * t; }
 
 const dailyData = [];
@@ -21,13 +27,11 @@ for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
   });
 }
 
-const msTimes = milestones.map(m => new Date(m.date).getTime());
-
 // Fill prices
 dailyData.forEach(day => {
   let mPrev = milestones[0], mNext = milestones[1];
   for (let m = 0; m < milestones.length - 1; m++) {
-    if (day.time >= msTimes[m] && day.time <= msTimes[m + 1]) {
+    if (day.time >= milestones[m].time && day.time <= milestones[m + 1].time) {
       mPrev = milestones[m]; mNext = milestones[m + 1]; break;
     }
   }
@@ -84,11 +88,15 @@ function runAlgo(data, topN, crashPct, safeHaven, crossOverOn, reservePct) {
     if (pv > maxVal) maxVal = pv;
     else { const dd = (maxVal - pv) / maxVal * 100; if (dd > maxDD) maxDD = dd; }
 
-    // Crash check
+    // Crash check: velocity trigger (5d drop > 2%) + fallback % from 60-day high
     let crashSig = false;
-    if (i >= 60) {
-      const hi60 = Math.max(...data.slice(i - 60, i + 1).map(x => x.ihsg));
-      if ((day.ihsg - hi60) / hi60 * 100 <= -crashPct) crashSig = true;
+    if (i >= 5) {
+      const ihsg5d = data[i - 5].ihsg;
+      if ((day.ihsg - ihsg5d) / ihsg5d * 100 <= -2) crashSig = true;
+      if (!crashSig && i >= 60) {
+        const hi60 = Math.max(...data.slice(i - 60, i + 1).map(x => x.ihsg));
+        if ((day.ihsg - hi60) / hi60 * 100 <= -crashPct) crashSig = true;
+      }
     }
     if (crashSig && !inCrash && crashCd <= 0) {
       inCrash = true;
@@ -101,9 +109,11 @@ function runAlgo(data, topN, crashPct, safeHaven, crossOverOn, reservePct) {
     }
 
     // Recovery
-    if (inCrash && crashCd <= 0 && i >= 5) {
-      const prev5 = data[i - 5].ihsg;
-      if ((day.ihsg - prev5) / prev5 * 100 >= 1.5) {
+    if (inCrash && crashCd <= 0) {
+      const crashPeriod = data.slice(Math.max(0, i - 60), i + 1);
+      const crashLow = Math.min(...crashPeriod.map(x => x.ihsg));
+      const fromLow = (day.ihsg - crashLow) / crashLow * 100;
+      if (fromLow >= 3) {
         inCrash = false;
         let rc = cash;
         if (goldG > 0) { rc += goldG * day.gold; goldG = 0; }
@@ -216,8 +226,8 @@ const strategies = [
   { label: "Algo Top1-Gold", fn: () => runAlgo(dailyData, 1, 5, "gold", true, 10) },
   { label: "Algo Top3-Gold", fn: () => runAlgo(dailyData, 3, 5, "gold", true, 10) },
   { label: "Algo Top5-Gold", fn: () => runAlgo(dailyData, 5, 5, "gold", true, 10) },
-  { label: "Algo Top3-NoCrash", fn: () => runAlgo(dailyData, 3, 0.1, "cash", true, 10) },
-  { label: "Algo Top3-NoSwap", fn: () => runAlgo(dailyData, 3, 5, "cash", false, 10) },
+  { label: "Algo T3-NoCrash", fn: () => runAlgo(dailyData, 3, 0.1, "cash", true, 10) },
+  { label: "Algo T3-NoSwap", fn: () => runAlgo(dailyData, 3, 5, "cash", false, 10) },
   // Single Stock variants - sell 8%, buy 5%
   ...["BBCA","BBRI","BMRI","TLKM","ASII","ADRO","PTBA","ESSA"].map(t => ({
     label: `Single ${t}-Cash`, fn: () => runSingle(dailyData, t, 8, 5, "cash")

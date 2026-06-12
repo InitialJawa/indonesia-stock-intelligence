@@ -614,14 +614,18 @@ export function SimulationTab({
               lastJulyYear = currentYear;
             }
 
-            // 3. IHSG Crash Protection Checks — % drop from 60-day high (works with smooth interpolated data)
+            // 3. IHSG Crash Protection — velocity trigger (early exit, minimal loss)
             let crashSignaled = false;
-            if (stepIndex >= 60) {
-              const sixtyDayHigh = Math.max(...rawData.slice(stepIndex - 60, stepIndex + 1).map(d => d.ihsgPrice));
-              const ihsgPctDrop = ((day.ihsgPrice - sixtyDayHigh) / sixtyDayHigh) * 100;
-              
-              if (enableCrashProtection && ihsgPctDrop <= -crashSensitivity) {
-                crashSignaled = true;
+            if (enableCrashProtection && stepIndex >= 5) {
+              const ihsg5dAgo = rawData[stepIndex - 5].ihsgPrice;
+              const ihsg5dDrop = ((day.ihsgPrice - ihsg5dAgo) / ihsg5dAgo) * 100;
+              if (ihsg5dDrop <= -2) crashSignaled = true;
+
+              // Fallback: also check % from 60-day high for slower grinds
+              if (!crashSignaled && stepIndex >= 60) {
+                const sixtyDayHigh = Math.max(...rawData.slice(stepIndex - 60, stepIndex + 1).map(d => d.ihsgPrice));
+                const ihsgPctDrop = ((day.ihsgPrice - sixtyDayHigh) / sixtyDayHigh) * 100;
+                if (ihsgPctDrop <= -crashSensitivity) crashSignaled = true;
               }
             }
 
@@ -661,11 +665,12 @@ export function SimulationTab({
 
             // If in crash state, check for stabilization/recovery
             if (inCrashState && crashCooldown <= 0) {
-              const ihsgPrev = rawData[stepIndex - 5].ihsgPrice;
-              const ihsgRecovery = ((day.ihsgPrice - ihsgPrev) / ihsgPrev) * 100;
+              // Recover if IHSG has risen 3% from its crash low
+              const crashPeriod = rawData.slice(Math.max(0, stepIndex - 60), stepIndex + 1);
+              const crashLow = Math.min(...crashPeriod.map(d => d.ihsgPrice));
+              const ihsgFromLow = ((day.ihsgPrice - crashLow) / crashLow) * 100;
 
-              // Recover if ihsg goes up slightly
-              if (ihsgRecovery >= 1.5) {
+              if (ihsgFromLow >= 3) {
                 inCrashState = false;
                 
                 // Sell gold if any

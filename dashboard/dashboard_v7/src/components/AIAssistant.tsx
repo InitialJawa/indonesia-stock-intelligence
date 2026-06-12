@@ -67,7 +67,9 @@ Apa yang ingin Anda tanyakan tentang **PT ${stock.name} (${stock.ticker})** hari
       });
 
       if (!response.ok) {
-        throw new Error("Failed to get response from AI advisor");
+        let errMsg = "Failed to get response from AI advisor";
+        try { const e = await response.json(); errMsg = e.error || errMsg; } catch {}
+        throw new Error(errMsg);
       }
 
       const data = await response.json();
@@ -76,7 +78,7 @@ Apa yang ingin Anda tanyakan tentang **PT ${stock.name} (${stock.ticker})** hari
       console.error(error);
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", content: `Maaf, I encountered an issue: ${error.message || "Failed to process question. Please verify your GEMINI_API_KEY in Settings."}` },
+        { role: "assistant", content: `Maaf, I encountered an issue: ${error.message || "Failed to process question. Please verify API keys in Settings."}` },
       ]);
     } finally {
       setIsLoading(false);

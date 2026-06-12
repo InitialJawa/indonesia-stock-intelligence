@@ -343,10 +343,14 @@ Format your response using professional markdown with bullet points, brief table
       }
     }
 
-    res.json({ content: textContent });
+    res.json({ content: typeof textContent === "string" ? textContent : "Maaf, terjadi kesalahan dalam menghasilkan respons." });
   } catch (error: any) {
     console.error("AI Chat Full Fallback Error:", error);
-    res.status(500).json({ error: error.message || "Failed to process chat message with AI Provider" });
+    if (!res.headersSent) {
+      res.status(500).json({ error: error.message || "Failed to process chat message with AI Provider" });
+    } else {
+      res.end();
+    }
   }
 });
 

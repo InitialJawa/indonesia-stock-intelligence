@@ -18,6 +18,8 @@ import {
   FileSpreadsheet,
   AlertCircle
 } from "lucide-react";
+const GOTO_IPO_DATE = new Date("2022-04-11").getTime();
+
 import { PortfolioItem, StockData } from "../types";
 import { STOCKS_DATA } from "../stocksData";
 import { SearchableSelect } from "./SearchableSelect";
@@ -294,6 +296,14 @@ const generateBacktestData = (configType: "prod" | "res"): BacktestDayData[] => 
       stockPrices: simulatedStocks,
       stockRanks,
     });
+  }
+
+  // Filter GOTO before IPO date (April 11, 2022)
+  for (const day of data) {
+    if (new Date(day.date).getTime() < GOTO_IPO_DATE) {
+      delete day.stockPrices["GOTO"];
+      delete day.stockRanks["GOTO"];
+    }
   }
 
   return data;
@@ -633,13 +643,10 @@ export function SimulationTab({
       
       const getTopTickersOnDay = (dayRanks: Record<string, number>, count: number = 3) => {
         return Object.entries(dayRanks)
-          .filter(([ticker]) => ticker !== "GOTO" || yearOfDate >= 2022)
           .sort((a, b) => a[1] - b[1])
           .slice(0, count)
           .map(([ticker]) => ticker);
       };
-
-      let yearOfDate = 2020;
 
           const day0Ranks = rawData[0].stockRanks;
           const day0Sorted = Object.entries(day0Ranks).sort((a, b) => a[1] - b[1]);
@@ -670,7 +677,6 @@ export function SimulationTab({
             const day = rawData[stepIndex];
             const dateObj = new Date(day.date);
             const currentYear = dateObj.getFullYear();
-            yearOfDate = currentYear;
             const currentMonth = dateObj.getMonth();
 
             let stocksValue = 0;

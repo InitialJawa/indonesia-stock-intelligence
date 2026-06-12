@@ -1,5 +1,5 @@
 [
-  { "date": "2020-01-01", "ihsg": 6300, "gold": 800000, "stocks": { "BBCA": 6000, "BBRI": 3600, "BMRI": 3400, "TLKM": 3800, "ASII": 6200, "ADRO": 1200, "PTBA": 2500, "ESSA": 300, "GOTO": 300 } },
+  { "date": "2020-01-01", "ihsg": 6300, "gold": 765000, "stocks": { "BBCA": 6000, "BBRI": 3600, "BMRI": 3400, "TLKM": 3800, "ASII": 6200, "ADRO": 1200, "PTBA": 2500, "ESSA": 300, "GOTO": 300 } },
   { "date": "2020-03-24", "ihsg": 3937, "gold": 950000, "stocks": { "BBCA": 4400, "BBRI": 2150, "BMRI": 2050, "TLKM": 2500, "ASII": 3300, "ADRO": 600, "PTBA": 1400, "ESSA": 110, "GOTO": 300 } },
   { "date": "2020-12-31", "ihsg": 5979, "gold": 965000, "stocks": { "BBCA": 6700, "BBRI": 4170, "BMRI": 3250, "TLKM": 3310, "ASII": 6025, "ADRO": 1430, "PTBA": 2810, "ESSA": 180, "GOTO": 300 } },
   { "date": "2021-12-31", "ihsg": 6581, "gold": 938000, "stocks": { "BBCA": 7300, "BBRI": 4110, "BMRI": 3530, "TLKM": 4040, "ASII": 5725, "ADRO": 2250, "PTBA": 2710, "ESSA": 515, "GOTO": 370 } },

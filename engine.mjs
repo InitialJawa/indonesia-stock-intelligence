@@ -28,7 +28,7 @@ export function runAlgo(rawData, opts = {}) {
   const data = rawData.map(normalizeDay);
   let cash = capital - capital * (reservePct / 100);
   const buffer = capital * (reservePct / 100);
-  let goldG = 0, inCrash = false, crashCd = 0;
+  let goldG = 0, inCrash = false, crashCd = 0, crashLowPrice = Infinity;
   let positions = {};
   let logs = [];
   let maxVal = cash;
@@ -66,16 +66,12 @@ export function runAlgo(rawData, opts = {}) {
     else maxDD = Math.max(maxDD, (maxVal - pv) / maxVal * 100);
 
     let crashSig = false, crashReason = "";
-    if (i >= 5) {
-      const ihsg5d = data[i - 5].ihsg;
-      if ((day.ihsg - ihsg5d) / ihsg5d * 100 <= -2) { crashSig = true; crashReason = "VELOCITY -2%/5D"; }
-      if (!crashSig && i >= 60) {
-        const hi60 = Math.max(...data.slice(i - 60, i + 1).map(x => x.ihsg));
-        if ((day.ihsg - hi60) / hi60 * 100 <= -crashPct) { crashSig = true; crashReason = `HIGH-60D -${crashPct}%`; }
-      }
+    if (i >= 60) {
+      const hi60 = Math.max(...data.slice(i - 60, i + 1).map(x => x.ihsg));
+      if ((day.ihsg - hi60) / hi60 * 100 <= -crashPct) { crashSig = true; crashReason = `HIGH-60D -${crashPct}%`; }
     }
     if (crashSig && !inCrash && crashCd <= 0) {
-      inCrash = true;
+      inCrash = true; crashLowPrice = day.ihsg;
       const posSnapshot = { ...positions };
       let liq = 0;
       Object.entries(positions).forEach(([tk, sh]) => liq += sh * day.stocks[tk]);
@@ -87,9 +83,11 @@ export function runAlgo(rawData, opts = {}) {
       crashCd = 20;
     }
 
+    if (inCrash) {
+      if (day.ihsg < crashLowPrice) crashLowPrice = day.ihsg;
+    }
     if (inCrash && crashCd <= 0) {
-      const crashLow = Math.min(...data.slice(Math.max(0, i - 60), i + 1).map(x => x.ihsg));
-      if ((day.ihsg - crashLow) / crashLow * 100 >= 3) {
+      if ((day.ihsg - crashLowPrice) / crashLowPrice * 100 >= 3) {
         inCrash = false;
         let rc = cash;
         if (goldG > 0) { const gv2 = goldG * day.gold; addLog(logs, day.date, "JUAL-EMAS", "EMAS", day.gold, goldG, rc + gv2, rc + gv2 + buffer, "RECOVERY"); rc += gv2; goldG = 0; }

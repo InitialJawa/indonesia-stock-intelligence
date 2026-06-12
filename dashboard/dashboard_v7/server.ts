@@ -360,6 +360,7 @@ Format your response using professional markdown with bullet points, brief table
 });
 
 // Real-time Backtest & Historical Data Backend Engine Since 2020
+const GOTO_IPO_TS = new Date("2022-04-11").getTime();
 const STOCK_FACTORS: Record<string, [number, number, number, number]> = stockFactors as unknown as Record<string, [number, number, number, number]>;
 const MILESTONES_STR: { date: string; ihsg: number; gold: number; stocks: Record<string, number> }[] = milestonesStr as unknown as { date: string; ihsg: number; gold: number; stocks: Record<string, number> }[];
 
@@ -526,6 +527,14 @@ app.get("/api/backtest-data", (req, res) => {
       });
     }
 
+    // Filter GOTO before IPO
+    for (const day of data) {
+      if (new Date(day.date).getTime() < GOTO_IPO_TS) {
+        delete day.stockPrices["GOTO"];
+        delete day.stockRanks["GOTO"];
+      }
+    }
+
     res.json({
       success: true,
       count: data.length,
@@ -593,6 +602,14 @@ app.post("/api/run-backtest", (req, res) => {
       scored.forEach((s, idx) => { stockRanks[s.ticker] = idx + 1; });
 
       rawData.push({ date: dateStr, ihsgPrice: Math.round(ihsgPrice), goldPrice: Math.round(goldPrice), stockPrices, stockRanks });
+    }
+
+    // Filter GOTO before IPO
+    for (const day of rawData) {
+      if (new Date(day.date).getTime() < GOTO_IPO_TS) {
+        delete day.stockPrices["GOTO"];
+        delete day.stockRanks["GOTO"];
+      }
     }
 
     let result;

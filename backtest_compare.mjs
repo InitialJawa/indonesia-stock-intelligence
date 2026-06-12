@@ -114,6 +114,15 @@ dailyData.forEach(day => {
   sorted.forEach((tk, i) => day.ranks[tk] = i + 1);
 });
 
+// Filter GOTO before IPO (April 11, 2022)
+const GOTO_IPO_TS = new Date("2022-04-11").getTime();
+for (const day of dailyData) {
+  if (new Date(day.date).getTime() < GOTO_IPO_TS) {
+    delete day.stocks["GOTO"];
+    delete day.ranks["GOTO"];
+  }
+}
+
 // === RUN ALL ===
 console.log("=".repeat(100));
 console.log(`BACKTEST 2020-01-01 to ${todayStr}  |  Modal: Rp 100.000.000`);

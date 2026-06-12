@@ -521,17 +521,17 @@ export function SimulationTab({
       const logs: any[] = [];
       
       const totalSteps = rawData.length;
-      const progressInterval = Math.max(1, Math.floor(totalSteps / 10));
+      const progressInterval = Math.max(1, Math.floor(totalSteps / 15));
       
       const getTopTickersOnDay = (dayRanks: Record<string, number>, count: number = 3) => {
-            return Object.entries(dayRanks)
-              .filter(([ticker]) => ticker !== "GOTO" || yearOfDate >= 2022) // Avoid GOTO before 2022
-              .sort((a, b) => a[1] - b[1]) // lower ranks are better
-              .slice(0, count)
-              .map(([ticker]) => ticker);
-          };
+        return Object.entries(dayRanks)
+          .filter(([ticker]) => ticker !== "GOTO" || yearOfDate >= 2022)
+          .sort((a, b) => a[1] - b[1])
+          .slice(0, count)
+          .map(([ticker]) => ticker);
+      };
 
-          let yearOfDate = 2020;
+      let yearOfDate = 2020;
 
           // Day 0 initialization
           const day0 = rawData[0];
@@ -562,6 +562,7 @@ export function SimulationTab({
           
           let lastJulyYear = 2019; // Track annual dividend payout
 
+          try {
           // Loop day by day
           for (let stepIndex = 0; stepIndex < rawData.length; stepIndex++) {
             const day = rawData[stepIndex];
@@ -688,7 +689,7 @@ export function SimulationTab({
                 logs.push({
                   date: day.date,
                   type: "CRASH_RECOVERY",
-                  message: `🛡️ KOALISI CRASH BERAKHIR: Tekanan IHSG mereda. Sistem merekrut pembobotan baru dan membeli kembali Top 3 saham primadona: ${top3.map(t => `#${t}`).join(", ")}.`
+                  message: `🛡️ KOALISI CRASH BERAKHIR: Tekanan IHSG mereda. Sistem merekrut pembobotan baru dan membeli kembali Top ${topN} saham primadona: ${topNRecovery.map(t => `#${t}`).join(", ")}.`
                 });
                 crashCooldown = 20;
               }
@@ -752,6 +753,13 @@ export function SimulationTab({
             if (stepIndex === rawData.length - 1) {
               currentPortfolioVal = todayPortfolioVal;
             }
+
+            if (stepIndex > 0 && stepIndex % progressInterval === 0) {
+              setBacktestProgress(85 + Math.floor((stepIndex / totalSteps) * 10));
+            }
+          }
+          } catch (loopErr) {
+            console.error("Backtest loop crashed:", loopErr);
           }
 
           // Calculate final statistics

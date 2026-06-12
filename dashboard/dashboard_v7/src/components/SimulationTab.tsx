@@ -846,7 +846,7 @@ export function SimulationTab({
       const price = day.stockPrices[ticker] || 1000;
 
       if (!inStock) {
-        if (price >= troughPriceSinceSell * (1 + buyRisePct / 100)) {
+        if (troughPriceSinceSell === Infinity || price >= troughPriceSinceSell * (1 + buyRisePct / 100)) {
           shares = Math.floor(cash / price);
           if (shares > 0 && price > 0) {
             const cost = shares * price;

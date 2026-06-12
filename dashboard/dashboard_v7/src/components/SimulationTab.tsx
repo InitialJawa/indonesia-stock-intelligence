@@ -283,7 +283,12 @@ export function SimulationTab({
   const [isBacktesting, setIsBacktesting] = useState(false);
   const [backtestProgress, setBacktestProgress] = useState(0);
   const [backtestResult, setBacktestResult] = useState<any>(null);
-  const [topN, setTopN] = useState(3); // 1, 3, or 5 top stocks to buy
+  const [topN, setTopN] = useState(3);
+  const [simMode, setSimMode] = useState<"algo" | "single">("algo");
+  const [singleTicker, setSingleTicker] = useState("BBCA");
+  const [sellDropPct, setSellDropPct] = useState(8);
+  const [buyRisePct, setBuyRisePct] = useState(5);
+  const [safeHavenSingle, setSafeHavenSingle] = useState<"cash" | "gold">("cash"); // 1, 3, or 5 top stocks to buy
   const [activeRankTickers, setActiveRankTickers] = useState<string[]>(["BBCA", "BMRI", "ADRO", "GOTO", "TLKM"]);
 
   const rankChartData = useMemo(() => {
@@ -492,6 +497,12 @@ export function SimulationTab({
       setTimeout(() => {
         // Parse values
         const cap = parseInt(algoCapital.replace(/[^0-9]/g, "")) || 100000000;
+
+        if (simMode === "single") {
+          runSingleStockBacktest(rawData, cap);
+          return;
+        }
+
         const reservePct = reserveBufferPct;
         const bufferCash = cap * (reservePct / 100);
         const initialInvestable = cap - bufferCash;
@@ -539,7 +550,7 @@ export function SimulationTab({
           logs.push({
             date: day0.date,
             type: "BUY",
-            message: `Backtest diinisiasi dengan modal Rp ${cap.toLocaleString("id-ID")} menggunakan strategi ${configName}. Menyisakan kas buffer ${reservePct}% (Rp ${bufferCash.toLocaleString("id-ID")}). Membeli Top 3 pembuka: ${initialTop3.map(t => `#${t}`).join(", ")}.`
+            message: `Backtest diinisiasi dengan modal Rp ${cap.toLocaleString("id-ID")} menggunakan strategi ${configName}. Menyisakan kas buffer ${reservePct}% (Rp ${bufferCash.toLocaleString("id-ID")}). Membeli Top ${topN} pembuka: ${initialTopN.map(t => `#${t}`).join(", ")}.`
           });
 
           let maxVal = cap;
@@ -804,6 +815,100 @@ export function SimulationTab({
     } catch (err) {
       console.error("Gagal mengekspor CSV:", err);
     }
+  };
+
+  const runSingleStockBacktest = (rawData: BacktestDayData[], cap: number) => {
+    const ticker = singleTicker;
+    const initialIhsgPrice = rawData[0].ihsgPrice;
+    const initialGoldPrice = rawData[0].goldPrice;
+
+    let cash = cap;
+    let goldGrams = 0;
+    let shares = 0;
+    let inStock = false;
+    let buyPrice = 0;
+    let peakPriceSinceBuy = 0;
+    let troughPriceSinceSell = Infinity;
+
+    const chartData: any[] = [];
+    const logs: any[] = [];
+
+    for (let stepIndex = 0; stepIndex < rawData.length; stepIndex++) {
+      const day = rawData[stepIndex];
+      const price = day.stockPrices[ticker] || 1000;
+
+      if (!inStock) {
+        if (price >= troughPriceSinceSell * (1 + buyRisePct / 100)) {
+          shares = Math.floor(cash / price);
+          if (shares > 0 && price > 0) {
+            const cost = shares * price;
+            cash -= cost;
+            buyPrice = price;
+            peakPriceSinceBuy = price;
+            inStock = true;
+            logs.push({ date: day.date, type: "BUY", message: `Beli ${shares} lembar ${ticker} @ Rp ${price.toLocaleString("id-ID")}` });
+          }
+        }
+      }
+
+      if (inStock) {
+        if (price > peakPriceSinceBuy) peakPriceSinceBuy = price;
+        const dropFromPeak = ((price - peakPriceSinceBuy) / peakPriceSinceBuy) * 100;
+        if (dropFromPeak <= -sellDropPct) {
+          const proceeds = shares * price;
+          cash += proceeds;
+          if (safeHavenSingle === "gold") {
+            goldGrams = cash / day.goldPrice;
+            cash = 0;
+            logs.push({ date: day.date, type: "SELL", message: `JUAL ${ticker} @ Rp ${price.toLocaleString("id-ID")} (turun ${dropFromPeak.toFixed(1)}% dari puncak). Pindah ke EMAS ${goldGrams.toFixed(2)} gram.` });
+          } else {
+            logs.push({ date: day.date, type: "SELL", message: `JUAL ${ticker} @ Rp ${price.toLocaleString("id-ID")} (turun ${dropFromPeak.toFixed(1)}% dari puncak). Pindah ke KAS.` });
+          }
+          shares = 0;
+          inStock = false;
+          troughPriceSinceSell = price;
+          peakPriceSinceBuy = 0;
+        }
+      }
+
+      const stockVal = shares * price;
+      const goldVal = goldGrams * day.goldPrice;
+      const portfolioVal = cash + goldVal + stockVal;
+
+      if (stepIndex % 8 === 0 || stepIndex === rawData.length - 1) {
+        chartData.push({
+          date: day.date,
+          "Strategi Rebalancer": Math.round(portfolioVal),
+          "Benchmark IHSG": Math.round((day.ihsgPrice / initialIhsgPrice) * cap),
+          "Benchmark Emas": Math.round((day.goldPrice / initialGoldPrice) * cap),
+          ranks: { ...day.stockRanks },
+        });
+      }
+    }
+
+    const lastDay = rawData[rawData.length - 1];
+    const finalVal = cash + (shares * (lastDay.stockPrices[ticker] || 1000)) + (goldGrams * lastDay.goldPrice);
+    const totalReturnPct = ((finalVal - cap) / cap) * 100;
+    const ihsgReturnPct = ((lastDay.ihsgPrice - initialIhsgPrice) / initialIhsgPrice) * 100;
+    const goldReturnPct = ((lastDay.goldPrice - initialGoldPrice) / initialGoldPrice) * 100;
+
+    setBacktestResult({
+      finalValue: Math.round(finalVal),
+      ihsgFinalValue: Math.round((lastDay.ihsgPrice / initialIhsgPrice) * cap),
+      goldFinalValue: Math.round((lastDay.goldPrice / initialGoldPrice) * cap),
+      totalReturnPct,
+      ihsgReturnPct,
+      goldReturnPct,
+      maxDrawdown: 0,
+      totalTrades: logs.length,
+      totalDividends: 0,
+      logs: logs.slice().reverse(),
+      chartData,
+      configName: `Single Stock: ${ticker} (jual -${sellDropPct}%, beli +${buyRisePct}%)`,
+    });
+
+    setIsBacktesting(false);
+    setBacktestProgress(100);
   };
 
   return (
@@ -1103,7 +1208,47 @@ export function SimulationTab({
                 </span>
               </div>
 
+              {/* Mode Toggle */}
+              <div className="space-y-2">
+                <label className="text-[10px] text-white/40 uppercase block font-mono">Mode Simulasi</label>
+                <div className="flex gap-2">
+                  <button onClick={() => setSimMode("algo")} className={`flex-1 text-[10px] font-bold py-2 rounded-lg cursor-pointer border transition-all ${simMode === "algo" ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-400" : "bg-[#0A0A0A] border-white/5 text-white/40"}`}>Algo Rebalancer</button>
+                  <button onClick={() => setSimMode("single")} className={`flex-1 text-[10px] font-bold py-2 rounded-lg cursor-pointer border transition-all ${simMode === "single" ? "bg-blue-500/10 border-blue-500/30 text-blue-400" : "bg-[#0A0A0A] border-white/5 text-white/40"}`}>Single Stock</button>
+                </div>
+              </div>
+
+              {simMode === "single" && (
+                <>
+                  <div className="space-y-1">
+                    <label className="text-[10px] text-white/40 uppercase block font-mono">Pilih Saham</label>
+                    <select value={singleTicker} onChange={e => setSingleTicker(e.target.value)} className="w-full text-xs p-2.5 bg-black border border-white/10 focus:border-blue-500 outline-none text-white font-mono font-bold rounded-lg cursor-pointer">
+                      {["BBCA", "BBRI", "BMRI", "TLKM", "ASII", "ADRO", "PTBA", "ESSA", "GOTO"].map(t => (
+                        <option key={t} value={t}>{t}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[10px] text-white/40 uppercase block font-mono">Jual Jika Turun {sellDropPct}% dari Puncak</label>
+                    <input type="range" min="3" max="25" step="1" value={sellDropPct} onChange={e => setSellDropPct(Number(e.target.value))} className="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-blue-500" />
+                    <span className="text-[9px] text-blue-300">Sell trigger: -{sellDropPct}% dari harga tertinggi sejak beli</span>
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[10px] text-white/40 uppercase block font-mono">Beli Kembali Jika Naik {buyRisePct}% dari Dasar</label>
+                    <input type="range" min="1" max="20" step="1" value={buyRisePct} onChange={e => setBuyRisePct(Number(e.target.value))} className="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-blue-500" />
+                    <span className="text-[9px] text-blue-300">Buy trigger: +{buyRisePct}% dari harga terendah sejak jual</span>
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[10px] text-white/40 uppercase block font-mono">Saat Jual, Pindah Ke</label>
+                    <div className="flex gap-2">
+                      <button onClick={() => setSafeHavenSingle("cash")} className={`flex-1 text-[10px] font-bold py-2 rounded-lg cursor-pointer border transition-all ${safeHavenSingle === "cash" ? "bg-blue-500/10 border-blue-500/30 text-blue-400" : "bg-[#0A0A0A] border-white/5 text-white/40"}`}>💵 Kas</button>
+                      <button onClick={() => setSafeHavenSingle("gold")} className={`flex-1 text-[10px] font-bold py-2 rounded-lg cursor-pointer border transition-all ${safeHavenSingle === "gold" ? "bg-amber-500/10 border-amber-500/30 text-amber-400" : "bg-[#0A0A0A] border-white/5 text-white/40"}`}>🪙 Emas</button>
+                    </div>
+                  </div>
+                </>
+              )}
+
               {/* Top N Selector */}
+              {simMode === "algo" && (
               <div className="space-y-1">
                 <label className="text-[10px] text-white/40 uppercase block font-mono">Jumlah Saham Dibeli</label>
                 <div className="flex gap-2">
@@ -1123,6 +1268,7 @@ export function SimulationTab({
                 </div>
                 <span className="text-[9px] text-[#A0A0A0] block">Beli {topN} saham terbaik berdasarkan skor faktor setiap hari.</span>
               </div>
+              )}
 
               {/* Capital input */}
               <div className="space-y-1">

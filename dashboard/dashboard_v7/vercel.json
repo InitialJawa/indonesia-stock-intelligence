@@ -4,12 +4,5 @@
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/server" },
     { "source": "/(.*)", "destination": "/index.html" }
-  ],
-  "functions": {
-    "api/server.ts": {
-      "runtime": "@vercel/node@3",
-      "maxDuration": 30,
-      "includeFiles": "data/**"
-    }
-  }
+  ]
 }

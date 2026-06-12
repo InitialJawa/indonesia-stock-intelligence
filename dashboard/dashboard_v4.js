@@ -130,18 +130,24 @@ function renderMarket() {
     
     const displayStatus = statusMap[RS.status] || RS.status;
     const displayAction = actionMap[RS.action] || RS.action;
-    
-    const statusColor = getStatusColorClass(displayStatus);
-    const actionColor = getStatusColorClass(RS.action);
+
+    // IHSG Crisis Override (sinkron dengan V7)
+    const ihsgMonthly = (liveMarketData ? liveMarketData.ihsg : MKT.ihsg || {}).monthly || 0;
+    const isIHSGInCrisis = ihsgMonthly < -10;
+    const finalStatus = isIHSGInCrisis ? "RISK OFF" : displayStatus;
+    const finalAction = isIHSGInCrisis ? "CASH OUT" : displayAction;
+
+    const statusColor = getStatusColorClass(finalStatus);
+    const actionColor = getStatusColorClass(isIHSGInCrisis ? "REDUCE" : RS.action);
 
     const stEl = document.getElementById('v4-hero-status');
     if(stEl) {
-        stEl.textContent = displayStatus;
+        stEl.textContent = finalStatus;
         stEl.className = `hero-status text-${statusColor}`;
     }
     const acEl = document.getElementById('v4-hero-action');
     if(acEl) {
-        acEl.textContent = displayAction;
+        acEl.textContent = finalAction;
         acEl.className = `hero-action bg-${actionColor}`;
     }
     
@@ -205,6 +211,31 @@ function renderMarket() {
                 </div>`;
         });
         snapshotEl.innerHTML = snapHtml;
+    }
+
+    // CRISIS ALERT BANNER (sinkron dengan V7)
+    const crisisBannerEl = document.getElementById('v4-crisis-banner');
+    if (crisisBannerEl) {
+        if (isIHSGInCrisis) {
+            crisisBannerEl.style.display = 'block';
+            crisisBannerEl.innerHTML = `
+                <div style="background:rgba(244,63,94,0.1);border:1px solid rgba(244,63,94,0.3);border-radius:8px;padding:12px 16px;margin:12px 0;">
+                    <div style="display:flex;align-items:flex-start;gap:10px;">
+                        <span style="font-size:1.2rem;line-height:1.4;">🚨</span>
+                        <div>
+                            <div style="font-weight:700;color:#f43f5e;font-size:0.9rem;">Sinyal Krisis Makro Terdeteksi!</div>
+                            <div style="font-size:0.78rem;color:rgba(255,255,255,0.7);margin-top:4px;">
+                                IHSG terkoreksi <strong style="color:#f43f5e;">${Math.abs(ihsgMonthly).toFixed(1)}%</strong> dalam sebulan — 
+                                di bawah ambang batas <strong>-10%</strong>. Sistem merekomendasikan 
+                                <strong style="color:#f43f5e;">penghentian pembelian</strong> dan 
+                                <strong style="color:#f43f5e;">pengamanan modal</strong>.
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+        } else {
+            crisisBannerEl.style.display = 'none';
+        }
     }
 
     // PERFORMANCE BANNER

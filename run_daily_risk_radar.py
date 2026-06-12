@@ -512,6 +512,37 @@ def main():
 
     os.makedirs("output", exist_ok=True)
 
+    # IHSG Monthly Crisis Override (sinkron dengan logika V7)
+    try:
+        for mp in ["dashboard/data/market.json", "dashboard/data/live_market.json"]:
+            if os.path.exists(mp):
+                with open(mp) as f:
+                    md = json.load(f)
+                ihsg_m = md.get("ihsg", {}).get("monthly", 0)
+                if isinstance(ihsg_m, str):
+                    ihsg_m = float(ihsg_m.replace(",", "."))
+                break
+        else:
+            ihsg_m = 0
+
+        if ihsg_m < -10:
+            print(f"[!] IHSG CRISIS OVERRIDE: monthly {ihsg_m}% < -10% — forcing DANGER")
+            cro_result["status"] = "DANGER"
+            cro_result["action"] = "REDUCE"
+            cro_result["capital_deployment"] = 0
+            cro_result["market_health"] = max(0, cro_result.get("market_health", 50) - 30)
+            cro_result["opportunity"] = max(0, cro_result.get("opportunity", 50) - 20)
+            cro_result["risk"] = min(100, cro_result.get("risk", 50) + 25)
+            cr = cro_result.get("rationale", "")
+            cro_result["rationale"] = (
+                f"⚠️ CRISIS MODE: IHSG terkoreksi {abs(ihsg_m):.1f}% dalam sebulan (di bawah ambang -10%). "
+                f"Sistem masuk status DARURAT — rekomendasi penghentian pembelian dan pengamanan modal. "
+                + cr
+            )
+            cro_result["detail_message"] = cro_result["rationale"]
+    except Exception as e:
+        print(f"[!] Gagal membaca IHSG monthly untuk crisis override: {e}")
+
     status_data = {
         "last_update": now.strftime("%Y-%m-%d %H:%M"),
     }

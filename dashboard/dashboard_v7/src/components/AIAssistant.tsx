@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { StockData } from "../types";
 import { Send, Sparkles, User, HelpCircle, Bot, CornerDownLeft, Loader2 } from "lucide-react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 interface Message {
   role: "user" | "assistant";
@@ -122,12 +124,35 @@ Apa yang ingin Anda tanyakan tentang **PT ${stock.name} (${stock.ticker})** hari
             }`}>
               {msg.role === "user" ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
             </div>
-            <div className={`p-4 rounded-2xl text-sm leading-relaxed whitespace-pre-line ${
+            <div className={`p-4 rounded-2xl text-sm leading-relaxed ${
               msg.role === "user" 
                 ? "bg-emerald-950/40 text-white rounded-tr-none border border-emerald-500/20" 
                 : "bg-white/[0.03] text-white/90 rounded-tl-none border border-white/5"
             }`}>
-              {msg.content}
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                components={{
+                  h1: ({ children }) => <h1 className="text-lg font-bold text-white mt-4 mb-2">{children}</h1>,
+                  h2: ({ children }) => <h2 className="text-base font-bold text-white mt-4 mb-2">{children}</h2>,
+                  h3: ({ children }) => <h3 className="text-sm font-bold text-emerald-300 mt-3 mb-1">{children}</h3>,
+                  h4: ({ children }) => <h4 className="text-sm font-semibold text-white/80 mt-2 mb-1">{children}</h4>,
+                  p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
+                  strong: ({ children }) => <strong className="font-bold text-emerald-300">{children}</strong>,
+                  ul: ({ children }) => <ul className="list-disc list-inside mb-2 space-y-1">{children}</ul>,
+                  ol: ({ children }) => <ol className="list-decimal list-inside mb-2 space-y-1">{children}</ol>,
+                  li: ({ children }) => <li className="text-white/90">{children}</li>,
+                  hr: () => <hr className="border-white/10 my-3" />,
+                  code: ({ children }) => <code className="bg-white/5 text-emerald-200 px-1.5 py-0.5 rounded text-xs">{children}</code>,
+                  pre: ({ children }) => <pre className="bg-white/5 p-3 rounded-xl overflow-x-auto text-xs mb-3 border border-white/5">{children}</pre>,
+                  blockquote: ({ children }) => <blockquote className="border-l-2 border-emerald-500/50 pl-4 italic text-white/60 my-2">{children}</blockquote>,
+                  table: ({ children }) => <div className="overflow-x-auto mb-3"><table className="w-full text-xs border-collapse">{children}</table></div>,
+                  th: ({ children }) => <th className="border border-white/10 px-2.5 py-1.5 text-left font-bold text-emerald-200 bg-white/5">{children}</th>,
+                  td: ({ children }) => <td className="border border-white/10 px-2.5 py-1.5 text-white/80">{children}</td>,
+                  a: ({ href, children }) => <a href={href} className="text-emerald-400 underline hover:text-emerald-300" target="_blank" rel="noopener noreferrer">{children}</a>,
+                }}
+              >
+                {msg.content}
+              </ReactMarkdown>
             </div>
           </div>
         ))}

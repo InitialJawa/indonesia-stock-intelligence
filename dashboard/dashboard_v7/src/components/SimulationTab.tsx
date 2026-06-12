@@ -283,6 +283,7 @@ export function SimulationTab({
   const [isBacktesting, setIsBacktesting] = useState(false);
   const [backtestProgress, setBacktestProgress] = useState(0);
   const [backtestResult, setBacktestResult] = useState<any>(null);
+  const [topN, setTopN] = useState(3); // 1, 3, or 5 top stocks to buy
   const [activeRankTickers, setActiveRankTickers] = useState<string[]>(["BBCA", "BMRI", "ADRO", "GOTO", "TLKM"]);
 
   const rankChartData = useMemo(() => {
@@ -523,12 +524,12 @@ export function SimulationTab({
           const day0 = rawData[0];
           const initialIhsgPrice = day0.ihsgPrice;
           const initialGoldPrice = day0.goldPrice;
+          const day0Ranks = rawData[0].stockRanks;
+          const day0Sorted = Object.entries(day0Ranks).sort((a, b) => a[1] - b[1]);
+          const initialTopN = day0Sorted.slice(0, topN).map(([t]) => t);
+          const allocationPerStock = cash / initialTopN.length;
           
-          // Buy initial top 3 stocks
-          const initialTop3 = ["BBCA", "BMRI", "TLKM"]; // Standard robust bluechips start
-          const allocationPerStock = cash / 3;
-          
-          initialTop3.forEach((ticker) => {
+          initialTopN.forEach((ticker) => {
             const price = day0.stockPrices[ticker] || 1000;
             positions[ticker] = Math.floor(allocationPerStock / price);
             cash -= positions[ticker] * price;
@@ -599,11 +600,11 @@ export function SimulationTab({
               lastJulyYear = currentYear;
             }
 
-            // 3. IHSG Crash Protection Checks
+            // 3. IHSG Crash Protection Checks — % drop from 60-day high (works with smooth interpolated data)
             let crashSignaled = false;
-            if (stepIndex >= 5) {
-              const ihsgPrev = rawData[stepIndex - 5].ihsgPrice;
-              const ihsgPctDrop = ((day.ihsgPrice - ihsgPrev) / ihsgPrev) * 100;
+            if (stepIndex >= 60) {
+              const sixtyDayHigh = Math.max(...rawData.slice(stepIndex - 60, stepIndex + 1).map(d => d.ihsgPrice));
+              const ihsgPctDrop = ((day.ihsgPrice - sixtyDayHigh) / sixtyDayHigh) * 100;
               
               if (enableCrashProtection && ihsgPctDrop <= -crashSensitivity) {
                 crashSignaled = true;
@@ -660,11 +661,11 @@ export function SimulationTab({
                   goldGrams = 0;
                 }
 
-                // Identify top 3 non-unacceptable stocks today
-                const top3 = getTopTickersOnDay(day.stockRanks, 3);
-                const allocPrice = recoveryCash / 3;
+                // Identify top N stocks today
+                const topNRecovery = getTopTickersOnDay(day.stockRanks, topN);
+                const allocPrice = recoveryCash / topNRecovery.length;
 
-                top3.forEach((ticker) => {
+                topNRecovery.forEach((ticker) => {
                   const dPrice = day.stockPrices[ticker] || 1000;
                   positions[ticker] = Math.floor(allocPrice / dPrice);
                   recoveryCash -= positions[ticker] * dPrice;
@@ -1100,6 +1101,27 @@ export function SimulationTab({
                     ? "⚖️ Menguji Config F: Fundamental Focus (Kualitas & Value diunggulkan)." 
                     : "⚡ Menguji Config B: Backtest Optimized (Growth & Momentum agresif)."}
                 </span>
+              </div>
+
+              {/* Top N Selector */}
+              <div className="space-y-1">
+                <label className="text-[10px] text-white/40 uppercase block font-mono">Jumlah Saham Dibeli</label>
+                <div className="flex gap-2">
+                  {[1, 3, 5].map(n => (
+                    <button
+                      key={n}
+                      onClick={() => setTopN(n)}
+                      className={`flex-1 text-xs font-bold py-2 rounded-lg cursor-pointer border transition-all ${
+                        topN === n
+                          ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-400"
+                          : "bg-[#0A0A0A] border-white/5 text-white/40 hover:text-white/60"
+                      }`}
+                    >
+                      Top {n}
+                    </button>
+                  ))}
+                </div>
+                <span className="text-[9px] text-[#A0A0A0] block">Beli {topN} saham terbaik berdasarkan skor faktor setiap hari.</span>
               </div>
 
               {/* Capital input */}

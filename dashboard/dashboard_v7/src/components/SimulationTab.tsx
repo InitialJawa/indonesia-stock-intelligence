@@ -595,14 +595,11 @@ export function SimulationTab({
         date: day0.date, type: "BUY",
         message: `Backtest via engine.mjs | Modal Rp ${cap.toLocaleString("id-ID")} | ${configName} | Top ${topN} | Crash ${crashSensitivity}% | Safe Haven: ${safeHavenAsset}`
       });
-      const chartData: any[] = [];
-      rawData.forEach((day, idx) => {
-        if (idx % 8 !== 0 && idx !== rawData.length - 1) return;
-        chartData.push({
-          date: day.date, "Strategi Rebalancer": 0, "Benchmark IHSG": Math.round((day.ihsgPrice / initialIhsgPrice) * cap),
-          "Benchmark Emas": Math.round((day.goldPrice / initialGoldPrice) * cap), ranks: { ...day.stockRanks },
-        });
-      });
+      const chartData = (engineResult.chartData || []).map((d: any) => ({
+        date: d.date, "Strategi Rebalancer": d.strategi,
+        "Benchmark IHSG": d.ihsg, "Benchmark Emas": d.gold,
+        ranks: (rawData.find((r: any) => r.date === d.date) || {}).stockRanks || {},
+      }));
       setBacktestResult({
         finalValue: Math.round(engineResult.finalVal), totalReturnPct: engineResult.ret, maxDrawdown: engineResult.maxDD || 0,
         totalTrades: engineResult.totalSwaps || 0, totalDividends: 0, logs: logs.reverse(), chartData, configName,
@@ -860,14 +857,11 @@ export function SimulationTab({
         const logs = (apiJson.logs || []).map((l: any) => ({
           date: l.date, type: l.action, message: `${l.action} ${l.ticker} @ ${l.price} (${l.detail})`
         }));
-        const chartData: any[] = [];
-        rawData.forEach((day, idx) => {
-          if (idx % 8 !== 0 && idx !== rawData.length - 1) return;
-          chartData.push({
-            date: day.date, "Strategi Rebalancer": 0, "Benchmark IHSG": Math.round((day.ihsgPrice / initialIhsgPrice) * cap),
-            "Benchmark Emas": Math.round((day.goldPrice / initialGoldPrice) * cap), ranks: { ...day.stockRanks },
-          });
-        });
+        const chartData = (apiJson.chartData || []).map((d: any) => ({
+          date: d.date, "Strategi Rebalancer": d.strategi,
+          "Benchmark IHSG": d.ihsg, "Benchmark Emas": d.gold,
+          ranks: (rawData.find((r: any) => r.date === d.date) || {}).stockRanks || {},
+        }));
         setBacktestResult({
           finalValue: Math.round(apiJson.finalVal), totalReturnPct: apiJson.ret, maxDrawdown: 0,
           totalTrades: apiJson.trades || logs.length, totalDividends: 0, logs: logs.reverse(), chartData,

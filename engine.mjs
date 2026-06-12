@@ -37,6 +37,8 @@ export function runAlgo(rawData, opts = {}) {
   const initIhsg = data[0].ihsg;
   const initGold = data[0].gold;
 
+  const chartData = [];
+
   const topInit = Object.entries(data[0].ranks).sort((a, b) => a[1] - b[1]).slice(0, topN).map(x => x[0]);
   const alloc = cash / topInit.length;
   topInit.forEach(tk => {
@@ -52,6 +54,14 @@ export function runAlgo(rawData, opts = {}) {
     const sv = Object.entries(positions).reduce((s, [tk, sh]) => s + sh * day.stocks[tk], 0);
     const gv = goldG * day.gold;
     const pv = cash + gv + sv + buffer;
+
+    if (i % 8 === 0 || i === data.length - 1) {
+      chartData.push({
+        date: day.date, strategi: Math.round(pv),
+        ihsg: Math.round((day.ihsg / initIhsg) * capital),
+        gold: Math.round((day.gold / initGold) * capital),
+      });
+    }
     if (pv > maxVal) maxVal = pv;
     else maxDD = Math.max(maxDD, (maxVal - pv) / maxVal * 100);
 
@@ -119,7 +129,7 @@ export function runAlgo(rawData, opts = {}) {
     finalVal: Math.round(finalVal), ret: (finalVal - capital) / capital * 100,
     ihsgRet: (last.ihsg - initIhsg) / initIhsg * 100,
     goldRet: (last.gold - initGold) / initGold * 100,
-    maxDD, totalSwaps, logs
+    maxDD, totalSwaps, logs, chartData
   };
 }
 
@@ -128,6 +138,7 @@ export function runSingle(rawData, ticker, opts = {}) {
   const data = rawData.map(normalizeDay);
   let cash = capital, goldG = 0, shares = 0, inStock = false, peak = 0, trough = Infinity;
   let logs = [];
+  const chartData = [];
   const initIhsg = data[0].ihsg, initGold = data[0].gold;
 
   for (let i = 0; i < data.length; i++) {
@@ -139,6 +150,15 @@ export function runSingle(rawData, ticker, opts = {}) {
         if (shares > 0) { cash -= shares * price; peak = price; inStock = true; addLog(logs, day.date, "BELI", price, shares, cash, cash + shares * price, trough === Infinity ? "INISIAL" : `RE-ENTRY ${ticker}`); }
       }
     }
+    const pv = cash + shares * price + goldG * day.gold;
+    if (i % 8 === 0 || i === data.length - 1) {
+      chartData.push({
+        date: day.date, strategi: Math.round(pv),
+        ihsg: Math.round((day.ihsg / initIhsg) * capital),
+        gold: Math.round((day.gold / initGold) * capital),
+      });
+    }
+
     if (inStock) {
       if (price > peak) peak = price;
       if ((price - peak) / peak * 100 <= -sellPct) {
@@ -156,6 +176,6 @@ export function runSingle(rawData, ticker, opts = {}) {
     finalVal: Math.round(finalVal), ret: (finalVal - capital) / capital * 100,
     ihsgRet: (last.ihsg - initIhsg) / initIhsg * 100,
     goldRet: (last.gold - initGold) / initGold * 100,
-    trades: logs.length, logs
+    trades: logs.length, logs, chartData
   };
 }

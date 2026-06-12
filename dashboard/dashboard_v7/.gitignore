@@ -6,3 +6,5 @@ coverage/
 *.log
 .env*
 !.env.example
+api/_server.cjs
+api/_server.cjs.map

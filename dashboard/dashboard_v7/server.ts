@@ -4,6 +4,9 @@ import { GoogleGenAI, Type } from "@google/genai";
 import { createServer as createViteServer } from "vite";
 import dotenv from "dotenv";
 
+import stockFactors from "./data/stock_factors.json" with { type: "json" };
+import milestonesStr from "./data/milestones.json" with { type: "json" };
+
 dotenv.config();
 
 const app = express();
@@ -355,31 +358,8 @@ Format your response using professional markdown with bullet points, brief table
 });
 
 // Real-time Backtest & Historical Data Backend Engine Since 2020
-const STOCK_FACTORS: Record<string, [number, number, number, number]> = {
-  BBCA: [95, 60, 40, 65],
-  BBRI: [85, 65, 52, 60],
-  BMRI: [88, 70, 50, 75],
-  TLKM: [80, 45, 65, 40],
-  ASII: [75, 50, 60, 50],
-  ADRO: [65, 85, 75, 80],
-  PTBA: [62, 80, 85, 70],
-  ESSA: [45, 90, 30, 85],
-  GOTO: [30, 95, 10, 90],
-};
-
-const MILESTONES_STR = [
-  { date: "2020-01-01", ihsg: 6300, gold: 800000, stocks: { BBCA: 6000, BBRI: 3600, BMRI: 3400, TLKM: 3800, ASII: 6200, ADRO: 1200, PTBA: 2500, ESSA: 300, GOTO: 300 } },
-  { date: "2020-03-24", ihsg: 3937, gold: 950000, stocks: { BBCA: 4400, BBRI: 2150, BMRI: 2050, TLKM: 2500, ASII: 3300, ADRO: 600, PTBA: 1400, ESSA: 110, GOTO: 300 } },
-  { date: "2020-12-31", ihsg: 5979, gold: 965000, stocks: { BBCA: 6700, BBRI: 4170, BMRI: 3250, TLKM: 3310, ASII: 6025, ADRO: 1430, PTBA: 2810, ESSA: 180, GOTO: 300 } },
-  { date: "2021-12-31", ihsg: 6581, gold: 938000, stocks: { BBCA: 7300, BBRI: 4110, BMRI: 3530, TLKM: 4040, ASII: 5725, ADRO: 2250, PTBA: 2710, ESSA: 515, GOTO: 370 } },
-  { date: "2022-09-13", ihsg: 7318, gold: 942000, stocks: { BBCA: 8500, BBRI: 4600, BMRI: 4500, TLKM: 4600, ASII: 7200, ADRO: 4000, PTBA: 4200, ESSA: 1100, GOTO: 280 } },
-  { date: "2022-12-31", ihsg: 6850, gold: 1026000, stocks: { BBCA: 8550, BBRI: 4940, BMRI: 4950, TLKM: 3750, ASII: 5700, ADRO: 3595, PTBA: 3690, ESSA: 915, GOTO: 91 } },
-  { date: "2023-12-31", ihsg: 7272, gold: 1130000, stocks: { BBCA: 9400, BBRI: 5725, BMRI: 6050, TLKM: 3950, ASII: 5650, ADRO: 2380, PTBA: 2440, ESSA: 530, GOTO: 86 } },
-  { date: "2024-12-31", ihsg: 7227, gold: 1450000, stocks: { BBCA: 10000, BBRI: 4300, BMRI: 7000, TLKM: 3750, ASII: 5000, ADRO: 2500, PTBA: 2500, ESSA: 520, GOTO: 65 } },
-  { date: "2025-06-30", ihsg: 6900, gold: 1650000, stocks: { BBCA: 9800, BBRI: 4100, BMRI: 6400, TLKM: 3100, ASII: 4400, ADRO: 2100, PTBA: 2200, ESSA: 550, GOTO: 50 } },
-  { date: "2025-12-31", ihsg: 8676, gold: 1950000, stocks: { BBCA: 11200, BBRI: 5500, BMRI: 8100, TLKM: 3900, ASII: 5400, ADRO: 3300, PTBA: 3100, ESSA: 950, GOTO: 80 } },
-  { date: "2026-06-11", ihsg: 5886.03, gold: 2310000, stocks: { BBCA: 5825, BBRI: 2850, BMRI: 4250, TLKM: 2870, ASII: 4700, ADRO: 2250, PTBA: 2630, ESSA: 605, GOTO: 50 } }
-];
+const STOCK_FACTORS: Record<string, [number, number, number, number]> = stockFactors as unknown as Record<string, [number, number, number, number]>;
+const MILESTONES_STR: { date: string; ihsg: number; gold: number; stocks: Record<string, number> }[] = milestonesStr as unknown as { date: string; ihsg: number; gold: number; stocks: Record<string, number> }[];
 
 const MILESTONES = MILESTONES_STR.map(m => ({
   time: new Date(m.date).getTime(),

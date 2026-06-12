@@ -22,6 +22,8 @@ import { PortfolioItem, StockData } from "../types";
 import { STOCKS_DATA } from "../stocksData";
 import { SearchableSelect } from "./SearchableSelect";
 import { EX, RS, MKT } from "../marketData";
+import stockFactors from "../../data/stock_factors.json" with { type: "json" };
+import milestonesStr from "../../data/milestones.json" with { type: "json" };
 
 interface SimulationTabProps {
   portfolio: PortfolioItem[];
@@ -87,17 +89,7 @@ interface BacktestDayData {
 }
 
 // Define simulated stable factor ratings for each stock [quality, growth, value, momentum]
-const STOCK_FACTORS: Record<string, [number, number, number, number]> = {
-  BBCA: [95, 60, 40, 65],  // high quality, moderate growth, low value (expensive), moderate momentum
-  BBRI: [85, 65, 52, 60],  // high quality, stable growth, fair value, moderate momentum
-  BMRI: [88, 70, 50, 75],  // high quality, strong growth, fair value, high momentum
-  TLKM: [80, 45, 65, 40],  // moderate quality, lower growth, good value, lower momentum
-  ASII: [75, 50, 60, 50],  // moderate quality, moderate growth, good value, moderate momentum
-  ADRO: [65, 85, 75, 80],  // moderate quality, cyclical high growth, cheap value, high momentum
-  PTBA: [62, 80, 85, 70],  // moderate quality, cyclical high growth, very cheap value, high dividend
-  ESSA: [45, 90, 30, 85],  // speculative quality, very hot growth, expensive value, extreme momentum
-  GOTO: [30, 95, 10, 90],  // low quality, hyper growth, extreme expensive, extreme momentum
-};
+const STOCK_FACTORS: Record<string, [number, number, number, number]> = stockFactors as unknown as Record<string, [number, number, number, number]>;
 
 const TICKER_COLORS: Record<string, string> = {
   BBCA: "#3b82f6", // Royal Blue
@@ -111,36 +103,10 @@ const TICKER_COLORS: Record<string, string> = {
   GOTO: "#22c55e", // Lime Green
 };
 
-const generateBacktestData = (configType: "prod" | "res", stocksData: StockData[]): BacktestDayData[] => {
-  const dates = [
-    "2020-01-01", "2020-03-24", "2020-12-31", "2021-12-31",
-    "2022-09-13", "2022-12-31", "2023-12-31", "2024-12-31",
-    "2025-06-30", "2025-12-31", "2026-06-11"
-  ];
-  const ihsgPath = [6300, 3937, 5979, 6581, 7318, 6850, 7272, 7227, 6900, 8676, 5886.03];
-  const goldPath = [800000, 950000, 965000, 938000, 942000, 1026000, 1130000, 1450000, 1650000, 1950000, 2310000];
+const generateBacktestData = (configType: "prod" | "res"): BacktestDayData[] => {
+  const milestonesStrLocal = milestonesStr as unknown as { date: string; ihsg: number; gold: number; stocks: Record<string, number> }[];
 
-  const milestonesStr = dates.map((date, i) => {
-    const stocks: Record<string, number> = {};
-    stocksData.forEach(stk => {
-      // Procedurally generate historical milestone price based on currentPrice, to make it realistic 
-      // without needing 80 hardcoded arrays.
-      const seed = stk.ticker.charCodeAt(0) + (stk.ticker.charCodeAt(1) || 0) + i;
-      const volatility = 0.5; // +/- 50% max historical drift
-      const pseudoRandom = ((Math.sin(seed * 1.5) + 1) / 2); // 0 to 1
-      const pathFactor = Math.pow(ihsgPath[i] / 5886.03, 1.2); // correlate somewhat with IHSG
-      const finalPrice = Math.max(50, stk.currentPrice * pathFactor * (1 + (pseudoRandom - 0.5) * volatility));
-      stocks[stk.ticker] = i === dates.length - 1 ? stk.currentPrice : finalPrice;
-    });
-    return {
-      date,
-      ihsg: ihsgPath[i],
-      gold: goldPath[i],
-      stocks
-    };
-  });
-
-  const milestones = milestonesStr.map(m => ({
+  const milestones = milestonesStrLocal.map(m => ({
     time: new Date(m.date).getTime(),
     ihsg: m.ihsg,
     gold: m.gold,
@@ -514,11 +480,11 @@ export function SimulationTab({
         if (apiRes.success && Array.isArray(apiRes.data)) {
           rawData = apiRes.data;
         } else {
-          rawData = generateBacktestData(backtestConfigType, visibleStocks);
+          rawData = generateBacktestData(backtestConfigType);
         }
       } catch (err) {
         console.warn("Backtest backend error, fallback to client generation: ", err);
-        rawData = generateBacktestData(backtestConfigType, visibleStocks);
+        rawData = generateBacktestData(backtestConfigType);
       }
 
       setBacktestProgress(85);
@@ -810,7 +776,7 @@ export function SimulationTab({
       if (apiRes.success && Array.isArray(apiRes.data)) {
         rawData = apiRes.data;
       } else {
-        rawData = generateBacktestData(backtestConfigType, visibleStocks);
+        rawData = generateBacktestData(backtestConfigType);
       }
 
       const stockKeys = ["BBCA", "BBRI", "BMRI", "TLKM", "ASII", "ADRO", "PTBA", "ESSA", "GOTO"];
@@ -1376,7 +1342,7 @@ export function SimulationTab({
                             </linearGradient>
                           </defs>
                           <XAxis dataKey="date" stroke="#333" tickLine={false} dy={8} tick={{ fill: "#666" }} />
-                          <YAxis stroke="#333" tickLine={false} dx={-8} tick={{ fill: "#666" }} domain={["auto", "auto"]} formatter={(val) => `Rp ${(Number(val)/1e6).toFixed(0)}Jt`} />
+                          <YAxis stroke="#333" tickLine={false} dx={-8} tick={{ fill: "#666" }} domain={["auto", "auto"]} tickFormatter={(val) => `Rp ${(Number(val)/1e6).toFixed(0)}Jt`} />
                           <Tooltip
                             formatter={(value: any) => [formatRupiah(Number(value)), ""]}
                             contentStyle={{
@@ -1463,7 +1429,7 @@ export function SimulationTab({
                             reversed={true} 
                             domain={[1, visibleStocks.length]} 
                             tickCount={10}
-                            formatter={(val) => `Rank ${val}`}
+                            tickFormatter={(val) => `Rank ${val}`}
                           />
                           <Tooltip
                             contentStyle={{

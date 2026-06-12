@@ -34,6 +34,10 @@ Apa yang ingin Anda tanyakan tentang **PT ${stock.name} (${stock.ticker})** hari
   const [isLoading, setIsLoading] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    setMessages([{ role: "assistant", content: welcomeMessage }]);
+  }, [stock.ticker]);
+
   const presets = isWatchlist ? [
     { label: "Risiko Sektoral", query: `Tolong analisis risiko sektoral dari saham-saham dalam daftar pantau saya.` },
     { label: "Dampak Suku Bunga BI", query: `Bagaimana pengaruh tingkat suku bunga Bank Indonesia terhadap daftar saham pantauan ini?` },

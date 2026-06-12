@@ -472,56 +472,58 @@ export function SimulationTab({
     };
   }, [portfolio]);
 
-  const handleRunAlgoBacktest = () => {
+  const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
+
+  const handleRunAlgoBacktest = async () => {
     setIsBacktesting(true);
     setBacktestProgress(15);
-    
-    setTimeout(async () => {
-      setBacktestProgress(45);
 
-      let rawData: BacktestDayData[] = [];
-      try {
-        const res = await fetch(`/api/backtest-data?configType=${backtestConfigType}`);
-        const apiRes = await res.json();
-        if (apiRes.success && Array.isArray(apiRes.data)) {
-          rawData = apiRes.data;
-        } else {
-          rawData = generateBacktestData(backtestConfigType);
-        }
-      } catch (err) {
-        console.warn("Backtest backend error, fallback to client generation: ", err);
+    await sleep(50);
+    setBacktestProgress(45);
+
+    let rawData: BacktestDayData[] = [];
+    try {
+      const res = await fetch(`/api/backtest-data?configType=${backtestConfigType}`);
+      const apiRes = await res.json();
+      if (apiRes.success && Array.isArray(apiRes.data)) {
+        rawData = apiRes.data;
+      } else {
         rawData = generateBacktestData(backtestConfigType);
       }
+    } catch (err) {
+      console.warn("Backtest backend error, fallback to client generation: ", err);
+      rawData = generateBacktestData(backtestConfigType);
+    }
 
-      setBacktestProgress(85);
-      setTimeout(() => {
-        // Parse values
-        const cap = parseInt(algoCapital.replace(/[^0-9]/g, "")) || 100000000;
+    setBacktestProgress(85);
+    await sleep(50);
 
-        if (simMode === "single") {
-          runSingleStockBacktest(rawData, cap);
-          return;
-        }
+    const cap = parseInt(algoCapital.replace(/[^0-9]/g, "")) || 100000000;
 
-        const reservePct = reserveBufferPct;
-        const bufferCash = cap * (reservePct / 100);
-        const initialInvestable = cap - bufferCash;
-          
-          let currentPortfolioVal = cap;
-          let cash = initialInvestable;
-          let goldGrams = 0;
-          let inCrashState = false;
-          let crashCooldown = 0;
-          
-          // positions: maps ticker to shares count
-          let positions: Record<string, number> = {};
-          
-          // Trace points for graph
-          const chartData: any[] = [];
-          const logs: any[] = [];
-          
-          // Helper to get top N tickers on a day
-          const getTopTickersOnDay = (dayRanks: Record<string, number>, count: number = 3) => {
+    if (simMode === "single") {
+      runSingleStockBacktest(rawData, cap);
+      return;
+    }
+
+    const reservePct = reserveBufferPct;
+    const bufferCash = cap * (reservePct / 100);
+    const initialInvestable = cap - bufferCash;
+      
+      let currentPortfolioVal = cap;
+      let cash = initialInvestable;
+      let goldGrams = 0;
+      let inCrashState = false;
+      let crashCooldown = 0;
+      
+      let positions: Record<string, number> = {};
+      
+      const chartData: any[] = [];
+      const logs: any[] = [];
+      
+      const totalSteps = rawData.length;
+      const progressInterval = Math.max(1, Math.floor(totalSteps / 10));
+      
+      const getTopTickersOnDay = (dayRanks: Record<string, number>, count: number = 3) => {
             return Object.entries(dayRanks)
               .filter(([ticker]) => ticker !== "GOTO" || yearOfDate >= 2022) // Avoid GOTO before 2022
               .sort((a, b) => a[1] - b[1]) // lower ranks are better
@@ -776,8 +778,6 @@ export function SimulationTab({
 
           setIsBacktesting(false);
           setBacktestProgress(100);
-        }, 150);
-    }, 150);
   };
 
   const handleDownloadCSV = async () => {

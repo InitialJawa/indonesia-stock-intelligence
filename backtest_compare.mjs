@@ -7,19 +7,92 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const milestonesRaw = JSON.parse(fs.readFileSync(path.join(__dirname, "dashboard/dashboard_v7/data/milestones.json"), "utf-8"));
 const factors = JSON.parse(fs.readFileSync(path.join(__dirname, "dashboard/dashboard_v7/data/stock_factors.json"), "utf-8"));
 
-const milestones = milestonesRaw.map(m => ({
+let milestones = milestonesRaw.map(m => ({
   time: new Date(m.date).getTime(),
   ihsg: m.ihsg,
   gold: m.gold,
   stocks: m.stocks
 }));
 
+// Auto-extend milestones using live_market.json if today > last milestone
+const now = new Date();
+const todayStr = now.toISOString().slice(0, 10);
+const lastMsTime = milestones[milestones.length - 1].time;
+
+// Only attempt to read live data when today is past the last milestone
+if (now.getTime() - lastMsTime > 3600000) {
+  try {
+    const livePath = path.join(__dirname, "dashboard/dashboard_v7/data/live_market.json");
+    if (fs.existsSync(livePath)) {
+      const live = JSON.parse(fs.readFileSync(livePath, "utf-8"));
+      const liveDate = new Date(live.last_update || todayStr);
+      // Only add if live data has a different/newer date
+      if (liveDate.getTime() !== lastMsTime) {
+        const lastMs = milestones[milestones.length - 1];
+        // Update lastMs stocks with live data
+        for (const tk of Object.keys(lastMs.stocks)) {
+          if (live.stock_prices && live.stock_prices[tk]) lastMs.stocks[tk] = live.stock_prices[tk];
+        }
+        milestones.push({
+          time: liveDate.getTime(),
+          ihsg: live.ihsg?.value ?? lastMs.ihsg,
+          gold: live.gold?.value ?? lastMs.gold,
+          stocks: { ...lastMs.stocks }
+        });
+        milestones.sort((a, b) => a.time - b.time);
+        // If two milestones share the same time, keep only the newer one (with live data)
+        for (let i = 0; i < milestones.length - 1; i++) {
+          if (milestones[i].time === milestones[i + 1].time) {
+            milestones.splice(i, 1);
+            break;
+          }
+        }
+      }
+    }
+  } catch (_) {}
+}
+
+// Ensure last milestone time <= now so fallback interpolation doesn't use first-vs-last
+const lastIdx = milestones.length - 1;
+if (milestones[lastIdx].time > now.getTime()) {
+  milestones[lastIdx].time = now.getTime();
+}
+
+// Extrapolation helper: for days past the last milestone, extend using the slope of the last segment
+function extrapolatePastEnd(dayTime, day) {
+  if (milestones.length < 2) {
+    day.ihsg = milestones[0].ihsg;
+    day.gold = milestones[0].gold;
+    day.stocks = {};
+    day.ranks = {};
+    return;
+  }
+  day.stocks = {};
+  day.ranks = {};
+  const lastMs = milestones[milestones.length - 1];
+  const prevMs = milestones[milestones.length - 2];
+  const dt = lastMs.time - prevMs.time;
+  let t = dt > 0 ? (dayTime - lastMs.time) / dt : 0;
+  if (t < 0) t = 0;
+  day.ihsg = lastMs.ihsg + (lastMs.ihsg - prevMs.ihsg) * t;
+  day.gold = lastMs.gold + (lastMs.gold - prevMs.gold) * t;
+  const tickers = Object.keys(lastMs.stocks);
+  tickers.forEach(tk => {
+    const price = lastMs.stocks[tk] + (lastMs.stocks[tk] - prevMs.stocks[tk]) * t;
+    day.stocks[tk] = Math.max(10, Math.round(price));
+    const f = factors[tk] || [40, 30, 20, 35];
+    day.ranks[tk] = f[0]*0.30 + f[1]*0.25 + f[2]*0.15 + f[3]*0.30;
+  });
+  const sorted = tickers.sort((a, b) => day.ranks[b] - day.ranks[a]);
+  sorted.forEach((tk, i) => day.ranks[tk] = i + 1);
+}
+
 // Interpolate daily
 function lin(a, b, t) { return a + (b - a) * t; }
 
 const dailyData = [];
 const start = new Date("2020-01-01");
-const end = new Date("2026-06-11");
+const end = now;
 for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
   dailyData.push({
     date: d.toISOString().slice(0, 10),
@@ -29,6 +102,12 @@ for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
 
 // Fill prices
 dailyData.forEach(day => {
+  const lastMs = milestones[milestones.length - 1];
+  // If day is past the last milestone, use extrapolation
+  if (day.time > lastMs.time) {
+    extrapolatePastEnd(day.time, day);
+    return;
+  }
   let mPrev = milestones[0], mNext = milestones[1];
   for (let m = 0; m < milestones.length - 1; m++) {
     if (day.time >= milestones[m].time && day.time <= milestones[m + 1].time) {
@@ -211,7 +290,7 @@ function runSingle(data, ticker, sellPct, buyPct, safeHaven) {
 
 // === RUN ALL ===
 console.log("=".repeat(100));
-console.log("BACKTEST 2020-01-01 to 2026-06-11  |  Modal: Rp 100.000.000");
+console.log(`BACKTEST 2020-01-01 to ${todayStr}  |  Modal: Rp 100.000.000`);
 console.log("=".repeat(100));
 
 console.log("\n┌──────────────────────────────────────────────────────────────────────────────────────────────────────────┐");

@@ -1,5 +1,6 @@
 import express from "express";
 import path from "path";
+import fs from "fs";
 import { GoogleGenAI, Type } from "@google/genai";
 import { createServer as createViteServer } from "vite";
 import dotenv from "dotenv";
@@ -368,6 +369,39 @@ const MILESTONES = MILESTONES_STR.map(m => ({
   stocks: m.stocks
 }));
 
+// Auto-extend milestones using live_market.json if today > last milestone
+(function extendMilestones() {
+  const now = Date.now();
+  if (now === MILESTONES[MILESTONES.length - 1].time) return;
+  try {
+    const liveP = path.join(process.cwd(), "data", "live_market.json");
+    if (fs.existsSync(liveP)) {
+      const live = JSON.parse(fs.readFileSync(liveP, "utf-8"));
+      const liveDate = new Date(live.last_update).getTime();
+      if (liveDate !== MILESTONES[MILESTONES.length - 1].time) {
+        const lastMs = MILESTONES[MILESTONES.length - 1];
+        for (const tk of Object.keys(lastMs.stocks)) {
+          if (live.stock_prices && live.stock_prices[tk]) lastMs.stocks[tk] = live.stock_prices[tk];
+        }
+        MILESTONES.push({
+          time: liveDate,
+          ihsg: live.ihsg?.value ?? lastMs.ihsg,
+          gold: live.gold?.value ?? lastMs.gold,
+          stocks: { ...lastMs.stocks }
+        });
+        MILESTONES.sort((a, b) => a.time - b.time);
+        // Deduplicate milestones with same time
+        for (let i = 0; i < MILESTONES.length - 1; i++) {
+          if (MILESTONES[i].time === MILESTONES[i + 1].time) {
+            MILESTONES.splice(i, 1);
+            break;
+          }
+        }
+      }
+    }
+  } catch (_) {}
+})();
+
 const getJitterForDate = (dateStr: string, seed: number) => {
   let hash = seed;
   for (let j = 0; j < dateStr.length; j++) {
@@ -386,7 +420,7 @@ app.get("/api/backtest-data", (req, res) => {
 
     const data = [];
     const startDate = new Date(2020, 0, 1);
-    const endDate = new Date(2026, 5, 11);
+    const endDate = new Date();
     const totalDays = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
 
     for (let i = 0; i < totalDays; i++) {
@@ -403,11 +437,21 @@ app.get("/api/backtest-data", (req, res) => {
       let mPrev = MILESTONES[0];
       let mNext = MILESTONES[MILESTONES.length - 1];
 
-      for (let m = 0; m < MILESTONES.length - 1; m++) {
-        if (currentTime >= MILESTONES[m].time && currentTime <= MILESTONES[m + 1].time) {
-          mPrev = MILESTONES[m];
-          mNext = MILESTONES[m + 1];
-          break;
+      // Extrapolate for days past the last milestone
+      if (currentTime > MILESTONES[MILESTONES.length - 1].time) {
+        if (MILESTONES.length >= 2) {
+          const lastMs = MILESTONES[MILESTONES.length - 1];
+          const prevMs = MILESTONES[MILESTONES.length - 2];
+          mPrev = prevMs;
+          mNext = lastMs;
+        }
+      } else {
+        for (let m = 0; m < MILESTONES.length - 1; m++) {
+          if (currentTime >= MILESTONES[m].time && currentTime <= MILESTONES[m + 1].time) {
+            mPrev = MILESTONES[m];
+            mNext = MILESTONES[m + 1];
+            break;
+          }
         }
       }
 

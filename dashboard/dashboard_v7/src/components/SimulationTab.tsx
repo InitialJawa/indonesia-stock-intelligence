@@ -103,15 +103,61 @@ const TICKER_COLORS: Record<string, string> = {
   GOTO: "#22c55e", // Lime Green
 };
 
-const generateBacktestData = (configType: "prod" | "res"): BacktestDayData[] => {
-  const milestonesStrLocal = milestonesStr as unknown as { date: string; ihsg: number; gold: number; stocks: Record<string, number> }[];
+let _extendedMilestones: { time: number; ihsg: number; gold: number; stocks: Record<string, number> }[] | null = null;
 
-  const milestones = milestonesStrLocal.map(m => ({
+const getMilestones = () => {
+  if (_extendedMilestones) return _extendedMilestones;
+  const milestonesStrLocal = milestonesStr as unknown as { date: string; ihsg: number; gold: number; stocks: Record<string, number> }[];
+  const ms: typeof _extendedMilestones = milestonesStrLocal.map(m => ({
     time: new Date(m.date).getTime(),
     ihsg: m.ihsg,
     gold: m.gold,
     stocks: m.stocks
   }));
+  _extendedMilestones = ms;
+  return ms;
+};
+
+const extendMilestonesWithLiveData = async () => {
+  const ms = getMilestones();
+  const now = new Date();
+  if (now.getTime() === ms[ms.length - 1].time) return;
+  try {
+    const resp = await fetch("/data/live_market.json");
+    if (!resp.ok) return;
+    const live = await resp.json();
+    const liveDate = new Date(live.last_update);
+    // Only add if live data has a different date from the last milestone
+    if (liveDate.getTime() !== ms[ms.length - 1].time) {
+      const lastMs = ms[ms.length - 1];
+      for (const tk of Object.keys(lastMs.stocks)) {
+        if (live.stock_prices && live.stock_prices[tk]) lastMs.stocks[tk] = live.stock_prices[tk];
+      }
+      ms.push({
+        time: liveDate.getTime(),
+        ihsg: live.ihsg?.value ?? lastMs.ihsg,
+        gold: live.gold?.value ?? lastMs.gold,
+        stocks: { ...lastMs.stocks }
+      });
+      ms.sort((a, b) => a.time - b.time);
+      // Deduplicate milestones with same time
+      for (let i = 0; i < ms.length - 1; i++) {
+        if (ms[i].time === ms[i + 1].time) {
+          ms.splice(i, 1);
+          break;
+        }
+      }
+    }
+  } catch (_) {}
+};
+
+const generateBacktestData = (configType: "prod" | "res"): BacktestDayData[] => {
+  const milestones = getMilestones();
+  // Cap last milestone <= today
+  const now = new Date();
+  if (milestones[milestones.length - 1].time > now.getTime()) {
+    milestones[milestones.length - 1].time = now.getTime();
+  }
 
   const getJitterForDate = (dateStr: string, seed: number) => {
     let hash = seed;
@@ -124,7 +170,7 @@ const generateBacktestData = (configType: "prod" | "res"): BacktestDayData[] => 
 
   const data: BacktestDayData[] = [];
   const startDate = new Date(2020, 0, 1);
-  const endDate = new Date(2026, 5, 11); // June 11, 2026
+  const endDate = now;
   const totalDays = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
   
   const weights = configType === "prod" 
@@ -143,10 +189,21 @@ const generateBacktestData = (configType: "prod" | "res"): BacktestDayData[] => 
     const year = currentDate.getFullYear();
     const currentTime = currentDate.getTime();
 
-    // Find bounding milestones
-    let mPrev = milestones[0];
-    let mNext = milestones[milestones.length - 1];
+  // Find bounding milestones
+  let mPrev = milestones[0];
+  let mNext = milestones[milestones.length - 1];
 
+  const lastMs = milestones[milestones.length - 1];
+  if (currentTime > lastMs.time) {
+    // Past last milestone: extrapolate using last segment slope
+    if (milestones.length >= 2) {
+      const prevMs2 = milestones[milestones.length - 2];
+      const dtMs = lastMs.time - prevMs2.time;
+      const tExt = dtMs > 0 ? (currentTime - lastMs.time) / dtMs : 0;
+      mPrev = prevMs2;
+      mNext = lastMs;
+    }
+  } else {
     for (let m = 0; m < milestones.length - 1; m++) {
       if (currentTime >= milestones[m].time && currentTime <= milestones[m + 1].time) {
         mPrev = milestones[m];
@@ -154,6 +211,7 @@ const generateBacktestData = (configType: "prod" | "res"): BacktestDayData[] => 
         break;
       }
     }
+  }
 
     let t = 0;
     if (mNext.time !== mPrev.time) {
@@ -475,6 +533,7 @@ export function SimulationTab({
   const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
 
   const handleRunAlgoBacktest = async () => {
+    await extendMilestonesWithLiveData();
     setIsBacktesting(true);
     setBacktestProgress(15);
 
@@ -794,6 +853,7 @@ export function SimulationTab({
   };
 
   const handleDownloadCSV = async () => {
+    await extendMilestonesWithLiveData();
     try {
       let rawData: BacktestDayData[] = [];
       const res = await fetch(`/api/backtest-data?configType=${backtestConfigType}`);

@@ -564,6 +564,58 @@ export function SimulationTab({
       return;
     }
 
+    // Try server-side engine first, fallback to inline
+    const safeHavenEngine = safeHavenAsset === "emas" ? "gold" : "cash";
+    let engineResult: any = null;
+    try {
+      const apiRes = await fetch("/api/run-backtest", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          mode: "algo", configType: backtestConfigType, capital: cap,
+          topN, crashPct: crashSensitivity, safeHaven: safeHavenEngine,
+          crossOverOn: enableCrossover, reservePct: reserveBufferPct
+        })
+      });
+      const apiJson = await apiRes.json();
+      if (apiJson.success) engineResult = apiJson;
+    } catch (_) {}
+
+    const configName = backtestConfigType === "prod" ? "Config F (Fundamental Focus)" : "Config B (Backtest Optimized)";
+    const day0 = rawData[0];
+    const initialIhsgPrice = day0.ihsgPrice;
+    const initialGoldPrice = day0.goldPrice;
+
+    if (engineResult) {
+      // Use server engine result
+      const logs = (engineResult.logs || []).map((l: any) => ({
+        date: l.date, type: l.action, message: `${l.action} ${l.ticker} @ ${l.price} (${l.detail})`
+      }));
+      logs.unshift({
+        date: day0.date, type: "BUY",
+        message: `Backtest via engine.mjs | Modal Rp ${cap.toLocaleString("id-ID")} | ${configName} | Top ${topN} | Crash ${crashSensitivity}% | Safe Haven: ${safeHavenAsset}`
+      });
+      const chartData: any[] = [];
+      rawData.forEach((day, idx) => {
+        if (idx % 8 !== 0 && idx !== rawData.length - 1) return;
+        chartData.push({
+          date: day.date, "Strategi Rebalancer": 0, "Benchmark IHSG": Math.round((day.ihsgPrice / initialIhsgPrice) * cap),
+          "Benchmark Emas": Math.round((day.goldPrice / initialGoldPrice) * cap), ranks: { ...day.stockRanks },
+        });
+      });
+      setBacktestResult({
+        finalValue: Math.round(engineResult.finalVal), totalReturnPct: engineResult.ret, maxDrawdown: engineResult.maxDD || 0,
+        totalTrades: engineResult.totalSwaps || 0, totalDividends: 0, logs: logs.reverse(), chartData, configName,
+        ihsgFinalValue: Math.round((rawData[rawData.length-1].ihsgPrice / initialIhsgPrice) * cap),
+        goldFinalValue: Math.round((rawData[rawData.length-1].goldPrice / initialGoldPrice) * cap),
+        ihsgReturnPct: engineResult.ihsgRet, goldReturnPct: engineResult.goldRet,
+      });
+      setIsBacktesting(false);
+      setBacktestProgress(100);
+      return;
+    }
+
+    // Fallback: inline calculation
     const reservePct = reserveBufferPct;
     const bufferCash = cap * (reservePct / 100);
     const initialInvestable = cap - bufferCash;
@@ -592,10 +644,6 @@ export function SimulationTab({
 
       let yearOfDate = 2020;
 
-          // Day 0 initialization
-          const day0 = rawData[0];
-          const initialIhsgPrice = day0.ihsgPrice;
-          const initialGoldPrice = day0.goldPrice;
           const day0Ranks = rawData[0].stockRanks;
           const day0Sorted = Object.entries(day0Ranks).sort((a, b) => a[1] - b[1]);
           const initialTopN = day0Sorted.slice(0, topN).map(([t]) => t);
@@ -607,7 +655,6 @@ export function SimulationTab({
             cash -= positions[ticker] * price;
           });
 
-          const configName = backtestConfigType === "prod" ? "Config F (Fundamental Focus)" : "Config B (Backtest Optimized)";
           logs.push({
             date: day0.date,
             type: "BUY",
@@ -619,10 +666,9 @@ export function SimulationTab({
           let totalSwaps = 0;
           let totalDividendsEarned = 0;
           
-          let lastJulyYear = 2019; // Track annual dividend payout
+          let lastJulyYear = 2019;
 
           try {
-          // Loop day by day
           for (let stepIndex = 0; stepIndex < rawData.length; stepIndex++) {
             const day = rawData[stepIndex];
             const dateObj = new Date(day.date);
@@ -630,7 +676,6 @@ export function SimulationTab({
             yearOfDate = currentYear;
             const currentMonth = dateObj.getMonth();
 
-            // 1. Calculate the value of stock positions today
             let stocksValue = 0;
             Object.entries(positions).forEach(([ticker, shares]) => {
               const price = day.stockPrices[ticker] || 100;
@@ -640,212 +685,116 @@ export function SimulationTab({
             const goldVal = goldGrams * day.goldPrice;
             const todayPortfolioVal = cash + goldVal + stocksValue + bufferCash;
 
-            // Track Drawdown
             if (todayPortfolioVal > maxVal) {
               maxVal = todayPortfolioVal;
             } else {
               const dd = ((maxVal - todayPortfolioVal) / maxVal) * 100;
-              if (dd > maxDrawdownValue) {
-                maxDrawdownValue = dd;
-              }
+              if (dd > maxDrawdownValue) maxDrawdownValue = dd;
             }
 
-            // 2. Annual Dividend Credit
             if (currentYear > lastJulyYear && currentMonth >= 6) {
               let yearlyDividends = 0;
               Object.entries(positions).forEach(([ticker, shares]) => {
                 const price = day.stockPrices[ticker] || 100;
-                // standard dividend yield representation
                 const divYield = ticker === "ADRO" || ticker === "PTBA" ? 10.5 : 2.5; 
-                const dividends = Math.round((shares * price * divYield) / 100 * 0.9); // post 10% tax
+                const dividends = Math.round((shares * price * divYield) / 100 * 0.9);
                 yearlyDividends += dividends;
               });
-              
               if (yearlyDividends > 0) {
                 cash += yearlyDividends;
                 totalDividendsEarned += yearlyDividends;
-                logs.push({
-                  date: day.date,
-                  type: "REBALANCE",
-                  message: `Dividen Tahunan Dikreditkan: Berhasil mengumpulkan Rp ${yearlyDividends.toLocaleString("id-ID")} nett dari kepemilikan portfolio aktif.`
-                });
+                logs.push({ date: day.date, type: "REBALANCE", message: `Dividen Tahunan Dikreditkan: Rp ${yearlyDividends.toLocaleString("id-ID")} nett.` });
               }
               lastJulyYear = currentYear;
             }
 
-            // 3. IHSG Crash Protection — velocity trigger (early exit, minimal loss)
             let crashSignaled = false;
             if (enableCrashProtection && stepIndex >= 5) {
               const ihsg5dAgo = rawData[stepIndex - 5].ihsgPrice;
-              const ihsg5dDrop = ((day.ihsgPrice - ihsg5dAgo) / ihsg5dAgo) * 100;
-              if (ihsg5dDrop <= -2) crashSignaled = true;
-
-              // Fallback: also check % from 60-day high for slower grinds
+              if (((day.ihsgPrice - ihsg5dAgo) / ihsg5dAgo) * 100 <= -2) crashSignaled = true;
               if (!crashSignaled && stepIndex >= 60) {
                 const sixtyDayHigh = Math.max(...rawData.slice(stepIndex - 60, stepIndex + 1).map(d => d.ihsgPrice));
-                const ihsgPctDrop = ((day.ihsgPrice - sixtyDayHigh) / sixtyDayHigh) * 100;
-                if (ihsgPctDrop <= -crashSensitivity) crashSignaled = true;
+                if (((day.ihsgPrice - sixtyDayHigh) / sixtyDayHigh) * 100 <= -crashSensitivity) crashSignaled = true;
               }
             }
 
             if (crashSignaled && !inCrashState && crashCooldown <= 0) {
               inCrashState = true;
-              
-              // Liquidate stocks
               let liquidationProceeds = 0;
-              Object.entries(positions).forEach(([ticker, shares]) => {
-                const price = day.stockPrices[ticker] || 100;
-                liquidationProceeds += shares * price;
-              });
-              positions = {}; // fully sold
-
+              Object.entries(positions).forEach(([ticker, shares]) => { liquidationProceeds += shares * (day.stockPrices[ticker] || 100); });
+              positions = {};
               cash += liquidationProceeds;
-
               if (safeHavenAsset === "emas") {
-                // convert standard cash to gold
-                const investableCash = cash;
-                goldGrams = investableCash / day.goldPrice;
-                cash = 0;
-                logs.push({
-                  date: day.date,
-                  type: "CRASH_TRIGGER",
-                  message: `⚠️ IHSG CRASH TEKOR! Indeks anjlok di bawah sensitivitas pengetatan. Sistem mengamankan aset: Likuidasi seluruh saham senilai Rp ${liquidationProceeds.toLocaleString("id-ID")} dan memindahkan dana ke Emas Fisik (${goldGrams.toFixed(2)} gram).`
-                });
+                goldGrams = cash / day.goldPrice; cash = 0;
+                logs.push({ date: day.date, type: "CRASH_TRIGGER", message: `⚠️ CRASH! Likuidasi Rp ${liquidationProceeds.toLocaleString("id-ID")} → Emas ${goldGrams.toFixed(2)} gram.` });
               } else {
-                logs.push({
-                  date: day.date,
-                  type: "CRASH_TRIGGER",
-                  message: `⚠️ IHSG CRASH TEKOR! Indeks anjlok tajam. Sistem melikuidasi seluruh saham senilai Rp ${liquidationProceeds.toLocaleString("id-ID")} untuk disimpan dalam bentuk Kas Tunai IDR demi melestarikan kapital.`
-                });
+                logs.push({ date: day.date, type: "CRASH_TRIGGER", message: `⚠️ CRASH! Likuidasi Rp ${liquidationProceeds.toLocaleString("id-ID")} → Kas.` });
               }
-              // set crash cooldown
               crashCooldown = 20;
             }
 
-            // If in crash state, check for stabilization/recovery
             if (inCrashState && crashCooldown <= 0) {
-              // Recover if IHSG has risen 3% from its crash low
-              const crashPeriod = rawData.slice(Math.max(0, stepIndex - 60), stepIndex + 1);
-              const crashLow = Math.min(...crashPeriod.map(d => d.ihsgPrice));
-              const ihsgFromLow = ((day.ihsgPrice - crashLow) / crashLow) * 100;
-
-              if (ihsgFromLow >= 3) {
+              const crashLow = Math.min(...rawData.slice(Math.max(0, stepIndex - 60), stepIndex + 1).map(d => d.ihsgPrice));
+              if (((day.ihsgPrice - crashLow) / crashLow) * 100 >= 3) {
                 inCrashState = false;
-                
-                // Sell gold if any
                 let recoveryCash = cash;
-                if (goldGrams > 0) {
-                  recoveryCash += goldGrams * day.goldPrice;
-                  goldGrams = 0;
-                }
-
-                // Identify top N stocks today
+                if (goldGrams > 0) { recoveryCash += goldGrams * day.goldPrice; goldGrams = 0; }
                 const topNRecovery = getTopTickersOnDay(day.stockRanks, topN);
                 const allocPrice = recoveryCash / topNRecovery.length;
-
                 topNRecovery.forEach((ticker) => {
                   const dPrice = day.stockPrices[ticker] || 1000;
                   positions[ticker] = Math.floor(allocPrice / dPrice);
                   recoveryCash -= positions[ticker] * dPrice;
                 });
                 cash = recoveryCash;
-
-                logs.push({
-                  date: day.date,
-                  type: "CRASH_RECOVERY",
-                  message: `🛡️ KOALISI CRASH BERAKHIR: Tekanan IHSG mereda. Sistem merekrut pembobotan baru dan membeli kembali Top ${topN} saham primadona: ${topNRecovery.map(t => `#${t}`).join(", ")}.`
-                });
+                logs.push({ date: day.date, type: "CRASH_RECOVERY", message: `🛡️ RECOVERY: Beli Top ${topN}: ${topNRecovery.map(t => `#${t}`).join(", ")}.` });
                 crashCooldown = 20;
               }
             }
-
-            // Decrement crash cooldown
             if (crashCooldown > 0) crashCooldown--;
 
-            // 4. Rank 7 Rule active rebalancing
             if (!inCrashState && enableCrossover) {
-              const ownedTickers = Object.entries(positions)
-                .filter(([_, shares]) => shares > 0)
-                .map(([ticker]) => ticker);
-
-              for (const ticker of ownedTickers) {
+              for (const ticker of Object.entries(positions).filter(([_, s]) => s > 0).map(([t]) => t)) {
                 const currentRank = day.stockRanks[ticker] || 5;
                 if (currentRank >= 7) {
-                  // Saham jelek detected! Swap immediately.
-                  const currentPrice = day.stockPrices[ticker] || 100;
-                  const sellProceeds = positions[ticker] * currentPrice;
-                  
-                  // Delete position
+                  const sellProceeds = positions[ticker] * (day.stockPrices[ticker] || 100);
                   delete positions[ticker];
-                  
-                  // Find top stock not currently owned
                   const topCandidates = getTopTickersOnDay(day.stockRanks, 4);
-                  const swapInTicker = topCandidates.find(t => !positions[t] || positions[t] === 0) || topCandidates[0];
-                  
-                  const swapInPrice = day.stockPrices[swapInTicker] || 100;
-                  const newShares = Math.floor(sellProceeds / swapInPrice);
-                  
-                  positions[swapInTicker] = (positions[swapInTicker] || 0) + newShares;
-                  cash += sellProceeds - (newShares * swapInPrice);
-                  
+                  const swapIn = topCandidates.find(t => !positions[t] || positions[t] === 0) || topCandidates[0];
+                  const swapPrice = day.stockPrices[swapIn] || 100;
+                  const ns = Math.floor(sellProceeds / swapPrice);
+                  positions[swapIn] = (positions[swapIn] || 0) + ns;
+                  cash += sellProceeds - ns * swapPrice;
                   totalSwaps++;
-
-                  logs.push({
-                    date: day.date,
-                    type: "REBALANCE",
-                    message: `🔄 REBALANCING HARIAN: Emiten #${ticker} jatuh ke Rank luar batas (Rank ${currentRank}). Posisi otomatis dilikuidasi Rp ${sellProceeds.toLocaleString("id-ID")}, dipindahkan ke rising-star #${swapInTicker} (Rank ${day.stockRanks[swapInTicker]}) sebanyak ${newShares.toLocaleString("id-ID")} lembar.`
-                  });
-                  break; // Only rebalance 1 stock per day
+                  logs.push({ date: day.date, type: "REBALANCE", message: `🔄 SWAP #${ticker} (Rank ${currentRank}) → #${swapIn} (Rank ${day.stockRanks[swapIn]}) ${ns} lbr.` });
+                  break;
                 }
               }
             }
 
-            // 5. record metrics for charting
             if (stepIndex % 8 === 0 || stepIndex === rawData.length - 1) {
-              const benchmarkIhsgVal = Math.round((day.ihsgPrice / initialIhsgPrice) * cap);
-              const benchmarkGoldVal = Math.round((day.goldPrice / initialGoldPrice) * cap);
-
               chartData.push({
-                date: day.date,
-                "Strategi Rebalancer": Math.round(todayPortfolioVal),
-                "Benchmark IHSG": benchmarkIhsgVal,
-                "Benchmark Emas": benchmarkGoldVal,
-                ranks: { ...day.stockRanks },
+                date: day.date, "Strategi Rebalancer": Math.round(todayPortfolioVal),
+                "Benchmark IHSG": Math.round((day.ihsgPrice / initialIhsgPrice) * cap),
+                "Benchmark Emas": Math.round((day.goldPrice / initialGoldPrice) * cap), ranks: { ...day.stockRanks },
               });
             }
-
-            if (stepIndex === rawData.length - 1) {
-              currentPortfolioVal = todayPortfolioVal;
-            }
-
-            if (stepIndex > 0 && stepIndex % progressInterval === 0) {
-              setBacktestProgress(85 + Math.floor((stepIndex / totalSteps) * 10));
-            }
+            if (stepIndex === rawData.length - 1) currentPortfolioVal = todayPortfolioVal;
+            if (stepIndex > 0 && stepIndex % progressInterval === 0) setBacktestProgress(85 + Math.floor((stepIndex / totalSteps) * 10));
           }
-          } catch (loopErr) {
-            console.error("Backtest loop crashed:", loopErr);
-          }
+          } catch (loopErr) { console.error("Backtest loop crashed:", loopErr); }
 
-          // Calculate final statistics
           const totalReturnPct = ((currentPortfolioVal - cap) / cap) * 100;
-          
           const lastDayObj = rawData[rawData.length - 1];
           const ihsgReturnPct = ((lastDayObj.ihsgPrice - initialIhsgPrice) / initialIhsgPrice) * 100;
           const goldReturnPct = ((lastDayObj.goldPrice - initialGoldPrice) / initialGoldPrice) * 100;
 
           setBacktestResult({
-            finalValue: currentPortfolioVal,
-            ihsgFinalValue: Math.round((lastDayObj.ihsgPrice / initialIhsgPrice) * cap),
+            finalValue: currentPortfolioVal, ihsgFinalValue: Math.round((lastDayObj.ihsgPrice / initialIhsgPrice) * cap),
             goldFinalValue: Math.round((lastDayObj.goldPrice / initialGoldPrice) * cap),
-            totalReturnPct,
-            ihsgReturnPct,
-            goldReturnPct,
-            maxDrawdown: maxDrawdownValue,
-            totalTrades: totalSwaps,
-            totalDividends: totalDividendsEarned,
-            logs: logs.slice().reverse(),
-            chartData,
-            configName,
+            totalReturnPct, ihsgReturnPct, goldReturnPct, maxDrawdown: maxDrawdownValue,
+            totalTrades: totalSwaps, totalDividends: totalDividendsEarned,
+            logs: logs.slice().reverse(), chartData, configName,
           });
 
           setIsBacktesting(false);
@@ -890,11 +839,50 @@ export function SimulationTab({
     }
   };
 
-  const runSingleStockBacktest = (rawData: BacktestDayData[], cap: number) => {
+  const runSingleStockBacktest = async (rawData: BacktestDayData[], cap: number) => {
     const ticker = singleTicker;
     const initialIhsgPrice = rawData[0].ihsgPrice;
     const initialGoldPrice = rawData[0].goldPrice;
+    const safeHavenEngine = safeHavenSingle === "emas" ? "gold" : "cash";
 
+    // Try server engine first
+    try {
+      const apiRes = await fetch("/api/run-backtest", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          mode: "single", ticker, capital: cap, safeHaven: safeHavenEngine,
+          sellPct: sellDropPct, buyPct: buyRisePct
+        })
+      });
+      const apiJson = await apiRes.json();
+      if (apiJson.success) {
+        const logs = (apiJson.logs || []).map((l: any) => ({
+          date: l.date, type: l.action, message: `${l.action} ${l.ticker} @ ${l.price} (${l.detail})`
+        }));
+        const chartData: any[] = [];
+        rawData.forEach((day, idx) => {
+          if (idx % 8 !== 0 && idx !== rawData.length - 1) return;
+          chartData.push({
+            date: day.date, "Strategi Rebalancer": 0, "Benchmark IHSG": Math.round((day.ihsgPrice / initialIhsgPrice) * cap),
+            "Benchmark Emas": Math.round((day.goldPrice / initialGoldPrice) * cap), ranks: { ...day.stockRanks },
+          });
+        });
+        setBacktestResult({
+          finalValue: Math.round(apiJson.finalVal), totalReturnPct: apiJson.ret, maxDrawdown: 0,
+          totalTrades: apiJson.trades || logs.length, totalDividends: 0, logs: logs.reverse(), chartData,
+          configName: `Single Stock: ${ticker} (jual -${sellDropPct}%, beli +${buyRisePct}%)`,
+          ihsgFinalValue: Math.round((rawData[rawData.length-1].ihsgPrice / initialIhsgPrice) * cap),
+          goldFinalValue: Math.round((rawData[rawData.length-1].goldPrice / initialGoldPrice) * cap),
+          ihsgReturnPct: apiJson.ihsgRet, goldReturnPct: apiJson.goldRet,
+        });
+        setIsBacktesting(false);
+        setBacktestProgress(100);
+        return;
+      }
+    } catch (_) {}
+
+    // Fallback: inline calculation
     let cash = cap;
     let goldGrams = 0;
     let shares = 0;
@@ -944,14 +932,10 @@ export function SimulationTab({
         }
       }
 
-      const stockVal = shares * price;
-      const goldVal = goldGrams * day.goldPrice;
-      const portfolioVal = cash + goldVal + stockVal;
-
+      const portfolioVal = cash + shares * price + goldGrams * day.goldPrice;
       if (stepIndex % 8 === 0 || stepIndex === rawData.length - 1) {
         chartData.push({
-          date: day.date,
-          "Strategi Rebalancer": Math.round(portfolioVal),
+          date: day.date, "Strategi Rebalancer": Math.round(portfolioVal),
           "Benchmark IHSG": Math.round((day.ihsgPrice / initialIhsgPrice) * cap),
           "Benchmark Emas": Math.round((day.goldPrice / initialGoldPrice) * cap),
           ranks: { ...day.stockRanks },
@@ -969,14 +953,8 @@ export function SimulationTab({
       finalValue: Math.round(finalVal),
       ihsgFinalValue: Math.round((lastDay.ihsgPrice / initialIhsgPrice) * cap),
       goldFinalValue: Math.round((lastDay.goldPrice / initialGoldPrice) * cap),
-      totalReturnPct,
-      ihsgReturnPct,
-      goldReturnPct,
-      maxDrawdown: 0,
-      totalTrades: logs.length,
-      totalDividends: 0,
-      logs: logs.slice().reverse(),
-      chartData,
+      totalReturnPct, ihsgReturnPct, goldReturnPct, maxDrawdown: 0,
+      totalTrades: logs.length, totalDividends: 0, logs: logs.slice().reverse(), chartData,
       configName: `Single Stock: ${ticker} (jual -${sellDropPct}%, beli +${buyRisePct}%)`,
     });
 

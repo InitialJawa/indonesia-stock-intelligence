@@ -7,6 +7,7 @@ import dotenv from "dotenv";
 
 import stockFactors from "./data/stock_factors.json" with { type: "json" };
 import milestonesStr from "./data/milestones.json" with { type: "json" };
+import { runAlgo, runSingle } from "../../engine.mjs";
 
 dotenv.config();
 
@@ -535,6 +536,76 @@ app.get("/api/backtest-data", (req, res) => {
   } catch (error: any) {
     console.error("Backtest Data API Error:", error);
     res.status(500).json({ error: error.message || "Failed to generate backtest data" });
+  }
+});
+
+// Backtest execution endpoint — uses shared engine.mjs
+app.post("/api/run-backtest", (req, res) => {
+  try {
+    const { mode, ticker, topN, crashPct, safeHaven, crossOverOn, reservePct, sellPct, buyPct, capital, configType } = req.body || {};
+
+    // Generate daily data from milestones (same as /api/backtest-data)
+    const weights = configType === "res"
+      ? { quality: 0.25, growth: 0.3, value: 0.1, momentum: 0.35 }
+      : { quality: 0.25, growth: 0.1, value: 0.3, momentum: 0.35 };
+
+    const startDate = new Date(2020, 0, 1);
+    const endDate = new Date();
+    const totalDays = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+    const rawData = [];
+
+    for (let i = 0; i < totalDays; i++) {
+      const d = new Date(startDate);
+      d.setDate(startDate.getDate() + i);
+      if (d.getDay() === 0 || d.getDay() === 6) continue;
+
+      const dateStr = d.toISOString().split("T")[0];
+      const year = d.getFullYear();
+      const currentTime = d.getTime();
+
+      let mPrev = MILESTONES[0], mNext = MILESTONES[MILESTONES.length - 1];
+      if (currentTime <= MILESTONES[MILESTONES.length - 1].time) {
+        for (let m = 0; m < MILESTONES.length - 1; m++) {
+          if (currentTime >= MILESTONES[m].time && currentTime <= MILESTONES[m + 1].time) {
+            mPrev = MILESTONES[m]; mNext = MILESTONES[m + 1]; break;
+          }
+        }
+      }
+
+      const t = mNext.time !== mPrev.time ? (currentTime - mPrev.time) / (mNext.time - mPrev.time) : 0;
+      const ihsgPrice = Math.max(3000, (mPrev.ihsg + (mNext.ihsg - mPrev.ihsg) * t) * (1 + getJitterForDate(dateStr, 123) * 0.015));
+      const goldPrice = Math.max(100000, (mPrev.gold + (mNext.gold - mPrev.gold) * t) * (1 + getJitterForDate(dateStr, 456) * 0.008));
+
+      const stockPrices: Record<string, number> = {};
+      const stockRanks: Record<string, number> = {};
+      const tickers2 = Object.keys(mPrev.stocks);
+
+      const scored = tickers2.map(tk => {
+        const base = mPrev.stocks[tk] + (mNext.stocks[tk] - mPrev.stocks[tk]) * t;
+        stockPrices[tk] = Math.max(10, Math.round(base * (1 + getJitterForDate(dateStr, tk.charCodeAt(0) + tk.charCodeAt(1)) * 0.025)));
+        const factors = STOCK_FACTORS[tk] || [50, 50, 50, 50];
+        let score = factors[0] * weights.quality + factors[1] * weights.growth + factors[2] * weights.value + factors[3] * weights.momentum;
+        const trendMap: any = { 2020: { BBCA: 15, TLKM: 15, ADRO: -15, ESSA: -15, GOTO: -15 }, 2021: { GOTO: 35, BMRI: 10, BBCA: 10 }, 2022: { ADRO: 35, PTBA: 35, ESSA: 35, GOTO: -35 } };
+        score += (trendMap[year]?.[tk] || (year >= 2023 ? { BBCA: 15, BMRI: 15, BBRI: 15 }[tk] || 0 : 0)) + getJitterForDate(dateStr, tk.charCodeAt(0) * 17) * 4;
+        return { ticker: tk, score };
+      });
+      scored.sort((a, b) => b.score - a.score);
+      scored.forEach((s, idx) => { stockRanks[s.ticker] = idx + 1; });
+
+      rawData.push({ date: dateStr, ihsgPrice: Math.round(ihsgPrice), goldPrice: Math.round(goldPrice), stockPrices, stockRanks });
+    }
+
+    let result;
+    if (mode === "single") {
+      result = runSingle(rawData, ticker || "BBCA", { sellPct: sellPct || 8, buyPct: buyPct || 5, safeHaven: safeHaven || "cash", capital: capital || 100_000_000 });
+    } else {
+      result = runAlgo(rawData, { topN: topN || 3, crashPct: crashPct || 5, safeHaven: safeHaven || "cash", crossOverOn: crossOverOn !== false, reservePct: reservePct || 10, capital: capital || 100_000_000 });
+    }
+
+    res.json({ success: true, ...result, logs: result.logs || [] });
+  } catch (error: any) {
+    console.error("Run Backtest API Error:", error);
+    res.status(500).json({ error: error.message || "Failed to run backtest" });
   }
 });
 

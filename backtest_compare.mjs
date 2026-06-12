@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
+import { runAlgo, runSingle } from "./engine.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -14,22 +15,18 @@ let milestones = milestonesRaw.map(m => ({
   stocks: m.stocks
 }));
 
-// Auto-extend milestones using live_market.json if today > last milestone
 const now = new Date();
 const todayStr = now.toISOString().slice(0, 10);
 const lastMsTime = milestones[milestones.length - 1].time;
 
-// Only attempt to read live data when today is past the last milestone
 if (now.getTime() - lastMsTime > 3600000) {
   try {
     const livePath = path.join(__dirname, "dashboard/dashboard_v7/data/live_market.json");
     if (fs.existsSync(livePath)) {
       const live = JSON.parse(fs.readFileSync(livePath, "utf-8"));
       const liveDate = new Date(live.last_update || todayStr);
-      // Only add if live data has a different/newer date
       if (liveDate.getTime() !== lastMsTime) {
         const lastMs = milestones[milestones.length - 1];
-        // Update lastMs stocks with live data
         for (const tk of Object.keys(lastMs.stocks)) {
           if (live.stock_prices && live.stock_prices[tk]) lastMs.stocks[tk] = live.stock_prices[tk];
         }
@@ -40,7 +37,6 @@ if (now.getTime() - lastMsTime > 3600000) {
           stocks: { ...lastMs.stocks }
         });
         milestones.sort((a, b) => a.time - b.time);
-        // If two milestones share the same time, keep only the newer one (with live data)
         for (let i = 0; i < milestones.length - 1; i++) {
           if (milestones[i].time === milestones[i + 1].time) {
             milestones.splice(i, 1);
@@ -52,13 +48,11 @@ if (now.getTime() - lastMsTime > 3600000) {
   } catch (_) {}
 }
 
-// Ensure last milestone time <= now so fallback interpolation doesn't use first-vs-last
 const lastIdx = milestones.length - 1;
 if (milestones[lastIdx].time > now.getTime()) {
   milestones[lastIdx].time = now.getTime();
 }
 
-// Extrapolation helper: for days past the last milestone, extend using the slope of the last segment
 function extrapolatePastEnd(dayTime, day) {
   if (milestones.length < 2) {
     day.ihsg = milestones[0].ihsg;
@@ -87,27 +81,18 @@ function extrapolatePastEnd(dayTime, day) {
   sorted.forEach((tk, i) => day.ranks[tk] = i + 1);
 }
 
-// Interpolate daily
 function lin(a, b, t) { return a + (b - a) * t; }
 
 const dailyData = [];
 const start = new Date("2020-01-01");
 const end = now;
 for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-  dailyData.push({
-    date: d.toISOString().slice(0, 10),
-    time: d.getTime(),
-  });
+  dailyData.push({ date: d.toISOString().slice(0, 10), time: d.getTime() });
 }
 
-// Fill prices
 dailyData.forEach(day => {
   const lastMs = milestones[milestones.length - 1];
-  // If day is past the last milestone, use extrapolation
-  if (day.time > lastMs.time) {
-    extrapolatePastEnd(day.time, day);
-    return;
-  }
+  if (day.time > lastMs.time) { extrapolatePastEnd(day.time, day); return; }
   let mPrev = milestones[0], mNext = milestones[1];
   for (let m = 0; m < milestones.length - 1; m++) {
     if (day.time >= milestones[m].time && day.time <= milestones[m + 1].time) {
@@ -121,172 +106,13 @@ dailyData.forEach(day => {
   day.ranks = {};
   const tickers = Object.keys(mPrev.stocks);
   tickers.forEach(tk => {
-    day.stocks[tk] = lin(mPrev.stocks[tk], mNext.stocks[tk], t);
+    day.stocks[tk] = Math.max(10, Math.round(lin(mPrev.stocks[tk], mNext.stocks[tk], t)));
     const f = factors[tk] || [40, 30, 20, 35];
-    day.stocks[tk] = Math.max(10, Math.round(day.stocks[tk]));
     day.ranks[tk] = f[0]*0.30 + f[1]*0.25 + f[2]*0.15 + f[3]*0.30;
   });
-  // Rank
   const sorted = tickers.sort((a, b) => day.ranks[b] - day.ranks[a]);
   sorted.forEach((tk, i) => day.ranks[tk] = i + 1);
 });
-
-// === STRATEGIES ===
-function runAlgo(data, topN, crashPct, safeHaven, crossOverOn, reservePct) {
-  let cash = 100_000_000;
-  const buffer = cash * (reservePct / 100);
-  let investable = cash - buffer;
-  cash = investable;
-  let goldG = 0, inCrash = false, crashCd = 0;
-  let positions = {};
-  let logs = [];
-  let maxVal = cash;
-  let maxDD = 0;
-  let totalSwaps = 0;
-
-  const day0 = data[0];
-  const initIhsg = day0.ihsg;
-  const initGold = day0.gold;
-
-  // Day 0
-  const topInit = Object.entries(day0.ranks).sort((a, b) => a[1] - b[1]).slice(0, topN).map(x => x[0]);
-  const alloc = cash / topInit.length;
-  topInit.forEach(tk => {
-    const p = day0.stocks[tk];
-    const s = Math.floor(alloc / p);
-    positions[tk] = s;
-    cash -= s * p;
-  });
-
-  for (let i = 0; i < data.length; i++) {
-    const day = data[i];
-    let sv = 0;
-    Object.entries(positions).forEach(([tk, sh]) => { sv += sh * day.stocks[tk]; });
-    const gv = goldG * day.gold;
-    const pv = cash + gv + sv + buffer;
-    if (pv > maxVal) maxVal = pv;
-    else { const dd = (maxVal - pv) / maxVal * 100; if (dd > maxDD) maxDD = dd; }
-
-    // Crash check: velocity trigger (5d drop > 2%) + fallback % from 60-day high
-    let crashSig = false;
-    if (i >= 5) {
-      const ihsg5d = data[i - 5].ihsg;
-      if ((day.ihsg - ihsg5d) / ihsg5d * 100 <= -2) crashSig = true;
-      if (!crashSig && i >= 60) {
-        const hi60 = Math.max(...data.slice(i - 60, i + 1).map(x => x.ihsg));
-        if ((day.ihsg - hi60) / hi60 * 100 <= -crashPct) crashSig = true;
-      }
-    }
-    if (crashSig && !inCrash && crashCd <= 0) {
-      inCrash = true;
-      let liq = 0;
-      Object.entries(positions).forEach(([tk, sh]) => { liq += sh * day.stocks[tk]; });
-      positions = {};
-      cash += liq;
-      if (safeHaven === "gold") { goldG = cash / day.gold; cash = 0; }
-      crashCd = 20;
-    }
-
-    // Recovery
-    if (inCrash && crashCd <= 0) {
-      const crashPeriod = data.slice(Math.max(0, i - 60), i + 1);
-      const crashLow = Math.min(...crashPeriod.map(x => x.ihsg));
-      const fromLow = (day.ihsg - crashLow) / crashLow * 100;
-      if (fromLow >= 3) {
-        inCrash = false;
-        let rc = cash;
-        if (goldG > 0) { rc += goldG * day.gold; goldG = 0; }
-        const topR = Object.entries(day.ranks).sort((a, b) => a[1] - b[1]).slice(0, topN).map(x => x[0]);
-        const a2 = rc / topR.length;
-        topR.forEach(tk => {
-          const p = day.stocks[tk];
-          const s = Math.floor(a2 / p);
-          positions[tk] = s;
-          rc -= s * p;
-        });
-        cash = rc;
-        crashCd = 20;
-      }
-    }
-    if (crashCd > 0) crashCd--;
-
-    // Crossover
-    if (!inCrash && crossOverOn) {
-      for (const [tk, sh] of Object.entries(positions)) {
-        if (sh > 0 && day.ranks[tk] >= 7) {
-          const sellVal = sh * day.stocks[tk];
-          delete positions[tk];
-          const cands = Object.entries(day.ranks).sort((a, b) => a[1] - b[1]).slice(0, 4).map(x => x[0]);
-          const swapIn = cands.find(t => !positions[t] || positions[t] === 0) || cands[0];
-          const bp = day.stocks[swapIn];
-          const ns = Math.floor(sellVal / bp);
-          positions[swapIn] = (positions[swapIn] || 0) + ns;
-          cash += sellVal - ns * bp;
-          totalSwaps++;
-          break;
-        }
-      }
-    }
-  }
-
-  const last = data[data.length - 1];
-  let finalSV = 0;
-  Object.entries(positions).forEach(([tk, sh]) => { finalSV += sh * last.stocks[tk]; });
-  const finalGV = goldG * last.gold;
-  const finalVal = cash + finalGV + finalSV + buffer;
-  const ret = (finalVal - 100_000_000) / 100_000_000 * 100;
-  const ihsgRet = (last.ihsg - initIhsg) / initIhsg * 100;
-  const goldRet = (last.gold - initGold) / initGold * 100;
-  return { finalVal: Math.round(finalVal), ret, ihsgRet, goldRet, maxDD, totalSwaps };
-}
-
-function runSingle(data, ticker, sellPct, buyPct, safeHaven) {
-  let cash = 100_000_000;
-  let goldG = 0;
-  let shares = 0;
-  let inStock = false;
-  let peak = 0;
-  let trough = Infinity;
-  let logs = [];
-
-  const initIhsg = data[0].ihsg;
-  const initGold = data[0].gold;
-
-  for (let i = 0; i < data.length; i++) {
-    const day = data[i];
-    const price = day.stocks[ticker] || 1000;
-
-    if (!inStock) {
-      if (trough === Infinity || price >= trough * (1 + buyPct / 100)) {
-        shares = Math.floor(cash / price);
-        if (shares > 0) {
-          cash -= shares * price;
-          peak = price;
-          inStock = true;
-        }
-      }
-    }
-
-    if (inStock) {
-      if (price > peak) peak = price;
-      if ((price - peak) / peak * 100 <= -sellPct) {
-        cash += shares * price;
-        if (safeHaven === "gold") { goldG = cash / day.gold; cash = 0; }
-        shares = 0;
-        inStock = false;
-        trough = price;
-        peak = 0;
-      }
-    }
-  }
-
-  const last = data[data.length - 1];
-  const finalVal = cash + shares * (last.stocks[ticker] || 1000) + goldG * last.gold;
-  const ret = (finalVal - 100_000_000) / 100_000_000 * 100;
-  const ihsgRet = (last.ihsg - initIhsg) / initIhsg * 100;
-  const goldRet = (last.gold - initGold) / initGold * 100;
-  return { finalVal: Math.round(finalVal), ret, ihsgRet, goldRet, trades: logs.length };
-}
 
 // === RUN ALL ===
 console.log("=".repeat(100));
@@ -298,21 +124,19 @@ console.log("│                                                IHSG: " + dailyD
 console.log("└──────────────────────────────────────────────────────────────────────────────────────────────────────────┘");
 
 const strategies = [
-  // Algo variants
-  { label: "Algo Top1-Cash", fn: () => runAlgo(dailyData, 1, 5, "cash", true, 10) },
-  { label: "Algo Top3-Cash", fn: () => runAlgo(dailyData, 3, 5, "cash", true, 10) },
-  { label: "Algo Top5-Cash", fn: () => runAlgo(dailyData, 5, 5, "cash", true, 10) },
-  { label: "Algo Top1-Gold", fn: () => runAlgo(dailyData, 1, 5, "gold", true, 10) },
-  { label: "Algo Top3-Gold", fn: () => runAlgo(dailyData, 3, 5, "gold", true, 10) },
-  { label: "Algo Top5-Gold", fn: () => runAlgo(dailyData, 5, 5, "gold", true, 10) },
-  { label: "Algo T3-NoCrash", fn: () => runAlgo(dailyData, 3, 0.1, "cash", true, 10) },
-  { label: "Algo T3-NoSwap", fn: () => runAlgo(dailyData, 3, 5, "cash", false, 10) },
-  // Single Stock variants - sell 8%, buy 5%
+  { label: "Algo Top1-Cash", fn: () => runAlgo(dailyData, { topN: 1, crashPct: 5, safeHaven: "cash", crossOverOn: true, reservePct: 10 }) },
+  { label: "Algo Top3-Cash", fn: () => runAlgo(dailyData, { topN: 3, crashPct: 5, safeHaven: "cash", crossOverOn: true, reservePct: 10 }) },
+  { label: "Algo Top5-Cash", fn: () => runAlgo(dailyData, { topN: 5, crashPct: 5, safeHaven: "cash", crossOverOn: true, reservePct: 10 }) },
+  { label: "Algo Top1-Gold", fn: () => runAlgo(dailyData, { topN: 1, crashPct: 5, safeHaven: "gold", crossOverOn: true, reservePct: 10 }) },
+  { label: "Algo Top3-Gold", fn: () => runAlgo(dailyData, { topN: 3, crashPct: 5, safeHaven: "gold", crossOverOn: true, reservePct: 10 }) },
+  { label: "Algo Top5-Gold", fn: () => runAlgo(dailyData, { topN: 5, crashPct: 5, safeHaven: "gold", crossOverOn: true, reservePct: 10 }) },
+  { label: "Algo T3-NoCrash", fn: () => runAlgo(dailyData, { topN: 3, crashPct: 0.1, safeHaven: "cash", crossOverOn: true, reservePct: 10 }) },
+  { label: "Algo T3-NoSwap", fn: () => runAlgo(dailyData, { topN: 3, crashPct: 5, safeHaven: "cash", crossOverOn: false, reservePct: 10 }) },
   ...["BBCA","BBRI","BMRI","TLKM","ASII","ADRO","PTBA","ESSA"].map(t => ({
-    label: `Single ${t}-Cash`, fn: () => runSingle(dailyData, t, 8, 5, "cash")
+    label: `Single ${t}-Cash`, fn: () => runSingle(dailyData, t, { sellPct: 8, buyPct: 5, safeHaven: "cash" })
   })),
   ...["BBCA","BBRI","BMRI","TLKM","ASII","ADRO","PTBA","ESSA"].map(t => ({
-    label: `Single ${t}-Gold`, fn: () => runSingle(dailyData, t, 8, 5, "gold")
+    label: `Single ${t}-Gold`, fn: () => runSingle(dailyData, t, { sellPct: 8, buyPct: 5, safeHaven: "gold" })
   })),
 ];
 
@@ -331,7 +155,6 @@ const results = strategies.map((s, i) => {
   return { label: s.label, ...r };
 });
 
-// Sort by return
 const sorted = [...results].sort((a, b) => b.ret - a.ret);
 console.log(`\n${"═".repeat(100)}`);
 console.log("  RANK │ Strategy              │ Return    │ Final");
@@ -341,3 +164,43 @@ sorted.forEach((r, i) => {
   console.log(`  ${(i+1).toString().padStart(2)}${med} │ ${r.label.padEnd(22)} │ ${(r.ret >= 0 ? " " : "")}${r.ret.toFixed(1)}%${" ".repeat(6)}│ Rp ${r.finalVal.toLocaleString("id-ID")}`);
 });
 console.log(`\n(Benchmark: IHSG ${((dailyData[dailyData.length-1].ihsg/dailyData[0].ihsg-1)*100).toFixed(1)}%  |  Emas ${((dailyData[dailyData.length-1].gold/dailyData[0].gold-1)*100).toFixed(1)}%)`);
+
+// === JOURNAL EXPORT — ALL STRATEGIES ===
+const masterCsvPath = path.join(__dirname, "JURNAL_MASTER.csv");
+const csvHeader = "Strategy,Tanggal,Aksi,Ticker,Harga,Lembar,Kas setelah,Total Portofolio,Keterangan";
+const masterRows = [];
+
+results.forEach(r => {
+  const logs = r.logs || [];
+  logs.forEach(l => {
+    const s = l.action === "BELI-EMAS" || l.action === "JUAL-EMAS" ? l.shares.toFixed(4) : Math.round(l.shares);
+    masterRows.push(`"${r.label}",${l.date},${l.action},${l.ticker},${l.price},${s},${l.cashAfter},${l.totalVal},"${l.detail}"`);
+  });
+});
+
+fs.writeFileSync(masterCsvPath, csvHeader + "\n" + masterRows.join("\n"), "utf-8");
+console.log(`\n📄 JURNAL MASTER (${results.length} strategy): ${masterRows.length} transaksi → ${masterCsvPath}`);
+
+sorted.slice(0, 3).forEach(r => {
+  const logs = r.logs || [];
+  if (logs.length === 0) return;
+  const csvPath = path.join(__dirname, `JURNAL_${r.label.replace(/\s+/g, "_")}.csv`);
+  const rows = logs.map(l =>
+    `${l.date},${l.action},${l.ticker},${l.price},${l.action === "BELI-EMAS" || l.action === "JUAL-EMAS" ? l.shares.toFixed(4) : Math.round(l.shares)},${l.cashAfter},${l.totalVal},"${l.detail}"`
+  );
+  fs.writeFileSync(csvPath, csvHeader.replace("Strategy,", "") + "\n" + rows.join("\n"), "utf-8");
+  console.log(`📄 JURNAL ${r.label}: ${logs.length} transaksi → ${csvPath}`);
+});
+
+const juara1 = sorted[0];
+const j = juara1.logs || [];
+console.log(`\n${"=".repeat(100)}`);
+console.log(`  BUKU JURNAL TRANSAKSI ALGORITMA HARIAN — ${juara1.label} (🥇)`);
+console.log(`  Periode: ${dailyData[0].date} s/d ${dailyData[dailyData.length-1].date}  |  Total: ${j.length} transaksi`);
+console.log(`${"=".repeat(100)}`);
+console.log("  Tanggal    │ Aksi          │ Ticker  │   Harga │   Lembar │       Kas │   Total Portofolio │ Keterangan");
+console.log(`${"─".repeat(100)}`);
+j.forEach(l => {
+  const sStr = l.action === "BELI-EMAS" || l.action === "JUAL-EMAS" ? l.shares.toFixed(2) : Math.round(l.shares).toString();
+  console.log(`  ${l.date} │ ${l.action.padEnd(13)} │ ${(l.ticker||"").padEnd(7)} │ ${l.price.toString().padStart(7)} │ ${sStr.padStart(8)} │ ${l.cashAfter.toLocaleString("id-ID").padStart(10)} │ ${l.totalVal.toLocaleString("id-ID").padStart(16)} │ ${l.detail}`);
+});

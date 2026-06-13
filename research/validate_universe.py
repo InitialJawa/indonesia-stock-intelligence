@@ -1,7 +1,9 @@
 import json
 from pathlib import Path
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from utils.config_loader import load_universe as cl_load
 
-CURRENT_UNIVERSE_FILE = Path("universe/idx30.json")
 HISTORICAL_DIR = Path("database/historical_universe")
 OUTPUT_REPORT = Path("reports/universe_change_analysis.md")
 
@@ -10,11 +12,7 @@ def load_json(file_path):
         return set(json.load(f))
 
 def main():
-    if not CURRENT_UNIVERSE_FILE.exists():
-        print(f"ERROR: Current universe file {CURRENT_UNIVERSE_FILE} not found.")
-        return
-        
-    current_universe = load_json(CURRENT_UNIVERSE_FILE)
+    current_universe = load_json(cl_load("IDX80"))
     
     # List and sort all historical files
     hist_files = sorted(list(HISTORICAL_DIR.glob("*.json")))

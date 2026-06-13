@@ -7,6 +7,8 @@ import dotenv from "dotenv";
 
 import stockFactors from "./data/stock_factors.json" with { type: "json" };
 import milestonesStr from "./data/milestones.json" with { type: "json" };
+import idx30Tickers from "../../universe/idx30.json" with { type: "json" };
+import idx80Tickers from "../../universe/idx80.json" with { type: "json" };
 import { runAlgo, runSingle } from "../../engine.mjs";
 
 dotenv.config();
@@ -360,7 +362,20 @@ Format your response using professional markdown with bullet points, brief table
 });
 
 // Real-time Backtest & Historical Data Backend Engine Since 2020
-const GOTO_IPO_TS = new Date("2022-04-11").getTime();
+const IPO_DATES: Record<string, number> = {
+  "AADI": new Date("2023-12-01").getTime(), "ADMR": new Date("2022-01-07").getTime(),
+  "AMMN": new Date("2023-01-10").getTime(), "BUKA": new Date("2021-08-06").getTime(),
+  "CBDK": new Date("2023-01-17").getTime(), "CMRY": new Date("2021-09-24").getTime(),
+  "CUAN": new Date("2023-02-16").getTime(), "GOTO": new Date("2022-04-11").getTime(),
+  "MAPA": new Date("2021-12-03").getTime(), "MBMA": new Date("2023-04-12").getTime(),
+  "PANI": new Date("2022-08-01").getTime(), "PGEO": new Date("2023-02-24").getTime(),
+  "RAJA": new Date("2024-10-03").getTime(), "RATU": new Date("2024-10-09").getTime(),
+  "TAPG": new Date("2021-03-30").getTime(), "WIFI": new Date("2021-01-08").getTime(),
+};
+const UNIVERSE_TICKERS: Record<string, Set<string>> = {
+  "IDX30": new Set((idx30Tickers as string[]).map(t => t.replace(".JK", ""))),
+  "IDX80": new Set((idx80Tickers as string[]).map(t => t.replace(".JK", ""))),
+};
 const STOCK_FACTORS: Record<string, [number, number, number, number]> = stockFactors as unknown as Record<string, [number, number, number, number]>;
 const MILESTONES_STR: { date: string; ihsg: number; gold: number; stocks: Record<string, number> }[] = milestonesStr as unknown as { date: string; ihsg: number; gold: number; stocks: Record<string, number> }[];
 
@@ -413,9 +428,23 @@ const getJitterForDate = (dateStr: string, seed: number) => {
   return ((Math.abs(hash) % 1000) / 1000) - 0.5;
 };
 
+function filterMilestonesByUniverse(ms: typeof MILESTONES, universe?: string): typeof MILESTONES {
+  const active = universe || "IDX30";
+  const tickers = UNIVERSE_TICKERS[active] || UNIVERSE_TICKERS["IDX30"];
+  return ms.map(m => ({ ...m, stocks: Object.fromEntries(Object.entries(m.stocks).filter(([k]) => tickers.has(k))) }));
+}
+function applyPreIPOFilter(day: { date: string; stockPrices?: Record<string, number>; stockRanks?: Record<string, number> }): void {
+  const dayTime = new Date(day.date).getTime();
+  for (const [tk, ipoTime] of Object.entries(IPO_DATES)) {
+    if (dayTime < ipoTime) { delete day.stockPrices?.[tk]; delete day.stockRanks?.[tk]; }
+  }
+}
+
 app.get("/api/backtest-data", (req, res) => {
   try {
     const configType = (req.query.configType === "res" ? "res" : "prod") as "prod" | "res";
+    const universe = (req.query.universe as string) || "IDX30";
+    const uniMs = filterMilestonesByUniverse(MILESTONES, universe);
     const weights = configType === "prod" 
       ? { quality: 0.25, growth: 0.1, value: 0.3, momentum: 0.35 }
       : { quality: 0.25, growth: 0.3, value: 0.1, momentum: 0.35 };
@@ -436,22 +465,19 @@ app.get("/api/backtest-data", (req, res) => {
       const year = currentDate.getFullYear();
       const currentTime = currentDate.getTime();
 
-      let mPrev = MILESTONES[0];
-      let mNext = MILESTONES[MILESTONES.length - 1];
+      let mPrev = uniMs[0];
+      let mNext = uniMs[uniMs.length - 1];
 
-      // Extrapolate for days past the last milestone
-      if (currentTime > MILESTONES[MILESTONES.length - 1].time) {
-        if (MILESTONES.length >= 2) {
-          const lastMs = MILESTONES[MILESTONES.length - 1];
-          const prevMs = MILESTONES[MILESTONES.length - 2];
-          mPrev = prevMs;
-          mNext = lastMs;
+      if (currentTime > uniMs[uniMs.length - 1].time) {
+        if (uniMs.length >= 2) {
+          mPrev = uniMs[uniMs.length - 2];
+          mNext = uniMs[uniMs.length - 1];
         }
       } else {
-        for (let m = 0; m < MILESTONES.length - 1; m++) {
-          if (currentTime >= MILESTONES[m].time && currentTime <= MILESTONES[m + 1].time) {
-            mPrev = MILESTONES[m];
-            mNext = MILESTONES[m + 1];
+        for (let m = 0; m < uniMs.length - 1; m++) {
+          if (currentTime >= uniMs[m].time && currentTime <= uniMs[m + 1].time) {
+            mPrev = uniMs[m];
+            mNext = uniMs[m + 1];
             break;
           }
         }
@@ -527,18 +553,13 @@ app.get("/api/backtest-data", (req, res) => {
       });
     }
 
-    // Filter GOTO before IPO
-    for (const day of data) {
-      if (new Date(day.date).getTime() < GOTO_IPO_TS) {
-        delete day.stockPrices["GOTO"];
-        delete day.stockRanks["GOTO"];
-      }
-    }
+    for (const day of data) { applyPreIPOFilter(day); }
 
     res.json({
       success: true,
       count: data.length,
       configType,
+      universe,
       weights,
       data
     });
@@ -551,9 +572,10 @@ app.get("/api/backtest-data", (req, res) => {
 // Backtest execution endpoint — uses shared engine.mjs
 app.post("/api/run-backtest", (req, res) => {
   try {
-    const { mode, ticker, topN, crashPct, safeHaven, crossOverOn, reservePct, sellPct, buyPct, capital, configType } = req.body || {};
+    const { mode, ticker, topN, crashPct, safeHaven, crossOverOn, reservePct, sellPct, buyPct, capital, configType, universe } = req.body || {};
+    const activeUniverse = universe || "IDX30";
+    const uniMsRun = filterMilestonesByUniverse(MILESTONES, activeUniverse);
 
-    // Generate daily data from milestones (same as /api/backtest-data)
     const weights = configType === "res"
       ? { quality: 0.25, growth: 0.3, value: 0.1, momentum: 0.35 }
       : { quality: 0.25, growth: 0.1, value: 0.3, momentum: 0.35 };
@@ -572,11 +594,11 @@ app.post("/api/run-backtest", (req, res) => {
       const year = d.getFullYear();
       const currentTime = d.getTime();
 
-      let mPrev = MILESTONES[0], mNext = MILESTONES[MILESTONES.length - 1];
-      if (currentTime <= MILESTONES[MILESTONES.length - 1].time) {
-        for (let m = 0; m < MILESTONES.length - 1; m++) {
-          if (currentTime >= MILESTONES[m].time && currentTime <= MILESTONES[m + 1].time) {
-            mPrev = MILESTONES[m]; mNext = MILESTONES[m + 1]; break;
+      let mPrev = uniMsRun[0], mNext = uniMsRun[uniMsRun.length - 1];
+      if (currentTime <= uniMsRun[uniMsRun.length - 1].time) {
+        for (let m = 0; m < uniMsRun.length - 1; m++) {
+          if (currentTime >= uniMsRun[m].time && currentTime <= uniMsRun[m + 1].time) {
+            mPrev = uniMsRun[m]; mNext = uniMsRun[m + 1]; break;
           }
         }
       }
@@ -604,13 +626,7 @@ app.post("/api/run-backtest", (req, res) => {
       rawData.push({ date: dateStr, ihsgPrice: Math.round(ihsgPrice), goldPrice: Math.round(goldPrice), stockPrices, stockRanks });
     }
 
-    // Filter GOTO before IPO
-    for (const day of rawData) {
-      if (new Date(day.date).getTime() < GOTO_IPO_TS) {
-        delete day.stockPrices["GOTO"];
-        delete day.stockRanks["GOTO"];
-      }
-    }
+    for (const day of rawData) { applyPreIPOFilter(day); }
 
     let result;
     if (mode === "single") {

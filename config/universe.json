@@ -1,4 +1,17 @@
 {
-  "universe": "IDX30",
-  "source": "universe/idx30.json"
+  "default": "IDX30",
+  "universes": {
+    "IDX30": {
+      "label": "IDX30",
+      "description": "30 largest & most liquid stocks on IDX",
+      "file": "universe/idx30.json",
+      "tickerCount": 30
+    },
+    "IDX80": {
+      "label": "IDX80",
+      "description": "80 stocks ranked by liquidity & market cap",
+      "file": "universe/idx80.json",
+      "tickerCount": 80
+    }
+  }
 }

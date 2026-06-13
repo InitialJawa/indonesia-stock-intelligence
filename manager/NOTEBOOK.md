@@ -4,6 +4,48 @@ Ini buku catatan gue. Setiap ada perubahan, error, atau keputusan penting, gue c
 
 ---
 
+## 2026-06-13
+
+### 🆕 engine.mjs — Shared Backtest Engine
+**Apa:** Ekstraksi shared pure-function engine (`runAlgo`, `runSingle`, `normalizeDay`) dari duplikasi kode di CLI + server + dashboard.
+**File:** `engine.mjs`
+**Kenapa:** Dulu tiap entry point punya copy-paste logic sendiri. Sekarang semua import dari satu source.
+**Entry points:**
+- `backtest_compare.mjs` (CLI) — import dari `engine.mjs`
+- `dashboard/dashboard_v7/server.ts` — `POST /api/run-backtest` pake engine
+- `dashboard/dashboard_v7/src/components/SimulationTab.tsx` — API-first, inline fallback
+
+### 🆕 POST /api/run-backtest
+**Apa:** Endpoint baru di server.ts yang nerima parameter backtest, generate data, jalanin engine, return results + journal logs.
+**Body:** `{ mode, ticker, topN, crashPct, safeHaven, capital, configType, ... }`
+
+### 🐛 Grafik Algo Flat (Strategi Rebalancer = 0)
+**Apa:** Chart pake `"Strategi Rebalancer": 0` pas pake API result.
+**Fix:** Engine sekarang collect `chartData[]` di loop (tiap 8 hari + hari terakhir) — pake portfolio value real.
+**SimulationTab.tsx:** Map `engineResult.chartData` → `{ date, "Strategi Rebalancer", "Benchmark IHSG", "Benchmark Emas", ranks }`.
+
+### 🐛 GOTO Pre-IPO (Error Kritis)
+**Apa:** GOTO muncul di transaksi Jan 2021 padahal IPO April 2022. Data synthetic di milestones.json.
+**Fix:** Filter GOTO dari `stockPrices`/`stockRanks` untuk tanggal sebelum `2022-04-11` di SEMUA data generation:
+- `SimulationTab.tsx` — `generateBacktestData()` + inline fallback
+- `server.ts` — GET `/api/backtest-data` + POST `/api/run-backtest`
+- `backtest_compare.mjs` — CLI data generation
+
+### 🐛 Crash Trigger VELOCITY -2%/5D (False Positive)
+**Apa:** Jan 2020 IHSG turun kecil (~0.8%) tapi kena trigger VELOCITY karena sensitif.
+**Fix:** Dihapus. Cuma HIGH-60D `-crashPct%` yang dipakai. Minimal 60 hari data sebelum bisa trigger.
+
+### 🐛 Recovery 2,5 Tahun di Emas (2022→2025)
+**Apa:** Crash Dec 2022 → baru recovery July 2025. Gak ada transaksi 2,5 tahun.
+**Akar masalah:** `crashLow` dihitung pake rolling 60-day minimum. Noise jitter harian (±0.75%) bikin 60-day low selalu dekat harga sekarang, jadi threshold 3% gak pernah tercapai.
+**Fix:** `crashLowPrice` disimpan **fixed** pas crash (`= day.ihsg`) dan diupdate cuma kalau IHSG turun lebih rendah (tracking true bottom). Recovery diukur dari bottom beneran, bukan rolling window.
+
+### 🐛 Harga Emas Jan 2020 Overestimate
+**Apa:** Milestone gold: 800.000 → historis Antam ~765.000.
+**Fix:** `milestones.json` → gold `800000` → `765000`.
+
+---
+
 ## 2026-06-11
 
 ### 🆕 Rank Change dari Warehouse (RK) — Deploy

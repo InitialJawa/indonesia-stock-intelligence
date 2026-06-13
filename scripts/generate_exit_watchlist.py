@@ -3,16 +3,13 @@ import csv
 import math
 import datetime
 from pathlib import Path
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 import yfinance as yf
 import pandas as pd
+from utils.config_loader import load_universe
 
-TICKERS = [
-    'ADRO.JK', 'ESSA.JK', 'MAPI.JK', 'PTBA.JK', 'AKRA.JK', 'CPIN.JK',
-    'ANTM.JK', 'EXCL.JK', 'BBRI.JK', 'BMRI.JK', 'BRPT.JK', 'BBNI.JK',
-    'INDF.JK', 'PGAS.JK', 'MDKA.JK', 'ITMG.JK', 'TLKM.JK', 'ASII.JK',
-    'INTP.JK', 'ICBP.JK', 'BBCA.JK', 'UNTR.JK', 'MIKA.JK', 'GOTO.JK',
-    'SMGR.JK', 'SIDO.JK', 'TPIA.JK', 'KLBF.JK', 'AMMN.JK', 'HEAL.JK'
-]
+TICKERS = load_universe("IDX80")
 
 BENCHMARK_TICKER = '^JKSE'
 LEADERS_FILE = Path('data/current/leaders_latest.csv')

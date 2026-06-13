@@ -18,7 +18,18 @@ import {
   FileSpreadsheet,
   AlertCircle
 } from "lucide-react";
-const GOTO_IPO_DATE = new Date("2022-04-11").getTime();
+const IDX30_TICKERS = new Set(["BBCA","BBRI","BMRI","BBNI","TLKM","ASII","ICBP","INDF","KLBF","CPIN","ADRO","PTBA","MDKA","AMMN","ANTM","TPIA","BRPT","PGAS","UNTR","SMGR","INTP","GOTO","ESSA","EXCL","MAPI","MIKA","HEAL","SIDO","AKRA","ITMG"]);
+const IDX80_TICKERS = new Set(["AADI","ACES","ADMR","ADRO","AKRA","AMMN","AMRT","ANTM","ARTO","ASII","BBCA","BBNI","BBRI","BBTN","BKSL","BMRI","BRMS","BRPT","BSDE","BUKA","BUMI","CBDK","CMRY","CPIN","CTRA","CUAN","DEWA","DSNG","ELSA","EMTK","ENRG","ERAA","ESSA","EXCL","GGRM","GOTO","HEAL","HRTA","HRUM","ICBP","INCO","INDF","INDY","INKP","INTP","ISAT","ITMG","JPFA","JSMR","KIJA","KLBF","KPIG","MAPA","MAPI","MBMA","MDKA","MEDC","MIKA","MYOR","PANI","PGAS","PGEO","PNLF","PTBA","PTRO","PWON","RAJA","RATU","SCMA","SIDO","SMGR","SMRA","SSIA","TAPG","TLKM","TOWR","TPIA","UNTR","UNVR","WIFI"]);
+const IPO_DATES: Record<string, number> = {
+  "AADI": new Date("2023-12-01").getTime(), "ADMR": new Date("2022-01-07").getTime(),
+  "AMMN": new Date("2023-01-10").getTime(), "BUKA": new Date("2021-08-06").getTime(),
+  "CBDK": new Date("2023-01-17").getTime(), "CMRY": new Date("2021-09-24").getTime(),
+  "CUAN": new Date("2023-02-16").getTime(), "GOTO": new Date("2022-04-11").getTime(),
+  "MAPA": new Date("2021-12-03").getTime(), "MBMA": new Date("2023-04-12").getTime(),
+  "PANI": new Date("2022-08-01").getTime(), "PGEO": new Date("2023-02-24").getTime(),
+  "RAJA": new Date("2024-10-03").getTime(), "RATU": new Date("2024-10-09").getTime(),
+  "TAPG": new Date("2021-03-30").getTime(), "WIFI": new Date("2021-01-08").getTime(),
+};
 
 import { PortfolioItem, StockData } from "../types";
 import { STOCKS_DATA } from "../stocksData";
@@ -153,8 +164,19 @@ const extendMilestonesWithLiveData = async () => {
   } catch (_) {}
 };
 
-const generateBacktestData = (configType: "prod" | "res"): BacktestDayData[] => {
-  const milestones = getMilestones();
+const filterStocksByUniverse = (stocks: Record<string, number>, universe: string): Record<string, number> => {
+  const tickers = universe === "IDX80" ? IDX80_TICKERS : IDX30_TICKERS;
+  return Object.fromEntries(Object.entries(stocks).filter(([k]) => tickers.has(k)));
+};
+const applyIPOFilter = (prices: Record<string, number>, ranks: Record<string, number>, dateStr: string) => {
+  const dayTime = new Date(dateStr).getTime();
+  for (const [tk, ipo] of Object.entries(IPO_DATES)) {
+    if (dayTime < ipo) { delete prices[tk]; delete ranks[tk]; }
+  }
+};
+
+const generateBacktestData = (configType: "prod" | "res", universe: string = "IDX30"): BacktestDayData[] => {
+  const milestones = getMilestones().map(m => ({ ...m, stocks: filterStocksByUniverse(m.stocks, universe) }));
   // Cap last milestone <= today
   const now = new Date();
   if (milestones[milestones.length - 1].time > now.getTime()) {
@@ -298,13 +320,7 @@ const generateBacktestData = (configType: "prod" | "res"): BacktestDayData[] => 
     });
   }
 
-  // Filter GOTO before IPO date (April 11, 2022)
-  for (const day of data) {
-    if (new Date(day.date).getTime() < GOTO_IPO_DATE) {
-      delete day.stockPrices["GOTO"];
-      delete day.stockRanks["GOTO"];
-    }
-  }
+  for (const day of data) { applyIPOFilter(day.stockPrices, day.stockRanks, day.date); }
 
   return data;
 };
@@ -376,6 +392,7 @@ export function SimulationTab({
   
   // Custom weight configuration type for backtest ('prod' = Config F, 'res' = Config B)
   const [backtestConfigType, setBacktestConfigType] = useState<"prod" | "res">(activeConfig);
+  const [backtestUniverse, setBacktestUniverse] = useState<string>("IDX30");
 
   useEffect(() => {
     setBacktestConfigType(activeConfig);
@@ -552,16 +569,16 @@ export function SimulationTab({
 
     let rawData: BacktestDayData[] = [];
     try {
-      const res = await fetch(`/api/backtest-data?configType=${backtestConfigType}`);
+      const res = await fetch(`/api/backtest-data?configType=${backtestConfigType}&universe=${backtestUniverse}`);
       const apiRes = await res.json();
       if (apiRes.success && Array.isArray(apiRes.data)) {
         rawData = apiRes.data;
       } else {
-        rawData = generateBacktestData(backtestConfigType);
+        rawData = generateBacktestData(backtestConfigType, backtestUniverse);
       }
     } catch (err) {
       console.warn("Backtest backend error, fallback to client generation: ", err);
-      rawData = generateBacktestData(backtestConfigType);
+      rawData = generateBacktestData(backtestConfigType, backtestUniverse);
     }
 
     setBacktestProgress(85);
@@ -584,7 +601,8 @@ export function SimulationTab({
         body: JSON.stringify({
           mode: "algo", configType: backtestConfigType, capital: cap,
           topN, crashPct: crashSensitivity, safeHaven: safeHavenEngine,
-          crossOverOn: enableCrossover, reservePct: reserveBufferPct
+          crossOverOn: enableCrossover, reservePct: reserveBufferPct,
+          universe: backtestUniverse
         })
       });
       const apiJson = await apiRes.json();
@@ -592,6 +610,7 @@ export function SimulationTab({
     } catch (_) {}
 
     const configName = backtestConfigType === "prod" ? "Config F (Fundamental Focus)" : "Config B (Backtest Optimized)";
+    const universeName = backtestUniverse;
     const day0 = rawData[0];
     const initialIhsgPrice = day0.ihsgPrice;
     const initialGoldPrice = day0.goldPrice;
@@ -603,7 +622,7 @@ export function SimulationTab({
       }));
       logs.unshift({
         date: day0.date, type: "BUY",
-        message: `Backtest via engine.mjs | Modal Rp ${cap.toLocaleString("id-ID")} | ${configName} | Top ${topN} | Crash ${crashSensitivity}% | Safe Haven: ${safeHavenAsset}`
+        message: `Backtest via engine.mjs | Rp ${cap.toLocaleString("id-ID")} | ${universeName} ${configName} | Top ${topN} | Crash ${crashSensitivity}% | Safe Haven: ${safeHavenAsset}`
       });
       const chartData = (engineResult.chartData || []).map((d: any) => ({
         date: d.date, "Strategi Rebalancer": d.strategi,
@@ -813,10 +832,13 @@ export function SimulationTab({
       if (apiRes.success && Array.isArray(apiRes.data)) {
         rawData = apiRes.data;
       } else {
-        rawData = generateBacktestData(backtestConfigType);
+        rawData = generateBacktestData(backtestConfigType, backtestUniverse);
       }
 
-      const stockKeys = ["BBCA", "BBRI", "BMRI", "TLKM", "ASII", "ADRO", "PTBA", "ESSA", "GOTO"];
+      const uniTickers = backtestUniverse === "IDX80"
+        ? ["BBCA","BBRI","BMRI","BBNI","TLKM","ASII","ADRO","PTBA","ESSA","GOTO","ICBP","INDF","KLBF","CPIN","MDKA","AMMN","ANTM","TPIA","BRPT","PGAS","UNTR","SMGR","INTP","EXCL","MAPI","MIKA","HEAL","SIDO","AKRA","ITMG","AADI","ACES","ADMR","AKRA","AMRT","ARTO","BBTN","BKSL","BRMS","BSDE","BUKA","BUMI","CBDK","CMRY","CTRA","CUAN","DEWA","DSNG","ELSA","EMTK","ENRG","ERAA","GGRM","HRTA","HRUM","INCO","INDY","INKP","ISAT","JPFA","JSMR","KIJA","KPIG","MAPA","MBMA","MEDC","MYOR","PANI","PGEO","PNLF","PTRO","PWON","RAJA","RATU","SCMA","SMRA","SSIA","TAPG","TOWR","UNVR","WIFI"]
+        : ["BBCA","BBRI","BMRI","TLKM","ASII","ADRO","PTBA","ESSA","GOTO"];
+      const stockKeys = [...new Set(uniTickers)];
       const header = ["Tanggal", "Harga_IHSG", "Harga_Emas_Per_Gram", ...stockKeys].join(",");
       const rows = rawData.map(day => {
         const rowData = [
@@ -1256,6 +1278,36 @@ export function SimulationTab({
                   {backtestConfigType === "prod" 
                     ? "⚖️ Menguji Config F: Fundamental Focus (Kualitas & Value diunggulkan)." 
                     : "⚡ Menguji Config B: Backtest Optimized (Growth & Momentum agresif)."}
+                </span>
+              </div>
+
+              {/* Universe Selector */}
+              <div className="space-y-2">
+                <span className="text-[10px] text-white/40 uppercase block font-mono">Universe Saham</span>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => setBacktestUniverse("IDX30")}
+                    className={`flex-1 text-[10px] font-bold py-2 rounded-lg cursor-pointer border transition-all ${
+                      backtestUniverse === "IDX30"
+                        ? "bg-purple-500/10 border-purple-500/30 text-purple-400"
+                        : "bg-[#0A0A0A] border-white/5 text-white/40 hover:text-white/60"
+                    }`}
+                  >
+                    IDX30
+                  </button>
+                  <button
+                    onClick={() => setBacktestUniverse("IDX80")}
+                    className={`flex-1 text-[10px] font-bold py-2 rounded-lg cursor-pointer border transition-all ${
+                      backtestUniverse === "IDX80"
+                        ? "bg-purple-500/10 border-purple-500/30 text-purple-400"
+                        : "bg-[#0A0A0A] border-white/5 text-white/40 hover:text-white/60"
+                    }`}
+                  >
+                    IDX80
+                  </button>
+                </div>
+                <span className="text-[9px] text-[#A0A0A0]/80 block leading-tight">
+                  {backtestUniverse === "IDX30" ? "🎯 30 saham terlikuid & terbesar di BEI." : "🚀 80 saham likuid & kapitalisasi besar di BEI."}
                 </span>
               </div>
 

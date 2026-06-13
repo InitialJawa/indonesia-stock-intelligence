@@ -19,14 +19,11 @@ def safe_float(val, default=0.0):
     except (ValueError, TypeError):
         return default
 
-# IDX30 tickers with .JK suffix (derived from existing TICKER_INFO in generate_dashboard)
-TICKERS = [
-    'ADRO.JK', 'ESSA.JK', 'MAPI.JK', 'PTBA.JK', 'AKRA.JK', 'CPIN.JK',
-    'ANTM.JK', 'EXCL.JK', 'BBRI.JK', 'BMRI.JK', 'BRPT.JK', 'BBNI.JK',
-    'INDF.JK', 'PGAS.JK', 'MDKA.JK', 'ITMG.JK', 'TLKM.JK', 'ASII.JK',
-    'INTP.JK', 'ICBP.JK', 'BBCA.JK', 'UNTR.JK', 'MIKA.JK', 'GOTO.JK',
-    'SMGR.JK', 'SIDO.JK', 'TPIA.JK', 'KLBF.JK', 'AMMN.JK', 'HEAL.JK'
-]
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from utils.config_loader import load_universe
+
+TICKERS = [t for t in load_universe("IDX80") if t != "UNVR.JK"]
 
 def fetch_fundamentals(ticker):
     tk = yf.Ticker(ticker)

@@ -16,7 +16,10 @@ warnings.filterwarnings("ignore")
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
-UNIVERSE_FILE = PROJECT_ROOT / "universe" / "idx30.json"
+import sys as _sys
+_sys.path.insert(0, str(PROJECT_ROOT))
+from utils.config_loader import load_universe
+
 DAILY_PRICES_DIR = PROJECT_ROOT / "output" / "history_prices"
 BENCHMARK_FILE = PROJECT_ROOT / "benchmarks" / "ihsg.csv"
 OUTPUT_DIR = PROJECT_ROOT / "database" / "historical"
@@ -26,8 +29,7 @@ START_DATE = "2022-01-01"
 
 
 def load_universe():
-    with open(UNIVERSE_FILE, "r") as f:
-        return json.load(f)
+    return [t for t in load_universe("IDX80") if t != "UNVR.JK"]
 
 
 def download_missing_prices(tickers):

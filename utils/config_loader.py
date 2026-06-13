@@ -10,12 +10,16 @@ def load_settings():
         return json.load(f)
 
 
-def load_universe():
+def load_universe(universe_key=None):
     path = os.path.join(BASE_DIR, "config", "universe.json")
     with open(path, "r") as f:
         config = json.load(f)
 
-    universe_file = config["source"]
+    if universe_key is None:
+        universe_key = config.get("default", "IDX30")
+
+    universe_info = config["universes"].get(universe_key, config["universes"]["IDX30"])
+    universe_file = universe_info["file"]
     if not os.path.isabs(universe_file):
         universe_file = os.path.join(BASE_DIR, universe_file)
 

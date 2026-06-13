@@ -4,9 +4,11 @@ import json
 import datetime
 import concurrent.futures
 from pathlib import Path
+import sys as _sys
+_sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from utils.config_loader import load_universe
 from utils.data_provider import YahooFinanceProvider
 
-UNIVERSE_FILE = Path("universe/idx30.json")
 OUTPUT_FILE = Path("output/raw/fundamentals.json")
 
 def process_single_ticker(ticker, provider):
@@ -32,8 +34,7 @@ def collect_fundamentals():
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
     print("--- Mengumpulkan Data Fundamental (Multithreading) ---")
     
-    with open(UNIVERSE_FILE, "r") as f:
-        tickers = json.load(f)
+    tickers = load_universe("IDX80")
         
     OUTPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
     provider = YahooFinanceProvider()

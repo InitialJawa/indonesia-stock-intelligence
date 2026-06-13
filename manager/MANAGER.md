@@ -197,18 +197,25 @@ Quality: 25% | Growth: 30% | Value: 10% | Momentum: 35%
 - AI narrative (Gemini or deterministic fallback)
 - Volume shock detection + Telegram/email alerts
 - GitHub Actions automation (daily, monthly, live market)
+- **Shared backtest engine** (`engine.mjs`) — pure functions, digunakan oleh CLI + server API + dashboard
+- **POST /api/run-backtest** — endpoint di server.ts, panggil engine dengan param apapun
+- **Transaction journal** — engine nge-log setiap BELI/JUAL/CRASH/RECOVERY ke array logs
+- **Chart data** — engine collect portfolio values per hari (sampled) buat grafik
 
 ### 🐛 Known Issues
 1. **Dual scoring conflict** — Dashboard pake Config B, scoring engine pake Config F. Rankings gak konsisten.
 2. **Synthetic foreign flow** — Data foreign flow digenerate secara sintetik, bukan real transaction data.
 3. **OOS validation bug** — `research/out_of_sample_validation.py` pake `.get(key, 50)` yang bikin semua config hasilnya identik.
 4. **10 ticker marked NEW** — ESSA, MAPI, AKRA, EXCL, INTP, MIKA, SIDO, TPIA, AMMN, HEAL gak ada di warehouse month terakhir (May 2026)
+5. **AI Assistant Vercel** — Butuh `GEMINI_API_KEY`, `GROQ_API_KEY`, `OPENROUTER_API_KEY` di environment Vercel. Kalau gak ada, balik "tidak tersedia".
 
 ### 📅 Terakhir Update
 - **Pipeline:** OK
-- **Dashboard:** OK
+- **Dashboard V4:** OK
+- **Dashboard V7 (Backtest Lab):** OK — engine.mjs shared, API + React component sync
 - **Rank Change:** OK (53 month history, daily snapshots)
 - **Market:** OK (IHSG 5886.03, USDIDR 17985)
+- **Backtest Journal:** 24 strategies, JURNAL_MASTER.csv, per-strategy CSVs for top performers
 
 ---
 

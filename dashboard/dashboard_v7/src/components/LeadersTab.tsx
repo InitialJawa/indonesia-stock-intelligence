@@ -68,13 +68,14 @@ interface LeadersTabProps {
   portfolio?: PortfolioItem[];
   watchlist?: WatchlistItem[];
   getDynamicStock: (ticker: string) => StockData | null;
+  universeStocks: StockData[];
 }
 
-export function LeadersTab({ activeConfig, onSelectTicker, portfolio = [], watchlist = [], getDynamicStock }: LeadersTabProps) {
+export function LeadersTab({ activeConfig, onSelectTicker, portfolio = [], watchlist = [], getDynamicStock, universeStocks }: LeadersTabProps) {
   const [viewMode, setViewMode] = useState<"cards" | "table">("table");
   const [search, setSearch] = useState("");
 
-  const activeStocksList = STOCKS_DATA.map(s => getDynamicStock(s.ticker) || s);
+  const activeStocksList = universeStocks;
   const processedLeaders = getProcessedLeaders(activeStocksList, activeConfig);
   const weights = activeConfig === "prod" ? CW_F : CW_B;
 

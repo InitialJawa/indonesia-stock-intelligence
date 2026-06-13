@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { EX, RS } from "../marketData";
-import { STOCKS_DATA } from "../stocksData";
 import { StockData, PortfolioItem } from "../types";
 import { ShieldAlert, Search, ShieldCheck, Flame, Info, Check, BookmarkCheck } from "lucide-react";
 import { motion } from "motion/react";
@@ -9,12 +8,13 @@ interface CapitalProtectionTabProps {
   onSelectTicker: (ticker: string) => void;
   portfolio?: PortfolioItem[];
   getDynamicStock: (ticker: string) => StockData | null;
+  universeStocks: StockData[];
 }
 
-export function CapitalProtectionTab({ onSelectTicker, portfolio = [], getDynamicStock }: CapitalProtectionTabProps) {
+export function CapitalProtectionTab({ onSelectTicker, portfolio = [], getDynamicStock, universeStocks }: CapitalProtectionTabProps) {
   const [search, setSearch] = useState("");
 
-  const activeStocks = STOCKS_DATA.map(s => getDynamicStock(s.ticker) || s);
+  const activeStocks = universeStocks;
 
   const dynamicExits = activeStocks.map((s, idx) => {
     const existing = EX.find(e => e.ticker.replace(".JK", "") === s.ticker);

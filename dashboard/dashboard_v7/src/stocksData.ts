@@ -1,6 +1,9 @@
 import { StockData } from "./types";
 import { PF, FD, EX, L } from "./marketData";
 
+export const IDX30_TICKERS = new Set(["BBCA","BBRI","BMRI","BBNI","TLKM","ASII","ICBP","INDF","KLBF","CPIN","ADRO","PTBA","MDKA","AMMN","ANTM","TPIA","BRPT","PGAS","UNTR","SMGR","INTP","GOTO","ESSA","EXCL","MAPI","MIKA","HEAL","SIDO","AKRA","ITMG"]);
+export const IDX80_TICKERS = new Set(["AADI","ACES","ADMR","ADRO","AKRA","AMMN","AMRT","ANTM","ARTO","ASII","BBCA","BBNI","BBRI","BBTN","BKSL","BMRI","BRMS","BRPT","BSDE","BUKA","BUMI","CBDK","CMRY","CPIN","CTRA","CUAN","DEWA","DSNG","ELSA","EMTK","ENRG","ERAA","ESSA","EXCL","GGRM","GOTO","HEAL","HRTA","HRUM","ICBP","INCO","INDF","INDY","INKP","INTP","ISAT","ITMG","JPFA","JSMR","KIJA","KLBF","KPIG","MAPA","MAPI","MBMA","MDKA","MEDC","MIKA","MYOR","PANI","PGAS","PGEO","PNLF","PTBA","PTRO","PWON","RAJA","RATU","SCMA","SIDO","SMGR","SMRA","SSIA","TAPG","TLKM","TOWR","TPIA","UNTR","UNVR","WIFI"]);
+
 const RAW_STOCKS_DATA = [
   "ADRO|Adaro Energy Indonesia Tbk|Energy|Coal Mining|112.4|3500|2.34|4.8|1.15|23.8|0.32|11.5",
   "ESSA|Essa Industries Indonesia Tbk|Energy|Gas Processing|10.5|610|-0.81|10.9|1.32|12.1|0.15|1.5",
@@ -188,8 +191,27 @@ export function getStock(ticker: string): StockData {
   const leaderItem = L.find(l => l.ticker === cleanTicker + ".JK" || l.ticker === cleanTicker);
 
   const name = profile?.name || `${cleanTicker} Corporation`;
-  const sector = profile?.sector || "Financials";
-  const subSector = profile?.industry || "Investment Services";
+  // Hash-based sector fallback for tickers without PF data
+  const tickerHash = cleanTicker.split("").reduce((a, c) => a + c.charCodeAt(0), 0);
+  const SECTOR_POOL = ["Energy","Materials","Financials","Consumer Staples","Consumer Discretionary","Infrastructure","Healthcare","Technology","Industrials","Utilities"];
+  const SUBSECTOR_POOL: Record<string,string[]> = {
+    "Energy":["Coal Mining","Oil & Gas","Gas Utilities","Heavy Equipment","Gas Processing"],
+    "Materials":["Diversified Metals","Copper & Gold","Petrochemical","Gold & Copper","Materials"],
+    "Financials":["Banks","Investment Services","Insurance","Financial Services"],
+    "Consumer Staples":["Food & Agribusiness","Poultry","Packaged Food","Consumer Goods"],
+    "Consumer Discretionary":["Retail","Conglomerate","Automotive","Media"],
+    "Infrastructure":["Telecommunication","Infrastructure Services","Logistics"],
+    "Healthcare":["Hospitals","Pharmaceuticals","Healthcare Services"],
+    "Technology":["Internet","Software","Technology Services"],
+    "Industrials":["Industrial Services","Manufacturing","Aerospace"],
+    "Utilities":["Electric Utilities","Gas Utilities","Renewable Energy"]
+  };
+  const sIdx = tickerHash % SECTOR_POOL.length;
+  const fallbackSector = SECTOR_POOL[sIdx];
+  const fallbackSubPool = SUBSECTOR_POOL[fallbackSector] || ["General"];
+  const fallbackSubSector = fallbackSubPool[tickerHash % fallbackSubPool.length];
+  const sector = profile?.sector || fallbackSector;
+  const subSector = profile?.industry || fallbackSubSector;
   const description = profile?.summary || `PT ${name} is a major publicly traded company in Indonesia, listed on the Bursa Efek Indonesia (IDX). It is analyzed as part of our core quantitative stock selection engine.`;
   
   const logoColor = getLogoColor(cleanTicker);

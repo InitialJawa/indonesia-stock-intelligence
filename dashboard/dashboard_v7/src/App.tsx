@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { getStock, STOCKS_DATA } from "./stocksData";
+import { getStock, STOCKS_DATA, IDX30_TICKERS, IDX80_TICKERS } from "./stocksData";
+const ALL_UNIVERSE_TICKERS = new Set([...IDX30_TICKERS, ...IDX80_TICKERS]);
 import { idxNews, EX, MKT, RS } from "./marketData";
 import { StockData, AnalysisResult, PortfolioItem, WatchlistItem } from "./types";
 import { HistoricalChart } from "./components/HistoricalChart";
@@ -112,22 +113,22 @@ export default function App() {
     const interval = setInterval(() => {
       setPriceFluctuations(prev => {
         const next = { ...prev };
-        STOCKS_DATA.forEach(stock => {
+        ALL_UNIVERSE_TICKERS.forEach(ticker => {
+          const stock = getStock(ticker);
+          if (!stock) return;
           let stockPriceBase = stock.currentPrice;
-          if (dataFeed === "goapi" && goapiPrices[stock.ticker]) {
-            stockPriceBase = goapiPrices[stock.ticker].close;
-          } else if (dataFeed === "yahoo" && yahooPrices[stock.ticker]) {
-            stockPriceBase = yahooPrices[stock.ticker].close;
+          if (dataFeed === "goapi" && goapiPrices[ticker]) {
+            stockPriceBase = goapiPrices[ticker].close;
+          } else if (dataFeed === "yahoo" && yahooPrices[ticker]) {
+            stockPriceBase = yahooPrices[ticker].close;
           }
 
-          const currentOffset = next[stock.ticker] || 0;
-          // minor random walk tick: +/- 0.15% of stock price
+          const currentOffset = next[ticker] || 0;
           const driftLimit = stockPriceBase * 0.003;
           const delta = (Math.random() - 0.5) * driftLimit;
           const newOffset = currentOffset + delta;
-          // cap fluctuation at +/- 5% of base price
           const cap = stockPriceBase * 0.05;
-          next[stock.ticker] = Math.max(-cap, Math.min(cap, newOffset));
+          next[ticker] = Math.max(-cap, Math.min(cap, newOffset));
         });
         return next;
       });
@@ -166,6 +167,12 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<"market" | "leaders" | "turnaround" | "exit" | "ledger" | "simulation" | "diagnostics">("market");
   const [hideAlertBanner, setHideAlertBanner] = useState(false);
   
+  // Universe toggle state (global across all tabs)
+  const [activeUniverse, setActiveUniverse] = useState<"IDX30" | "IDX80">(() => {
+    const saved = localStorage.getItem("idx_activeuniverse");
+    return (saved === "IDX30" || saved === "IDX80") ? saved : "IDX30";
+  });
+
   // Weights Config state ('prod' = Config F, 'res' = Config B)
   const [activeConfig, setActiveConfig] = useState<"prod" | "res">(() => {
     const saved = localStorage.getItem("idx_activeconfig");
@@ -223,6 +230,10 @@ export default function App() {
   useEffect(() => {
     localStorage.setItem("idx_activeconfig", activeConfig);
   }, [activeConfig]);
+
+  useEffect(() => {
+    localStorage.setItem("idx_activeuniverse", activeUniverse);
+  }, [activeUniverse]);
 
   // Sync state loops for database lists
   useEffect(() => {
@@ -340,14 +351,23 @@ export default function App() {
   // Crisis override flag based on IHSG monthly drawdown (-17.96% < -10%)
   const isIHSGInCrisis = MKT.ihsg.monthly < -10;
 
+  // Universe-aware stock list (used by all tabs)
+  const isIdx80 = activeUniverse === "IDX80";
+  const activeUniverseTickers = isIdx80 ? IDX80_TICKERS : IDX30_TICKERS;
+  const rawUniverseStocks = isIdx80
+    ? [...activeUniverseTickers].map(t => ({ ticker: t, result: getDynamicStock(t) }))
+    : STOCKS_DATA.map(s => ({ ticker: s.ticker, result: getDynamicStock(s.ticker) || s }));
+  const universeStocks: StockData[] = rawUniverseStocks.map(x => x.result).filter(Boolean) as StockData[];
+  
+
+
   // Search filter listings
-  const activeUniverseStocks = STOCKS_DATA;
-  const filteredStocks = activeUniverseStocks.filter((s) => {
+  const filteredStocks = universeStocks.filter((s) => {
     const isMatched = s.ticker.toLowerCase().includes(searchQuery.toLowerCase()) ||
                       s.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                       s.sector.toLowerCase().includes(searchQuery.toLowerCase());
     return isMatched;
-  }).map(s => getDynamicStock(s.ticker));
+  });
 
   return (
     <div id="applet-main-canvas" className={`min-h-screen bg-[#050505] text-[#E0E0E0] ${theme} font-sans antialiased selection:bg-emerald-500/20 selection:text-emerald-400 flex flex-col`}>
@@ -505,6 +525,30 @@ export default function App() {
             <span className="text-[8px] md:text-[9px] font-black font-mono tracking-wider uppercase">
               {dataFeed === "yahoo" ? "Yahoo" : dataFeed === "goapi" ? "GoAPI" : "Simulasi"}
             </span>
+          </div>
+
+          {/* Universe Toggle Pill */}
+          <div className="flex items-center bg-[#121212] border border-white/10 rounded-lg p-0.5">
+            <button
+              onClick={() => activeUniverse !== "IDX30" && setActiveUniverse("IDX30")}
+              className={`px-2 py-1 text-[9px] font-black font-mono tracking-wider rounded-md transition-all cursor-pointer ${
+                activeUniverse === "IDX30"
+                  ? "bg-purple-500/20 text-purple-300 shadow-sm"
+                  : "text-white/30 hover:text-white/60"
+              }`}
+            >
+              IDX30
+            </button>
+            <button
+              onClick={() => activeUniverse !== "IDX80" && setActiveUniverse("IDX80")}
+              className={`px-2 py-1 text-[9px] font-black font-mono tracking-wider rounded-md transition-all cursor-pointer ${
+                activeUniverse === "IDX80"
+                  ? "bg-purple-500/20 text-purple-300 shadow-sm"
+                  : "text-white/30 hover:text-white/60"
+              }`}
+            >
+              IDX80
+            </button>
           </div>
 
           {/* Settings Menu Toggle */}
@@ -871,6 +915,7 @@ export default function App() {
                     onSellTransaction={handleSellTransaction}
                     onToggleWatchlist={handleToggleWatchlist}
                     getDynamicStock={getDynamicStock}
+                    universeStocks={universeStocks}
                   />
                 </motion.div>
               )}
@@ -884,7 +929,7 @@ export default function App() {
                   exit={{ opacity: 0, y: -15 }}
                   transition={{ duration: 0.15 }}
                 >
-                  <LeadersTab activeConfig={activeConfig} onSelectTicker={handleSelectTicker} portfolio={portfolio} watchlist={watchlist} getDynamicStock={getDynamicStock} />
+                  <LeadersTab activeConfig={activeConfig} onSelectTicker={handleSelectTicker} portfolio={portfolio} watchlist={watchlist} getDynamicStock={getDynamicStock} universeStocks={universeStocks} />
                 </motion.div>
               )}
 
@@ -897,7 +942,7 @@ export default function App() {
                   exit={{ opacity: 0, y: -15 }}
                   transition={{ duration: 0.15 }}
                 >
-                  <RecoveryOpsTab onSelectTicker={handleSelectTicker} portfolio={portfolio} getDynamicStock={getDynamicStock} />
+                  <RecoveryOpsTab onSelectTicker={handleSelectTicker} portfolio={portfolio} getDynamicStock={getDynamicStock} universeStocks={universeStocks} />
                 </motion.div>
               )}
 
@@ -910,7 +955,7 @@ export default function App() {
                   exit={{ opacity: 0, y: -15 }}
                   transition={{ duration: 0.15 }}
                 >
-                  <CapitalProtectionTab onSelectTicker={handleSelectTicker} portfolio={portfolio} getDynamicStock={getDynamicStock} />
+                  <CapitalProtectionTab onSelectTicker={handleSelectTicker} portfolio={portfolio} getDynamicStock={getDynamicStock} universeStocks={universeStocks} />
                 </motion.div>
               )}
 
@@ -932,6 +977,7 @@ export default function App() {
                     getDynamicStock={getDynamicStock}
                     theme={theme}
                     activeConfig={activeConfig}
+                    activeUniverse={activeUniverse}
                     defaultSubTab="past"
                   />
                 </motion.div>
@@ -956,6 +1002,7 @@ export default function App() {
                     onToggleWatchlist={handleToggleWatchlist}
                     getDynamicStock={getDynamicStock}
                     activeConfig={activeConfig}
+                    universeStocks={universeStocks}
                   />
                 </motion.div>
               )}
@@ -971,7 +1018,7 @@ export default function App() {
                 >
                   <DiagnosticsTab 
                     activeStock={activeStock} 
-                    availableStocks={activeUniverseStocks.map(s => getDynamicStock(s.ticker) || s)} 
+                    availableStocks={universeStocks} 
                     onSelectStock={handleChangeActiveTicker} 
                   />
                 </motion.div>

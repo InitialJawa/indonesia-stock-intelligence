@@ -4,26 +4,26 @@ import pandas as pd
 
 from pathlib import Path
 
-# Load weights from config if possible
+# Load weights from config if possible (Config F: Q25/G10/V30/M35)
 CONFIG_PATH = Path("config/scoring_weights.json")
 if CONFIG_PATH.exists():
     try:
         with open(CONFIG_PATH, "r") as f:
             weights = json.load(f)
         QUALITY_WEIGHT = weights.get("quality", 0.25)
-        GROWTH_WEIGHT = weights.get("growth", 0.30)
-        VALUE_WEIGHT = weights.get("value", 0.10)
+        GROWTH_WEIGHT = weights.get("growth", 0.10)
+        VALUE_WEIGHT = weights.get("value", 0.30)
         MOMENTUM_WEIGHT = weights.get("momentum", 0.35)
     except Exception as e:
-        print(f"[WARNING] Gagal memuat config/scoring_weights.json: {e}. Menggunakan default weights.")
+        print(f"[WARNING] Gagal memuat config/scoring_weights.json: {e}. Menggunakan Config F default.")
         QUALITY_WEIGHT = 0.25
-        GROWTH_WEIGHT = 0.30
-        VALUE_WEIGHT = 0.10
+        GROWTH_WEIGHT = 0.10
+        VALUE_WEIGHT = 0.30
         MOMENTUM_WEIGHT = 0.35
 else:
     QUALITY_WEIGHT = 0.25
-    GROWTH_WEIGHT = 0.30
-    VALUE_WEIGHT = 0.10
+    GROWTH_WEIGHT = 0.10
+    VALUE_WEIGHT = 0.30
     MOMENTUM_WEIGHT = 0.35
 
 

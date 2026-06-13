@@ -218,7 +218,20 @@ def generate_leaders():
     g_map = {x['ticker']: x['growth_score'] for x in g_data}
     v_map = {x['ticker']: x['value_score'] for x in v_data}
     m_map = {x['ticker']: x['momentum'] for x in m_data}
-    W_Q, W_G, W_V, W_M = 0.25, 0.30, 0.10, 0.35
+    # Load weights from config/scoring_weights.json (Config F: Q25/G10/V30/M35)
+    config_path = Path("config/scoring_weights.json")
+    if config_path.exists():
+        try:
+            with open(config_path) as f:
+                cw = json.load(f)
+            W_Q = cw.get("quality", 0.25)
+            W_G = cw.get("growth", 0.10)
+            W_V = cw.get("value", 0.30)
+            W_M = cw.get("momentum", 0.35)
+        except Exception:
+            W_Q, W_G, W_V, W_M = 0.25, 0.10, 0.30, 0.35
+    else:
+        W_Q, W_G, W_V, W_M = 0.25, 0.10, 0.30, 0.35
     leaders = []
     for item in final_data:
         ticker = item['ticker']
@@ -226,14 +239,14 @@ def generate_leaders():
         g_val = g_map.get(ticker, 0)
         v = v_map.get(ticker, 0)
         m = m_map.get(ticker, 0)
-        config_b_score = q * W_Q + g_val * W_G + v * W_V + m * W_M
+        config_f_score = q * W_Q + g_val * W_G + v * W_V + m * W_M
         leaders.append({
             'ticker': ticker,
             'quality': round(q, 2),
             'growth': round(g_val, 2),
             'value': round(v, 2),
             'momentum': round(m, 2),
-            'final_score': round(config_b_score, 2)
+            'final_score': round(config_f_score, 2)
         })
     leaders.sort(key=lambda x: x['final_score'], reverse=True)
     for i, l in enumerate(leaders):

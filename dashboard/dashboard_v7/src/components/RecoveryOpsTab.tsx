@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { T } from "../marketData";
-import { STOCKS_DATA } from "../stocksData";
 import { StockData, PortfolioItem } from "../types";
 import { Search, Flame, ShieldAlert, CheckCircle, HelpCircle, BookmarkCheck } from "lucide-react";
 import { motion } from "motion/react";
@@ -9,12 +8,13 @@ interface RecoveryOpsTabProps {
   onSelectTicker: (ticker: string) => void;
   portfolio?: PortfolioItem[];
   getDynamicStock: (ticker: string) => StockData | null;
+  universeStocks: StockData[];
 }
 
-export function RecoveryOpsTab({ onSelectTicker, portfolio = [], getDynamicStock }: RecoveryOpsTabProps) {
+export function RecoveryOpsTab({ onSelectTicker, portfolio = [], getDynamicStock, universeStocks }: RecoveryOpsTabProps) {
   const [search, setSearch] = useState("");
 
-  const activeStocks = STOCKS_DATA.map(s => getDynamicStock(s.ticker) || s);
+  const activeStocks = universeStocks;
 
   const dynamicTurnarounds = activeStocks.map((s, idx) => {
     const existing = T.find(t => t.ticker.replace(".JK", "") === s.ticker);

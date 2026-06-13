@@ -1,6 +1,5 @@
 import { useState, FormEvent } from "react";
 import { StockData, PortfolioItem, WatchlistItem } from "../types";
-import { STOCKS_DATA } from "../stocksData";
 import { SearchableSelect } from "./SearchableSelect";
 import { EX, getProcessedLeaders } from "../marketData";
 import { PieChart, Pie, Cell, Tooltip as RechartsTooltip, ResponsiveContainer } from "recharts";
@@ -30,6 +29,7 @@ interface PortfolioTrackerProps {
   onToggleWatchlist: (ticker: string) => void;
   getDynamicStock: (ticker: string) => StockData | null;
   activeConfig: "prod" | "res";
+  universeStocks: StockData[];
 }
 
 export function PortfolioTracker({ 
@@ -41,9 +41,10 @@ export function PortfolioTracker({
   onSelectStock, 
   onToggleWatchlist,
   getDynamicStock,
-  activeConfig
+  activeConfig,
+  universeStocks
 }: PortfolioTrackerProps) {
-  const visibleStocks = STOCKS_DATA.map(s => getDynamicStock(s.ticker) || s);
+  const visibleStocks = universeStocks;
   const [selectedTicker, setSelectedTicker] = useState(visibleStocks[0].ticker);
   const [sharesStr, setSharesStr] = useState("1000");
   const [customPriceStr, setCustomPriceStr] = useState("");

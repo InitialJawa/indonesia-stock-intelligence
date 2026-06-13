@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { RS, MKT } from "../marketData";
-import { STOCKS_DATA } from "../stocksData";
 import { StockData, PortfolioItem, WatchlistItem } from "../types";
 import { AIAssistant } from "./AIAssistant";
 import { SearchableSelect } from "./SearchableSelect";
@@ -36,6 +35,7 @@ interface MarketTabProps {
   onSellTransaction: (ticker: string, shares: number) => void;
   onToggleWatchlist: (ticker: string) => void;
   getDynamicStock: (ticker: string) => StockData | null;
+  universeStocks: StockData[];
 }
 
 export function MarketTab({ 
@@ -47,9 +47,10 @@ export function MarketTab({
   onRemoveTransaction,
   onSellTransaction,
   onToggleWatchlist,
-  getDynamicStock
+  getDynamicStock,
+  universeStocks
 }: MarketTabProps) {
-  const visibleStocks = STOCKS_DATA.map(s => getDynamicStock(s.ticker) || s);
+  const visibleStocks = universeStocks;
   const [isBriefExpanded, setIsBriefExpanded] = useState(false);
   const [depthTicker, setDepthTicker] = useState<string>(activeStock.ticker);
   const [watchlistTicker, setWatchlistTicker] = useState<string>(activeStock.ticker);
@@ -66,14 +67,11 @@ export function MarketTab({
   const lastFetchTimeRef = React.useRef<number>(0);
 
   // Derive dynamic stock prices to trigger updates
-  const stocksWithPrices = STOCKS_DATA.map(st => {
-    const live = getDynamicStock(st.ticker) || st;
-    return {
-      ticker: st.ticker,
-      currentPrice: live.currentPrice,
-      change: live.change
-    };
-  });
+  const stocksWithPrices = universeStocks.map(st => ({
+    ticker: st.ticker,
+    currentPrice: st.currentPrice,
+    change: st.change
+  }));
 
   const priceValuesString = stocksWithPrices.map(s => `${s.ticker}:${s.currentPrice}`).join("|") 
     + `|IHSG:${MKT.ihsg.value}|USDIDR:${MKT.usdidr.value}`;
@@ -100,16 +98,13 @@ export function MarketTab({
           body: JSON.stringify({
             mkt: MKT,
             rs: RS,
-            stocks: STOCKS_DATA.map(st => {
-              const live = getDynamicStock(st.ticker) || st;
-              return {
+            stocks: universeStocks.map(st => ({
                 ticker: st.ticker,
                 name: st.name,
-                currentPrice: live.currentPrice,
-                change: live.change,
+                currentPrice: st.currentPrice,
+                change: st.change,
                 sector: st.sector,
-              };
-            })
+              }))
           })
         });
 
@@ -718,7 +713,7 @@ export function MarketTab({
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {watchlist.map((item) => {
-                const liveStock = getDynamicStock(item.ticker) || STOCKS_DATA.find((s) => s.ticker === item.ticker);
+                const liveStock = getDynamicStock(item.ticker);
                 if (!liveStock) return null;
                 const isPos = liveStock.change >= 0;
                 return (

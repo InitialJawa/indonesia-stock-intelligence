@@ -219,7 +219,7 @@ export function getStock(ticker: string): StockData {
   const rawMcap = fundamentals?.market_cap ? (fundamentals.market_cap / 1e12) : 50.0;
   const marketCap = parseFloat(rawMcap.toFixed(1));
   const currentPrice = exitItem ? parseFloat(exitItem.close) : 1000;
-  const change = leaderItem ? (parseFloat(leaderItem.momentum) > 50 ? 1.45 : -0.85) : 0.45;
+  const change = leaderItem ? (parseFloat(leaderItem.momentum) > 50 ? 1.45 : -0.85) : parseFloat(((tickerHash % 40 - 20) / 10).toFixed(2));
   const peRatio = fundamentals?.pe_ratio || 14.5;
   const pbRatio = fundamentals?.pb_ratio || 1.6;
   const roe = fundamentals?.roe ? parseFloat((fundamentals.roe * 100).toFixed(1)) : 12.4;

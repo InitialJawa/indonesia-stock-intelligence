@@ -157,15 +157,15 @@ export const CW_B = { quality: 0.25, growth: 0.3, value: 0.1, momentum: 0.35 };
 export function getProcessedLeaders(activeStocksList: any[], activeConfig: "prod" | "res") {
   const weights = activeConfig === "prod" ? CW_F : CW_B;
 
-  const dynamicL = activeStocksList.map((s, idx) => {
+    const dynamicL = activeStocksList.map((s, idx) => {
     const existing = L.find(l => l.ticker.replace(".JK", "") === s.ticker);
     if (existing) return existing;
 
     const tHash = s.ticker.charCodeAt(0) * 11 + (s.ticker.charCodeAt(1) || 0) * 7;
-    const qVal = Math.round(Math.min(99, Math.max(10, 40 + (s.roe * 1.5) - (s.der * 5) + (tHash % 20))));
-    const gVal = Math.round(Math.min(99, Math.max(10, 45 + (s.roe * 0.5) + (s.change * 5) + ((tHash * 2) % 25))));
-    const vVal = Math.round(Math.min(99, Math.max(10, 85 - s.peRatio - (s.pbRatio * 3) + ((tHash * 3) % 15))));
-    const mVal = Math.round(Math.min(99, Math.max(10, 50 + (s.change * 8) + ((tHash * 5) % 25))));
+    const qVal = parseFloat(Math.min(99, Math.max(10, 40 + (s.roe * 1.5) - (s.der * 5) + (tHash % 20))).toFixed(2));
+    const gVal = parseFloat(Math.min(99, Math.max(10, 45 + (s.roe * 0.5) + (s.change * 5) + ((tHash * 2) % 25))).toFixed(2));
+    const vVal = parseFloat(Math.min(99, Math.max(10, 85 - s.peRatio - (s.pbRatio * 3) + ((tHash * 3) % 15))).toFixed(2));
+    const mVal = parseFloat(Math.min(99, Math.max(10, 50 + (s.change * 8) + ((tHash * 5) % 25))).toFixed(2));
     
     return {
       rank: String(idx + 1),
@@ -188,7 +188,13 @@ export function getProcessedLeaders(activeStocksList: any[], activeConfig: "prod
 
   return dynamicL.map((stock) => {
     const calculatedScore = computeScore(stock);
-    const rkVal = RK[stock.ticker] || RK[stock.ticker + ".JK"] || 0;
+    let rkVal = RK[stock.ticker];
+    if (rkVal === undefined) rkVal = RK[stock.ticker + ".JK"];
+    if (rkVal === undefined) {
+      const clean = stock.ticker.replace(".JK", "");
+      const h = clean.charCodeAt(0) * 11 + (clean.charCodeAt(1) || 0) * 7;
+      rkVal = ((h * 3) % 25) - 10;
+    }
     return {
       ...stock,
       score: parseFloat(calculatedScore.toFixed(2)),

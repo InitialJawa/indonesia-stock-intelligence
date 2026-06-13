@@ -212,14 +212,16 @@ export function LeadersTab({ activeConfig, onSelectTicker, portfolio = [], watch
                             <div className="w-[50px] shrink-0 flex justify-end">
                               {(() => {
                                 const matchEX = EX.find(e => e.ticker.toUpperCase().replace(".JK", "") === clean);
-                                if (matchEX?.exit_state === "EXIT") {
+                                const fallbackDrop = liveStk?.change ?? 0;
+                                const effectiveState = matchEX?.exit_state || (fallbackDrop <= -2.2 ? "EXIT" : fallbackDrop <= -0.5 ? "EXIT RISK" : "HEALTHY");
+                                if (effectiveState === "EXIT") {
                                   return (
                                     <span className="text-[7px] font-black text-white bg-rose-600 px-1 py-0.5 rounded animate-pulse shadow-sm uppercase tracking-wider font-sans text-center block w-full leading-normal">
                                       🔴 EXIT
                                     </span>
                                   );
                                 }
-                                if (matchEX?.exit_state === "EXIT RISK") {
+                                if (effectiveState === "EXIT RISK") {
                                   return (
                                     <span className="text-[7px] font-bold text-amber-450 text-amber-400 bg-amber-500/15 border border-amber-500/20 px-1 py-0.5 rounded uppercase tracking-wider font-sans text-center block w-full leading-normal">
                                       ⚠️ RISK
@@ -308,14 +310,16 @@ export function LeadersTab({ activeConfig, onSelectTicker, portfolio = [], watch
                         )}
                         {(() => {
                           const matchEX = EX.find(e => e.ticker.toUpperCase().replace(".JK", "") === clean);
-                          if (matchEX?.exit_state === "EXIT") {
+                          const fallbackDrop = liveStk?.change ?? 0;
+                          const effectiveState = matchEX?.exit_state || (fallbackDrop <= -2.2 ? "EXIT" : fallbackDrop <= -0.5 ? "EXIT RISK" : "HEALTHY");
+                          if (effectiveState === "EXIT") {
                             return (
                               <span className="text-[8px] font-black text-white bg-rose-600 px-1.5 py-0.5 rounded animate-pulse shadow-sm uppercase tracking-wider font-sans">
                                 EXIT
                               </span>
                             );
                           }
-                          if (matchEX?.exit_state === "EXIT RISK") {
+                          if (effectiveState === "EXIT RISK") {
                             return (
                               <span className="text-[8px] font-bold text-amber-400 bg-amber-500/15 border border-amber-500/20 px-1.5 py-0.5 rounded uppercase tracking-wider font-sans">
                                 RISK

@@ -7,12 +7,12 @@
   "ESSA.JK": {
     "entry_price": 585.0,
     "entry_date": "2026-06-07",
-    "current_rank": 2
+    "current_rank": 5
   },
   "MAPI.JK": {
     "entry_price": 1485.0,
     "entry_date": "2026-06-07",
-    "current_rank": 4
+    "current_rank": 12
   },
   "PTBA.JK": {
     "entry_price": 2590.0,
@@ -22,36 +22,51 @@
   "AKRA.JK": {
     "entry_price": 1220.0,
     "entry_date": "2026-06-07",
-    "current_rank": 9
+    "current_rank": 16
   },
   "CPIN.JK": {
     "entry_price": 3380.0,
     "entry_date": "2026-06-07",
-    "current_rank": 6
+    "current_rank": 11
   },
   "ANTM.JK": {
     "entry_price": 2750.0,
     "entry_date": "2026-06-07",
-    "current_rank": 8
+    "current_rank": 15
   },
   "EXCL.JK": {
     "entry_price": 2650.0,
     "entry_date": "2026-06-07",
-    "current_rank": 14
+    "current_rank": 10
   },
   "BBRI.JK": {
     "entry_price": 2740.0,
     "entry_date": "2026-06-07",
-    "current_rank": 10
+    "current_rank": 6
   },
   "BMRI.JK": {
     "entry_price": 3840.0,
     "entry_date": "2026-06-07",
-    "current_rank": 5
+    "current_rank": 2
   },
   "PGAS.JK": {
     "entry_price": 1520.0,
     "entry_date": "2026-06-07",
+    "current_rank": 8
+  },
+  "ASII.JK": {
+    "entry_price": 4740.0,
+    "entry_date": "2026-06-13",
+    "current_rank": 9
+  },
+  "BBNI.JK": {
+    "entry_price": 3560.0,
+    "entry_date": "2026-06-13",
+    "current_rank": 4
+  },
+  "INDF.JK": {
+    "entry_price": 6425.0,
+    "entry_date": "2026-06-13",
     "current_rank": 7
   }
 }

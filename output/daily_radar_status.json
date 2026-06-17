@@ -1,21 +1,21 @@
 {
-    "last_update": "2026-06-16 14:33",
-    "status": "WARNING",
+    "last_update": "2026-06-17 13:03",
+    "status": "SAFE",
     "market_health": 55,
-    "opportunity": 60,
-    "risk": 75,
-    "confidence": 20,
-    "capital_deployment": 0,
+    "opportunity": 50,
+    "risk": 85,
+    "confidence": 35,
+    "capital_deployment": 30,
     "action": "WAIT",
-    "rationale": "Gap skor 40.6 menunjukkan polarisasi pasar yang signifikan, meskipun telah menyempit 4 poin dalam 5 hari terakhir. Breadth pasar terfragmentasi dengan 7 saham kuat dan 7 saham lemah, serta hanya 1 saham di atas 70, mengindikasikan kurangnya partisipasi luas. Faktor Growth dominan (80) sementara Quality terlemah (60), menunjukkan preferensi risiko. Namun, ketiadaan data volume hari ini untuk seluruh saham watchlist adalah risiko operasional kritis. Tanpa informasi likuiditas dan minat pasar terkini, probabilitas keberhasilan investasi tidak dapat dinilai akurat. Oleh karena itu, keputusan paling bijaksana adalah menunggu hingga data lengkap tersedia.",
-    "detail_message": "Gap skor 40.6 menunjukkan polarisasi pasar yang signifikan, meskipun telah menyempit 4 poin dalam 5 hari terakhir. Breadth pasar terfragmentasi dengan 7 saham kuat dan 7 saham lemah, serta hanya 1 saham di atas 70, mengindikasikan kurangnya partisipasi luas. Faktor Growth dominan (80) sementara Quality terlemah (60), menunjukkan preferensi risiko. Namun, ketiadaan data volume hari ini untuk seluruh saham watchlist adalah risiko operasional kritis. Tanpa informasi likuiditas dan minat pasar terkini, probabilitas keberhasilan investasi tidak dapat dinilai akurat. Oleh karena itu, keputusan paling bijaksana adalah menunggu hingga data lengkap tersedia.",
+    "rationale": "Diferensiasi pasar moderat dengan score gap 40.6, namun tanpa perubahan signifikan 5 hari terakhir. Breadth pasar terpecah, dengan jumlah saham di atas 60 dan di bawah 40 yang sama (7), menunjukkan kurangnya kekuatan pasar yang menyeluruh. Volume hari ini didominasi saham sepi (3 dari 5 watchlist), mengindikasikan rendahnya partisipasi dan keyakinan. Insiden 'Gagal memuat data' pada 2026-06-16 adalah risiko operasional serius. Faktor Growth kuat, namun Quality moderat. Dengan risiko data dan likuiditas yang tinggi, serta kepercayaan pasar yang rendah, keputusan terbaik adalah menunggu.",
+    "detail_message": "Diferensiasi pasar moderat dengan score gap 40.6, namun tanpa perubahan signifikan 5 hari terakhir. Breadth pasar terpecah, dengan jumlah saham di atas 60 dan di bawah 40 yang sama (7), menunjukkan kurangnya kekuatan pasar yang menyeluruh. Volume hari ini didominasi saham sepi (3 dari 5 watchlist), mengindikasikan rendahnya partisipasi dan keyakinan. Insiden 'Gagal memuat data' pada 2026-06-16 adalah risiko operasional serius. Faktor Growth kuat, namun Quality moderat. Dengan risiko data dan likuiditas yang tinggi, serta kepercayaan pasar yang rendah, keputusan terbaik adalah menunggu.",
     "anomalies": [],
     "radar_context": {
         "production_config": "Config F",
         "top5_avg_score": 66.8,
         "bot5_avg_score": 26.2,
         "score_gap": 40.6,
-        "score_gap_5d_change": -4,
+        "score_gap_5d_change": 0,
         "breadth_above_70": 1,
         "breadth_above_60": 7,
         "breadth_below_40": 7,
@@ -27,10 +27,10 @@
         "watchlist_count": 5
     },
     "volume_details": [
-        "PTBA.JK: Gagal memuat data",
-        "BBNI.JK: Gagal memuat data",
-        "INDF.JK: Gagal memuat data",
-        "ASII.JK: Gagal memuat data",
-        "ITMG.JK: Gagal memuat data"
+        "PTBA.JK: Volume 1.0x (Wajar)",
+        "BBNI.JK: Volume 1.1x (Wajar)",
+        "INDF.JK: Volume 0.6x (Sepi)",
+        "ASII.JK: Volume 0.8x (Sepi)",
+        "ITMG.JK: Volume 0.5x (Sepi)"
     ]
 }

@@ -457,6 +457,18 @@
   },
   {
     "rank": "39",
+    "ticker": "TLKM.JK",
+    "drawdown_252d": "-29.18",
+    "distance_from_high_252d": "-29.18",
+    "volatility_60d": "3.61",
+    "rs_change_60d": "14.53",
+    "volume_ratio": "1.66",
+    "recovery_from_60d_low": "18.74",
+    "context_match": "False",
+    "transition_match": "True"
+  },
+  {
+    "rank": "40",
     "ticker": "ERAA.JK",
     "drawdown_252d": "-32.61",
     "distance_from_high_252d": "-32.61",
@@ -468,7 +480,7 @@
     "transition_match": "True"
   },
   {
-    "rank": "40",
+    "rank": "41",
     "ticker": "PGEO.JK",
     "drawdown_252d": "-48.6",
     "distance_from_high_252d": "-48.6",
@@ -480,7 +492,7 @@
     "transition_match": "True"
   },
   {
-    "rank": "41",
+    "rank": "42",
     "ticker": "SCMA.JK",
     "drawdown_252d": "-52.82",
     "distance_from_high_252d": "-52.82",
@@ -492,7 +504,7 @@
     "transition_match": "True"
   },
   {
-    "rank": "42",
+    "rank": "43",
     "ticker": "CBDK.JK",
     "drawdown_252d": "-62.18",
     "distance_from_high_252d": "-62.18",
@@ -504,7 +516,7 @@
     "transition_match": "True"
   },
   {
-    "rank": "43",
+    "rank": "44",
     "ticker": "EMTK.JK",
     "drawdown_252d": "-64.39",
     "distance_from_high_252d": "-64.39",
@@ -516,7 +528,7 @@
     "transition_match": "True"
   },
   {
-    "rank": "44",
+    "rank": "45",
     "ticker": "ISAT.JK",
     "drawdown_252d": "-26.31",
     "distance_from_high_252d": "-26.31",
@@ -528,7 +540,7 @@
     "transition_match": "True"
   },
   {
-    "rank": "45",
+    "rank": "46",
     "ticker": "CMRY.JK",
     "drawdown_252d": "-27.65",
     "distance_from_high_252d": "-27.65",
@@ -540,7 +552,7 @@
     "transition_match": "True"
   },
   {
-    "rank": "46",
+    "rank": "47",
     "ticker": "GOTO.JK",
     "drawdown_252d": "-29.58",
     "distance_from_high_252d": "-29.58",
@@ -552,7 +564,7 @@
     "transition_match": "True"
   },
   {
-    "rank": "47",
+    "rank": "48",
     "ticker": "CPIN.JK",
     "drawdown_252d": "-33.51",
     "distance_from_high_252d": "-33.51",
@@ -560,18 +572,6 @@
     "rs_change_60d": "1.87",
     "volume_ratio": "3.8",
     "recovery_from_60d_low": "5.4",
-    "context_match": "False",
-    "transition_match": "True"
-  },
-  {
-    "rank": "48",
-    "ticker": "TLKM.JK",
-    "drawdown_252d": "-34.52",
-    "distance_from_high_252d": "-34.52",
-    "volatility_60d": "3.69",
-    "rs_change_60d": "7.43",
-    "volume_ratio": "1.66",
-    "recovery_from_60d_low": "9.79",
     "context_match": "False",
     "transition_match": "True"
   },

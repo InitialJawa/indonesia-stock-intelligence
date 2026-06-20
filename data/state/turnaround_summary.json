@@ -1,5 +1,5 @@
 {
-  "date": "2026-06-19",
+  "date": "2026-06-20",
   "universe_size": 80,
   "context_match_count": 26,
   "transition_match_count": 46,
@@ -39,6 +39,7 @@
       "TOWR.JK",
       "MAPA.JK",
       "BBCA.JK",
+      "TLKM.JK",
       "ERAA.JK",
       "PGEO.JK",
       "SCMA.JK",
@@ -48,7 +49,6 @@
       "CMRY.JK",
       "GOTO.JK",
       "CPIN.JK",
-      "TLKM.JK",
       "PNLF.JK",
       "EXCL.JK",
       "SSIA.JK",
@@ -109,6 +109,7 @@
       "TOWR.JK",
       "MAPA.JK",
       "BBCA.JK",
+      "TLKM.JK",
       "ERAA.JK",
       "PGEO.JK",
       "SCMA.JK",
@@ -118,7 +119,6 @@
       "CMRY.JK",
       "GOTO.JK",
       "CPIN.JK",
-      "TLKM.JK",
       "PNLF.JK",
       "EXCL.JK",
       "SSIA.JK",
@@ -183,9 +183,9 @@
     "rs_change_60d_positive_count": 46,
     "volume_ratio_high_count": 38,
     "above_ma20_count": 40,
-    "recovery_gt_10pct_count": 54,
-    "avg_drawdown_252d": -39.62,
-    "avg_volatility_60d": 3.79
+    "recovery_gt_10pct_count": 55,
+    "avg_drawdown_252d": -39.55,
+    "avg_volatility_60d": 3.78
   },
   "top_candidates": [
     {

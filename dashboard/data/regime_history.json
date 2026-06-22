@@ -1,5 +1,13 @@
 [
   {
+    "date": "2026-06-22",
+    "regime": "NETRAL",
+    "action": "TUNGGU",
+    "ihsg_close": 6116.69,
+    "change_pct": -0.98,
+    "note": "IHSG 6117 (melemah terbatas, -0.98%); score gap 41 (sangat timpang); 7/5 saham >60"
+  },
+  {
     "date": "2026-06-21",
     "regime": "RISK ON",
     "action": "AKUMULASI",

@@ -1,28 +1,5 @@
 [
     {
-        "tanggal": "2026-06-17",
-        "jumlah_saham_sedang_anget": 5,
-        "watchlist_tickers": [
-            "PTBA.JK",
-            "BBNI.JK",
-            "INDF.JK",
-            "ASII.JK",
-            "ITMG.JK"
-        ],
-        "ringkasan_volume_hari_itu": {
-            "status_sistem": "SAFE",
-            "saham_anomali_lonjakan": 0,
-            "saham_volume_sepi": 3,
-            "detail": [
-                "PTBA.JK: Volume 1.0x (Wajar)",
-                "BBNI.JK: Volume 1.1x (Wajar)",
-                "INDF.JK: Volume 0.6x (Sepi)",
-                "ASII.JK: Volume 0.8x (Sepi)",
-                "ITMG.JK: Volume 0.5x (Sepi)"
-            ]
-        }
-    },
-    {
         "tanggal": "2026-06-18",
         "jumlah_saham_sedang_anget": 5,
         "watchlist_tickers": [
@@ -111,6 +88,29 @@
                 "INDF.JK: Volume 3.6x (Volume Lonjakan)",
                 "ASII.JK: Volume 2.2x (Volume Lonjakan)",
                 "ITMG.JK: Volume 0.5x (Sepi)"
+            ]
+        }
+    },
+    {
+        "tanggal": "2026-06-22",
+        "jumlah_saham_sedang_anget": 5,
+        "watchlist_tickers": [
+            "PTBA.JK",
+            "BBNI.JK",
+            "INDF.JK",
+            "ASII.JK",
+            "ITMG.JK"
+        ],
+        "ringkasan_volume_hari_itu": {
+            "status_sistem": "SAFE",
+            "saham_anomali_lonjakan": 0,
+            "saham_volume_sepi": 0,
+            "detail": [
+                "PTBA.JK: Gagal memuat data",
+                "BBNI.JK: Gagal memuat data",
+                "INDF.JK: Gagal memuat data",
+                "ASII.JK: Gagal memuat data",
+                "ITMG.JK: Gagal memuat data"
             ]
         }
     }

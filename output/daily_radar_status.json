@@ -1,14 +1,14 @@
 {
-    "last_update": "2026-06-21 12:02",
-    "status": "SAFE",
+    "last_update": "2026-06-22 15:07",
+    "status": "WARNING",
     "market_health": 50,
-    "opportunity": 75,
-    "risk": 65,
-    "confidence": 55,
-    "capital_deployment": 60,
-    "action": "ACCUMULATE",
-    "rationale": "Pasar menunjukkan divergensi signifikan dengan score_gap 40.6, mengindikasikan kekuatan terfokus pada saham tertentu. Breadth pasar lemah; hanya 1 saham di atas 70, sementara 7 saham di bawah 40, menunjukkan kurangnya partisipasi luas dan risiko yang signifikan. Faktor Growth dominan dengan skor 80, namun Quality terlemah di 60. Dalam 5 hari terakhir, terjadi pergeseran volume dari sepi menjadi lonjakan konsisten pada INDF.JK dan ASII.JK selama 3 hari terakhir. Ini menciptakan peluang selektif di tengah pasar yang rapuh. Perlindungan modal tetap prioritas, namun probabilitas risk/reward mendukung akumulasi bertahap pada aset dengan sinyal kuat.",
-    "detail_message": "Pasar menunjukkan divergensi signifikan dengan score_gap 40.6, mengindikasikan kekuatan terfokus pada saham tertentu. Breadth pasar lemah; hanya 1 saham di atas 70, sementara 7 saham di bawah 40, menunjukkan kurangnya partisipasi luas dan risiko yang signifikan. Faktor Growth dominan dengan skor 80, namun Quality terlemah di 60. Dalam 5 hari terakhir, terjadi pergeseran volume dari sepi menjadi lonjakan konsisten pada INDF.JK dan ASII.JK selama 3 hari terakhir. Ini menciptakan peluang selektif di tengah pasar yang rapuh. Perlindungan modal tetap prioritas, namun probabilitas risk/reward mendukung akumulasi bertahap pada aset dengan sinyal kuat.",
+    "opportunity": 40,
+    "risk": 75,
+    "confidence": 20,
+    "capital_deployment": 10,
+    "action": "WAIT",
+    "rationale": "Pasar menunjukkan polarisasi signifikan dengan score_gap 40.6 dan jumlah saham kuat (di atas 60) setara dengan saham lemah (di bawah 40), masing-masing 7. Faktor Growth dominan, namun Quality tertinggal. Perubahan score_gap 5 hari terakhir nol, menunjukkan kondisi ini persisten. Yang paling krusial, data volume hari ini untuk seluruh saham watchlist gagal dimuat. Ini menghambat penilaian probabilitas dan risk/reward secara akurat. Dengan integritas data yang terganggu dan risiko yang tinggi, keputusan terbaik adalah menunggu.",
+    "detail_message": "Pasar menunjukkan polarisasi signifikan dengan score_gap 40.6 dan jumlah saham kuat (di atas 60) setara dengan saham lemah (di bawah 40), masing-masing 7. Faktor Growth dominan, namun Quality tertinggal. Perubahan score_gap 5 hari terakhir nol, menunjukkan kondisi ini persisten. Yang paling krusial, data volume hari ini untuk seluruh saham watchlist gagal dimuat. Ini menghambat penilaian probabilitas dan risk/reward secara akurat. Dengan integritas data yang terganggu dan risiko yang tinggi, keputusan terbaik adalah menunggu.",
     "anomalies": [],
     "radar_context": {
         "production_config": "Config F",
@@ -27,10 +27,10 @@
         "watchlist_count": 5
     },
     "volume_details": [
-        "PTBA.JK: Volume 1.2x (Wajar)",
-        "BBNI.JK: Volume 1.1x (Wajar)",
-        "INDF.JK: Volume 3.6x (Volume Lonjakan)",
-        "ASII.JK: Volume 2.2x (Volume Lonjakan)",
-        "ITMG.JK: Volume 0.5x (Sepi)"
+        "PTBA.JK: Gagal memuat data",
+        "BBNI.JK: Gagal memuat data",
+        "INDF.JK: Gagal memuat data",
+        "ASII.JK: Gagal memuat data",
+        "ITMG.JK: Gagal memuat data"
     ]
 }

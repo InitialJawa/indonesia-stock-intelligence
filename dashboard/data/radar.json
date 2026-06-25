@@ -1,21 +1,21 @@
 {
-    "last_update": "2026-06-24 12:08",
+    "last_update": "2026-06-25 12:04",
     "status": "WARNING",
-    "market_health": 45,
-    "opportunity": 74,
-    "risk": 50,
-    "confidence": 54,
-    "capital_deployment": 37,
+    "market_health": 40,
+    "opportunity": 30,
+    "risk": 85,
+    "confidence": 20,
+    "capital_deployment": 25,
     "action": "WAIT",
-    "rationale": "Score gap 40.6 poin menunjukkan pemisahan kualitas yang jelas antara top5 dan bottom5. Faktor dominan: Growth (80.0). Faktor terlemah: Quality (60.0). Breadth terbatas (1 saham >=70). 4 dari 5 saham watchlist volume sepi — likuiditas rendah.",
-    "detail_message": "Score gap 40.6 poin menunjukkan pemisahan kualitas yang jelas antara top5 dan bottom5. Faktor dominan: Growth (80.0). Faktor terlemah: Quality (60.0). Breadth terbatas (1 saham >=70). 4 dari 5 saham watchlist volume sepi — likuiditas rendah.",
+    "rationale": "Probabilitas perlindungan modal rendah. Score gap menyempit 4 poin dalam 5 hari, menunjukkan pelemahan momentum. Breadth sangat buruk, hanya 1 saham di atas 70, sementara 7 saham di bawah 40, mengindikasikan kurangnya kekuatan pasar yang luas. Volume sangat sepi di seluruh 5 saham watchlist hari ini dan kemarin, menandakan kurangnya likuiditas dan keyakinan investor. Faktor Growth dominan, namun Quality terlemah, menunjukkan preferensi pasar yang berpotensi berisiko. Perubahan 5 hari terakhir menunjukkan penurunan volume dan data yang tidak lengkap, menambah ketidakpastian. Risk/reward saat ini tidak mendukung penambahan modal.",
+    "detail_message": "Probabilitas perlindungan modal rendah. Score gap menyempit 4 poin dalam 5 hari, menunjukkan pelemahan momentum. Breadth sangat buruk, hanya 1 saham di atas 70, sementara 7 saham di bawah 40, mengindikasikan kurangnya kekuatan pasar yang luas. Volume sangat sepi di seluruh 5 saham watchlist hari ini dan kemarin, menandakan kurangnya likuiditas dan keyakinan investor. Faktor Growth dominan, namun Quality terlemah, menunjukkan preferensi pasar yang berpotensi berisiko. Perubahan 5 hari terakhir menunjukkan penurunan volume dan data yang tidak lengkap, menambah ketidakpastian. Risk/reward saat ini tidak mendukung penambahan modal.",
     "anomalies": [],
     "radar_context": {
         "production_config": "Config F",
         "top5_avg_score": 66.8,
         "bot5_avg_score": 26.2,
         "score_gap": 40.6,
-        "score_gap_5d_change": -2,
+        "score_gap_5d_change": -4,
         "breadth_above_70": 1,
         "breadth_above_60": 7,
         "breadth_below_40": 7,
@@ -27,10 +27,10 @@
         "watchlist_count": 5
     },
     "volume_details": [
-        "PTBA.JK: Volume 0.6x (Sepi)",
-        "BBNI.JK: Volume 1.1x (Wajar)",
-        "INDF.JK: Volume 0.5x (Sepi)",
-        "ASII.JK: Volume 0.5x (Sepi)",
-        "ITMG.JK: Volume 0.6x (Sepi)"
+        "PTBA.JK: Volume 0.7x (Sepi)",
+        "BBNI.JK: Volume 0.6x (Sepi)",
+        "INDF.JK: Volume 0.8x (Sepi)",
+        "ASII.JK: Volume 0.9x (Sepi)",
+        "ITMG.JK: Volume 0.7x (Sepi)"
     ]
 }

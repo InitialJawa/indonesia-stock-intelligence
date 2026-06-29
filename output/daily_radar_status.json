@@ -1,21 +1,21 @@
 {
-    "last_update": "2026-06-28 11:23",
+    "last_update": "2026-06-29 13:53",
     "status": "WARNING",
-    "market_health": 45,
-    "opportunity": 35,
-    "risk": 75,
-    "confidence": 25,
-    "capital_deployment": 0,
+    "market_health": 55,
+    "opportunity": 30,
+    "risk": 85,
+    "confidence": 20,
+    "capital_deployment": 15,
     "action": "WAIT",
-    "rationale": "Score gap 40.6 menunjukkan divergensi pasar yang signifikan. Breadth sangat sempit, dengan hanya 1 saham di atas 70 dan 7 di bawah 40, mengindikasikan partisipasi pasar yang lemah dan konsentrasi risiko. Turnover top 5 nol dan volume semua saham watchlist 'Sepi' secara konsisten selama 5 hari terakhir, menandakan kurangnya minat dan keyakinan investor. Meskipun faktor Growth dominan, Quality sebagai faktor terlemah tidak mendukung perlindungan modal. Perubahan score gap 5 hari yang minimal (-2) tidak cukup untuk mengubah pandangan skeptis. Probabilitas keuntungan rendah, risiko tinggi akibat likuiditas dan dinamika pasar yang buruk.",
-    "detail_message": "Score gap 40.6 menunjukkan divergensi pasar yang signifikan. Breadth sangat sempit, dengan hanya 1 saham di atas 70 dan 7 di bawah 40, mengindikasikan partisipasi pasar yang lemah dan konsentrasi risiko. Turnover top 5 nol dan volume semua saham watchlist 'Sepi' secara konsisten selama 5 hari terakhir, menandakan kurangnya minat dan keyakinan investor. Meskipun faktor Growth dominan, Quality sebagai faktor terlemah tidak mendukung perlindungan modal. Perubahan score gap 5 hari yang minimal (-2) tidak cukup untuk mengubah pandangan skeptis. Probabilitas keuntungan rendah, risiko tinggi akibat likuiditas dan dinamika pasar yang buruk.",
+    "rationale": "Polarisasi pasar terlihat dari score_gap 40.6 dan breadth yang terbagi (1 saham >70, 7 saham <40). Faktor Growth dominan (80), namun Quality terlemah (60). Yang paling krusial, data volume hari ini untuk semua saham watchlist 'Gagal memuat data' dan top5_turnover nol. Ini adalah anomali data yang serius. Selama 4 hari sebelumnya, volume juga sepi. Ketidakpastian data volume menghambat penilaian probabilitas dan risk/reward yang akurat. Prioritas adalah perlindungan modal. Oleh karena itu, menunggu adalah tindakan paling bijaksana.",
+    "detail_message": "Polarisasi pasar terlihat dari score_gap 40.6 dan breadth yang terbagi (1 saham >70, 7 saham <40). Faktor Growth dominan (80), namun Quality terlemah (60). Yang paling krusial, data volume hari ini untuk semua saham watchlist 'Gagal memuat data' dan top5_turnover nol. Ini adalah anomali data yang serius. Selama 4 hari sebelumnya, volume juga sepi. Ketidakpastian data volume menghambat penilaian probabilitas dan risk/reward yang akurat. Prioritas adalah perlindungan modal. Oleh karena itu, menunggu adalah tindakan paling bijaksana.",
     "anomalies": [],
     "radar_context": {
         "production_config": "Config F",
         "top5_avg_score": 66.8,
         "bot5_avg_score": 26.2,
         "score_gap": 40.6,
-        "score_gap_5d_change": -2,
+        "score_gap_5d_change": 0,
         "breadth_above_70": 1,
         "breadth_above_60": 7,
         "breadth_below_40": 7,
@@ -27,10 +27,10 @@
         "watchlist_count": 5
     },
     "volume_details": [
-        "PTBA.JK: Volume 0.7x (Sepi)",
-        "BBNI.JK: Volume 0.8x (Sepi)",
-        "INDF.JK: Volume 0.7x (Sepi)",
-        "ASII.JK: Volume 0.6x (Sepi)",
-        "ITMG.JK: Volume 0.3x (Sepi)"
+        "PTBA.JK: Gagal memuat data",
+        "BBNI.JK: Gagal memuat data",
+        "INDF.JK: Gagal memuat data",
+        "ASII.JK: Gagal memuat data",
+        "ITMG.JK: Gagal memuat data"
     ]
 }

@@ -1,5 +1,13 @@
 [
   {
+    "date": "2026-06-30",
+    "regime": "NETRAL",
+    "action": "TUNGGU",
+    "ihsg_close": 5643.19,
+    "change_pct": -3.05,
+    "note": "IHSG 5643 (melemah signifikan, -3.05%); score gap 41 (sangat timpang); 7/5 saham >60"
+  },
+  {
     "date": "2026-06-29",
     "regime": "NETRAL",
     "action": "TUNGGU",

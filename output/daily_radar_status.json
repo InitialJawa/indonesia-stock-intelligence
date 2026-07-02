@@ -1,14 +1,14 @@
 {
-    "last_update": "2026-07-01 12:21",
-    "status": "WARNING",
-    "market_health": 50,
-    "opportunity": 45,
+    "last_update": "2026-07-02 11:55",
+    "status": "SAFE",
+    "market_health": 60,
+    "opportunity": 55,
     "risk": 70,
     "confidence": 35,
-    "capital_deployment": 20,
+    "capital_deployment": 45,
     "action": "WAIT",
-    "rationale": "Keputusan WAIT diambil untuk perlindungan modal. Meskipun faktor Growth kuat (80.0), pasar menunjukkan divergensi signifikan dengan score gap 40.6 yang stabil. Breadth sangat sempit (hanya 1 saham di atas 70), dan ada 7 saham di bawah 40, menandakan kelemahan luas. Volume perdagangan di watchlist sangat sepi secara konsisten. Lebih lanjut, adanya kegagalan memuat data selama dua hari dalam lima hari terakhir menimbulkan keraguan serius terhadap integritas data dan visibilitas pasar. Probabilitas risiko tinggi akibat likuiditas rendah dan ketidakpastian data melebihi potensi reward.",
-    "detail_message": "Keputusan WAIT diambil untuk perlindungan modal. Meskipun faktor Growth kuat (80.0), pasar menunjukkan divergensi signifikan dengan score gap 40.6 yang stabil. Breadth sangat sempit (hanya 1 saham di atas 70), dan ada 7 saham di bawah 40, menandakan kelemahan luas. Volume perdagangan di watchlist sangat sepi secara konsisten. Lebih lanjut, adanya kegagalan memuat data selama dua hari dalam lima hari terakhir menimbulkan keraguan serius terhadap integritas data dan visibilitas pasar. Probabilitas risiko tinggi akibat likuiditas rendah dan ketidakpastian data melebihi potensi reward.",
+    "rationale": "Score gap 40.6 menunjukkan diferensiasi pasar, didukung faktor Growth (80.0). Namun, breadth pasar sempit (hanya 1 saham >70, 7 saham <40) mengindikasikan polarisasi. Volume perdagangan saham watchlist sangat sepi (0.5x-0.7x) secara konsisten, menimbulkan risiko likuiditas. Perubahan score gap nol selama 5 hari terakhir menunjukkan stagnasi. Ketiadaan data volume selama 2 dari 5 hari terakhir sangat mengurangi kepercayaan. Dengan risiko likuiditas dan informasi yang tinggi serta peluang yang terbatas pada area sempit, perlindungan modal adalah prioritas. Disarankan untuk menunggu hingga kejelasan data dan kondisi pasar membaik.",
+    "detail_message": "Score gap 40.6 menunjukkan diferensiasi pasar, didukung faktor Growth (80.0). Namun, breadth pasar sempit (hanya 1 saham >70, 7 saham <40) mengindikasikan polarisasi. Volume perdagangan saham watchlist sangat sepi (0.5x-0.7x) secara konsisten, menimbulkan risiko likuiditas. Perubahan score gap nol selama 5 hari terakhir menunjukkan stagnasi. Ketiadaan data volume selama 2 dari 5 hari terakhir sangat mengurangi kepercayaan. Dengan risiko likuiditas dan informasi yang tinggi serta peluang yang terbatas pada area sempit, perlindungan modal adalah prioritas. Disarankan untuk menunggu hingga kejelasan data dan kondisi pasar membaik.",
     "anomalies": [],
     "radar_context": {
         "production_config": "Config F",
@@ -27,10 +27,10 @@
         "watchlist_count": 5
     },
     "volume_details": [
-        "PTBA.JK: Volume 0.4x (Sepi)",
-        "BBNI.JK: Volume 0.7x (Sepi)",
-        "INDF.JK: Volume 0.5x (Sepi)",
-        "ASII.JK: Volume 0.4x (Sepi)",
-        "ITMG.JK: Volume 0.4x (Sepi)"
+        "PTBA.JK: Volume 0.5x (Sepi)",
+        "BBNI.JK: Volume 0.6x (Sepi)",
+        "INDF.JK: Volume 0.6x (Sepi)",
+        "ASII.JK: Volume 0.7x (Sepi)",
+        "ITMG.JK: Volume 0.5x (Sepi)"
     ]
 }

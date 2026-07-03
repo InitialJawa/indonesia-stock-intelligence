@@ -1,14 +1,14 @@
 {
-    "last_update": "2026-07-02 11:55",
-    "status": "SAFE",
-    "market_health": 60,
-    "opportunity": 55,
-    "risk": 70,
-    "confidence": 35,
-    "capital_deployment": 45,
+    "last_update": "2026-07-03 11:54",
+    "status": "WARNING",
+    "market_health": 55,
+    "opportunity": 50,
+    "risk": 80,
+    "confidence": 40,
+    "capital_deployment": 25,
     "action": "WAIT",
-    "rationale": "Score gap 40.6 menunjukkan diferensiasi pasar, didukung faktor Growth (80.0). Namun, breadth pasar sempit (hanya 1 saham >70, 7 saham <40) mengindikasikan polarisasi. Volume perdagangan saham watchlist sangat sepi (0.5x-0.7x) secara konsisten, menimbulkan risiko likuiditas. Perubahan score gap nol selama 5 hari terakhir menunjukkan stagnasi. Ketiadaan data volume selama 2 dari 5 hari terakhir sangat mengurangi kepercayaan. Dengan risiko likuiditas dan informasi yang tinggi serta peluang yang terbatas pada area sempit, perlindungan modal adalah prioritas. Disarankan untuk menunggu hingga kejelasan data dan kondisi pasar membaik.",
-    "detail_message": "Score gap 40.6 menunjukkan diferensiasi pasar, didukung faktor Growth (80.0). Namun, breadth pasar sempit (hanya 1 saham >70, 7 saham <40) mengindikasikan polarisasi. Volume perdagangan saham watchlist sangat sepi (0.5x-0.7x) secara konsisten, menimbulkan risiko likuiditas. Perubahan score gap nol selama 5 hari terakhir menunjukkan stagnasi. Ketiadaan data volume selama 2 dari 5 hari terakhir sangat mengurangi kepercayaan. Dengan risiko likuiditas dan informasi yang tinggi serta peluang yang terbatas pada area sempit, perlindungan modal adalah prioritas. Disarankan untuk menunggu hingga kejelasan data dan kondisi pasar membaik.",
+    "rationale": "Pasar berada dalam status WARNING. Meskipun score gap 40.6 menunjukkan diferensiasi yang baik dan faktor Growth kuat di 80.0, breadth pasar terbagi dengan 7 saham di atas 60 dan 7 di bawah 40. Kekhawatiran utama adalah likuiditas: semua saham watchlist menunjukkan volume \"Sepi\" selama 3 hari terakhir, dan top5 turnover adalah 0. Ini mengindikasikan kurangnya keyakinan dan meningkatkan risiko eksekusi. Tidak ada perubahan signifikan dalam score gap 5 hari terakhir. Dengan probabilitas keuntungan yang rendah dan risk/reward yang tidak menarik akibat likuiditas buruk, perlindungan modal menjadi prioritas. Oleh karena itu, disarankan untuk menunggu.",
+    "detail_message": "Pasar berada dalam status WARNING. Meskipun score gap 40.6 menunjukkan diferensiasi yang baik dan faktor Growth kuat di 80.0, breadth pasar terbagi dengan 7 saham di atas 60 dan 7 di bawah 40. Kekhawatiran utama adalah likuiditas: semua saham watchlist menunjukkan volume \"Sepi\" selama 3 hari terakhir, dan top5 turnover adalah 0. Ini mengindikasikan kurangnya keyakinan dan meningkatkan risiko eksekusi. Tidak ada perubahan signifikan dalam score gap 5 hari terakhir. Dengan probabilitas keuntungan yang rendah dan risk/reward yang tidak menarik akibat likuiditas buruk, perlindungan modal menjadi prioritas. Oleh karena itu, disarankan untuk menunggu.",
     "anomalies": [],
     "radar_context": {
         "production_config": "Config F",
@@ -27,10 +27,10 @@
         "watchlist_count": 5
     },
     "volume_details": [
-        "PTBA.JK: Volume 0.5x (Sepi)",
-        "BBNI.JK: Volume 0.6x (Sepi)",
-        "INDF.JK: Volume 0.6x (Sepi)",
-        "ASII.JK: Volume 0.7x (Sepi)",
-        "ITMG.JK: Volume 0.5x (Sepi)"
+        "PTBA.JK: Volume 0.4x (Sepi)",
+        "BBNI.JK: Volume 0.3x (Sepi)",
+        "INDF.JK: Volume 0.5x (Sepi)",
+        "ASII.JK: Volume 0.3x (Sepi)",
+        "ITMG.JK: Volume 0.3x (Sepi)"
     ]
 }

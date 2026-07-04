@@ -1,5 +1,5 @@
 {
-  "date": "2026-07-03",
+  "date": "2026-07-04",
   "universe_size": 80,
   "context_match_count": 26,
   "transition_match_count": 33,
@@ -306,12 +306,12 @@
     },
     {
       "ticker": "MDKA.JK",
-      "drawdown": -31.47,
-      "distance_from_high": -31.47,
+      "drawdown": -31.14,
+      "distance_from_high": -31.14,
       "volatility": 5.6,
-      "rs_change_60d": -52.26,
+      "rs_change_60d": -51.85,
       "volume_ratio": 0.31,
-      "recovery": 23.85,
+      "recovery": 24.46,
       "context_match": true,
       "transition_match": false,
       "full_match": false,

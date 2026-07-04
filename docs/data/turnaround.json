@@ -110,12 +110,12 @@
   {
     "rank": "10",
     "ticker": "MDKA.JK",
-    "drawdown_252d": "-31.47",
-    "distance_from_high_252d": "-31.47",
+    "drawdown_252d": "-31.14",
+    "distance_from_high_252d": "-31.14",
     "volatility_60d": "5.6",
-    "rs_change_60d": "-52.26",
+    "rs_change_60d": "-51.85",
     "volume_ratio": "0.31",
-    "recovery_from_60d_low": "23.85",
+    "recovery_from_60d_low": "24.46",
     "context_match": "True",
     "transition_match": "False"
   },

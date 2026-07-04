@@ -1,5 +1,13 @@
 [
   {
+    "date": "2026-07-04",
+    "regime": "NETRAL",
+    "action": "TUNGGU",
+    "ihsg_close": 5875.78,
+    "change_pct": 2.28,
+    "note": "IHSG 5876 (menguat moderat, +2.28%); score gap 41 (sangat timpang); 7/5 saham >60"
+  },
+  {
     "date": "2026-07-03",
     "regime": "NETRAL",
     "action": "TUNGGU",
@@ -230,13 +238,5 @@
     "regime": "RISK OFF",
     "action": "KURANGI",
     "note": "Koreksi terdalam Asia-Pacific, terendah 5 tahun terakhir"
-  },
-  {
-    "date": "2026-06-02",
-    "ihsg_close": 6195.43,
-    "change_pct": 1.11,
-    "regime": "RISK ON",
-    "action": "AKUMULASI",
-    "note": "IHSG rebound ke zona hijau, 281 saham menguat"
   }
 ]

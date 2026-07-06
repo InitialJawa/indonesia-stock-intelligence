@@ -1,14 +1,14 @@
 {
-    "last_update": "2026-07-05 11:18",
+    "last_update": "2026-07-06 13:06",
     "status": "WARNING",
-    "market_health": 35,
-    "opportunity": 40,
-    "risk": 85,
+    "market_health": 45,
+    "opportunity": 50,
+    "risk": 80,
     "confidence": 25,
-    "capital_deployment": 15,
+    "capital_deployment": 20,
     "action": "WAIT",
-    "rationale": "Gap skor 40.6 yang persisten menunjukkan divergensi pasar signifikan tanpa perbaikan 5 hari. Lebar pasar lemah, hanya 1 saham di atas 70 dan 7 saham di bawah 40, mengindikasikan kerapuhan. Volume perdagangan saham-saham utama sangat sepi selama 5 hari berturut-turut, menandakan kurangnya keyakinan dan likuiditas. Meskipun faktor 'Growth' kuat, faktor 'Quality' yang terlemah menimbulkan kekhawatiran fundamental. Probabilitas keuntungan rendah dengan risiko tinggi dalam kondisi ini.",
-    "detail_message": "Gap skor 40.6 yang persisten menunjukkan divergensi pasar signifikan tanpa perbaikan 5 hari. Lebar pasar lemah, hanya 1 saham di atas 70 dan 7 saham di bawah 40, mengindikasikan kerapuhan. Volume perdagangan saham-saham utama sangat sepi selama 5 hari berturut-turut, menandakan kurangnya keyakinan dan likuiditas. Meskipun faktor 'Growth' kuat, faktor 'Quality' yang terlemah menimbulkan kekhawatiran fundamental. Probabilitas keuntungan rendah dengan risiko tinggi dalam kondisi ini.",
+    "rationale": "Divergensi pasar tinggi (score gap 40.6) dengan breadth yang sangat sempit (hanya 1 saham di atas 70, 7 di bawah 40), menunjukkan pasar yang terpecah dan risiko konsentrasi. Data volume hari ini gagal dimuat, dan turnover top 5 adalah nol, ini adalah masalah integritas data kritis. Secara historis, saham watchlist menunjukkan volume yang sangat sepi selama 4 hari terakhir, mengindikasikan kurangnya likuiditas dan keyakinan. Meskipun faktor Growth kuat, kondisi ini meningkatkan risiko secara signifikan. Tanpa data volume yang valid dan breadth yang buruk, probabilitas keberhasilan investasi baru sangat rendah. Prioritas utama adalah perlindungan modal.",
+    "detail_message": "Divergensi pasar tinggi (score gap 40.6) dengan breadth yang sangat sempit (hanya 1 saham di atas 70, 7 di bawah 40), menunjukkan pasar yang terpecah dan risiko konsentrasi. Data volume hari ini gagal dimuat, dan turnover top 5 adalah nol, ini adalah masalah integritas data kritis. Secara historis, saham watchlist menunjukkan volume yang sangat sepi selama 4 hari terakhir, mengindikasikan kurangnya likuiditas dan keyakinan. Meskipun faktor Growth kuat, kondisi ini meningkatkan risiko secara signifikan. Tanpa data volume yang valid dan breadth yang buruk, probabilitas keberhasilan investasi baru sangat rendah. Prioritas utama adalah perlindungan modal.",
     "anomalies": [],
     "radar_context": {
         "production_config": "Config F",
@@ -27,10 +27,10 @@
         "watchlist_count": 5
     },
     "volume_details": [
-        "PTBA.JK: Volume 0.4x (Sepi)",
-        "BBNI.JK: Volume 0.3x (Sepi)",
-        "INDF.JK: Volume 0.5x (Sepi)",
-        "ASII.JK: Volume 0.3x (Sepi)",
-        "ITMG.JK: Volume 0.3x (Sepi)"
+        "PTBA.JK: Gagal memuat data",
+        "BBNI.JK: Gagal memuat data",
+        "INDF.JK: Gagal memuat data",
+        "ASII.JK: Gagal memuat data",
+        "ITMG.JK: Gagal memuat data"
     ]
 }

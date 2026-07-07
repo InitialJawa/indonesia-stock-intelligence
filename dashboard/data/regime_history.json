@@ -1,5 +1,13 @@
 [
   {
+    "date": "2026-07-07",
+    "regime": "RISK ON",
+    "action": "TUNGGU",
+    "ihsg_close": 5986.5,
+    "change_pct": 1.19,
+    "note": "IHSG 5986 (menguat moderat, +1.19%); score gap 41 (sangat timpang); 7/5 saham >60"
+  },
+  {
     "date": "2026-07-06",
     "regime": "NETRAL",
     "action": "TUNGGU",
@@ -230,13 +238,5 @@
     "regime": "RISK ON",
     "action": "AKUMULASI",
     "note": "Rebound terbesar sejak 2020, 678 saham hijau, volume Rp27.8T"
-  },
-  {
-    "date": "2026-06-05",
-    "ihsg_close": 5594.76,
-    "change_pct": -4.2,
-    "regime": "RISK OFF",
-    "action": "KURANGI",
-    "note": "Penutupan terburuk minggu ini, -8.69% dalam sepekan"
   }
 ]

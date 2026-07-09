@@ -1,14 +1,14 @@
 {
-    "last_update": "2026-07-08 11:25",
-    "status": "SAFE",
-    "market_health": 55,
-    "opportunity": 40,
-    "risk": 75,
-    "confidence": 30,
-    "capital_deployment": 20,
+    "last_update": "2026-07-09 12:21",
+    "status": "WARNING",
+    "market_health": 60,
+    "opportunity": 50,
+    "risk": 70,
+    "confidence": 45,
+    "capital_deployment": 15,
     "action": "WAIT",
-    "rationale": "Score gap 40.6 menunjukkan polarisasi pasar yang signifikan. Breadth pasar lemah dengan hanya 1 saham di atas 70, sementara 7 saham di bawah 40, mengindikasikan kekuatan yang sempit dan kelemahan yang meluas. Volume seluruh saham watchlist konsisten sepi (0.4x-0.7x) selama 5 hari terakhir, termasuk hari ini, menandakan risiko likuiditas tinggi dan kurangnya keyakinan pasar. Data top5_turnover: 0 menambah kekhawatiran akan momentum. Faktor Growth kuat, namun Quality relatif lemah. Perubahan score gap 5 hari nol menunjukkan tidak ada perbaikan. Dengan risiko likuiditas yang tinggi dan partisipasi pasar yang rendah, perlindungan modal adalah prioritas utama. Tidak ada alasan untuk menambah eksposur.",
-    "detail_message": "Score gap 40.6 menunjukkan polarisasi pasar yang signifikan. Breadth pasar lemah dengan hanya 1 saham di atas 70, sementara 7 saham di bawah 40, mengindikasikan kekuatan yang sempit dan kelemahan yang meluas. Volume seluruh saham watchlist konsisten sepi (0.4x-0.7x) selama 5 hari terakhir, termasuk hari ini, menandakan risiko likuiditas tinggi dan kurangnya keyakinan pasar. Data top5_turnover: 0 menambah kekhawatiran akan momentum. Faktor Growth kuat, namun Quality relatif lemah. Perubahan score gap 5 hari nol menunjukkan tidak ada perbaikan. Dengan risiko likuiditas yang tinggi dan partisipasi pasar yang rendah, perlindungan modal adalah prioritas utama. Tidak ada alasan untuk menambah eksposur.",
+    "rationale": "Diferensiasi pasar cukup baik dengan score gap 40.6. Namun, kekuatan pasar sangat sempit (hanya 1 saham di atas 70) dan banyak saham menunjukkan kelemahan (7 saham di bawah 40). Volume perdagangan sangat sepi pada seluruh saham watchlist hari ini dan konsisten selama 4 dari 5 hari terakhir, termasuk satu hari data volume gagal dimuat. Ini mengindikasikan kurangnya partisipasi dan likuiditas, meningkatkan risiko perlindungan modal. Faktor Growth dominan dengan skor 80, tetapi tidak cukup mengimbangi risiko likuiditas. Tidak ada perubahan signifikan dalam score gap selama 5 hari terakhir, menunjukkan kondisi pasar yang stagnan dan berisiko.",
+    "detail_message": "Diferensiasi pasar cukup baik dengan score gap 40.6. Namun, kekuatan pasar sangat sempit (hanya 1 saham di atas 70) dan banyak saham menunjukkan kelemahan (7 saham di bawah 40). Volume perdagangan sangat sepi pada seluruh saham watchlist hari ini dan konsisten selama 4 dari 5 hari terakhir, termasuk satu hari data volume gagal dimuat. Ini mengindikasikan kurangnya partisipasi dan likuiditas, meningkatkan risiko perlindungan modal. Faktor Growth dominan dengan skor 80, tetapi tidak cukup mengimbangi risiko likuiditas. Tidak ada perubahan signifikan dalam score gap selama 5 hari terakhir, menunjukkan kondisi pasar yang stagnan dan berisiko.",
     "anomalies": [],
     "radar_context": {
         "production_config": "Config F",
@@ -27,10 +27,10 @@
         "watchlist_count": 5
     },
     "volume_details": [
-        "PTBA.JK: Volume 0.4x (Sepi)",
-        "BBNI.JK: Volume 0.7x (Sepi)",
-        "INDF.JK: Volume 0.6x (Sepi)",
+        "PTBA.JK: Volume 0.3x (Sepi)",
+        "BBNI.JK: Volume 0.4x (Sepi)",
+        "INDF.JK: Volume 0.4x (Sepi)",
         "ASII.JK: Volume 0.7x (Sepi)",
-        "ITMG.JK: Volume 0.4x (Sepi)"
+        "ITMG.JK: Volume 0.5x (Sepi)"
     ]
 }

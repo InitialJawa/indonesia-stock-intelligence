@@ -1,5 +1,13 @@
 [
   {
+    "date": "2026-07-09",
+    "regime": "NETRAL",
+    "action": "TUNGGU",
+    "ihsg_close": 5912.44,
+    "change_pct": 0.67,
+    "note": "IHSG 5912 (menguat terbatas, +0.67%); score gap 41 (sangat timpang); 7/5 saham >60"
+  },
+  {
     "date": "2026-07-08",
     "regime": "RISK ON",
     "action": "TUNGGU",
@@ -230,13 +238,5 @@
     "ihsg_close": 5902.38,
     "change_pct": 2.71,
     "note": "IHSG 5902 (menguat moderat, +2.71%); score gap 41 (sangat timpang); 7/5 saham >60"
-  },
-  {
-    "date": "2026-06-09",
-    "ihsg_close": 5317.91,
-    "change_pct": -4.52,
-    "regime": "RISK OFF",
-    "action": "DEFENSIF",
-    "note": "Bottom harian, oversold ekstrem, golden cross RSI terbentuk"
   }
 ]

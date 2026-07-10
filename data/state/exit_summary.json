@@ -1,9 +1,9 @@
 {
-  "date": "2026-07-09",
+  "date": "2026-07-10",
   "universe_size": 80,
-  "Healthy": 1,
-  "Exit Watch": 16,
+  "Healthy": 2,
+  "Exit Watch": 17,
   "Weakening": 0,
   "Exit Risk": 37,
-  "Exit": 26
+  "Exit": 24
 }

@@ -1,14 +1,14 @@
 {
-    "last_update": "2026-07-12 10:56",
-    "status": "SAFE",
-    "market_health": 60,
-    "opportunity": 35,
-    "risk": 75,
-    "confidence": 40,
-    "capital_deployment": 25,
+    "last_update": "2026-07-13 12:22",
+    "status": "WARNING",
+    "market_health": 55,
+    "opportunity": 45,
+    "risk": 85,
+    "confidence": 20,
+    "capital_deployment": 15,
     "action": "WAIT",
-    "rationale": "Score gap 40.6 yang stabil menunjukkan divergensi pasar, dengan breadth yang terbagi rata antara saham kuat dan lemah, bukan indikasi kekuatan pasar yang luas. Volume pada seluruh 5 saham watchlist konsisten sepi selama 5 hari terakhir, mengindikasikan likuiditas rendah dan kurangnya partisipasi signifikan. Meskipun faktor Growth dominan, faktor Quality yang lemah menambah kekhawatiran risiko. Tidak ada perubahan berarti dalam 5 hari terakhir, menunjukkan kondisi stagnan dengan risiko likuiditas yang persisten. Probabilitas reward tidak sebanding dengan risiko likuiditas dan kurangnya konfirmasi pasar, sehingga menunggu adalah langkah paling bijak.",
-    "detail_message": "Score gap 40.6 yang stabil menunjukkan divergensi pasar, dengan breadth yang terbagi rata antara saham kuat dan lemah, bukan indikasi kekuatan pasar yang luas. Volume pada seluruh 5 saham watchlist konsisten sepi selama 5 hari terakhir, mengindikasikan likuiditas rendah dan kurangnya partisipasi signifikan. Meskipun faktor Growth dominan, faktor Quality yang lemah menambah kekhawatiran risiko. Tidak ada perubahan berarti dalam 5 hari terakhir, menunjukkan kondisi stagnan dengan risiko likuiditas yang persisten. Probabilitas reward tidak sebanding dengan risiko likuiditas dan kurangnya konfirmasi pasar, sehingga menunggu adalah langkah paling bijak.",
+    "rationale": "Divergensi pasar tinggi dengan score_gap 40.6. Kekuatan pasar sangat sempit (breadth_above_70: 1) di tengah kelemahan substansial (breadth_below_40: 7). Faktor Growth dominan (80.0), namun ini tidak mengkompensasi risiko. Yang paling krusial, data volume untuk seluruh saham watchlist hari ini gagal dimuat. Ini adalah kegagalan data kritis yang menghambat penilaian likuiditas dan minat pasar. Empat hari sebelumnya, volume saham watchlist konsisten sepi. Tanpa data volume yang valid, probabilitas dan risk/reward tidak dapat dinilai secara akurat. Perlindungan modal adalah prioritas utama. Oleh karena itu, keputusan terbaik adalah menunggu.",
+    "detail_message": "Divergensi pasar tinggi dengan score_gap 40.6. Kekuatan pasar sangat sempit (breadth_above_70: 1) di tengah kelemahan substansial (breadth_below_40: 7). Faktor Growth dominan (80.0), namun ini tidak mengkompensasi risiko. Yang paling krusial, data volume untuk seluruh saham watchlist hari ini gagal dimuat. Ini adalah kegagalan data kritis yang menghambat penilaian likuiditas dan minat pasar. Empat hari sebelumnya, volume saham watchlist konsisten sepi. Tanpa data volume yang valid, probabilitas dan risk/reward tidak dapat dinilai secara akurat. Perlindungan modal adalah prioritas utama. Oleh karena itu, keputusan terbaik adalah menunggu.",
     "anomalies": [],
     "radar_context": {
         "production_config": "Config F",
@@ -27,10 +27,10 @@
         "watchlist_count": 5
     },
     "volume_details": [
-        "PTBA.JK: Volume 0.5x (Sepi)",
-        "BBNI.JK: Volume 0.5x (Sepi)",
-        "INDF.JK: Volume 0.7x (Sepi)",
-        "ASII.JK: Volume 0.4x (Sepi)",
-        "ITMG.JK: Volume 0.6x (Sepi)"
+        "PTBA.JK: Gagal memuat data",
+        "BBNI.JK: Gagal memuat data",
+        "INDF.JK: Gagal memuat data",
+        "ASII.JK: Gagal memuat data",
+        "ITMG.JK: Gagal memuat data"
     ]
 }

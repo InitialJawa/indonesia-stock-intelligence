@@ -147,7 +147,7 @@
     "ticker": "ARTO.JK",
     "fundamentals": {
       "pe": 52.345062,
-      "pb": 1.9428945,
+      "pb": 1.9631555,
       "roe": 0.03447,
       "der": 0.0,
       "net_margin": 0.0,
@@ -158,7 +158,7 @@
     },
     "quality": 2.07,
     "growth": 89.94,
-    "value": 26.69,
+    "value": 26.42,
     "momentum": 0.0
   },
   {
@@ -274,15 +274,15 @@
     "fundamentals": {
       "pe": 6.5876575,
       "pb": 1.2627695,
-      "roe": 0.21040002,
+      "roe": 0.21968001,
       "der": 0.0,
       "net_margin": 0.0,
-      "operating_margin": 0.58581,
+      "operating_margin": 0.59676,
       "free_cash_flow": 0.0,
       "revenue_growth": 0.03986646467321003,
       "earnings_growth": 0.009164268045482598
     },
-    "quality": 12.62,
+    "quality": 13.18,
     "growth": 2.45,
     "value": 47.19,
     "momentum": 0.0

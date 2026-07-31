@@ -1,21 +1,21 @@
 {
-    "last_update": "2026-07-30 11:31",
+    "last_update": "2026-07-31 11:40",
     "status": "SAFE",
-    "market_health": 40,
-    "opportunity": 55,
-    "risk": 75,
-    "confidence": 35,
-    "capital_deployment": 25,
-    "action": "WAIT",
-    "rationale": "Polarisasi pasar tinggi dengan score gap 40.6, dan pelebaran gap -6 dalam 5 hari terakhir mengindikasikan potensi pelemahan pemimpin pasar. Breadth sangat terbatas, hanya 1 saham di atas 70, namun 7 saham di bawah 40, menunjukkan partisipasi yang buruk. Mayoritas volume saham watchlist sepi, mengindikasikan kurangnya keyakinan investor. Meskipun ada lonjakan volume pada ITMG.JK, ini adalah anomali tunggal. Faktor Growth dominan, namun ketergantungan pada satu faktor meningkatkan risiko. Dengan risiko tinggi dan kepercayaan rendah, perlindungan modal adalah prioritas. Disarankan untuk menunggu.",
-    "detail_message": "Polarisasi pasar tinggi dengan score gap 40.6, dan pelebaran gap -6 dalam 5 hari terakhir mengindikasikan potensi pelemahan pemimpin pasar. Breadth sangat terbatas, hanya 1 saham di atas 70, namun 7 saham di bawah 40, menunjukkan partisipasi yang buruk. Mayoritas volume saham watchlist sepi, mengindikasikan kurangnya keyakinan investor. Meskipun ada lonjakan volume pada ITMG.JK, ini adalah anomali tunggal. Faktor Growth dominan, namun ketergantungan pada satu faktor meningkatkan risiko. Dengan risiko tinggi dan kepercayaan rendah, perlindungan modal adalah prioritas. Disarankan untuk menunggu.",
+    "market_health": 55,
+    "opportunity": 65,
+    "risk": 32,
+    "confidence": 58,
+    "capital_deployment": 68,
+    "action": "ACCUMULATE",
+    "rationale": "Score gap 40.6 menunjukkan konsentrasi kekuatan, bukan partisipasi pasar yang luas, meskipun ada sedikit perbaikan 5 hari (-2). Breadth pasar terpolarisasi dengan 7 saham kuat dan 7 saham lemah. Aktivitas volume meningkat signifikan hari ini dengan dua saham lonjakan dan penurunan drastis saham sepi, menandakan peningkatan minat. Faktor Growth dominan (80), namun Quality menjadi yang terlemah (60). Kekhawatiran utama adalah turnover top 5 yang nol, mengindikasikan kurangnya pemimpin baru. Meskipun ada peningkatan aktivitas, risiko struktural tetap tinggi. Oleh karena itu, akumulasi modal secara selektif disarankan, dengan fokus pada perlindungan modal.",
+    "detail_message": "Score gap 40.6 menunjukkan konsentrasi kekuatan, bukan partisipasi pasar yang luas, meskipun ada sedikit perbaikan 5 hari (-2). Breadth pasar terpolarisasi dengan 7 saham kuat dan 7 saham lemah. Aktivitas volume meningkat signifikan hari ini dengan dua saham lonjakan dan penurunan drastis saham sepi, menandakan peningkatan minat. Faktor Growth dominan (80), namun Quality menjadi yang terlemah (60). Kekhawatiran utama adalah turnover top 5 yang nol, mengindikasikan kurangnya pemimpin baru. Meskipun ada peningkatan aktivitas, risiko struktural tetap tinggi. Oleh karena itu, akumulasi modal secara selektif disarankan, dengan fokus pada perlindungan modal.",
     "anomalies": [],
     "radar_context": {
         "production_config": "Config F",
         "top5_avg_score": 66.8,
         "bot5_avg_score": 26.2,
         "score_gap": 40.6,
-        "score_gap_5d_change": -6,
+        "score_gap_5d_change": -2,
         "breadth_above_70": 1,
         "breadth_above_60": 7,
         "breadth_below_40": 7,
@@ -27,10 +27,10 @@
         "watchlist_count": 5
     },
     "volume_details": [
-        "PTBA.JK: Volume 0.9x (Sepi)",
-        "BBNI.JK: Volume 0.9x (Sepi)",
-        "INDF.JK: Volume 1.0x (Sepi)",
-        "ASII.JK: Volume 0.7x (Sepi)",
-        "ITMG.JK: Volume 2.5x (Volume Lonjakan)"
+        "PTBA.JK: Volume 2.6x (Volume Lonjakan)",
+        "BBNI.JK: Volume 1.0x (Wajar)",
+        "INDF.JK: Volume 2.1x (Volume Lonjakan)",
+        "ASII.JK: Volume 1.0x (Sepi)",
+        "ITMG.JK: Volume 1.2x (Wajar)"
     ]
 }

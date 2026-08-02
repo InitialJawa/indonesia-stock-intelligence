@@ -21,7 +21,7 @@
     "ticker": "ACES.JK",
     "fundamentals": {
       "pe": 8.944099,
-      "pb": 0.92192096,
+      "pb": 0.9684579,
       "roe": 0.121199995,
       "der": 15.331,
       "net_margin": 0.0,
@@ -32,7 +32,7 @@
     },
     "quality": 7.27,
     "growth": -12.19,
-    "value": 59.82,
+    "value": 57.22,
     "momentum": 0.0
   },
   {
@@ -296,7 +296,7 @@
       "der": 28.081,
       "net_margin": 0.0,
       "operating_margin": 0.12772,
-      "free_cash_flow": -113400496.0,
+      "free_cash_flow": -112041000.0,
       "revenue_growth": 0.535955483581985,
       "earnings_growth": 1.0489584435286754
     },
@@ -310,15 +310,15 @@
     "fundamentals": {
       "pe": 16.920397,
       "pb": 73800.0,
-      "roe": 0.34817,
-      "der": 133.907,
+      "roe": 0.0646,
+      "der": 133.059,
       "net_margin": 0.0,
-      "operating_margin": 0.19275999,
-      "free_cash_flow": -1247792384.0,
+      "operating_margin": 0.10423,
+      "free_cash_flow": -1083926784.0,
       "revenue_growth": 2.1967649701821745,
       "earnings_growth": 7.671606118546845
     },
-    "quality": 20.89,
+    "quality": 3.88,
     "growth": 493.42,
     "value": 2.96,
     "momentum": 0.0
@@ -327,7 +327,7 @@
     "ticker": "BSDE.JK",
     "fundamentals": {
       "pe": 4.735006,
-      "pb": 0.26874292,
+      "pb": 0.26589814,
       "roe": 0.041789997,
       "der": 35.164,
       "net_margin": 0.0,
@@ -338,7 +338,7 @@
     },
     "quality": 2.51,
     "growth": -24.46,
-    "value": 196.61,
+    "value": 198.6,
     "momentum": 0.0
   },
   {
@@ -364,15 +364,15 @@
     "fundamentals": {
       "pe": 38.018433,
       "pb": 41249.996,
-      "roe": 0.04587,
-      "der": 19.97,
+      "roe": 0.05421,
+      "der": 24.84,
       "net_margin": 0.0,
-      "operating_margin": 0.111260004,
-      "free_cash_flow": 79884488.0,
+      "operating_margin": 0.07232,
+      "free_cash_flow": -127428832.0,
       "revenue_growth": 0.04786990411526203,
       "earnings_growth": 0.18609419932890783
     },
-    "quality": 2.75,
+    "quality": 3.25,
     "growth": 11.7,
     "value": 1.32,
     "momentum": 0.0
@@ -382,15 +382,15 @@
     "fundamentals": {
       "pe": 8.481783,
       "pb": 2.255583,
-      "roe": 0.15897,
-      "der": 1.876,
+      "roe": 0.20882,
+      "der": 1.614,
       "net_margin": 0.0,
-      "operating_margin": 0.74556,
-      "free_cash_flow": -377627541504.0,
+      "operating_margin": 0.80877995,
+      "free_cash_flow": -802208088064.0,
       "revenue_growth": 0.1132332764714098,
       "earnings_growth": 0.47525023162727464
     },
-    "quality": 9.54,
+    "quality": 12.53,
     "growth": 29.42,
     "value": 28.06,
     "momentum": 0.0
@@ -399,7 +399,7 @@
     "ticker": "CMRY.JK",
     "fundamentals": {
       "pe": 17.301037,
-      "pb": 5.37979,
+      "pb": 4.972984,
       "roe": 0.32229,
       "der": 0.006,
       "net_margin": 0.0,
@@ -410,25 +410,25 @@
     },
     "quality": 19.34,
     "growth": 26.31,
-    "value": 12.18,
+    "value": 12.94,
     "momentum": 0.0
   },
   {
     "ticker": "CPIN.JK",
     "fundamentals": {
       "pe": 8.084134,
-      "pb": 1.4693562,
+      "pb": 1.5459539,
       "roe": 0.22792,
       "der": 28.211,
       "net_margin": 0.0,
-      "operating_margin": 0.062069997,
-      "free_cash_flow": -220540502016.0,
+      "operating_margin": 0.06196,
+      "free_cash_flow": 1079185899520.0,
       "revenue_growth": 0.0478229405522322,
       "earnings_growth": 0.5200580350914615
     },
     "quality": 13.68,
     "growth": 28.39,
-    "value": 40.21,
+    "value": 38.53,
     "momentum": 0.0
   },
   {
@@ -436,15 +436,15 @@
     "fundamentals": {
       "pe": 4.228252,
       "pb": 0.43347973,
-      "roe": 0.102290004,
-      "der": 28.661,
+      "roe": 0.100430004,
+      "der": 29.003,
       "net_margin": 0.0,
-      "operating_margin": 0.28457,
-      "free_cash_flow": -394462134272.0,
+      "operating_margin": 0.29557,
+      "free_cash_flow": -778723721216.0,
       "revenue_growth": 0.12774272149480248,
       "earnings_growth": 0.25246438864349513
     },
-    "quality": 6.14,
+    "quality": 6.03,
     "growth": 19.01,
     "value": 127.17,
     "momentum": 0.0
@@ -454,15 +454,15 @@
     "fundamentals": {
       "pe": 30.673431,
       "pb": 221666.67,
-      "roe": 0.25986,
-      "der": 240.953,
+      "roe": 0.26372,
+      "der": 223.462,
       "net_margin": 0.0,
-      "operating_margin": 0.095769994,
-      "free_cash_flow": -409189760.0,
+      "operating_margin": 0.0438,
+      "free_cash_flow": -579511616.0,
       "revenue_growth": 0.5162568617839328,
       "earnings_growth": -0.16306247473333954
     },
-    "quality": 15.59,
+    "quality": 15.82,
     "growth": 17.66,
     "value": 1.63,
     "momentum": 0.0
@@ -616,15 +616,15 @@
     "fundamentals": {
       "pe": 12.224939,
       "pb": 0.57026976,
-      "roe": 0.04741,
-      "der": 0.261,
+      "roe": 0.0706,
+      "der": 0.0,
       "net_margin": 0.0,
-      "operating_margin": 0.10047,
-      "free_cash_flow": 10020303405056.0,
+      "operating_margin": 0.089829996,
+      "free_cash_flow": 10530566701056.0,
       "revenue_growth": -0.09412274632520931,
       "earnings_growth": 0.5869953762470623
     },
-    "quality": 2.84,
+    "quality": 4.24,
     "growth": 24.64,
     "value": 91.77,
     "momentum": 0.0
@@ -652,15 +652,15 @@
     "fundamentals": {
       "pe": 30.864197,
       "pb": 2.16551,
-      "roe": 0.07834,
-      "der": 48.057,
+      "roe": 0.07281,
+      "der": 51.262,
       "net_margin": 0.0,
-      "operating_margin": 0.1254,
-      "free_cash_flow": -570719993856.0,
+      "operating_margin": 0.11906,
+      "free_cash_flow": -522991632384.0,
       "revenue_growth": 0.06198420497652363,
       "earnings_growth": -0.1985196159285893
     },
-    "quality": 4.7,
+    "quality": 4.37,
     "growth": -6.83,
     "value": 24.71,
     "momentum": 0.0
@@ -688,15 +688,15 @@
     "fundamentals": {
       "pe": 14.881483,
       "pb": 11760.563,
-      "roe": 0.03585,
-      "der": 33.731,
+      "roe": 0.07237,
+      "der": 29.561,
       "net_margin": 0.0,
-      "operating_margin": 0.12791,
-      "free_cash_flow": -636861248.0,
+      "operating_margin": 0.18827,
+      "free_cash_flow": -621571712.0,
       "revenue_growth": 0.033316639262472365,
       "earnings_growth": -0.30777540888861665
     },
-    "quality": 2.15,
+    "quality": 4.34,
     "growth": -13.72,
     "value": 3.36,
     "momentum": 0.0
@@ -723,16 +723,16 @@
     "ticker": "INCO.JK",
     "fundamentals": {
       "pe": 19.84127,
-      "pb": 19756.555,
-      "roe": 0.05671,
+      "pb": 20057.033,
+      "roe": 0.05584,
       "der": 0.056,
       "net_margin": 0.0,
-      "operating_margin": 0.32292998,
-      "free_cash_flow": -321790368.0,
+      "operating_margin": 0.26836002,
+      "free_cash_flow": -221326496.0,
       "revenue_growth": 0.04188499854796147,
       "earnings_growth": 0.3168573951282007
     },
-    "quality": 3.4,
+    "quality": 3.35,
     "growth": 17.94,
     "value": 2.52,
     "momentum": 0.0
@@ -778,15 +778,15 @@
     "fundamentals": {
       "pe": 5.411256,
       "pb": 6567.631,
-      "roe": 0.06929,
-      "der": 68.492,
+      "roe": 0.09631,
+      "der": 72.12,
       "net_margin": 0.0,
-      "operating_margin": 0.24131,
-      "free_cash_flow": 51571376.0,
+      "operating_margin": 0.17941,
+      "free_cash_flow": -3293640192.0,
       "revenue_growth": -0.007652396274905491,
       "earnings_growth": 0.06844084957153766
     },
-    "quality": 4.16,
+    "quality": 5.78,
     "growth": 3.04,
     "value": 9.25,
     "momentum": 0.0
@@ -796,15 +796,15 @@
     "fundamentals": {
       "pe": 6.8965516,
       "pb": 0.6589744,
-      "roe": 0.09884,
-      "der": 12.119,
+      "roe": 0.10689,
+      "der": 12.218,
       "net_margin": 0.0,
-      "operating_margin": 0.05941,
-      "free_cash_flow": 1880727224320.0,
+      "operating_margin": 0.08695,
+      "free_cash_flow": 2151288537088.0,
       "revenue_growth": -0.04407556871536354,
       "earnings_growth": 0.11994041675402788
     },
-    "quality": 5.93,
+    "quality": 6.41,
     "growth": 3.79,
     "value": 83.13,
     "momentum": 0.0
@@ -886,15 +886,15 @@
     "fundamentals": {
       "pe": 6.1147695,
       "pb": 0.4276921,
-      "roe": 0.10227,
-      "der": 55.543,
+      "roe": 0.02854,
+      "der": 62.627,
       "net_margin": 0.0,
-      "operating_margin": 0.25101998,
-      "free_cash_flow": 1101478232064.0,
+      "operating_margin": -0.10366999,
+      "free_cash_flow": 302276870144.0,
       "revenue_growth": 0.11879617993815735,
       "earnings_growth": 0.1648463562597025
     },
-    "quality": 6.14,
+    "quality": 1.71,
     "growth": 14.18,
     "value": 125.08,
     "momentum": 0.0
@@ -904,15 +904,15 @@
     "fundamentals": {
       "pe": 9.098895,
       "pb": 1.3501686,
-      "roe": 0.1443,
-      "der": 1.187,
+      "roe": 0.14768,
+      "der": 3.208,
       "net_margin": 0.0,
-      "operating_margin": 0.13664,
-      "free_cash_flow": 2396069298176.0,
+      "operating_margin": 0.113079995,
+      "free_cash_flow": 1881921028096.0,
       "revenue_growth": 0.08265252280756126,
       "earnings_growth": 0.13094987189247054
     },
-    "quality": 8.66,
+    "quality": 8.86,
     "growth": 10.68,
     "value": 42.53,
     "momentum": 0.0
@@ -922,15 +922,15 @@
     "fundamentals": {
       "pe": 10.892388,
       "pb": 0.2878676,
-      "roe": 0.026199998,
-      "der": 19.043,
+      "roe": 0.021359999,
+      "der": 18.546,
       "net_margin": 0.0,
-      "operating_margin": 0.12212,
-      "free_cash_flow": -255747424256.0,
+      "operating_margin": 0.0235,
+      "free_cash_flow": -417556168704.0,
       "revenue_growth": 0.477439604542412,
       "earnings_growth": 0.08896132648037583
     },
-    "quality": 1.57,
+    "quality": 1.28,
     "growth": 28.32,
     "value": 178.28,
     "momentum": 0.0
@@ -958,15 +958,15 @@
     "fundamentals": {
       "pe": 10.438343,
       "pb": 1.8464886,
-      "roe": 0.17545,
-      "der": 46.96,
+      "roe": 0.17639999,
+      "der": 47.593,
       "net_margin": 0.0,
-      "operating_margin": 0.0855,
-      "free_cash_flow": 3872628146176.0,
+      "operating_margin": 0.08179,
+      "free_cash_flow": 2658757509120.0,
       "revenue_growth": 0.1321296041676056,
       "earnings_growth": 0.2622395009778702
     },
-    "quality": 10.53,
+    "quality": 10.58,
     "growth": 19.72,
     "value": 31.87,
     "momentum": 0.0
@@ -1065,18 +1065,18 @@
     "ticker": "PANI.JK",
     "fundamentals": {
       "pe": 43.666595,
-      "pb": 4.0907426,
+      "pb": 3.9024646,
       "roe": 0.10487001,
-      "der": 1.34,
+      "der": 1.571,
       "net_margin": 0.0,
       "operating_margin": 0.72586995,
-      "free_cash_flow": -3528514863104.0,
+      "free_cash_flow": -3598835777536.0,
       "revenue_growth": 0.5236977552759007,
       "earnings_growth": 0.838920281331118
     },
     "quality": 6.29,
     "growth": 68.13,
-    "value": 13.37,
+    "value": 13.96,
     "momentum": 0.0
   },
   {
@@ -1208,7 +1208,7 @@
   {
     "ticker": "RATU.JK",
     "fundamentals": {
-      "pe": 58.19209,
+      "pe": 58.139534,
       "pb": 257500.0,
       "roe": 0.4316,
       "der": 241.875,
@@ -1228,15 +1228,15 @@
     "fundamentals": {
       "pe": 14.285714,
       "pb": 1.9300182,
-      "roe": 0.113970004,
-      "der": 0.234,
+      "roe": 0.13564,
+      "der": 10.278,
       "net_margin": 0.0,
-      "operating_margin": 0.20982,
-      "free_cash_flow": 202450796544.0,
+      "operating_margin": 0.16667,
+      "free_cash_flow": -112511025152.0,
       "revenue_growth": -0.024062083347572434,
       "earnings_growth": 0.2961453790682518
     },
-    "quality": 6.84,
+    "quality": 8.14,
     "growth": 13.6,
     "value": 29.41,
     "momentum": 0.0
@@ -1246,15 +1246,15 @@
     "fundamentals": {
       "pe": 9.3709545,
       "pb": 3.270838,
-      "roe": 0.32823002,
-      "der": 0.049,
+      "roe": 0.30396998,
+      "der": 0.053,
       "net_margin": 0.0,
-      "operating_margin": 0.2754,
-      "free_cash_flow": 953373229056.0,
+      "operating_margin": 0.29804,
+      "free_cash_flow": 912897867776.0,
       "revenue_growth": 0.04097258441003051,
       "earnings_growth": 0.049679511812718076
     },
-    "quality": 19.69,
+    "quality": 18.24,
     "growth": 4.53,
     "value": 20.62,
     "momentum": 0.0
@@ -1282,15 +1282,15 @@
     "fundamentals": {
       "pe": 7.495976,
       "pb": 0.4544732,
-      "roe": 0.07928,
-      "der": 87.736,
+      "roe": 0.06781,
+      "der": 91.979,
       "net_margin": 0.0,
-      "operating_margin": 0.30335,
-      "free_cash_flow": -80831668224.0,
+      "operating_margin": 0.28969,
+      "free_cash_flow": 326850281472.0,
       "revenue_growth": -0.17474961472132325,
       "earnings_growth": -0.4418506329711434
     },
-    "quality": 4.76,
+    "quality": 4.07,
     "growth": -30.83,
     "value": 116.69,
     "momentum": 0.0
@@ -1317,18 +1317,18 @@
     "ticker": "TAPG.JK",
     "fundamentals": {
       "pe": 8.576329,
-      "pb": 2.9076145,
+      "pb": 3.0364444,
       "roe": 0.35969,
       "der": 9.035,
       "net_margin": 0.0,
-      "operating_margin": 0.53534,
-      "free_cash_flow": 1896496234496.0,
+      "operating_margin": 0.37357,
+      "free_cash_flow": 2418613420032.0,
       "revenue_growth": 0.17895276030110438,
       "earnings_growth": 0.1865187566740891
     },
     "quality": 21.58,
     "growth": 18.27,
-    "value": 23.03,
+    "value": 22.3,
     "momentum": 0.0
   },
   {
@@ -1336,15 +1336,15 @@
     "fundamentals": {
       "pe": 14.749594,
       "pb": 1.9333545,
-      "roe": 0.17513001,
-      "der": 55.789,
+      "roe": 0.17683001,
+      "der": 59.982,
       "net_margin": 0.0,
-      "operating_margin": 0.28546,
-      "free_cash_flow": 61195126046720.0,
+      "operating_margin": 0.28538,
+      "free_cash_flow": 57332373389312.0,
       "revenue_growth": -0.02150473104082898,
       "earnings_growth": -0.21815336463223786
     },
-    "quality": 10.51,
+    "quality": 10.61,
     "growth": -11.98,
     "value": 29.25,
     "momentum": 0.0
@@ -1353,7 +1353,7 @@
     "ticker": "TOWR.JK",
     "fundamentals": {
       "pe": 5.8550725,
-      "pb": 0.8402715,
+      "pb": 0.8719092,
       "roe": 0.16139999,
       "der": 156.508,
       "net_margin": 0.0,
@@ -1364,7 +1364,7 @@
     },
     "quality": 9.68,
     "growth": 7.46,
-    "value": 68.04,
+    "value": 65.89,
     "momentum": 0.0
   },
   {
@@ -1408,15 +1408,15 @@
     "fundamentals": {
       "pe": 19.68504,
       "pb": 1.4224508,
-      "roe": 0.16141,
-      "der": 67.37,
+      "roe": 0.16084999,
+      "der": 115.824,
       "net_margin": 0.0,
-      "operating_margin": 0.46611,
-      "free_cash_flow": -4774227869696.0,
+      "operating_margin": 0.5182,
+      "free_cash_flow": -5999008153600.0,
       "revenue_growth": 1.4698759949577107,
       "earnings_growth": 0.769584881654126
     },
-    "quality": 9.68,
+    "quality": 9.65,
     "growth": 111.97,
     "value": 37.69,
     "momentum": 0.0

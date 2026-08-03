@@ -1,28 +1,5 @@
 [
     {
-        "tanggal": "2026-07-29",
-        "jumlah_saham_sedang_anget": 5,
-        "watchlist_tickers": [
-            "PTBA.JK",
-            "BBNI.JK",
-            "INDF.JK",
-            "ASII.JK",
-            "ITMG.JK"
-        ],
-        "ringkasan_volume_hari_itu": {
-            "status_sistem": "SAFE",
-            "saham_anomali_lonjakan": 0,
-            "saham_volume_sepi": 3,
-            "detail": [
-                "PTBA.JK: Volume 1.0x (Wajar)",
-                "BBNI.JK: Volume 0.7x (Sepi)",
-                "INDF.JK: Volume 1.6x (Wajar)",
-                "ASII.JK: Volume 0.5x (Sepi)",
-                "ITMG.JK: Volume 0.9x (Sepi)"
-            ]
-        }
-    },
-    {
         "tanggal": "2026-07-30",
         "jumlah_saham_sedang_anget": 5,
         "watchlist_tickers": [
@@ -111,6 +88,29 @@
                 "INDF.JK: Volume 2.1x (Volume Lonjakan)",
                 "ASII.JK: Volume 1.0x (Sepi)",
                 "ITMG.JK: Volume 1.2x (Wajar)"
+            ]
+        }
+    },
+    {
+        "tanggal": "2026-08-03",
+        "jumlah_saham_sedang_anget": 5,
+        "watchlist_tickers": [
+            "PTBA.JK",
+            "BBNI.JK",
+            "INDF.JK",
+            "ASII.JK",
+            "ITMG.JK"
+        ],
+        "ringkasan_volume_hari_itu": {
+            "status_sistem": "SAFE",
+            "saham_anomali_lonjakan": 0,
+            "saham_volume_sepi": 2,
+            "detail": [
+                "PTBA.JK: Volume 1.3x (Wajar)",
+                "BBNI.JK: Volume 0.4x (Sepi)",
+                "INDF.JK: Volume 1.6x (Wajar)",
+                "ASII.JK: Volume 0.6x (Sepi)",
+                "ITMG.JK: Volume 1.1x (Wajar)"
             ]
         }
     }

@@ -22,7 +22,7 @@ rank,ticker,drawdown_252d,distance_from_high_252d,volatility_60d,rs_change_60d,v
 21,WIFI.JK,-52.41,-52.41,4.69,-9.89,0.78,48.17,True,False
 22,BRMS.JK,-53.05,-53.05,6.0,-1.91,0.69,29.75,True,False
 23,RATU.JK,-57.12,-57.12,7.22,-26.46,0.89,38.07,True,False
-24,BUMI.JK,-59.7,-59.7,5.27,-4.99,0.03,43.85,True,False
+24,BUMI.JK,-59.7,-59.7,5.27,-4.99,1.26,43.85,True,False
 25,TPIA.JK,-75.66,-75.66,8.05,-10.48,1.25,70.88,True,False
 26,ENRG.JK,-40.0,-40.0,6.9,-63.07,0.46,29.41,True,False
 27,KIJA.JK,-64.97,-64.97,3.89,-12.5,0.61,11.71,True,False

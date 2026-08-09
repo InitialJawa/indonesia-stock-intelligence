@@ -205,7 +205,7 @@
       "roe": 0.1245,
       "der": 0.0,
       "net_margin": 0.0,
-      "operating_margin": 0.43447,
+      "operating_margin": 0.42648998,
       "free_cash_flow": 0.0,
       "revenue_growth": 0.027724701072510596,
       "earnings_growth": -0.06629344873616023
@@ -472,15 +472,15 @@
     "fundamentals": {
       "pe": 4.2697635,
       "pb": 2.4689827,
-      "roe": 0.68301004,
-      "der": 55.993,
+      "roe": 0.69128996,
+      "der": 69.347,
       "net_margin": 0.0,
-      "operating_margin": 0.117939994,
-      "free_cash_flow": 1075252822016.0,
+      "operating_margin": 0.13575,
+      "free_cash_flow": -49132089344.0,
       "revenue_growth": 0.05981460591061119,
       "earnings_growth": 76.97705463089831
     },
-    "quality": 40.98,
+    "quality": 41.48,
     "growth": 3851.84,
     "value": 31.96,
     "momentum": 0.0
@@ -668,7 +668,7 @@
   {
     "ticker": "HRTA.JK",
     "fundamentals": {
-      "pe": 7.842994,
+      "pe": 7.4458876,
       "pb": 2.7098734,
       "roe": 0.41946998,
       "der": 111.814,
@@ -680,7 +680,7 @@
     },
     "quality": 25.17,
     "growth": 132.84,
-    "value": 24.83,
+    "value": 25.17,
     "momentum": 0.0
   },
   {
@@ -1195,8 +1195,8 @@
       "roe": 0.19903,
       "der": 112.726,
       "net_margin": 0.0,
-      "operating_margin": 0.24368,
-      "free_cash_flow": -72693768.0,
+      "operating_margin": 0.23408002,
+      "free_cash_flow": 33312212.0,
       "revenue_growth": 0.0479024599679725,
       "earnings_growth": 0.06606017537806659
     },

@@ -1,14 +1,14 @@
 {
-    "last_update": "2026-08-11 10:27",
-    "status": "SAFE",
-    "market_health": 60,
-    "opportunity": 65,
-    "risk": 60,
-    "confidence": 50,
-    "capital_deployment": 50,
-    "action": "HOLD",
-    "rationale": "Pasar menunjukkan divergensi tinggi (score gap 40.6) dan breadth yang sangat sempit, dengan hanya satu saham di atas 70. Mayoritas saham watchlist memiliki volume sepi, mengindikasikan kurangnya partisipasi. Meskipun faktor Growth kuat (80.0), faktor Quality yang lebih lemah (60.0) menjadi perhatian. Status sistem konsisten SAFE selama 5 hari, namun tidak ada perbaikan pada score gap dan volume tetap rendah. Ini menunjukkan pasar yang selektif dan rapuh, membenarkan sikap hati-hati untuk perlindungan modal.",
-    "detail_message": "Pasar menunjukkan divergensi tinggi (score gap 40.6) dan breadth yang sangat sempit, dengan hanya satu saham di atas 70. Mayoritas saham watchlist memiliki volume sepi, mengindikasikan kurangnya partisipasi. Meskipun faktor Growth kuat (80.0), faktor Quality yang lebih lemah (60.0) menjadi perhatian. Status sistem konsisten SAFE selama 5 hari, namun tidak ada perbaikan pada score gap dan volume tetap rendah. Ini menunjukkan pasar yang selektif dan rapuh, membenarkan sikap hati-hati untuk perlindungan modal.",
+    "last_update": "2026-08-12 10:37",
+    "status": "WARNING",
+    "market_health": 45,
+    "opportunity": 40,
+    "risk": 80,
+    "confidence": 30,
+    "capital_deployment": 20,
+    "action": "REDUCE",
+    "rationale": "Keputusan pengurangan modal diambil karena probabilitas risiko saat ini tinggi. Score gap 40.6 menunjukkan divergensi pasar yang signifikan. Breadth sangat sempit, hanya 1 saham di atas 70, sementara 7 saham di bawah 40, menandakan kelemahan struktural. Volume perdagangan mayoritas saham watchlist konsisten sepi selama 5 hari terakhir, termasuk hari ini, menunjukkan kurangnya keyakinan dan likuiditas. Meskipun Growth menjadi faktor dominan dengan skor 80, kekuatan ini sangat terkonsentrasi. Tidak ada perubahan signifikan dalam score gap selama 5 hari, mengindikasikan kondisi pasar yang rapuh ini persisten. Perlindungan modal adalah prioritas utama dalam kondisi ini.",
+    "detail_message": "Keputusan pengurangan modal diambil karena probabilitas risiko saat ini tinggi. Score gap 40.6 menunjukkan divergensi pasar yang signifikan. Breadth sangat sempit, hanya 1 saham di atas 70, sementara 7 saham di bawah 40, menandakan kelemahan struktural. Volume perdagangan mayoritas saham watchlist konsisten sepi selama 5 hari terakhir, termasuk hari ini, menunjukkan kurangnya keyakinan dan likuiditas. Meskipun Growth menjadi faktor dominan dengan skor 80, kekuatan ini sangat terkonsentrasi. Tidak ada perubahan signifikan dalam score gap selama 5 hari, mengindikasikan kondisi pasar yang rapuh ini persisten. Perlindungan modal adalah prioritas utama dalam kondisi ini.",
     "anomalies": [],
     "radar_context": {
         "production_config": "Config F",
@@ -28,9 +28,9 @@
     },
     "volume_details": [
         "PTBA.JK: Volume 0.8x (Sepi)",
-        "BBNI.JK: Volume 0.7x (Sepi)",
-        "INDF.JK: Volume 1.0x (Sepi)",
-        "ASII.JK: Volume 1.0x (Sepi)",
-        "ITMG.JK: Volume 1.4x (Wajar)"
+        "BBNI.JK: Volume 0.5x (Sepi)",
+        "INDF.JK: Volume 0.8x (Sepi)",
+        "ASII.JK: Volume 1.2x (Wajar)",
+        "ITMG.JK: Volume 0.9x (Sepi)"
     ]
 }

@@ -1,14 +1,14 @@
 {
-    "last_update": "2026-08-12 10:37",
-    "status": "WARNING",
-    "market_health": 45,
-    "opportunity": 40,
-    "risk": 80,
-    "confidence": 30,
-    "capital_deployment": 20,
-    "action": "REDUCE",
-    "rationale": "Keputusan pengurangan modal diambil karena probabilitas risiko saat ini tinggi. Score gap 40.6 menunjukkan divergensi pasar yang signifikan. Breadth sangat sempit, hanya 1 saham di atas 70, sementara 7 saham di bawah 40, menandakan kelemahan struktural. Volume perdagangan mayoritas saham watchlist konsisten sepi selama 5 hari terakhir, termasuk hari ini, menunjukkan kurangnya keyakinan dan likuiditas. Meskipun Growth menjadi faktor dominan dengan skor 80, kekuatan ini sangat terkonsentrasi. Tidak ada perubahan signifikan dalam score gap selama 5 hari, mengindikasikan kondisi pasar yang rapuh ini persisten. Perlindungan modal adalah prioritas utama dalam kondisi ini.",
-    "detail_message": "Keputusan pengurangan modal diambil karena probabilitas risiko saat ini tinggi. Score gap 40.6 menunjukkan divergensi pasar yang signifikan. Breadth sangat sempit, hanya 1 saham di atas 70, sementara 7 saham di bawah 40, menandakan kelemahan struktural. Volume perdagangan mayoritas saham watchlist konsisten sepi selama 5 hari terakhir, termasuk hari ini, menunjukkan kurangnya keyakinan dan likuiditas. Meskipun Growth menjadi faktor dominan dengan skor 80, kekuatan ini sangat terkonsentrasi. Tidak ada perubahan signifikan dalam score gap selama 5 hari, mengindikasikan kondisi pasar yang rapuh ini persisten. Perlindungan modal adalah prioritas utama dalam kondisi ini.",
+    "last_update": "2026-08-13 10:39",
+    "status": "SAFE",
+    "market_health": 72,
+    "opportunity": 78,
+    "risk": 34,
+    "confidence": 69,
+    "capital_deployment": 60,
+    "action": "ACCUMULATE",
+    "rationale": "Status SAFE sistem didukung score gap 40.6 dan faktor Growth kuat (80.0), menawarkan peluang selektif. Namun, breadth pasar sempit (1 saham >70, 7 saham <40) dan volume perdagangan sangat sepi pada mayoritas saham watchlist secara konsisten selama 5 hari terakhir. Ini menimbulkan risiko likuiditas tinggi dan potensi kesulitan eksekusi. Tidak ada perubahan positif dalam dinamika pasar 5 hari terakhir. Akumulasi modal harus dilakukan sangat hati-hati, bertahap, dan selektif, dengan prioritas utama pada perlindungan modal dari risiko likuiditas yang persisten.",
+    "detail_message": "Status SAFE sistem didukung score gap 40.6 dan faktor Growth kuat (80.0), menawarkan peluang selektif. Namun, breadth pasar sempit (1 saham >70, 7 saham <40) dan volume perdagangan sangat sepi pada mayoritas saham watchlist secara konsisten selama 5 hari terakhir. Ini menimbulkan risiko likuiditas tinggi dan potensi kesulitan eksekusi. Tidak ada perubahan positif dalam dinamika pasar 5 hari terakhir. Akumulasi modal harus dilakukan sangat hati-hati, bertahap, dan selektif, dengan prioritas utama pada perlindungan modal dari risiko likuiditas yang persisten.",
     "anomalies": [],
     "radar_context": {
         "production_config": "Config F",
@@ -27,10 +27,10 @@
         "watchlist_count": 5
     },
     "volume_details": [
-        "PTBA.JK: Volume 0.8x (Sepi)",
-        "BBNI.JK: Volume 0.5x (Sepi)",
+        "PTBA.JK: Volume 0.5x (Sepi)",
+        "BBNI.JK: Volume 0.6x (Sepi)",
         "INDF.JK: Volume 0.8x (Sepi)",
-        "ASII.JK: Volume 1.2x (Wajar)",
-        "ITMG.JK: Volume 0.9x (Sepi)"
+        "ASII.JK: Volume 1.0x (Sepi)",
+        "ITMG.JK: Volume 1.2x (Wajar)"
     ]
 }

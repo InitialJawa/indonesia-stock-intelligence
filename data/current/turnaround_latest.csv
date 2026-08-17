@@ -19,7 +19,7 @@ rank,ticker,drawdown_252d,distance_from_high_252d,volatility_60d,rs_change_60d,v
 18,ARTO.JK,-49.79,-49.79,5.51,22.69,0.29,47.2,True,True
 19,WIFI.JK,-54.41,-54.41,4.68,2.05,0.74,41.93,True,True
 20,RATU.JK,-61.45,-61.45,6.8,17.18,0.6,24.13,True,True
-21,TPIA.JK,-78.06,-78.06,7.19,25.16,0.88,54.02,True,True
+21,TPIA.JK,-77.45,-77.45,7.19,25.16,0.88,54.02,True,True
 22,TLKM.JK,-28.08,-28.08,3.56,-9.52,0.8,20.58,True,False
 23,ENRG.JK,-42.95,-42.95,6.62,-28.89,0.87,23.04,True,False
 24,KPIG.JK,-75.52,-75.52,4.45,-0.19,0.89,0.0,True,False
@@ -28,7 +28,7 @@ rank,ticker,drawdown_252d,distance_from_high_252d,volatility_60d,rs_change_60d,v
 27,CMRY.JK,-24.57,-24.57,2.8,0.18,1.46,12.86,False,True
 28,SMGR.JK,-49.85,-49.85,3.08,16.26,1.42,13.26,False,True
 29,ERAA.JK,-1.29,-1.29,2.63,33.35,0.41,52.66,False,True
-30,INDF.JK,-4.9,-4.9,1.76,6.17,0.54,30.81,False,True
+30,INDF.JK,-2.81,-2.81,1.76,6.17,0.54,30.81,False,True
 31,GGRM.JK,-7.02,-7.02,2.98,14.81,0.51,47.66,False,True
 32,TAPG.JK,-7.68,-7.68,2.88,18.51,0.66,47.02,False,True
 33,AADI.JK,-14.33,-14.33,2.24,15.33,1.22,28.65,False,True
@@ -42,9 +42,9 @@ rank,ticker,drawdown_252d,distance_from_high_252d,volatility_60d,rs_change_60d,v
 41,SMRA.JK,-29.18,-29.18,2.29,18.58,0.89,30.1,False,True
 42,UNVR.JK,-31.21,-31.21,1.98,14.26,0.52,21.37,False,True
 43,CTRA.JK,-39.43,-39.43,2.73,2.26,0.56,22.85,False,True
-44,KLBF.JK,-42.68,-42.68,2.84,9.8,1.19,20.3,False,True
-45,ACES.JK,-19.52,-19.52,1.93,8.8,0.42,23.54,False,True
-46,BBCA.JK,-23.97,-23.97,3.01,7.29,0.42,30.93,False,True
+44,KLBF.JK,-41.66,-41.66,2.84,9.8,1.19,20.3,False,True
+45,ACES.JK,-16.75,-16.75,1.93,8.8,0.42,23.54,False,True
+46,BBCA.JK,-23.31,-23.31,3.01,7.29,0.42,30.93,False,True
 47,ELSA.JK,-26.18,-26.18,2.91,1.97,0.52,33.0,False,True
 48,MIKA.JK,-32.23,-32.23,2.71,28.94,0.34,26.09,False,True
 49,TOWR.JK,-41.28,-41.28,2.94,4.95,0.57,23.42,False,True

@@ -1,5 +1,5 @@
 {
-  "date": "2026-08-16",
+  "date": "2026-08-17",
   "universe_size": 80,
   "context_match_count": 24,
   "transition_match_count": 50,
@@ -165,7 +165,7 @@
     "volume_ratio_high_count": 8,
     "above_ma20_count": 44,
     "recovery_gt_10pct_count": 67,
-    "avg_drawdown_252d": -34.84,
+    "avg_drawdown_252d": -34.75,
     "avg_volatility_60d": 3.49
   },
   "top_candidates": [

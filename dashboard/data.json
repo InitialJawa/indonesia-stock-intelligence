@@ -638,7 +638,7 @@
       "der": 28.366,
       "net_margin": 0.0,
       "operating_margin": 0.06434,
-      "free_cash_flow": 1427184812032.0,
+      "free_cash_flow": 1504526729216.0,
       "revenue_growth": 0.15273590260557418,
       "earnings_growth": -0.7699958331102457
     },
@@ -669,7 +669,7 @@
     "ticker": "HRTA.JK",
     "fundamentals": {
       "pe": 7.4458876,
-      "pb": 2.650424,
+      "pb": 2.7098734,
       "roe": 0.41946998,
       "der": 111.814,
       "net_margin": 0.0,
@@ -680,7 +680,7 @@
     },
     "quality": 25.17,
     "growth": 132.84,
-    "value": 25.58,
+    "value": 25.17,
     "momentum": 0.0
   },
   {
@@ -1209,7 +1209,7 @@
     "ticker": "RATU.JK",
     "fundamentals": {
       "pe": 31.645138,
-      "pb": 231500.0,
+      "pb": 220476.19,
       "roe": 0.4316,
       "der": 241.875,
       "net_margin": 0.0,

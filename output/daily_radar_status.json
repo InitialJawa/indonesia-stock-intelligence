@@ -1,14 +1,14 @@
 {
-    "last_update": "2026-08-20 10:03",
+    "last_update": "2026-08-21 10:03",
     "status": "SAFE",
-    "market_health": 58,
-    "opportunity": 68,
-    "risk": 62,
-    "confidence": 55,
-    "capital_deployment": 65,
+    "market_health": 55,
+    "opportunity": 65,
+    "risk": 68,
+    "confidence": 50,
+    "capital_deployment": 35,
     "action": "ACCUMULATE",
-    "rationale": "Score gap 40.6 yang stabil menunjukkan divergensi pasar yang signifikan, menuntut pendekatan selektif. Meskipun ada 7 saham di atas skor 60 (termasuk 1 di atas 70), 7 saham di bawah 40 mengindikasikan kelemahan pasar yang luas. Volume perdagangan mayoritas saham watchlist 'Sepi' secara konsisten selama 5 hari terakhir, termasuk hari ini, menimbulkan risiko likuiditas dan membatasi potensi penempatan modal besar. Faktor 'Growth' yang kuat (80.0) menawarkan peluang spesifik, namun 'Quality' sebagai faktor terlemah (60.0) perlu dicermati. Dengan status sistem 'SAFE' yang stabil namun kondisi volume yang menantang, akumulasi modal secara selektif dan bertahap adalah strategi yang paling tepat untuk melindungi modal sambil memanfaatkan peluang yang ada.",
-    "detail_message": "Score gap 40.6 yang stabil menunjukkan divergensi pasar yang signifikan, menuntut pendekatan selektif. Meskipun ada 7 saham di atas skor 60 (termasuk 1 di atas 70), 7 saham di bawah 40 mengindikasikan kelemahan pasar yang luas. Volume perdagangan mayoritas saham watchlist 'Sepi' secara konsisten selama 5 hari terakhir, termasuk hari ini, menimbulkan risiko likuiditas dan membatasi potensi penempatan modal besar. Faktor 'Growth' yang kuat (80.0) menawarkan peluang spesifik, namun 'Quality' sebagai faktor terlemah (60.0) perlu dicermati. Dengan status sistem 'SAFE' yang stabil namun kondisi volume yang menantang, akumulasi modal secara selektif dan bertahap adalah strategi yang paling tepat untuk melindungi modal sambil memanfaatkan peluang yang ada.",
+    "rationale": "Pasar menunjukkan polarisasi signifikan dengan score_gap 40.6 dan breadth yang sempit (hanya 1 saham di atas 70, 7 di bawah 40). Mayoritas saham watchlist mengalami volume sepi secara persisten, mengindikasikan kurangnya partisipasi luas dan likuiditas. Namun, faktor Growth sangat dominan (80.0) dan BBNI.JK menunjukkan lonjakan volume hari ini, menandakan peluang spesifik. Score_gap_5d_change nol menunjukkan kondisi polarisasi stabil. Meskipun sistem berstatus SAFE, risiko tetap tinggi karena kurangnya dukungan pasar yang luas. Penambahan modal harus sangat selektif pada peluang berisiko rendah.",
+    "detail_message": "Pasar menunjukkan polarisasi signifikan dengan score_gap 40.6 dan breadth yang sempit (hanya 1 saham di atas 70, 7 di bawah 40). Mayoritas saham watchlist mengalami volume sepi secara persisten, mengindikasikan kurangnya partisipasi luas dan likuiditas. Namun, faktor Growth sangat dominan (80.0) dan BBNI.JK menunjukkan lonjakan volume hari ini, menandakan peluang spesifik. Score_gap_5d_change nol menunjukkan kondisi polarisasi stabil. Meskipun sistem berstatus SAFE, risiko tetap tinggi karena kurangnya dukungan pasar yang luas. Penambahan modal harus sangat selektif pada peluang berisiko rendah.",
     "anomalies": [],
     "radar_context": {
         "production_config": "Config F",
@@ -27,10 +27,10 @@
         "watchlist_count": 5
     },
     "volume_details": [
-        "PTBA.JK: Volume 0.7x (Sepi)",
-        "BBNI.JK: Volume 1.0x (Sepi)",
-        "INDF.JK: Volume 0.9x (Sepi)",
-        "ASII.JK: Volume 0.9x (Sepi)",
-        "ITMG.JK: Volume 1.2x (Wajar)"
+        "PTBA.JK: Volume 0.8x (Sepi)",
+        "BBNI.JK: Volume 2.5x (Volume Lonjakan)",
+        "INDF.JK: Volume 0.5x (Sepi)",
+        "ASII.JK: Volume 1.1x (Wajar)",
+        "ITMG.JK: Volume 0.8x (Sepi)"
     ]
 }

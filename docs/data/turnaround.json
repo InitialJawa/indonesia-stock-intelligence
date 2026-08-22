@@ -13,6 +13,18 @@
   },
   {
     "rank": "2",
+    "ticker": "BUMI.JK",
+    "drawdown_252d": "-57.76",
+    "distance_from_high_252d": "-57.76",
+    "volatility_60d": "4.69",
+    "rs_change_60d": "30.26",
+    "volume_ratio": "1.67",
+    "recovery_from_60d_low": "50.77",
+    "context_match": "True",
+    "transition_match": "True"
+  },
+  {
+    "rank": "3",
     "ticker": "ANTM.JK",
     "drawdown_252d": "-28.53",
     "distance_from_high_252d": "-28.53",
@@ -24,7 +36,7 @@
     "transition_match": "True"
   },
   {
-    "rank": "3",
+    "rank": "4",
     "ticker": "HRUM.JK",
     "drawdown_252d": "-29.5",
     "distance_from_high_252d": "-29.5",
@@ -36,7 +48,7 @@
     "transition_match": "True"
   },
   {
-    "rank": "4",
+    "rank": "5",
     "ticker": "INCO.JK",
     "drawdown_252d": "-33.03",
     "distance_from_high_252d": "-33.03",
@@ -48,7 +60,7 @@
     "transition_match": "True"
   },
   {
-    "rank": "5",
+    "rank": "6",
     "ticker": "INDY.JK",
     "drawdown_252d": "-36.74",
     "distance_from_high_252d": "-36.74",
@@ -60,7 +72,7 @@
     "transition_match": "True"
   },
   {
-    "rank": "6",
+    "rank": "7",
     "ticker": "MBMA.JK",
     "drawdown_252d": "-37.57",
     "distance_from_high_252d": "-37.57",
@@ -72,7 +84,7 @@
     "transition_match": "True"
   },
   {
-    "rank": "7",
+    "rank": "8",
     "ticker": "AMRT.JK",
     "drawdown_252d": "-38.39",
     "distance_from_high_252d": "-38.39",
@@ -84,7 +96,7 @@
     "transition_match": "True"
   },
   {
-    "rank": "8",
+    "rank": "9",
     "ticker": "DEWA.JK",
     "drawdown_252d": "-43.53",
     "distance_from_high_252d": "-43.53",
@@ -96,7 +108,7 @@
     "transition_match": "True"
   },
   {
-    "rank": "9",
+    "rank": "10",
     "ticker": "BRMS.JK",
     "drawdown_252d": "-46.95",
     "distance_from_high_252d": "-46.95",
@@ -108,7 +120,7 @@
     "transition_match": "True"
   },
   {
-    "rank": "10",
+    "rank": "11",
     "ticker": "AMMN.JK",
     "drawdown_252d": "-48.65",
     "distance_from_high_252d": "-48.65",
@@ -120,7 +132,7 @@
     "transition_match": "True"
   },
   {
-    "rank": "11",
+    "rank": "12",
     "ticker": "BRPT.JK",
     "drawdown_252d": "-55.79",
     "distance_from_high_252d": "-55.79",
@@ -128,18 +140,6 @@
     "rs_change_60d": "13.35",
     "volume_ratio": "0.5",
     "recovery_from_60d_low": "47.24",
-    "context_match": "True",
-    "transition_match": "True"
-  },
-  {
-    "rank": "12",
-    "ticker": "BUMI.JK",
-    "drawdown_252d": "-57.76",
-    "distance_from_high_252d": "-57.76",
-    "volatility_60d": "4.69",
-    "rs_change_60d": "30.26",
-    "volume_ratio": "0.55",
-    "recovery_from_60d_low": "50.77",
     "context_match": "True",
     "transition_match": "True"
   },

@@ -1,5 +1,13 @@
 [
   {
+    "date": "2026-08-22",
+    "regime": "RISK ON",
+    "action": "AKUMULASI",
+    "ihsg_close": 6525.69,
+    "change_pct": 0.37,
+    "note": "IHSG 6526 (menguat terbatas, +0.37%); score gap 41 (sangat timpang); 7/5 saham >60"
+  },
+  {
     "date": "2026-08-21",
     "regime": "RISK ON",
     "action": "AKUMULASI",
@@ -230,13 +238,5 @@
     "ihsg_close": 6196.43,
     "change_pct": -1.88,
     "note": "IHSG 6196 (melemah moderat, -1.88%); score gap 41 (sangat timpang); 7/5 saham >60"
-  },
-  {
-    "date": "2026-07-23",
-    "regime": "RISK ON",
-    "action": "AKUMULASI",
-    "ihsg_close": 6315.31,
-    "change_pct": -0.3,
-    "note": "IHSG 6315 (melemah terbatas, -0.30%); score gap 41 (sangat timpang); 7/5 saham >60"
   }
 ]

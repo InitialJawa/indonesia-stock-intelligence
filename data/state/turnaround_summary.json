@@ -1,5 +1,5 @@
 {
-  "date": "2026-08-21",
+  "date": "2026-08-22",
   "universe_size": 80,
   "context_match_count": 23,
   "transition_match_count": 34,
@@ -7,6 +7,7 @@
   "context_classification": {
     "deep_drawdown": [
       "KIJA.JK",
+      "BUMI.JK",
       "ANTM.JK",
       "HRUM.JK",
       "INCO.JK",
@@ -17,7 +18,6 @@
       "BRMS.JK",
       "AMMN.JK",
       "BRPT.JK",
-      "BUMI.JK",
       "BKSL.JK",
       "PTRO.JK",
       "RATU.JK",
@@ -62,6 +62,7 @@
     ],
     "far_from_high": [
       "KIJA.JK",
+      "BUMI.JK",
       "ANTM.JK",
       "HRUM.JK",
       "INCO.JK",
@@ -72,7 +73,6 @@
       "BRMS.JK",
       "AMMN.JK",
       "BRPT.JK",
-      "BUMI.JK",
       "BKSL.JK",
       "PTRO.JK",
       "RATU.JK",
@@ -128,6 +128,7 @@
     ],
     "high_volatility": [
       "KIJA.JK",
+      "BUMI.JK",
       "ANTM.JK",
       "HRUM.JK",
       "INCO.JK",
@@ -138,7 +139,6 @@
       "BRMS.JK",
       "AMMN.JK",
       "BRPT.JK",
-      "BUMI.JK",
       "BKSL.JK",
       "PTRO.JK",
       "RATU.JK",
@@ -158,7 +158,7 @@
   },
   "signal_diagnostics": {
     "rs_change_60d_positive_count": 34,
-    "volume_ratio_high_count": 11,
+    "volume_ratio_high_count": 12,
     "above_ma20_count": 62,
     "recovery_gt_10pct_count": 69,
     "avg_drawdown_252d": -33.1,
@@ -173,6 +173,19 @@
       "rs_change_60d": 79.08,
       "volume_ratio": 3.79,
       "recovery": 80.18,
+      "context_match": true,
+      "transition_match": true,
+      "full_match": true,
+      "confirmation_count": 3
+    },
+    {
+      "ticker": "BUMI.JK",
+      "drawdown": -57.76,
+      "distance_from_high": -57.76,
+      "volatility": 4.69,
+      "rs_change_60d": 30.26,
+      "volume_ratio": 1.67,
+      "recovery": 50.77,
       "context_match": true,
       "transition_match": true,
       "full_match": true,
@@ -277,19 +290,6 @@
       "rs_change_60d": 26.45,
       "volume_ratio": 0.97,
       "recovery": 46.62,
-      "context_match": true,
-      "transition_match": true,
-      "full_match": true,
-      "confirmation_count": 2
-    },
-    {
-      "ticker": "AMMN.JK",
-      "drawdown": -48.65,
-      "distance_from_high": -48.65,
-      "volatility": 5.39,
-      "rs_change_60d": 73.34,
-      "volume_ratio": 0.6,
-      "recovery": 46.41,
       "context_match": true,
       "transition_match": true,
       "full_match": true,

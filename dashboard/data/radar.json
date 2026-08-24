@@ -1,21 +1,21 @@
 {
-    "last_update": "2026-08-23 09:55",
+    "last_update": "2026-08-24 10:14",
     "status": "SAFE",
-    "market_health": 65,
-    "opportunity": 75,
-    "risk": 45,
-    "confidence": 65,
-    "capital_deployment": 65,
+    "market_health": 62,
+    "opportunity": 70,
+    "risk": 38,
+    "confidence": 68,
+    "capital_deployment": 70,
     "action": "ACCUMULATE",
-    "rationale": "Fokus pada perlindungan modal. Score gap 40.6 menunjukkan divergensi pasar yang signifikan; kekuatan terkonsentrasi pada saham-saham teratas. Breadth menunjukkan 7 saham kuat dan 7 saham lemah, bukan indikasi kekuatan pasar yang luas. Volume sebagian besar sepi, kecuali BBNI.JK yang mengalami lonjakan selama 3 hari terakhir, menunjukkan minat spesifik, bukan sentimen pasar umum. Faktor Growth dominan (80), sementara Quality lebih lemah (60), mengindikasikan preferensi pasar terhadap aset berisiko. Tidak ada perubahan signifikan dalam score gap 5 hari terakhir. Probabilitas kenaikan modal ada di area tertentu, namun risiko tetap tinggi di segmen pasar lainnya. Oleh karena itu, akumulasi selektif direkomendasikan.",
-    "detail_message": "Fokus pada perlindungan modal. Score gap 40.6 menunjukkan divergensi pasar yang signifikan; kekuatan terkonsentrasi pada saham-saham teratas. Breadth menunjukkan 7 saham kuat dan 7 saham lemah, bukan indikasi kekuatan pasar yang luas. Volume sebagian besar sepi, kecuali BBNI.JK yang mengalami lonjakan selama 3 hari terakhir, menunjukkan minat spesifik, bukan sentimen pasar umum. Faktor Growth dominan (80), sementara Quality lebih lemah (60), mengindikasikan preferensi pasar terhadap aset berisiko. Tidak ada perubahan signifikan dalam score gap 5 hari terakhir. Probabilitas kenaikan modal ada di area tertentu, namun risiko tetap tinggi di segmen pasar lainnya. Oleh karena itu, akumulasi selektif direkomendasikan.",
+    "rationale": "Kondisi pasar hari ini menunjukkan divergensi yang signifikan dengan score_gap 40.6, meskipun ada sedikit perbaikan (-2) dalam 5 hari terakhir. Breadth pasar sangat sempit, hanya 1 saham di atas 70 dan 7 saham di bawah 40, mengindikasikan kekuatan yang tidak merata. Volume perdagangan didominasi oleh saham sepi, dengan hanya satu lonjakan anomali (PTBA.JK), menunjukkan partisipasi pasar yang terbatas. Faktor Growth adalah yang terkuat dengan skor 80.0, sementara Quality adalah yang terlemah. Meskipun ada peluang di sektor tertentu, kehati-hatian tetap diperlukan karena kurangnya dukungan pasar yang luas. Oleh karena itu, akumulasi modal secara selektif adalah pendekatan yang paling bijaksana.",
+    "detail_message": "Kondisi pasar hari ini menunjukkan divergensi yang signifikan dengan score_gap 40.6, meskipun ada sedikit perbaikan (-2) dalam 5 hari terakhir. Breadth pasar sangat sempit, hanya 1 saham di atas 70 dan 7 saham di bawah 40, mengindikasikan kekuatan yang tidak merata. Volume perdagangan didominasi oleh saham sepi, dengan hanya satu lonjakan anomali (PTBA.JK), menunjukkan partisipasi pasar yang terbatas. Faktor Growth adalah yang terkuat dengan skor 80.0, sementara Quality adalah yang terlemah. Meskipun ada peluang di sektor tertentu, kehati-hatian tetap diperlukan karena kurangnya dukungan pasar yang luas. Oleh karena itu, akumulasi modal secara selektif adalah pendekatan yang paling bijaksana.",
     "anomalies": [],
     "radar_context": {
         "production_config": "Config F",
         "top5_avg_score": 66.8,
         "bot5_avg_score": 26.2,
         "score_gap": 40.6,
-        "score_gap_5d_change": 0,
+        "score_gap_5d_change": -2,
         "breadth_above_70": 1,
         "breadth_above_60": 7,
         "breadth_below_40": 7,
@@ -27,10 +27,10 @@
         "watchlist_count": 5
     },
     "volume_details": [
-        "PTBA.JK: Volume 0.8x (Sepi)",
-        "BBNI.JK: Volume 2.5x (Volume Lonjakan)",
-        "INDF.JK: Volume 0.5x (Sepi)",
-        "ASII.JK: Volume 1.1x (Wajar)",
-        "ITMG.JK: Volume 0.8x (Sepi)"
+        "PTBA.JK: Volume 2.8x (Volume Lonjakan)",
+        "BBNI.JK: Volume 0.9x (Sepi)",
+        "INDF.JK: Volume 0.3x (Sepi)",
+        "ASII.JK: Volume 0.8x (Sepi)",
+        "ITMG.JK: Volume 0.9x (Sepi)"
     ]
 }

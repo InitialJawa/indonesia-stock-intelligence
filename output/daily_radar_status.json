@@ -1,14 +1,14 @@
 {
-    "last_update": "2026-08-24 10:14",
-    "status": "SAFE",
-    "market_health": 62,
-    "opportunity": 70,
-    "risk": 38,
-    "confidence": 68,
-    "capital_deployment": 70,
-    "action": "ACCUMULATE",
-    "rationale": "Kondisi pasar hari ini menunjukkan divergensi yang signifikan dengan score_gap 40.6, meskipun ada sedikit perbaikan (-2) dalam 5 hari terakhir. Breadth pasar sangat sempit, hanya 1 saham di atas 70 dan 7 saham di bawah 40, mengindikasikan kekuatan yang tidak merata. Volume perdagangan didominasi oleh saham sepi, dengan hanya satu lonjakan anomali (PTBA.JK), menunjukkan partisipasi pasar yang terbatas. Faktor Growth adalah yang terkuat dengan skor 80.0, sementara Quality adalah yang terlemah. Meskipun ada peluang di sektor tertentu, kehati-hatian tetap diperlukan karena kurangnya dukungan pasar yang luas. Oleh karena itu, akumulasi modal secara selektif adalah pendekatan yang paling bijaksana.",
-    "detail_message": "Kondisi pasar hari ini menunjukkan divergensi yang signifikan dengan score_gap 40.6, meskipun ada sedikit perbaikan (-2) dalam 5 hari terakhir. Breadth pasar sangat sempit, hanya 1 saham di atas 70 dan 7 saham di bawah 40, mengindikasikan kekuatan yang tidak merata. Volume perdagangan didominasi oleh saham sepi, dengan hanya satu lonjakan anomali (PTBA.JK), menunjukkan partisipasi pasar yang terbatas. Faktor Growth adalah yang terkuat dengan skor 80.0, sementara Quality adalah yang terlemah. Meskipun ada peluang di sektor tertentu, kehati-hatian tetap diperlukan karena kurangnya dukungan pasar yang luas. Oleh karena itu, akumulasi modal secara selektif adalah pendekatan yang paling bijaksana.",
+    "last_update": "2026-08-25 10:03",
+    "status": "WARNING",
+    "market_health": 45,
+    "opportunity": 50,
+    "risk": 80,
+    "confidence": 25,
+    "capital_deployment": 15,
+    "action": "WAIT",
+    "rationale": "Keputusan WAIT diambil karena kegagalan memuat data volume terkini untuk seluruh saham watchlist. Ini menimbulkan risiko data integritas yang signifikan dan mengurangi kepercayaan dalam pengambilan keputusan. Meskipun ada gap skor 40.6 yang menunjukkan divergensi, breadth pasar sangat buruk dengan hanya 1 saham di atas 70 dan 7 saham di bawah 40. Perubahan gap skor 5 hari terakhir yang negatif (-2) juga mengindikasikan potensi pelemahan. Faktor Growth dominan, namun Quality sebagai faktor terlemah (60) menambah kekhawatiran. Tanpa data volume yang lengkap, probabilitas keberhasilan investasi tidak dapat dinilai secara akurat, sehingga perlindungan modal menjadi prioritas utama.",
+    "detail_message": "Keputusan WAIT diambil karena kegagalan memuat data volume terkini untuk seluruh saham watchlist. Ini menimbulkan risiko data integritas yang signifikan dan mengurangi kepercayaan dalam pengambilan keputusan. Meskipun ada gap skor 40.6 yang menunjukkan divergensi, breadth pasar sangat buruk dengan hanya 1 saham di atas 70 dan 7 saham di bawah 40. Perubahan gap skor 5 hari terakhir yang negatif (-2) juga mengindikasikan potensi pelemahan. Faktor Growth dominan, namun Quality sebagai faktor terlemah (60) menambah kekhawatiran. Tanpa data volume yang lengkap, probabilitas keberhasilan investasi tidak dapat dinilai secara akurat, sehingga perlindungan modal menjadi prioritas utama.",
     "anomalies": [],
     "radar_context": {
         "production_config": "Config F",
@@ -27,10 +27,10 @@
         "watchlist_count": 5
     },
     "volume_details": [
-        "PTBA.JK: Volume 2.8x (Volume Lonjakan)",
-        "BBNI.JK: Volume 0.9x (Sepi)",
-        "INDF.JK: Volume 0.3x (Sepi)",
-        "ASII.JK: Volume 0.8x (Sepi)",
-        "ITMG.JK: Volume 0.9x (Sepi)"
+        "PTBA.JK: Gagal memuat data",
+        "BBNI.JK: Gagal memuat data",
+        "INDF.JK: Gagal memuat data",
+        "ASII.JK: Gagal memuat data",
+        "ITMG.JK: Gagal memuat data"
     ]
 }

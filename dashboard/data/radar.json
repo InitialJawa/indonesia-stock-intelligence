@@ -1,21 +1,21 @@
 {
-    "last_update": "2026-08-25 10:03",
-    "status": "WARNING",
+    "last_update": "2026-08-26 10:08",
+    "status": "SAFE",
     "market_health": 45,
-    "opportunity": 50,
-    "risk": 80,
-    "confidence": 25,
-    "capital_deployment": 15,
-    "action": "WAIT",
-    "rationale": "Keputusan WAIT diambil karena kegagalan memuat data volume terkini untuk seluruh saham watchlist. Ini menimbulkan risiko data integritas yang signifikan dan mengurangi kepercayaan dalam pengambilan keputusan. Meskipun ada gap skor 40.6 yang menunjukkan divergensi, breadth pasar sangat buruk dengan hanya 1 saham di atas 70 dan 7 saham di bawah 40. Perubahan gap skor 5 hari terakhir yang negatif (-2) juga mengindikasikan potensi pelemahan. Faktor Growth dominan, namun Quality sebagai faktor terlemah (60) menambah kekhawatiran. Tanpa data volume yang lengkap, probabilitas keberhasilan investasi tidak dapat dinilai secara akurat, sehingga perlindungan modal menjadi prioritas utama.",
-    "detail_message": "Keputusan WAIT diambil karena kegagalan memuat data volume terkini untuk seluruh saham watchlist. Ini menimbulkan risiko data integritas yang signifikan dan mengurangi kepercayaan dalam pengambilan keputusan. Meskipun ada gap skor 40.6 yang menunjukkan divergensi, breadth pasar sangat buruk dengan hanya 1 saham di atas 70 dan 7 saham di bawah 40. Perubahan gap skor 5 hari terakhir yang negatif (-2) juga mengindikasikan potensi pelemahan. Faktor Growth dominan, namun Quality sebagai faktor terlemah (60) menambah kekhawatiran. Tanpa data volume yang lengkap, probabilitas keberhasilan investasi tidak dapat dinilai secara akurat, sehingga perlindungan modal menjadi prioritas utama.",
+    "opportunity": 60,
+    "risk": 65,
+    "confidence": 40,
+    "capital_deployment": 55,
+    "action": "ACCUMULATE",
+    "rationale": "Gap skor 40.6 yang melebar 6 poin dalam 5 hari menunjukkan divergensi pasar yang signifikan. Hanya 1 saham di atas 70 dan 7 di bawah 40 mengindikasikan breadth pasar yang sangat buruk. Volume hari ini mayoritas wajar, dengan 1 saham sepi, tanpa lonjakan anomali, menunjukkan kurangnya keyakinan beli yang kuat. Data volume 5 hari terakhir juga menunjukkan dominasi volume sepi dan satu hari kegagalan data, menambah ketidakpastian. Faktor Growth kuat (80.0), namun Quality lemah (60.0), mengindikasikan risiko fundamental. Meskipun ada kantong kekuatan di saham-saham teratas dan faktor Growth, kondisi breadth dan gap yang memburuk meningkatkan risiko. Oleh karena itu, akumulasi modal harus sangat selektif dan bertahap, hanya pada aset dengan probabilitas tinggi dan risk/reward yang jelas, dengan fokus utama pada perlindungan modal.",
+    "detail_message": "Gap skor 40.6 yang melebar 6 poin dalam 5 hari menunjukkan divergensi pasar yang signifikan. Hanya 1 saham di atas 70 dan 7 di bawah 40 mengindikasikan breadth pasar yang sangat buruk. Volume hari ini mayoritas wajar, dengan 1 saham sepi, tanpa lonjakan anomali, menunjukkan kurangnya keyakinan beli yang kuat. Data volume 5 hari terakhir juga menunjukkan dominasi volume sepi dan satu hari kegagalan data, menambah ketidakpastian. Faktor Growth kuat (80.0), namun Quality lemah (60.0), mengindikasikan risiko fundamental. Meskipun ada kantong kekuatan di saham-saham teratas dan faktor Growth, kondisi breadth dan gap yang memburuk meningkatkan risiko. Oleh karena itu, akumulasi modal harus sangat selektif dan bertahap, hanya pada aset dengan probabilitas tinggi dan risk/reward yang jelas, dengan fokus utama pada perlindungan modal.",
     "anomalies": [],
     "radar_context": {
         "production_config": "Config F",
         "top5_avg_score": 66.8,
         "bot5_avg_score": 26.2,
         "score_gap": 40.6,
-        "score_gap_5d_change": -2,
+        "score_gap_5d_change": 6,
         "breadth_above_70": 1,
         "breadth_above_60": 7,
         "breadth_below_40": 7,
@@ -27,10 +27,10 @@
         "watchlist_count": 5
     },
     "volume_details": [
-        "PTBA.JK: Gagal memuat data",
-        "BBNI.JK: Gagal memuat data",
-        "INDF.JK: Gagal memuat data",
-        "ASII.JK: Gagal memuat data",
-        "ITMG.JK: Gagal memuat data"
+        "PTBA.JK: Volume 1.6x (Wajar)",
+        "BBNI.JK: Volume 1.1x (Wajar)",
+        "INDF.JK: Volume 1.0x (Sepi)",
+        "ASII.JK: Volume 1.1x (Wajar)",
+        "ITMG.JK: Volume 1.5x (Wajar)"
     ]
 }

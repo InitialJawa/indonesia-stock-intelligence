@@ -1,21 +1,21 @@
 {
-    "last_update": "2026-08-30 14:31",
-    "status": "SAFE",
-    "market_health": 70,
-    "opportunity": 75,
-    "risk": 40,
-    "confidence": 68,
-    "capital_deployment": 70,
-    "action": "ACCUMULATE",
-    "rationale": "Kesenjangan skor (40.6) tinggi namun sedikit menyempit (-2) dalam 5 hari, menunjukkan konsentrasi kekuatan. Breadth pasar terpolarisasi dengan 7 saham kuat dan 7 saham lemah, mengindikasikan partisipasi tidak merata. Volume PTBA.JK melonjak konsisten, sementara INDF.JK sepi, menegaskan minat selektif. Faktor Growth dominan (80), Quality terlemah (60), menunjukkan preferensi pasar yang berpotensi lebih berisiko. Tidak ada perubahan signifikan dalam 5 hari terakhir. Peluang ada namun terfokus, dengan risiko moderat dari polarisasi. Penambahan modal secara selektif (ACCUMULATE) dapat dipertimbangkan pada aset dengan probabilitas dan risk/reward yang jelas, dengan fokus perlindungan modal.",
-    "detail_message": "Kesenjangan skor (40.6) tinggi namun sedikit menyempit (-2) dalam 5 hari, menunjukkan konsentrasi kekuatan. Breadth pasar terpolarisasi dengan 7 saham kuat dan 7 saham lemah, mengindikasikan partisipasi tidak merata. Volume PTBA.JK melonjak konsisten, sementara INDF.JK sepi, menegaskan minat selektif. Faktor Growth dominan (80), Quality terlemah (60), menunjukkan preferensi pasar yang berpotensi lebih berisiko. Tidak ada perubahan signifikan dalam 5 hari terakhir. Peluang ada namun terfokus, dengan risiko moderat dari polarisasi. Penambahan modal secara selektif (ACCUMULATE) dapat dipertimbangkan pada aset dengan probabilitas dan risk/reward yang jelas, dengan fokus perlindungan modal.",
+    "last_update": "2026-08-31 17:13",
+    "status": "WARNING",
+    "market_health": 58,
+    "opportunity": 65,
+    "risk": 75,
+    "confidence": 30,
+    "capital_deployment": 25,
+    "action": "WAIT",
+    "rationale": "Keputusan modal adalah menunggu. Data volume hari ini gagal dimuat untuk seluruh saham watchlist, menyebabkan ketidakpastian tinggi dan menghambat penilaian risiko/reward yang akurat. Meskipun ada faktor Growth yang kuat (80.0), gap skor antara saham teratas dan terbawah menyempit 6 poin dalam 5 hari, menunjukkan penurunan keyakinan pasar. Breadth pasar seimbang (7 saham di atas 60, 7 di bawah 40), mengindikasikan kurangnya arah yang jelas. Turnover saham teratas nol, menandakan stagnasi. Dengan informasi yang tidak lengkap dan sinyal pasar yang bercampur, perlindungan modal menjadi prioritas utama.",
+    "detail_message": "Keputusan modal adalah menunggu. Data volume hari ini gagal dimuat untuk seluruh saham watchlist, menyebabkan ketidakpastian tinggi dan menghambat penilaian risiko/reward yang akurat. Meskipun ada faktor Growth yang kuat (80.0), gap skor antara saham teratas dan terbawah menyempit 6 poin dalam 5 hari, menunjukkan penurunan keyakinan pasar. Breadth pasar seimbang (7 saham di atas 60, 7 di bawah 40), mengindikasikan kurangnya arah yang jelas. Turnover saham teratas nol, menandakan stagnasi. Dengan informasi yang tidak lengkap dan sinyal pasar yang bercampur, perlindungan modal menjadi prioritas utama.",
     "anomalies": [],
     "radar_context": {
         "production_config": "Config F",
         "top5_avg_score": 66.8,
         "bot5_avg_score": 26.2,
         "score_gap": 40.6,
-        "score_gap_5d_change": -2,
+        "score_gap_5d_change": -6,
         "breadth_above_70": 1,
         "breadth_above_60": 7,
         "breadth_below_40": 7,
@@ -27,10 +27,10 @@
         "watchlist_count": 5
     },
     "volume_details": [
-        "PTBA.JK: Volume 2.6x (Volume Lonjakan)",
-        "BBNI.JK: Volume 1.3x (Wajar)",
-        "INDF.JK: Volume 0.4x (Sepi)",
-        "ASII.JK: Volume 1.2x (Wajar)",
-        "ITMG.JK: Volume 1.1x (Wajar)"
+        "PTBA.JK: Gagal memuat data",
+        "BBNI.JK: Gagal memuat data",
+        "INDF.JK: Gagal memuat data",
+        "ASII.JK: Gagal memuat data",
+        "ITMG.JK: Gagal memuat data"
     ]
 }

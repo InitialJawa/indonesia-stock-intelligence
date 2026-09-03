@@ -1,14 +1,14 @@
 {
-    "last_update": "2026-09-02 13:50",
+    "last_update": "2026-09-03 13:49",
     "status": "SAFE",
-    "market_health": 65,
-    "opportunity": 70,
+    "market_health": 58,
+    "opportunity": 72,
     "risk": 70,
-    "confidence": 40,
-    "capital_deployment": 20,
+    "confidence": 45,
+    "capital_deployment": 35,
     "action": "WAIT",
-    "rationale": "Pasar menunjukkan polarisasi tinggi dengan score gap 40.6 dan breadth yang buruk (1 saham >70, 7 saham <40). Perubahan gap -2 tidak signifikan. Volume hari ini menunjukkan 2 saham sepi, mengindikasikan kurangnya minat luas. Meskipun faktor Growth kuat (80.0), faktor Quality yang lemah (60.0) adalah risiko fundamental. Ketiadaan data volume selama 2 hari terakhir sangat mengurangi kepercayaan. Probabilitas pengembalian positif secara luas rendah, dengan risiko erosi modal yang tinggi. Oleh karena itu, disarankan untuk menunggu.",
-    "detail_message": "Pasar menunjukkan polarisasi tinggi dengan score gap 40.6 dan breadth yang buruk (1 saham >70, 7 saham <40). Perubahan gap -2 tidak signifikan. Volume hari ini menunjukkan 2 saham sepi, mengindikasikan kurangnya minat luas. Meskipun faktor Growth kuat (80.0), faktor Quality yang lemah (60.0) adalah risiko fundamental. Ketiadaan data volume selama 2 hari terakhir sangat mengurangi kepercayaan. Probabilitas pengembalian positif secara luas rendah, dengan risiko erosi modal yang tinggi. Oleh karena itu, disarankan untuk menunggu.",
+    "rationale": "Polarisasi pasar terlihat dari score gap 40.6, dengan Growth sebagai faktor dominan (80.0) menawarkan peluang terfokus. Namun, breadth pasar sangat sempit (hanya 1 saham >70, 7 saham <40) dan 7 saham di bawah 40 menunjukkan kekuatan tidak merata dan risiko di segmen yang lebih luas. Volume hari ini menunjukkan satu lonjakan signifikan (PTBA.JK) namun juga dua saham sepi. Perubahan gap -2 dan data volume yang tidak lengkap selama 2 hari sangat mengurangi kepercayaan pada konsistensi data. Tidak ada turnover di top 5 juga menunjukkan kurangnya katalis baru. Dengan risiko yang tinggi dan kepercayaan yang rendah, menunggu kejelasan lebih lanjut adalah strategi yang paling bijaksana untuk perlindungan modal.",
+    "detail_message": "Polarisasi pasar terlihat dari score gap 40.6, dengan Growth sebagai faktor dominan (80.0) menawarkan peluang terfokus. Namun, breadth pasar sangat sempit (hanya 1 saham >70, 7 saham <40) dan 7 saham di bawah 40 menunjukkan kekuatan tidak merata dan risiko di segmen yang lebih luas. Volume hari ini menunjukkan satu lonjakan signifikan (PTBA.JK) namun juga dua saham sepi. Perubahan gap -2 dan data volume yang tidak lengkap selama 2 hari sangat mengurangi kepercayaan pada konsistensi data. Tidak ada turnover di top 5 juga menunjukkan kurangnya katalis baru. Dengan risiko yang tinggi dan kepercayaan yang rendah, menunggu kejelasan lebih lanjut adalah strategi yang paling bijaksana untuk perlindungan modal.",
     "anomalies": [],
     "radar_context": {
         "production_config": "Config F",
@@ -27,10 +27,10 @@
         "watchlist_count": 5
     },
     "volume_details": [
-        "PTBA.JK: Volume 3.9x (Volume Lonjakan)",
-        "BBNI.JK: Volume 0.6x (Sepi)",
-        "INDF.JK: Volume 1.2x (Wajar)",
-        "ASII.JK: Volume 0.9x (Sepi)",
-        "ITMG.JK: Volume 1.5x (Wajar)"
+        "PTBA.JK: Volume 3.8x (Volume Lonjakan)",
+        "BBNI.JK: Volume 1.1x (Wajar)",
+        "INDF.JK: Volume 0.7x (Sepi)",
+        "ASII.JK: Volume 1.6x (Wajar)",
+        "ITMG.JK: Volume 0.9x (Sepi)"
     ]
 }

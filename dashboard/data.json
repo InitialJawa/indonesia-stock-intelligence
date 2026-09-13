@@ -236,7 +236,7 @@
   {
     "ticker": "BBTN.JK",
     "fundamentals": {
-      "pe": 3.9426885,
+      "pe": 3.9432175,
       "pb": 0.43906948,
       "roe": 0.117419995,
       "der": 0.0,
@@ -958,15 +958,15 @@
     "fundamentals": {
       "pe": 8.992685,
       "pb": 1.4545739,
-      "roe": 0.17639999,
-      "der": 47.593,
+      "roe": 0.17613001,
+      "der": 47.511,
       "net_margin": 0.0,
-      "operating_margin": 0.08179,
-      "free_cash_flow": 2658757509120.0,
+      "operating_margin": 0.07717,
+      "free_cash_flow": 2637007683584.0,
       "revenue_growth": 0.1321296041676056,
       "earnings_growth": 0.2622395009778702
     },
-    "quality": 10.58,
+    "quality": 10.57,
     "growth": 19.72,
     "value": 39.93,
     "momentum": 0.0
@@ -1190,7 +1190,7 @@
   {
     "ticker": "RAJA.JK",
     "fundamentals": {
-      "pe": 25.473751,
+      "pe": 25.577042,
       "pb": 82000.0,
       "roe": 0.19903,
       "der": 112.726,
@@ -1334,7 +1334,7 @@
   {
     "ticker": "TLKM.JK",
     "fundamentals": {
-      "pe": 14.581347,
+      "pe": 14.577259,
       "pb": 1.911301,
       "roe": 0.17683001,
       "der": 59.982,

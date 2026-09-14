@@ -1,21 +1,21 @@
 {
-    "last_update": "2026-09-13 13:54",
+    "last_update": "2026-09-14 16:01",
     "status": "SAFE",
-    "market_health": 50,
-    "opportunity": 60,
-    "risk": 65,
-    "confidence": 40,
-    "capital_deployment": 25,
+    "market_health": 48,
+    "opportunity": 74,
+    "risk": 40,
+    "confidence": 61,
+    "capital_deployment": 40,
     "action": "WAIT",
-    "rationale": "Meskipun status sistem menunjukkan 'SAFE', keputusan modal adalah 'WAIT'. Score gap 40.6 menunjukkan diferensiasi saham, namun penurunannya sebesar 4 poin dalam 5 hari terakhir mengindikasikan momentum melemah. Breadth pasar terpolarisasi dengan 7 saham kuat dan 7 saham lemah. Faktor Growth dominan (80), namun volume menjadi perhatian utama. Empat dari lima saham watchlist menunjukkan volume 'Sepi' hari ini, dan tren ini memburuk dari 2 menjadi 4 saham 'Sepi' dalam 5 hari. Ini menandakan kurangnya likuiditas dan keyakinan pasar. Prioritas perlindungan modal menuntut kehati-hatian, menunggu konfirmasi volume dan momentum yang lebih jelas.",
-    "detail_message": "Meskipun status sistem menunjukkan 'SAFE', keputusan modal adalah 'WAIT'. Score gap 40.6 menunjukkan diferensiasi saham, namun penurunannya sebesar 4 poin dalam 5 hari terakhir mengindikasikan momentum melemah. Breadth pasar terpolarisasi dengan 7 saham kuat dan 7 saham lemah. Faktor Growth dominan (80), namun volume menjadi perhatian utama. Empat dari lima saham watchlist menunjukkan volume 'Sepi' hari ini, dan tren ini memburuk dari 2 menjadi 4 saham 'Sepi' dalam 5 hari. Ini menandakan kurangnya likuiditas dan keyakinan pasar. Prioritas perlindungan modal menuntut kehati-hatian, menunggu konfirmasi volume dan momentum yang lebih jelas.",
+    "rationale": "Score gap 40.6 poin menunjukkan pemisahan kualitas yang jelas antara top5 dan bottom5. Faktor dominan: Growth (80.0). Faktor terlemah: Quality (60.0). Breadth terbatas (1 saham >=70). 2 dari 5 saham watchlist volume sepi — likuiditas rendah.",
+    "detail_message": "Score gap 40.6 poin menunjukkan pemisahan kualitas yang jelas antara top5 dan bottom5. Faktor dominan: Growth (80.0). Faktor terlemah: Quality (60.0). Breadth terbatas (1 saham >=70). 2 dari 5 saham watchlist volume sepi — likuiditas rendah.",
     "anomalies": [],
     "radar_context": {
         "production_config": "Config F",
         "top5_avg_score": 66.8,
         "bot5_avg_score": 26.2,
         "score_gap": 40.6,
-        "score_gap_5d_change": -4,
+        "score_gap_5d_change": 0,
         "breadth_above_70": 1,
         "breadth_above_60": 7,
         "breadth_below_40": 7,
@@ -27,10 +27,10 @@
         "watchlist_count": 5
     },
     "volume_details": [
-        "PTBA.JK: Volume 1.1x (Wajar)",
-        "BBNI.JK: Volume 0.7x (Sepi)",
-        "INDF.JK: Volume 1.0x (Sepi)",
-        "ASII.JK: Volume 0.9x (Sepi)",
-        "ITMG.JK: Volume 0.8x (Sepi)"
+        "PTBA.JK: Volume 1.0x (Sepi)",
+        "BBNI.JK: Volume 2.1x (Volume Lonjakan)",
+        "INDF.JK: Volume 0.9x (Sepi)",
+        "ASII.JK: Volume 1.1x (Wajar)",
+        "ITMG.JK: Volume 1.1x (Wajar)"
     ]
 }

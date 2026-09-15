@@ -1,21 +1,21 @@
 {
-    "last_update": "2026-09-14 16:01",
-    "status": "SAFE",
-    "market_health": 48,
-    "opportunity": 74,
-    "risk": 40,
-    "confidence": 61,
-    "capital_deployment": 40,
-    "action": "WAIT",
-    "rationale": "Score gap 40.6 poin menunjukkan pemisahan kualitas yang jelas antara top5 dan bottom5. Faktor dominan: Growth (80.0). Faktor terlemah: Quality (60.0). Breadth terbatas (1 saham >=70). 2 dari 5 saham watchlist volume sepi — likuiditas rendah.",
-    "detail_message": "Score gap 40.6 poin menunjukkan pemisahan kualitas yang jelas antara top5 dan bottom5. Faktor dominan: Growth (80.0). Faktor terlemah: Quality (60.0). Breadth terbatas (1 saham >=70). 2 dari 5 saham watchlist volume sepi — likuiditas rendah.",
+    "last_update": "2026-09-15 14:27",
+    "status": "WARNING",
+    "market_health": 30,
+    "opportunity": 20,
+    "risk": 90,
+    "confidence": 10,
+    "capital_deployment": 5,
+    "action": "REDUCE",
+    "rationale": "Probabilitas risiko sangat tinggi. Kesehatan pasar lemah dengan breadth yang buruk (hanya 1 saham di atas 70, 7 di bawah 40) dan gap skor yang menyempit 2 poin, mengindikasikan pelemahan momentum pemimpin. Faktor Kualitas menjadi yang terlemah (60), ancaman langsung terhadap perlindungan modal. Volume hari ini sangat sepi di seluruh saham watchlist, meningkatkan risiko likuiditas dan volatilitas. Tren volume sepi juga meningkat selama 5 hari terakhir. Peluang terbatas dan tidak didukung oleh partisipasi pasar yang kuat. Prioritas utama adalah perlindungan modal.",
+    "detail_message": "Probabilitas risiko sangat tinggi. Kesehatan pasar lemah dengan breadth yang buruk (hanya 1 saham di atas 70, 7 di bawah 40) dan gap skor yang menyempit 2 poin, mengindikasikan pelemahan momentum pemimpin. Faktor Kualitas menjadi yang terlemah (60), ancaman langsung terhadap perlindungan modal. Volume hari ini sangat sepi di seluruh saham watchlist, meningkatkan risiko likuiditas dan volatilitas. Tren volume sepi juga meningkat selama 5 hari terakhir. Peluang terbatas dan tidak didukung oleh partisipasi pasar yang kuat. Prioritas utama adalah perlindungan modal.",
     "anomalies": [],
     "radar_context": {
         "production_config": "Config F",
         "top5_avg_score": 66.8,
         "bot5_avg_score": 26.2,
         "score_gap": 40.6,
-        "score_gap_5d_change": 0,
+        "score_gap_5d_change": -2,
         "breadth_above_70": 1,
         "breadth_above_60": 7,
         "breadth_below_40": 7,
@@ -27,10 +27,10 @@
         "watchlist_count": 5
     },
     "volume_details": [
-        "PTBA.JK: Volume 1.0x (Sepi)",
-        "BBNI.JK: Volume 2.1x (Volume Lonjakan)",
-        "INDF.JK: Volume 0.9x (Sepi)",
-        "ASII.JK: Volume 1.1x (Wajar)",
-        "ITMG.JK: Volume 1.1x (Wajar)"
+        "PTBA.JK: Volume 0.5x (Sepi)",
+        "BBNI.JK: Volume 0.9x (Sepi)",
+        "INDF.JK: Volume 0.5x (Sepi)",
+        "ASII.JK: Volume 0.7x (Sepi)",
+        "ITMG.JK: Volume 0.8x (Sepi)"
     ]
 }

@@ -1,21 +1,21 @@
 {
-    "last_update": "2026-09-16 14:19",
+    "last_update": "2026-09-17 14:26",
     "status": "SAFE",
-    "market_health": 58,
-    "opportunity": 45,
-    "risk": 70,
-    "confidence": 55,
-    "capital_deployment": 30,
+    "market_health": 70,
+    "opportunity": 30,
+    "risk": 60,
+    "confidence": 40,
+    "capital_deployment": 20,
     "action": "WAIT",
-    "rationale": "Score gap 40.6 menunjukkan diferensiasi, dengan peningkatan 2 poin dalam 5 hari terakhir. Namun, breadth pasar sangat sempit (hanya 1 saham di atas 70) dan luas di sisi lemah (7 saham di bawah 40). Volume perdagangan hari ini didominasi sepi, dan yang terpenting, turnover di top 5 saham adalah nol. Ini mengindikasikan likuiditas rendah dan risiko tinggi untuk pergerakan modal. Meskipun faktor Growth dominan, kurangnya partisipasi dan breadth yang buruk menekan peluang. Prioritas adalah perlindungan modal.",
-    "detail_message": "Score gap 40.6 menunjukkan diferensiasi, dengan peningkatan 2 poin dalam 5 hari terakhir. Namun, breadth pasar sangat sempit (hanya 1 saham di atas 70) dan luas di sisi lemah (7 saham di bawah 40). Volume perdagangan hari ini didominasi sepi, dan yang terpenting, turnover di top 5 saham adalah nol. Ini mengindikasikan likuiditas rendah dan risiko tinggi untuk pergerakan modal. Meskipun faktor Growth dominan, kurangnya partisipasi dan breadth yang buruk menekan peluang. Prioritas adalah perlindungan modal.",
+    "rationale": "Diferensiasi pasar sehat dengan score_gap 40.6, namun kekuatan tidak merata (breadth_above_60 7 vs breadth_below_40 7). Volume perdagangan sangat sepi, dengan 4 dari 5 saham watchlist memiliki volume di bawah rata-rata hari ini, dan tren serupa selama 5 hari terakhir. top5_turnover 0 adalah sinyal kritis kurangnya aktivitas dan likuiditas di saham-saham utama. Meskipun faktor Growth kuat (80.0), ini tidak didukung oleh volume atau turnover. score_gap_5d_change 0 dan konsistennya 0 saham_anomali_lonjakan selama 5 hari terakhir menunjukkan tidak ada perbaikan momentum pasar. Probabilitas pergerakan harga signifikan ke atas rendah, sementara risiko likuiditas tinggi. Oleh karena itu, menunggu adalah tindakan paling bijaksana.",
+    "detail_message": "Diferensiasi pasar sehat dengan score_gap 40.6, namun kekuatan tidak merata (breadth_above_60 7 vs breadth_below_40 7). Volume perdagangan sangat sepi, dengan 4 dari 5 saham watchlist memiliki volume di bawah rata-rata hari ini, dan tren serupa selama 5 hari terakhir. top5_turnover 0 adalah sinyal kritis kurangnya aktivitas dan likuiditas di saham-saham utama. Meskipun faktor Growth kuat (80.0), ini tidak didukung oleh volume atau turnover. score_gap_5d_change 0 dan konsistennya 0 saham_anomali_lonjakan selama 5 hari terakhir menunjukkan tidak ada perbaikan momentum pasar. Probabilitas pergerakan harga signifikan ke atas rendah, sementara risiko likuiditas tinggi. Oleh karena itu, menunggu adalah tindakan paling bijaksana.",
     "anomalies": [],
     "radar_context": {
         "production_config": "Config F",
         "top5_avg_score": 66.8,
         "bot5_avg_score": 26.2,
         "score_gap": 40.6,
-        "score_gap_5d_change": 2,
+        "score_gap_5d_change": 0,
         "breadth_above_70": 1,
         "breadth_above_60": 7,
         "breadth_below_40": 7,
@@ -27,10 +27,10 @@
         "watchlist_count": 5
     },
     "volume_details": [
-        "PTBA.JK: Volume 0.5x (Sepi)",
-        "BBNI.JK: Volume 0.5x (Sepi)",
+        "PTBA.JK: Volume 1.0x (Sepi)",
+        "BBNI.JK: Volume 0.6x (Sepi)",
         "INDF.JK: Volume 1.1x (Wajar)",
-        "ASII.JK: Volume 0.8x (Sepi)",
-        "ITMG.JK: Volume 1.3x (Wajar)"
+        "ASII.JK: Volume 0.5x (Sepi)",
+        "ITMG.JK: Volume 0.8x (Sepi)"
     ]
 }

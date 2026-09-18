@@ -1,21 +1,21 @@
 {
-    "last_update": "2026-09-17 14:26",
+    "last_update": "2026-09-18 13:47",
     "status": "SAFE",
-    "market_health": 70,
-    "opportunity": 30,
-    "risk": 60,
-    "confidence": 40,
-    "capital_deployment": 20,
-    "action": "WAIT",
-    "rationale": "Diferensiasi pasar sehat dengan score_gap 40.6, namun kekuatan tidak merata (breadth_above_60 7 vs breadth_below_40 7). Volume perdagangan sangat sepi, dengan 4 dari 5 saham watchlist memiliki volume di bawah rata-rata hari ini, dan tren serupa selama 5 hari terakhir. top5_turnover 0 adalah sinyal kritis kurangnya aktivitas dan likuiditas di saham-saham utama. Meskipun faktor Growth kuat (80.0), ini tidak didukung oleh volume atau turnover. score_gap_5d_change 0 dan konsistennya 0 saham_anomali_lonjakan selama 5 hari terakhir menunjukkan tidak ada perbaikan momentum pasar. Probabilitas pergerakan harga signifikan ke atas rendah, sementara risiko likuiditas tinggi. Oleh karena itu, menunggu adalah tindakan paling bijaksana.",
-    "detail_message": "Diferensiasi pasar sehat dengan score_gap 40.6, namun kekuatan tidak merata (breadth_above_60 7 vs breadth_below_40 7). Volume perdagangan sangat sepi, dengan 4 dari 5 saham watchlist memiliki volume di bawah rata-rata hari ini, dan tren serupa selama 5 hari terakhir. top5_turnover 0 adalah sinyal kritis kurangnya aktivitas dan likuiditas di saham-saham utama. Meskipun faktor Growth kuat (80.0), ini tidak didukung oleh volume atau turnover. score_gap_5d_change 0 dan konsistennya 0 saham_anomali_lonjakan selama 5 hari terakhir menunjukkan tidak ada perbaikan momentum pasar. Probabilitas pergerakan harga signifikan ke atas rendah, sementara risiko likuiditas tinggi. Oleh karena itu, menunggu adalah tindakan paling bijaksana.",
+    "market_health": 52,
+    "opportunity": 65,
+    "risk": 68,
+    "confidence": 50,
+    "capital_deployment": 55,
+    "action": "ACCUMULATE",
+    "rationale": "Pasar menunjukkan divergensi tinggi dengan score gap 40.6 yang meningkat 4 poin dalam 5 hari, mengindikasikan kekuatan terkonsentrasi pada saham-saham teratas. Breadth pasar terbagi, dengan jumlah saham kuat dan lemah yang seimbang (7 di atas 60, 7 di bawah 40), bukan tanda kesehatan pasar yang luas. Volume perdagangan selama 5 hari terakhir, termasuk hari ini, minim lonjakan anomali, menunjukkan kurangnya keyakinan beli yang kuat. Faktor Growth dominan (80.0), namun Quality tertinggal (60.0). Dengan risiko yang seimbang dengan peluang di area tertentu, dan perlindungan modal sebagai prioritas, akumulasi selektif pada aset dengan fundamental kuat dan momentum pertumbuhan yang jelas adalah strategi yang tepat.",
+    "detail_message": "Pasar menunjukkan divergensi tinggi dengan score gap 40.6 yang meningkat 4 poin dalam 5 hari, mengindikasikan kekuatan terkonsentrasi pada saham-saham teratas. Breadth pasar terbagi, dengan jumlah saham kuat dan lemah yang seimbang (7 di atas 60, 7 di bawah 40), bukan tanda kesehatan pasar yang luas. Volume perdagangan selama 5 hari terakhir, termasuk hari ini, minim lonjakan anomali, menunjukkan kurangnya keyakinan beli yang kuat. Faktor Growth dominan (80.0), namun Quality tertinggal (60.0). Dengan risiko yang seimbang dengan peluang di area tertentu, dan perlindungan modal sebagai prioritas, akumulasi selektif pada aset dengan fundamental kuat dan momentum pertumbuhan yang jelas adalah strategi yang tepat.",
     "anomalies": [],
     "radar_context": {
         "production_config": "Config F",
         "top5_avg_score": 66.8,
         "bot5_avg_score": 26.2,
         "score_gap": 40.6,
-        "score_gap_5d_change": 0,
+        "score_gap_5d_change": 4,
         "breadth_above_70": 1,
         "breadth_above_60": 7,
         "breadth_below_40": 7,
@@ -27,10 +27,10 @@
         "watchlist_count": 5
     },
     "volume_details": [
-        "PTBA.JK: Volume 1.0x (Sepi)",
-        "BBNI.JK: Volume 0.6x (Sepi)",
-        "INDF.JK: Volume 1.1x (Wajar)",
-        "ASII.JK: Volume 0.5x (Sepi)",
-        "ITMG.JK: Volume 0.8x (Sepi)"
+        "PTBA.JK: Volume 0.7x (Sepi)",
+        "BBNI.JK: Volume 1.1x (Wajar)",
+        "INDF.JK: Volume 2.0x (Wajar)",
+        "ASII.JK: Volume 1.4x (Wajar)",
+        "ITMG.JK: Volume 1.4x (Wajar)"
     ]
 }

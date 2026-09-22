@@ -1,21 +1,21 @@
 {
-    "last_update": "2026-09-21 16:00",
-    "status": "SAFE",
-    "market_health": 72,
-    "opportunity": 78,
-    "risk": 34,
-    "confidence": 69,
-    "capital_deployment": 70,
-    "action": "ACCUMULATE",
-    "rationale": "Pasar menunjukkan selektivitas tinggi dengan score_gap 40.6 yang stabil, didorong oleh faktor Growth yang kuat (80.0). Ada 7 saham di atas skor 60, namun juga 7 saham di bawah 40, menandakan polarisasi. Volume hari ini pada saham watchlist mayoritas sepi (4 dari 5), yang meningkatkan risiko likuiditas dan eksekusi. Meskipun status sistem 'SAFE' dan peluang terarah ada, perlindungan modal menuntut kehati-hatian. Akumulasi dapat dilakukan secara sangat selektif pada aset berkualitas tinggi dengan volume yang memadai, sambil memantau ketat risiko likuiditas.",
-    "detail_message": "Pasar menunjukkan selektivitas tinggi dengan score_gap 40.6 yang stabil, didorong oleh faktor Growth yang kuat (80.0). Ada 7 saham di atas skor 60, namun juga 7 saham di bawah 40, menandakan polarisasi. Volume hari ini pada saham watchlist mayoritas sepi (4 dari 5), yang meningkatkan risiko likuiditas dan eksekusi. Meskipun status sistem 'SAFE' dan peluang terarah ada, perlindungan modal menuntut kehati-hatian. Akumulasi dapat dilakukan secara sangat selektif pada aset berkualitas tinggi dengan volume yang memadai, sambil memantau ketat risiko likuiditas.",
+    "last_update": "2026-09-22 14:09",
+    "status": "WARNING",
+    "market_health": 35,
+    "opportunity": 20,
+    "risk": 85,
+    "confidence": 15,
+    "capital_deployment": 10,
+    "action": "REDUCE",
+    "rationale": "Volume perdagangan sangat sepi di seluruh saham watchlist, dengan tren memburuk selama 5 hari terakhir, dan turnover top 5 nol. Ini menunjukkan likuiditas rendah dan kurangnya keyakinan pasar. Meskipun score gap menyempit 8 poin, masih ada divergensi signifikan (40.6). Breadth pasar terbagi rata antara saham kuat dan lemah. Faktor Growth dominan, sementara Quality melemah, mengindikasikan preferensi risiko yang tidak didukung oleh volume. Probabilitas risiko tinggi, perlindungan modal adalah prioritas. Oleh karena itu, pengurangan eksposur modal sangat disarankan.",
+    "detail_message": "Volume perdagangan sangat sepi di seluruh saham watchlist, dengan tren memburuk selama 5 hari terakhir, dan turnover top 5 nol. Ini menunjukkan likuiditas rendah dan kurangnya keyakinan pasar. Meskipun score gap menyempit 8 poin, masih ada divergensi signifikan (40.6). Breadth pasar terbagi rata antara saham kuat dan lemah. Faktor Growth dominan, sementara Quality melemah, mengindikasikan preferensi risiko yang tidak didukung oleh volume. Probabilitas risiko tinggi, perlindungan modal adalah prioritas. Oleh karena itu, pengurangan eksposur modal sangat disarankan.",
     "anomalies": [],
     "radar_context": {
         "production_config": "Config F",
         "top5_avg_score": 66.8,
         "bot5_avg_score": 26.2,
         "score_gap": 40.6,
-        "score_gap_5d_change": 0,
+        "score_gap_5d_change": -8,
         "breadth_above_70": 1,
         "breadth_above_60": 7,
         "breadth_below_40": 7,
@@ -27,10 +27,10 @@
         "watchlist_count": 5
     },
     "volume_details": [
-        "PTBA.JK: Volume 0.3x (Sepi)",
-        "BBNI.JK: Volume 0.6x (Sepi)",
-        "INDF.JK: Volume 1.1x (Wajar)",
-        "ASII.JK: Volume 0.5x (Sepi)",
-        "ITMG.JK: Volume 0.6x (Sepi)"
+        "PTBA.JK: Volume 0.4x (Sepi)",
+        "BBNI.JK: Volume 0.8x (Sepi)",
+        "INDF.JK: Volume 0.8x (Sepi)",
+        "ASII.JK: Volume 0.7x (Sepi)",
+        "ITMG.JK: Volume 0.9x (Sepi)"
     ]
 }

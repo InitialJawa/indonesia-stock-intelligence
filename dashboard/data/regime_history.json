@@ -3,9 +3,9 @@
     "date": "2026-09-29",
     "regime": "RISK ON",
     "action": "AKUMULASI",
-    "ihsg_close": 6241.89,
-    "change_pct": -0.9,
-    "note": "IHSG 6242 (melemah terbatas, -0.90%); score gap 41 (sangat timpang); 7/5 saham >60"
+    "ihsg_close": 6121.7,
+    "change_pct": -0.43,
+    "note": "IHSG 6122 (melemah terbatas, -0.43%); score gap 41 (sangat timpang); 7/5 saham >60"
   },
   {
     "date": "2026-09-27",

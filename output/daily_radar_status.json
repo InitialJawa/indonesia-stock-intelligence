@@ -1,21 +1,21 @@
 {
-    "last_update": "2026-09-30 16:04",
+    "last_update": "2026-10-01 16:41",
     "status": "SAFE",
-    "market_health": 58,
-    "opportunity": 70,
-    "risk": 65,
-    "confidence": 68,
+    "market_health": 72,
+    "opportunity": 78,
+    "risk": 34,
+    "confidence": 69,
     "capital_deployment": 70,
     "action": "ACCUMULATE",
-    "rationale": "Kesenjangan skor antara saham top dan bottom sangat lebar (40.6) dan terus meningkat (+6 dalam 5 hari), menunjukkan divergensi pasar yang signifikan. Kesehatan pasar secara keseluruhan rapuh, dengan hanya 1 saham di atas skor 70 dan 7 saham di bawah 40, mengindikasikan kurangnya dukungan luas. Namun, tren volume membaik dari 5 saham sepi menjadi 2 saham sepi hari ini, meningkatkan likuiditas. Faktor 'Growth' dominan (skor 80) menyoroti peluang terfokus. Dengan probabilitas risiko divergensi tinggi namun peluang selektif dan likuiditas membaik, akumulasi modal secara hati-hati direkomendasikan.",
-    "detail_message": "Kesenjangan skor antara saham top dan bottom sangat lebar (40.6) dan terus meningkat (+6 dalam 5 hari), menunjukkan divergensi pasar yang signifikan. Kesehatan pasar secara keseluruhan rapuh, dengan hanya 1 saham di atas skor 70 dan 7 saham di bawah 40, mengindikasikan kurangnya dukungan luas. Namun, tren volume membaik dari 5 saham sepi menjadi 2 saham sepi hari ini, meningkatkan likuiditas. Faktor 'Growth' dominan (skor 80) menyoroti peluang terfokus. Dengan probabilitas risiko divergensi tinggi namun peluang selektif dan likuiditas membaik, akumulasi modal secara hati-hati direkomendasikan.",
+    "rationale": "Kesenjangan skor (40.6) yang tinggi dan melebar (+2 dalam 5 hari) menunjukkan polarisasi pasar, dengan kekuatan terkonsentrasi pada saham-saham teratas. Breadth pasar menunjukkan 7 saham di atas 60, namun juga 7 saham di bawah 40, mengindikasikan pasar yang terpecah. Faktor Growth dominan dengan skor 80, menawarkan peluang terfokus. Volume hari ini menunjukkan 3 saham sepi dan 1 lonjakan anomali (ASII.JK), yang perlu dicermati. Meskipun ada risiko divergensi dan volume sepi, kekuatan faktor dan saham teratas mendukung akumulasi selektif.",
+    "detail_message": "Kesenjangan skor (40.6) yang tinggi dan melebar (+2 dalam 5 hari) menunjukkan polarisasi pasar, dengan kekuatan terkonsentrasi pada saham-saham teratas. Breadth pasar menunjukkan 7 saham di atas 60, namun juga 7 saham di bawah 40, mengindikasikan pasar yang terpecah. Faktor Growth dominan dengan skor 80, menawarkan peluang terfokus. Volume hari ini menunjukkan 3 saham sepi dan 1 lonjakan anomali (ASII.JK), yang perlu dicermati. Meskipun ada risiko divergensi dan volume sepi, kekuatan faktor dan saham teratas mendukung akumulasi selektif.",
     "anomalies": [],
     "radar_context": {
         "production_config": "Config F",
         "top5_avg_score": 66.8,
         "bot5_avg_score": 26.2,
         "score_gap": 40.6,
-        "score_gap_5d_change": 6,
+        "score_gap_5d_change": 2,
         "breadth_above_70": 1,
         "breadth_above_60": 7,
         "breadth_below_40": 7,
@@ -27,10 +27,10 @@
         "watchlist_count": 5
     },
     "volume_details": [
-        "PTBA.JK: Volume 0.6x (Sepi)",
-        "BBNI.JK: Volume 1.7x (Wajar)",
-        "INDF.JK: Volume 1.1x (Wajar)",
-        "ASII.JK: Volume 1.8x (Wajar)",
-        "ITMG.JK: Volume 0.6x (Sepi)"
+        "PTBA.JK: Volume 0.5x (Sepi)",
+        "BBNI.JK: Volume 0.9x (Sepi)",
+        "INDF.JK: Volume 0.8x (Sepi)",
+        "ASII.JK: Volume 2.1x (Volume Lonjakan)",
+        "ITMG.JK: Volume 1.2x (Wajar)"
     ]
 }

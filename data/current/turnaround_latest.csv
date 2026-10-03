@@ -17,7 +17,7 @@ rank,ticker,drawdown_252d,distance_from_high_252d,volatility_60d,rs_change_60d,v
 16,BKSL.JK,-69.4,-69.4,3.35,20.33,0.79,1.82,True,True
 17,TPIA.JK,-78.93,-78.93,2.98,47.0,0.56,0.0,True,True
 18,SSIA.JK,-27.27,-27.27,3.29,-12.3,0.46,12.54,True,False
-19,GOTO.JK,-57.75,-57.75,3.58,-54.91,5.28,7.14,True,False
+19,GOTO.JK,-57.75,-57.75,3.58,-54.91,19.21,7.14,True,False
 20,WIFI.JK,-66.19,-66.19,3.5,-1.23,6.39,0.0,True,False
 21,ARTO.JK,-68.01,-68.01,3.47,-15.6,1.62,0.0,True,False
 22,KPIG.JK,-84.97,-84.97,6.23,-25.53,0.36,0.0,True,False

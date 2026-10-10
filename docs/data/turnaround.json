@@ -181,6 +181,18 @@
   },
   {
     "rank": "16",
+    "ticker": "GOTO.JK",
+    "drawdown_252d": "-57.75",
+    "distance_from_high_252d": "-57.75",
+    "volatility_60d": "3.74",
+    "rs_change_60d": "-56.45",
+    "volume_ratio": "1.39",
+    "recovery_from_60d_low": "7.14",
+    "context_match": "True",
+    "transition_match": "False"
+  },
+  {
+    "rank": "17",
     "ticker": "ESSA.JK",
     "drawdown_252d": "-33.48",
     "distance_from_high_252d": "-33.48",
@@ -192,7 +204,7 @@
     "transition_match": "False"
   },
   {
-    "rank": "17",
+    "rank": "18",
     "ticker": "INCO.JK",
     "drawdown_252d": "-45.01",
     "distance_from_high_252d": "-45.01",
@@ -204,7 +216,7 @@
     "transition_match": "False"
   },
   {
-    "rank": "18",
+    "rank": "19",
     "ticker": "MBMA.JK",
     "drawdown_252d": "-47.62",
     "distance_from_high_252d": "-47.62",
@@ -212,18 +224,6 @@
     "rs_change_60d": "-0.38",
     "volume_ratio": "0.52",
     "recovery_from_60d_low": "0.85",
-    "context_match": "True",
-    "transition_match": "False"
-  },
-  {
-    "rank": "19",
-    "ticker": "GOTO.JK",
-    "drawdown_252d": "-57.75",
-    "distance_from_high_252d": "-57.75",
-    "volatility_60d": "3.74",
-    "rs_change_60d": "-56.45",
-    "volume_ratio": "0.0",
-    "recovery_from_60d_low": "7.14",
     "context_match": "True",
     "transition_match": "False"
   },

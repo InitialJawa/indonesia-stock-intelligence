@@ -1,5 +1,5 @@
 {
-    "last_update": "2026-10-11 15:55",
+    "last_update": "2026-10-12 19:17",
     "status": "SAFE",
     "market_health": 72,
     "opportunity": 78,
@@ -7,8 +7,8 @@
     "confidence": 69,
     "capital_deployment": 70,
     "action": "ACCUMULATE",
-    "rationale": "Pasar menunjukkan diferensiasi yang sehat dengan score_gap 40.6, yang meningkat 2 poin dalam 5 hari terakhir, menandakan selektivitas yang membaik. Breadth pasar terpolarisasi, dengan jumlah saham kuat dan lemah yang seimbang (7 di atas 60, 7 di bawah 40). Faktor Growth dominan dengan skor 80.0, menawarkan peluang jelas. Namun, risiko likuiditas tinggi; empat dari lima saham watchlist hari ini bervolume sepi, tren yang konsisten selama lima hari terakhir. Ini membatasi potensi upside dan meningkatkan risiko eksekusi. Meskipun sistem secara keseluruhan SAFE, kehati-hatian dalam penempatan modal sangat penting.",
-    "detail_message": "Pasar menunjukkan diferensiasi yang sehat dengan score_gap 40.6, yang meningkat 2 poin dalam 5 hari terakhir, menandakan selektivitas yang membaik. Breadth pasar terpolarisasi, dengan jumlah saham kuat dan lemah yang seimbang (7 di atas 60, 7 di bawah 40). Faktor Growth dominan dengan skor 80.0, menawarkan peluang jelas. Namun, risiko likuiditas tinggi; empat dari lima saham watchlist hari ini bervolume sepi, tren yang konsisten selama lima hari terakhir. Ini membatasi potensi upside dan meningkatkan risiko eksekusi. Meskipun sistem secara keseluruhan SAFE, kehati-hatian dalam penempatan modal sangat penting.",
+    "rationale": "Kondisi pasar menunjukkan divergensi yang signifikan dengan score_gap 40.6 yang terus melebar (+2 dalam 5 hari), mengindikasikan kinerja kuat pada saham-saham teratas. Meskipun breadth_above_70 rendah (1), breadth_below_40 yang tinggi (7) menunjukkan kelemahan di segmen pasar lainnya. Volume perdagangan hari ini membaik dengan hanya 2 saham sepi, dibandingkan hari-hari sebelumnya. Faktor Growth sangat dominan (80.0), sementara Quality menjadi yang terlemah (60.0). Dengan status sistem 'SAFE' dan peluang terfokus, akumulasi modal secara selektif pada aset berkinerja kuat direkomendasikan, sambil tetap waspada terhadap risiko di segmen pasar yang lebih lemah.",
+    "detail_message": "Kondisi pasar menunjukkan divergensi yang signifikan dengan score_gap 40.6 yang terus melebar (+2 dalam 5 hari), mengindikasikan kinerja kuat pada saham-saham teratas. Meskipun breadth_above_70 rendah (1), breadth_below_40 yang tinggi (7) menunjukkan kelemahan di segmen pasar lainnya. Volume perdagangan hari ini membaik dengan hanya 2 saham sepi, dibandingkan hari-hari sebelumnya. Faktor Growth sangat dominan (80.0), sementara Quality menjadi yang terlemah (60.0). Dengan status sistem 'SAFE' dan peluang terfokus, akumulasi modal secara selektif pada aset berkinerja kuat direkomendasikan, sambil tetap waspada terhadap risiko di segmen pasar yang lebih lemah.",
     "anomalies": [],
     "radar_context": {
         "production_config": "Config F",
@@ -27,10 +27,10 @@
         "watchlist_count": 5
     },
     "volume_details": [
-        "PTBA.JK: Volume 0.9x (Sepi)",
-        "BBNI.JK: Volume 0.5x (Sepi)",
-        "INDF.JK: Volume 0.4x (Sepi)",
-        "ASII.JK: Volume 0.6x (Sepi)",
-        "ITMG.JK: Volume 1.4x (Wajar)"
+        "PTBA.JK: Volume 0.7x (Sepi)",
+        "BBNI.JK: Volume 0.7x (Sepi)",
+        "INDF.JK: Volume 1.4x (Wajar)",
+        "ASII.JK: Volume 1.7x (Wajar)",
+        "ITMG.JK: Volume 1.3x (Wajar)"
     ]
 }

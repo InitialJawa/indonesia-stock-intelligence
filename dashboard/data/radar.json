@@ -1,21 +1,27 @@
 {
-    "last_update": "2026-10-15 14:22",
-    "status": "SAFE",
-    "market_health": 72,
-    "opportunity": 78,
-    "risk": 34,
-    "confidence": 69,
-    "capital_deployment": 70,
-    "action": "ACCUMULATE",
-    "rationale": "Meskipun status sistem 'SAFE', data menunjukkan polarisasi pasar yang meningkat dengan score_gap 40.6 dan kenaikan 2 poin dalam 5 hari. Breadth pasar terbagi, dengan 7 saham di atas 60 dan 7 di bawah 40. Volume perdagangan pada saham watchlist cenderung sepi (3 dari 5 hari ini, tren persisten), mengindikasikan kurangnya keyakinan. Top5_turnover nol menunjukkan minimnya kandidat baru yang kuat. Faktor Growth dominan (80), namun Quality relatif lemah (60). Probabilitas kenaikan luas terbatas, namun peluang selektif pada saham Growth ada. Prioritas perlindungan modal menyarankan akumulasi bertahap dan selektif.",
-    "detail_message": "Meskipun status sistem 'SAFE', data menunjukkan polarisasi pasar yang meningkat dengan score_gap 40.6 dan kenaikan 2 poin dalam 5 hari. Breadth pasar terbagi, dengan 7 saham di atas 60 dan 7 di bawah 40. Volume perdagangan pada saham watchlist cenderung sepi (3 dari 5 hari ini, tren persisten), mengindikasikan kurangnya keyakinan. Top5_turnover nol menunjukkan minimnya kandidat baru yang kuat. Faktor Growth dominan (80), namun Quality relatif lemah (60). Probabilitas kenaikan luas terbatas, namun peluang selektif pada saham Growth ada. Prioritas perlindungan modal menyarankan akumulasi bertahap dan selektif.",
-    "anomalies": [],
+    "last_update": "2026-10-16 14:09",
+    "status": "WARNING",
+    "market_health": 45,
+    "opportunity": 35,
+    "risk": 75,
+    "confidence": 30,
+    "capital_deployment": 15,
+    "action": "WAIT",
+    "rationale": "Status sistem hari ini adalah WARNING, dipicu oleh lonjakan volume anomali pada kelima saham watchlist setelah empat hari volume sepi. Ini meningkatkan probabilitas risiko reversal. Score gap 40.6 masih tinggi, meskipun ada penurunan 6 poin dalam 5 hari terakhir, menunjukkan pasar yang terfragmentasi. Breadth pasar menunjukkan 7 saham kuat dan 7 saham lemah, mengindikasikan kurangnya kekuatan pasar yang merata. Faktor Growth dominan, namun Quality menjadi yang terlemah. Dengan volatilitas yang meningkat dan sinyal pasar yang tidak konsisten, perlindungan modal menjadi prioritas. Keputusan terbaik adalah menunggu konfirmasi lebih lanjut.",
+    "detail_message": "Status sistem hari ini adalah WARNING, dipicu oleh lonjakan volume anomali pada kelima saham watchlist setelah empat hari volume sepi. Ini meningkatkan probabilitas risiko reversal. Score gap 40.6 masih tinggi, meskipun ada penurunan 6 poin dalam 5 hari terakhir, menunjukkan pasar yang terfragmentasi. Breadth pasar menunjukkan 7 saham kuat dan 7 saham lemah, mengindikasikan kurangnya kekuatan pasar yang merata. Faktor Growth dominan, namun Quality menjadi yang terlemah. Dengan volatilitas yang meningkat dan sinyal pasar yang tidak konsisten, perlindungan modal menjadi prioritas. Keputusan terbaik adalah menunggu konfirmasi lebih lanjut.",
+    "anomalies": [
+        "PTBA.JK",
+        "BBNI.JK",
+        "INDF.JK",
+        "ASII.JK",
+        "ITMG.JK"
+    ],
     "radar_context": {
         "production_config": "Config F",
         "top5_avg_score": 66.8,
         "bot5_avg_score": 26.2,
         "score_gap": 40.6,
-        "score_gap_5d_change": 2,
+        "score_gap_5d_change": -6,
         "breadth_above_70": 1,
         "breadth_above_60": 7,
         "breadth_below_40": 7,
@@ -27,10 +33,10 @@
         "watchlist_count": 5
     },
     "volume_details": [
-        "PTBA.JK: Volume 1.0x (Sepi)",
-        "BBNI.JK: Volume 0.9x (Sepi)",
-        "INDF.JK: Volume 1.7x (Wajar)",
-        "ASII.JK: Volume 0.8x (Sepi)",
-        "ITMG.JK: Volume 1.7x (Wajar)"
+        "PTBA.JK: Volume 3.5x (Volume Lonjakan)",
+        "BBNI.JK: Volume 5.9x (Volume Lonjakan)",
+        "INDF.JK: Volume 5.2x (Volume Lonjakan)",
+        "ASII.JK: Volume 3.3x (Volume Lonjakan)",
+        "ITMG.JK: Volume 2.6x (Volume Lonjakan)"
     ]
 }

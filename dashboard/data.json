@@ -110,7 +110,7 @@
   {
     "ticker": "AMRT.JK",
     "fundamentals": {
-      "pe": 12.274579,
+      "pe": 12.27315,
       "pb": 2.4353929,
       "roe": 0.20027,
       "der": 14.109,
@@ -470,19 +470,19 @@
   {
     "ticker": "DEWA.JK",
     "fundamentals": {
-      "pe": 2.348266,
-      "pb": 1.2540394,
-      "roe": 0.69128996,
-      "der": 69.347,
+      "pe": 2.300885,
+      "pb": 1.2306644,
+      "roe": 0.70432,
+      "der": 55.989,
       "net_margin": 0.0,
-      "operating_margin": 0.29006,
-      "free_cash_flow": -49132089344.0,
+      "operating_margin": 0.0247,
+      "free_cash_flow": -1071983624192.0,
       "revenue_growth": 0.05981460591061119,
       "earnings_growth": 76.97705463089831
     },
-    "quality": 41.48,
+    "quality": 42.26,
     "growth": 3851.84,
-    "value": 61.16,
+    "value": 62.36,
     "momentum": 0.0
   },
   {
@@ -614,7 +614,7 @@
   {
     "ticker": "GGRM.JK",
     "fundamentals": {
-      "pe": 6.6666374,
+      "pe": 6.6666665,
       "pb": 0.45994413,
       "roe": 0.0706,
       "der": 0.0,
@@ -938,7 +938,7 @@
   {
     "ticker": "MAPA.JK",
     "fundamentals": {
-      "pe": 7.7231545,
+      "pe": 7.724302,
       "pb": 1.5490482,
       "roe": 0.21906,
       "der": 26.274,
@@ -1064,7 +1064,7 @@
   {
     "ticker": "PANI.JK",
     "fundamentals": {
-      "pe": 29.71197,
+      "pe": 29.714046,
       "pb": 2.653676,
       "roe": 0.10487001,
       "der": 1.571,
@@ -1154,7 +1154,7 @@
   {
     "ticker": "PTRO.JK",
     "fundamentals": {
-      "pe": 63.862335,
+      "pe": 63.874546,
       "pb": 123703.7,
       "roe": 0.11533,
       "der": 258.845,
@@ -1388,7 +1388,7 @@
   {
     "ticker": "UNTR.JK",
     "fundamentals": {
-      "pe": 10.702409,
+      "pe": 10.702511,
       "pb": 0.81835276,
       "roe": 0.07437,
       "der": 27.593,

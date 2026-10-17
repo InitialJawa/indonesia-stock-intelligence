@@ -1,14 +1,14 @@
 {
-    "last_update": "2026-10-16 14:09",
+    "last_update": "2026-10-17 13:09",
     "status": "WARNING",
-    "market_health": 45,
-    "opportunity": 35,
-    "risk": 75,
-    "confidence": 30,
-    "capital_deployment": 15,
-    "action": "WAIT",
-    "rationale": "Status sistem hari ini adalah WARNING, dipicu oleh lonjakan volume anomali pada kelima saham watchlist setelah empat hari volume sepi. Ini meningkatkan probabilitas risiko reversal. Score gap 40.6 masih tinggi, meskipun ada penurunan 6 poin dalam 5 hari terakhir, menunjukkan pasar yang terfragmentasi. Breadth pasar menunjukkan 7 saham kuat dan 7 saham lemah, mengindikasikan kurangnya kekuatan pasar yang merata. Faktor Growth dominan, namun Quality menjadi yang terlemah. Dengan volatilitas yang meningkat dan sinyal pasar yang tidak konsisten, perlindungan modal menjadi prioritas. Keputusan terbaik adalah menunggu konfirmasi lebih lanjut.",
-    "detail_message": "Status sistem hari ini adalah WARNING, dipicu oleh lonjakan volume anomali pada kelima saham watchlist setelah empat hari volume sepi. Ini meningkatkan probabilitas risiko reversal. Score gap 40.6 masih tinggi, meskipun ada penurunan 6 poin dalam 5 hari terakhir, menunjukkan pasar yang terfragmentasi. Breadth pasar menunjukkan 7 saham kuat dan 7 saham lemah, mengindikasikan kurangnya kekuatan pasar yang merata. Faktor Growth dominan, namun Quality menjadi yang terlemah. Dengan volatilitas yang meningkat dan sinyal pasar yang tidak konsisten, perlindungan modal menjadi prioritas. Keputusan terbaik adalah menunggu konfirmasi lebih lanjut.",
+    "market_health": 60,
+    "opportunity": 70,
+    "risk": 50,
+    "confidence": 60,
+    "capital_deployment": 60,
+    "action": "ACCUMULATE",
+    "rationale": "Status pasar saat ini 'WARNING' selama dua hari berturut-turut, didorong oleh lonjakan volume signifikan pada seluruh saham watchlist. Gap skor 40.6 menunjukkan pasar sangat selektif, dengan hanya 7 saham di atas 60 dan 7 di bawah 40. Faktor 'Growth' dominan (80.0), namun 'Quality' menjadi yang terlemah (60.0), meningkatkan risiko fundamental. Meskipun ada peluang spesifik dari lonjakan volume, proteksi modal tetap prioritas. Probabilitas risiko meningkat dengan status 'WARNING' dan kelemahan faktor 'Quality'. Oleh karena itu, disarankan untuk 'ACCUMULATE' secara selektif dan bertahap.",
+    "detail_message": "Status pasar saat ini 'WARNING' selama dua hari berturut-turut, didorong oleh lonjakan volume signifikan pada seluruh saham watchlist. Gap skor 40.6 menunjukkan pasar sangat selektif, dengan hanya 7 saham di atas 60 dan 7 di bawah 40. Faktor 'Growth' dominan (80.0), namun 'Quality' menjadi yang terlemah (60.0), meningkatkan risiko fundamental. Meskipun ada peluang spesifik dari lonjakan volume, proteksi modal tetap prioritas. Probabilitas risiko meningkat dengan status 'WARNING' dan kelemahan faktor 'Quality'. Oleh karena itu, disarankan untuk 'ACCUMULATE' secara selektif dan bertahap.",
     "anomalies": [
         "PTBA.JK",
         "BBNI.JK",
@@ -21,7 +21,7 @@
         "top5_avg_score": 66.8,
         "bot5_avg_score": 26.2,
         "score_gap": 40.6,
-        "score_gap_5d_change": -6,
+        "score_gap_5d_change": -2,
         "breadth_above_70": 1,
         "breadth_above_60": 7,
         "breadth_below_40": 7,
@@ -33,10 +33,10 @@
         "watchlist_count": 5
     },
     "volume_details": [
-        "PTBA.JK: Volume 3.5x (Volume Lonjakan)",
+        "PTBA.JK: Volume 3.6x (Volume Lonjakan)",
         "BBNI.JK: Volume 5.9x (Volume Lonjakan)",
-        "INDF.JK: Volume 5.2x (Volume Lonjakan)",
+        "INDF.JK: Volume 5.3x (Volume Lonjakan)",
         "ASII.JK: Volume 3.3x (Volume Lonjakan)",
-        "ITMG.JK: Volume 2.6x (Volume Lonjakan)"
+        "ITMG.JK: Volume 2.7x (Volume Lonjakan)"
     ]
 }

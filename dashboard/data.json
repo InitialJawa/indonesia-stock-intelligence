@@ -56,7 +56,7 @@
   {
     "ticker": "ADRO.JK",
     "fundamentals": {
-      "pe": 6.5080395,
+      "pe": 7.244239,
       "pb": 13812.5,
       "roe": 0.123380005,
       "der": 37.824,
@@ -68,7 +68,7 @@
     },
     "quality": 7.4,
     "growth": -38.71,
-    "value": 7.69,
+    "value": 6.91,
     "momentum": 0.0
   },
   {
@@ -416,7 +416,7 @@
   {
     "ticker": "CPIN.JK",
     "fundamentals": {
-      "pe": 5.7346387,
+      "pe": 5.6387663,
       "pb": 1.2029307,
       "roe": 0.22792,
       "der": 28.211,
@@ -428,7 +428,7 @@
     },
     "quality": 13.68,
     "growth": 28.39,
-    "value": 50.28,
+    "value": 50.43,
     "momentum": 0.0
   },
   {
@@ -471,7 +471,7 @@
     "ticker": "DEWA.JK",
     "fundamentals": {
       "pe": 2.300885,
-      "pb": 1.2306644,
+      "pb": 1.2323093,
       "roe": 0.70432,
       "der": 55.989,
       "net_margin": 0.0,
@@ -482,7 +482,7 @@
     },
     "quality": 42.26,
     "growth": 3851.84,
-    "value": 62.36,
+    "value": 62.3,
     "momentum": 0.0
   },
   {
@@ -830,7 +830,7 @@
   {
     "ticker": "ITMG.JK",
     "fundamentals": {
-      "pe": 7.1757946,
+      "pe": 7.175817,
       "pb": 13348.81,
       "roe": 0.111190006,
       "der": 5.2,
@@ -956,7 +956,7 @@
   {
     "ticker": "MAPI.JK",
     "fundamentals": {
-      "pe": 8.85906,
+      "pe": 8.890086,
       "pb": 1.4298434,
       "roe": 0.17613001,
       "der": 47.511,
@@ -968,7 +968,7 @@
     },
     "quality": 10.57,
     "growth": 19.72,
-    "value": 40.61,
+    "value": 40.59,
     "momentum": 0.0
   },
   {
@@ -1064,7 +1064,7 @@
   {
     "ticker": "PANI.JK",
     "fundamentals": {
-      "pe": 29.714046,
+      "pe": 29.71197,
       "pb": 2.653676,
       "roe": 0.10487001,
       "der": 1.571,
@@ -1335,7 +1335,7 @@
     "ticker": "TLKM.JK",
     "fundamentals": {
       "pe": 10.978216,
-      "pb": 1.5828532,
+      "pb": 1.3967199,
       "roe": 0.17683001,
       "der": 59.982,
       "net_margin": 0.0,
@@ -1346,7 +1346,7 @@
     },
     "quality": 10.61,
     "growth": -11.98,
-    "value": 36.14,
+    "value": 40.35,
     "momentum": 0.0
   },
   {

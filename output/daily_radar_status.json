@@ -1,20 +1,16 @@
 {
-    "last_update": "2026-10-18 13:29",
+    "last_update": "2026-10-19 16:38",
     "status": "WARNING",
-    "market_health": 55,
-    "opportunity": 60,
+    "market_health": 40,
+    "opportunity": 45,
     "risk": 75,
-    "confidence": 40,
-    "capital_deployment": 30,
-    "action": "REDUCE",
-    "rationale": "Keputusan mengurangi modal didasarkan pada peningkatan risiko yang signifikan. Status sistem telah 'WARNING' selama tiga hari berturut-turut, didorong oleh lonjakan volume anomali pada seluruh saham watchlist. Perubahan gap skor 5 hari yang negatif (-4) menunjukkan pelemahan momentum pasar. Breadth pasar sangat sempit dengan hanya satu saham di atas 70 dan tujuh di bawah 40, mengindikasikan kekuatan yang tidak merata dan potensi kerapuhan. Meskipun faktor Growth dominan, lonjakan volume yang meluas ini meningkatkan probabilitas volatilitas tinggi dan potensi pembalikan, menuntut perlindungan modal yang agresif.",
-    "detail_message": "Keputusan mengurangi modal didasarkan pada peningkatan risiko yang signifikan. Status sistem telah 'WARNING' selama tiga hari berturut-turut, didorong oleh lonjakan volume anomali pada seluruh saham watchlist. Perubahan gap skor 5 hari yang negatif (-4) menunjukkan pelemahan momentum pasar. Breadth pasar sangat sempit dengan hanya satu saham di atas 70 dan tujuh di bawah 40, mengindikasikan kekuatan yang tidak merata dan potensi kerapuhan. Meskipun faktor Growth dominan, lonjakan volume yang meluas ini meningkatkan probabilitas volatilitas tinggi dan potensi pembalikan, menuntut perlindungan modal yang agresif.",
+    "confidence": 35,
+    "capital_deployment": 40,
+    "action": "WAIT",
+    "rationale": "Status sistem telah 'WARNING' selama empat hari berturut-turut, menunjukkan peningkatan risiko pasar. Breadth pasar sangat terbatas, dengan hanya 1 saham di atas skor 70 dan 7 saham di bawah skor 40, mengindikasikan konsentrasi dan kurangnya dukungan pasar yang luas. Meskipun ada lonjakan volume pada saham-saham watchlist, penting untuk dicatat bahwa intensitas lonjakan volume hari ini telah menurun signifikan dibandingkan tiga hari sebelumnya. Ini bisa menjadi sinyal pelemahan momentum. Gap skor antara top 5 dan bot 5 masih lebar (40.6), namun telah menyempit 4 poin dalam 5 hari, menunjukkan potensi hilangnya kekuatan pada saham-saham teratas. Dengan probabilitas risiko yang tinggi dan momentum yang melambat, perlindungan modal adalah prioritas. Oleh karena itu, disarankan untuk menunggu.",
+    "detail_message": "Status sistem telah 'WARNING' selama empat hari berturut-turut, menunjukkan peningkatan risiko pasar. Breadth pasar sangat terbatas, dengan hanya 1 saham di atas skor 70 dan 7 saham di bawah skor 40, mengindikasikan konsentrasi dan kurangnya dukungan pasar yang luas. Meskipun ada lonjakan volume pada saham-saham watchlist, penting untuk dicatat bahwa intensitas lonjakan volume hari ini telah menurun signifikan dibandingkan tiga hari sebelumnya. Ini bisa menjadi sinyal pelemahan momentum. Gap skor antara top 5 dan bot 5 masih lebar (40.6), namun telah menyempit 4 poin dalam 5 hari, menunjukkan potensi hilangnya kekuatan pada saham-saham teratas. Dengan probabilitas risiko yang tinggi dan momentum yang melambat, perlindungan modal adalah prioritas. Oleh karena itu, disarankan untuk menunggu.",
     "anomalies": [
-        "PTBA.JK",
-        "BBNI.JK",
-        "INDF.JK",
-        "ASII.JK",
-        "ITMG.JK"
+        "INDF.JK"
     ],
     "radar_context": {
         "production_config": "Config F",
@@ -33,10 +29,10 @@
         "watchlist_count": 5
     },
     "volume_details": [
-        "PTBA.JK: Volume 3.6x (Volume Lonjakan)",
-        "BBNI.JK: Volume 5.9x (Volume Lonjakan)",
-        "INDF.JK: Volume 5.3x (Volume Lonjakan)",
-        "ASII.JK: Volume 3.3x (Volume Lonjakan)",
-        "ITMG.JK: Volume 2.7x (Volume Lonjakan)"
+        "PTBA.JK: Volume 2.4x (Volume Lonjakan)",
+        "BBNI.JK: Volume 3.0x (Volume Lonjakan)",
+        "INDF.JK: Volume 3.3x (Volume Lonjakan)",
+        "ASII.JK: Volume 2.0x (Volume Lonjakan)",
+        "ITMG.JK: Volume 2.2x (Volume Lonjakan)"
     ]
 }

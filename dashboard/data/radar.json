@@ -1,23 +1,21 @@
 {
-    "last_update": "2026-10-19 16:38",
+    "last_update": "2026-10-20 14:28",
     "status": "WARNING",
     "market_health": 40,
-    "opportunity": 45,
+    "opportunity": 50,
     "risk": 75,
-    "confidence": 35,
-    "capital_deployment": 40,
+    "confidence": 30,
+    "capital_deployment": 20,
     "action": "WAIT",
-    "rationale": "Status sistem telah 'WARNING' selama empat hari berturut-turut, menunjukkan peningkatan risiko pasar. Breadth pasar sangat terbatas, dengan hanya 1 saham di atas skor 70 dan 7 saham di bawah skor 40, mengindikasikan konsentrasi dan kurangnya dukungan pasar yang luas. Meskipun ada lonjakan volume pada saham-saham watchlist, penting untuk dicatat bahwa intensitas lonjakan volume hari ini telah menurun signifikan dibandingkan tiga hari sebelumnya. Ini bisa menjadi sinyal pelemahan momentum. Gap skor antara top 5 dan bot 5 masih lebar (40.6), namun telah menyempit 4 poin dalam 5 hari, menunjukkan potensi hilangnya kekuatan pada saham-saham teratas. Dengan probabilitas risiko yang tinggi dan momentum yang melambat, perlindungan modal adalah prioritas. Oleh karena itu, disarankan untuk menunggu.",
-    "detail_message": "Status sistem telah 'WARNING' selama empat hari berturut-turut, menunjukkan peningkatan risiko pasar. Breadth pasar sangat terbatas, dengan hanya 1 saham di atas skor 70 dan 7 saham di bawah skor 40, mengindikasikan konsentrasi dan kurangnya dukungan pasar yang luas. Meskipun ada lonjakan volume pada saham-saham watchlist, penting untuk dicatat bahwa intensitas lonjakan volume hari ini telah menurun signifikan dibandingkan tiga hari sebelumnya. Ini bisa menjadi sinyal pelemahan momentum. Gap skor antara top 5 dan bot 5 masih lebar (40.6), namun telah menyempit 4 poin dalam 5 hari, menunjukkan potensi hilangnya kekuatan pada saham-saham teratas. Dengan probabilitas risiko yang tinggi dan momentum yang melambat, perlindungan modal adalah prioritas. Oleh karena itu, disarankan untuk menunggu.",
-    "anomalies": [
-        "INDF.JK"
-    ],
+    "rationale": "Status sistem 'SAFE' hari ini dipertanyakan. Score gap 40.6 yang meningkat 8 poin dalam 5 hari terakhir menunjukkan divergensi pasar yang mengkhawatirkan. Partisipasi pasar sangat sempit; hanya 1 saham di atas 70, sementara 7 saham di bawah 40. Dominasi faktor 'Growth' dengan 'Quality' yang lemah (60.0) adalah sinyal risiko. Perubahan drastis volume dari lonjakan di seluruh watchlist selama 4 hari menjadi mayoritas 'Wajar' hari ini, kecuali BBNI.JK, sangat mencurigakan dan bisa menandakan hilangnya momentum. Dengan probabilitas risiko yang tinggi dan kurangnya dukungan pasar yang luas, perlindungan modal adalah prioritas. Oleh karena itu, disarankan untuk menunggu.",
+    "detail_message": "Status sistem 'SAFE' hari ini dipertanyakan. Score gap 40.6 yang meningkat 8 poin dalam 5 hari terakhir menunjukkan divergensi pasar yang mengkhawatirkan. Partisipasi pasar sangat sempit; hanya 1 saham di atas 70, sementara 7 saham di bawah 40. Dominasi faktor 'Growth' dengan 'Quality' yang lemah (60.0) adalah sinyal risiko. Perubahan drastis volume dari lonjakan di seluruh watchlist selama 4 hari menjadi mayoritas 'Wajar' hari ini, kecuali BBNI.JK, sangat mencurigakan dan bisa menandakan hilangnya momentum. Dengan probabilitas risiko yang tinggi dan kurangnya dukungan pasar yang luas, perlindungan modal adalah prioritas. Oleh karena itu, disarankan untuk menunggu.",
+    "anomalies": [],
     "radar_context": {
         "production_config": "Config F",
         "top5_avg_score": 66.8,
         "bot5_avg_score": 26.2,
         "score_gap": 40.6,
-        "score_gap_5d_change": -4,
+        "score_gap_5d_change": 8,
         "breadth_above_70": 1,
         "breadth_above_60": 7,
         "breadth_below_40": 7,
@@ -29,10 +27,10 @@
         "watchlist_count": 5
     },
     "volume_details": [
-        "PTBA.JK: Volume 2.4x (Volume Lonjakan)",
-        "BBNI.JK: Volume 3.0x (Volume Lonjakan)",
-        "INDF.JK: Volume 3.3x (Volume Lonjakan)",
-        "ASII.JK: Volume 2.0x (Volume Lonjakan)",
-        "ITMG.JK: Volume 2.2x (Volume Lonjakan)"
+        "PTBA.JK: Volume 1.4x (Wajar)",
+        "BBNI.JK: Volume 2.4x (Volume Lonjakan)",
+        "INDF.JK: Volume 1.6x (Wajar)",
+        "ASII.JK: Volume 1.9x (Wajar)",
+        "ITMG.JK: Volume 1.1x (Wajar)"
     ]
 }

@@ -1,21 +1,21 @@
 {
-    "last_update": "2026-10-21 14:37",
-    "status": "WARNING",
-    "market_health": 45,
-    "opportunity": 60,
+    "last_update": "2026-10-22 14:39",
+    "status": "SAFE",
+    "market_health": 35,
+    "opportunity": 45,
     "risk": 75,
-    "confidence": 35,
-    "capital_deployment": 20,
+    "confidence": 30,
+    "capital_deployment": 25,
     "action": "WAIT",
-    "rationale": "Kondisi pasar menunjukkan divergensi yang signifikan dengan score_gap 40.6 yang terus melebar sebesar 10 poin dalam 5 hari terakhir. Ini mengindikasikan pasar yang sangat selektif. Breadth pasar lemah, dengan hanya 1 saham di atas 70 dan 7 saham di bawah 40, menunjukkan kurangnya partisipasi luas. Meskipun Growth menjadi faktor terkuat, Quality adalah yang terlemah, meningkatkan risiko fundamental. Volume saham watchlist yang sebelumnya melonjak selama 3 hari berturut-turut kini kembali normal, mengindikasikan potensi hilangnya momentum. Dengan probabilitas risiko yang tinggi dan kurangnya dukungan pasar yang luas, perlindungan modal menjadi prioritas utama.",
-    "detail_message": "Kondisi pasar menunjukkan divergensi yang signifikan dengan score_gap 40.6 yang terus melebar sebesar 10 poin dalam 5 hari terakhir. Ini mengindikasikan pasar yang sangat selektif. Breadth pasar lemah, dengan hanya 1 saham di atas 70 dan 7 saham di bawah 40, menunjukkan kurangnya partisipasi luas. Meskipun Growth menjadi faktor terkuat, Quality adalah yang terlemah, meningkatkan risiko fundamental. Volume saham watchlist yang sebelumnya melonjak selama 3 hari berturut-turut kini kembali normal, mengindikasikan potensi hilangnya momentum. Dengan probabilitas risiko yang tinggi dan kurangnya dukungan pasar yang luas, perlindungan modal menjadi prioritas utama.",
+    "rationale": "Divergensi pasar melebar dengan score_gap 40.6 dan peningkatan 6 poin dalam 5 hari, menunjukkan pasar yang tidak sehat secara luas. Breadth sangat buruk, hanya 1 saham di atas 70 dan 7 di bawah 40, mengindikasikan kurangnya partisipasi. Volume watchlist tidak konsisten; setelah lonjakan dua hari, dua saham kini sepi, menandakan kurangnya tindak lanjut. Faktor Growth dominan, namun Quality terlemah, kombinasi berisiko. Dengan probabilitas kerugian tinggi dan risk/reward yang tidak menarik, perlindungan modal adalah prioritas. Kondisi ini tidak mendukung penambahan modal.",
+    "detail_message": "Divergensi pasar melebar dengan score_gap 40.6 dan peningkatan 6 poin dalam 5 hari, menunjukkan pasar yang tidak sehat secara luas. Breadth sangat buruk, hanya 1 saham di atas 70 dan 7 di bawah 40, mengindikasikan kurangnya partisipasi. Volume watchlist tidak konsisten; setelah lonjakan dua hari, dua saham kini sepi, menandakan kurangnya tindak lanjut. Faktor Growth dominan, namun Quality terlemah, kombinasi berisiko. Dengan probabilitas kerugian tinggi dan risk/reward yang tidak menarik, perlindungan modal adalah prioritas. Kondisi ini tidak mendukung penambahan modal.",
     "anomalies": [],
     "radar_context": {
         "production_config": "Config F",
         "top5_avg_score": 66.8,
         "bot5_avg_score": 26.2,
         "score_gap": 40.6,
-        "score_gap_5d_change": 10,
+        "score_gap_5d_change": 6,
         "breadth_above_70": 1,
         "breadth_above_60": 7,
         "breadth_below_40": 7,
@@ -27,10 +27,10 @@
         "watchlist_count": 5
     },
     "volume_details": [
-        "PTBA.JK: Volume 1.1x (Wajar)",
+        "PTBA.JK: Volume 0.9x (Sepi)",
         "BBNI.JK: Volume 1.7x (Wajar)",
-        "INDF.JK: Volume 1.7x (Wajar)",
-        "ASII.JK: Volume 1.5x (Wajar)",
-        "ITMG.JK: Volume 1.4x (Wajar)"
+        "INDF.JK: Volume 0.9x (Sepi)",
+        "ASII.JK: Volume 1.8x (Wajar)",
+        "ITMG.JK: Volume 1.0x (Wajar)"
     ]
 }

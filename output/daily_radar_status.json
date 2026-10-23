@@ -1,14 +1,14 @@
 {
-    "last_update": "2026-10-22 14:39",
+    "last_update": "2026-10-23 14:23",
     "status": "SAFE",
-    "market_health": 35,
-    "opportunity": 45,
-    "risk": 75,
-    "confidence": 30,
-    "capital_deployment": 25,
-    "action": "WAIT",
-    "rationale": "Divergensi pasar melebar dengan score_gap 40.6 dan peningkatan 6 poin dalam 5 hari, menunjukkan pasar yang tidak sehat secara luas. Breadth sangat buruk, hanya 1 saham di atas 70 dan 7 di bawah 40, mengindikasikan kurangnya partisipasi. Volume watchlist tidak konsisten; setelah lonjakan dua hari, dua saham kini sepi, menandakan kurangnya tindak lanjut. Faktor Growth dominan, namun Quality terlemah, kombinasi berisiko. Dengan probabilitas kerugian tinggi dan risk/reward yang tidak menarik, perlindungan modal adalah prioritas. Kondisi ini tidak mendukung penambahan modal.",
-    "detail_message": "Divergensi pasar melebar dengan score_gap 40.6 dan peningkatan 6 poin dalam 5 hari, menunjukkan pasar yang tidak sehat secara luas. Breadth sangat buruk, hanya 1 saham di atas 70 dan 7 di bawah 40, mengindikasikan kurangnya partisipasi. Volume watchlist tidak konsisten; setelah lonjakan dua hari, dua saham kini sepi, menandakan kurangnya tindak lanjut. Faktor Growth dominan, namun Quality terlemah, kombinasi berisiko. Dengan probabilitas kerugian tinggi dan risk/reward yang tidak menarik, perlindungan modal adalah prioritas. Kondisi ini tidak mendukung penambahan modal.",
+    "market_health": 60,
+    "opportunity": 75,
+    "risk": 55,
+    "confidence": 58,
+    "capital_deployment": 65,
+    "action": "ACCUMULATE",
+    "rationale": "Pasar menunjukkan polarisasi yang signifikan dengan score_gap 40.6 yang melebar 6 poin dalam 5 hari, mengindikasikan divergensi kuat antara saham unggulan dan yang lemah. Meskipun ada 7 saham di atas skor 60, ada juga 7 saham di bawah skor 40, menandakan kesehatan pasar yang terpecah. Faktor Growth sangat kuat (80.0). Volume hari ini cenderung sepi pada beberapa saham setelah lonjakan anomali 5 hari lalu, yang memerlukan kehati-hatian. Peluang ada pada segmen yang kuat, namun risiko dari pelebaran gap dan breadth yang lemah menuntut pendekatan selektif untuk perlindungan modal.",
+    "detail_message": "Pasar menunjukkan polarisasi yang signifikan dengan score_gap 40.6 yang melebar 6 poin dalam 5 hari, mengindikasikan divergensi kuat antara saham unggulan dan yang lemah. Meskipun ada 7 saham di atas skor 60, ada juga 7 saham di bawah skor 40, menandakan kesehatan pasar yang terpecah. Faktor Growth sangat kuat (80.0). Volume hari ini cenderung sepi pada beberapa saham setelah lonjakan anomali 5 hari lalu, yang memerlukan kehati-hatian. Peluang ada pada segmen yang kuat, namun risiko dari pelebaran gap dan breadth yang lemah menuntut pendekatan selektif untuk perlindungan modal.",
     "anomalies": [],
     "radar_context": {
         "production_config": "Config F",
@@ -27,10 +27,10 @@
         "watchlist_count": 5
     },
     "volume_details": [
-        "PTBA.JK: Volume 0.9x (Sepi)",
-        "BBNI.JK: Volume 1.7x (Wajar)",
-        "INDF.JK: Volume 0.9x (Sepi)",
-        "ASII.JK: Volume 1.8x (Wajar)",
-        "ITMG.JK: Volume 1.0x (Wajar)"
+        "PTBA.JK: Volume 1.1x (Wajar)",
+        "BBNI.JK: Volume 1.2x (Wajar)",
+        "INDF.JK: Volume 1.0x (Sepi)",
+        "ASII.JK: Volume 0.9x (Sepi)",
+        "ITMG.JK: Volume 1.2x (Wajar)"
     ]
 }

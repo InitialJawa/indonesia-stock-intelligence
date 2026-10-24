@@ -18,7 +18,7 @@ rank,ticker,drawdown_252d,distance_from_high_252d,volatility_60d,rs_change_60d,v
 17,RAJA.JK,-68.82,-68.82,3.57,-46.44,2.38,9.65,True,False
 18,RATU.JK,-77.85,-77.85,3.67,-24.33,2.09,6.83,True,False
 19,ISAT.JK,-34.85,-34.85,4.27,-8.8,0.75,9.17,True,False
-20,GOTO.JK,-64.79,-64.79,4.28,-47.92,0.06,4.17,True,False
+20,GOTO.JK,-64.79,-64.79,4.28,-47.92,0.87,4.17,True,False
 21,WIFI.JK,-73.73,-73.73,4.64,-31.28,0.99,8.78,True,False
 22,PTRO.JK,-76.05,-76.05,4.21,-23.2,0.57,0.98,True,False
 23,KPIG.JK,-89.51,-89.51,6.63,-38.15,0.55,7.14,True,False

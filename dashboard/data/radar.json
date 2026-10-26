@@ -1,21 +1,21 @@
 {
-    "last_update": "2026-10-25 13:53",
+    "last_update": "2026-10-26 16:18",
     "status": "SAFE",
-    "market_health": 68,
-    "opportunity": 72,
-    "risk": 45,
-    "confidence": 62,
-    "capital_deployment": 68,
-    "action": "ACCUMULATE",
-    "rationale": "Meskipun status sistem menunjukkan 'SAFE', analisis mendalam mengungkapkan kondisi pasar yang terpolarisasi. Score gap sebesar 40.6, meskipun menyempit 4 poin dalam 5 hari terakhir, menunjukkan divergensi signifikan antara saham terbaik dan terburuk. Breadth pasar menunjukkan 7 saham di atas skor 60, namun juga 7 saham di bawah 40. Faktor 'Growth' dominan dengan skor 80, sementara 'Quality' menjadi yang terlemah di 60, mengindikasikan pasar yang didorong momentum. Yang paling krusial, 2 dari 5 saham dalam watchlist secara konsisten menunjukkan volume 'Sepi' selama 4 hari terakhir, menimbulkan risiko likuiditas dan eksekusi yang signifikan. Oleh karena itu, akumulasi modal harus dilakukan secara sangat selektif, fokus pada aset dengan likuiditas dan skor fundamental yang kuat, sambil menghindari atau mengurangi eksposur pada saham dengan volume sepi.",
-    "detail_message": "Meskipun status sistem menunjukkan 'SAFE', analisis mendalam mengungkapkan kondisi pasar yang terpolarisasi. Score gap sebesar 40.6, meskipun menyempit 4 poin dalam 5 hari terakhir, menunjukkan divergensi signifikan antara saham terbaik dan terburuk. Breadth pasar menunjukkan 7 saham di atas skor 60, namun juga 7 saham di bawah 40. Faktor 'Growth' dominan dengan skor 80, sementara 'Quality' menjadi yang terlemah di 60, mengindikasikan pasar yang didorong momentum. Yang paling krusial, 2 dari 5 saham dalam watchlist secara konsisten menunjukkan volume 'Sepi' selama 4 hari terakhir, menimbulkan risiko likuiditas dan eksekusi yang signifikan. Oleh karena itu, akumulasi modal harus dilakukan secara sangat selektif, fokus pada aset dengan likuiditas dan skor fundamental yang kuat, sambil menghindari atau mengurangi eksposur pada saham dengan volume sepi.",
+    "market_health": 60,
+    "opportunity": 50,
+    "risk": 65,
+    "confidence": 45,
+    "capital_deployment": 35,
+    "action": "WAIT",
+    "rationale": "Meskipun status sistem secara keseluruhan masih 'SAFE' dan gap skor antara saham teratas dan terbawah telah menyempit 6 poin dalam 5 hari terakhir, kondisi pasar menunjukkan sinyal kehati-hatian. Breadth pasar sangat sempit dengan hanya 1 saham di atas skor 70 dan 7 saham di bawah 40, mengindikasikan kekuatan yang tidak merata. Faktor 'Growth' dominan dengan skor 80, namun faktor 'Quality' adalah yang terlemah. Yang paling mengkhawatirkan adalah likuiditas: empat dari lima saham dalam daftar pantauan menunjukkan volume sepi hari ini, sebuah peningkatan signifikan dari hari-hari sebelumnya. Ini menimbulkan risiko likuiditas yang tinggi. Dengan nol turnover di top 5, tidak ada kandidat kuat baru yang muncul. Oleh karena itu, disarankan untuk menunggu.",
+    "detail_message": "Meskipun status sistem secara keseluruhan masih 'SAFE' dan gap skor antara saham teratas dan terbawah telah menyempit 6 poin dalam 5 hari terakhir, kondisi pasar menunjukkan sinyal kehati-hatian. Breadth pasar sangat sempit dengan hanya 1 saham di atas skor 70 dan 7 saham di bawah 40, mengindikasikan kekuatan yang tidak merata. Faktor 'Growth' dominan dengan skor 80, namun faktor 'Quality' adalah yang terlemah. Yang paling mengkhawatirkan adalah likuiditas: empat dari lima saham dalam daftar pantauan menunjukkan volume sepi hari ini, sebuah peningkatan signifikan dari hari-hari sebelumnya. Ini menimbulkan risiko likuiditas yang tinggi. Dengan nol turnover di top 5, tidak ada kandidat kuat baru yang muncul. Oleh karena itu, disarankan untuk menunggu.",
     "anomalies": [],
     "radar_context": {
         "production_config": "Config F",
         "top5_avg_score": 66.8,
         "bot5_avg_score": 26.2,
         "score_gap": 40.6,
-        "score_gap_5d_change": -4,
+        "score_gap_5d_change": -6,
         "breadth_above_70": 1,
         "breadth_above_60": 7,
         "breadth_below_40": 7,
@@ -27,10 +27,10 @@
         "watchlist_count": 5
     },
     "volume_details": [
-        "PTBA.JK: Volume 1.1x (Wajar)",
-        "BBNI.JK: Volume 1.2x (Wajar)",
+        "PTBA.JK: Volume 0.5x (Sepi)",
+        "BBNI.JK: Volume 0.8x (Sepi)",
         "INDF.JK: Volume 1.0x (Sepi)",
-        "ASII.JK: Volume 0.9x (Sepi)",
-        "ITMG.JK: Volume 1.2x (Wajar)"
+        "ASII.JK: Volume 0.6x (Sepi)",
+        "ITMG.JK: Volume 2.1x (Volume Lonjakan)"
     ]
 }

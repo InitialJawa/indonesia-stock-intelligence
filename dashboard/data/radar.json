@@ -1,17 +1,15 @@
 {
-    "last_update": "2026-10-27 15:32",
-    "status": "WARNING",
-    "market_health": 40,
-    "opportunity": 55,
-    "risk": 75,
-    "confidence": 35,
-    "capital_deployment": 20,
-    "action": "WAIT",
-    "rationale": "Status sistem hari ini adalah WARNING, mengindikasikan peningkatan risiko. Score gap 40.6 yang melebar 2 poin dalam 5 hari terakhir menunjukkan divergensi kuat, bukan kesehatan pasar yang merata. Breadth pasar sangat lemah, dengan hanya 1 saham di atas skor 70 dan 7 saham di bawah 40. Faktor 'Growth' dominan (80.0) sementara 'Quality' lemah (60.0), menandakan pasar cenderung spekulatif. Lonjakan volume signifikan pada ITMG.JK selama dua hari terakhir menambah volatilitas. Dengan perlindungan modal sebagai prioritas, kondisi ini menuntut kehati-hatian.",
-    "detail_message": "Status sistem hari ini adalah WARNING, mengindikasikan peningkatan risiko. Score gap 40.6 yang melebar 2 poin dalam 5 hari terakhir menunjukkan divergensi kuat, bukan kesehatan pasar yang merata. Breadth pasar sangat lemah, dengan hanya 1 saham di atas skor 70 dan 7 saham di bawah 40. Faktor 'Growth' dominan (80.0) sementara 'Quality' lemah (60.0), menandakan pasar cenderung spekulatif. Lonjakan volume signifikan pada ITMG.JK selama dua hari terakhir menambah volatilitas. Dengan perlindungan modal sebagai prioritas, kondisi ini menuntut kehati-hatian.",
-    "anomalies": [
-        "ITMG.JK"
-    ],
+    "last_update": "2026-10-28 16:14",
+    "status": "SAFE",
+    "market_health": 65,
+    "opportunity": 75,
+    "risk": 40,
+    "confidence": 75,
+    "capital_deployment": 70,
+    "action": "ACCUMULATE",
+    "rationale": "Score gap 40.6 yang meningkat 2 poin dalam 5 hari menunjukkan divergensi kuat dan momentum positif pada saham-saham unggulan. Namun, breadth pasar lemah dengan hanya 1 saham di atas 70 dan 7 di bawah 40, menandakan kesehatan pasar yang tidak merata dan kekuatan yang terkonsentrasi. Volume hari ini mayoritas wajar, dengan satu saham sepi, relatif tenang dibandingkan fluktuasi volume lonjakan dan sepi di hari-hari sebelumnya. Faktor Growth dominan dengan skor 80.0, sementara Quality terlemah di 60.0. Probabilitas dan risk/reward mendukung akumulasi bertahap pada segmen yang jelas.",
+    "detail_message": "Score gap 40.6 yang meningkat 2 poin dalam 5 hari menunjukkan divergensi kuat dan momentum positif pada saham-saham unggulan. Namun, breadth pasar lemah dengan hanya 1 saham di atas 70 dan 7 di bawah 40, menandakan kesehatan pasar yang tidak merata dan kekuatan yang terkonsentrasi. Volume hari ini mayoritas wajar, dengan satu saham sepi, relatif tenang dibandingkan fluktuasi volume lonjakan dan sepi di hari-hari sebelumnya. Faktor Growth dominan dengan skor 80.0, sementara Quality terlemah di 60.0. Probabilitas dan risk/reward mendukung akumulasi bertahap pada segmen yang jelas.",
+    "anomalies": [],
     "radar_context": {
         "production_config": "Config F",
         "top5_avg_score": 66.8,
@@ -29,10 +27,10 @@
         "watchlist_count": 5
     },
     "volume_details": [
-        "PTBA.JK: Volume 1.6x (Wajar)",
-        "BBNI.JK: Volume 1.3x (Wajar)",
-        "INDF.JK: Volume 1.8x (Wajar)",
-        "ASII.JK: Volume 1.1x (Wajar)",
-        "ITMG.JK: Volume 3.4x (Volume Lonjakan)"
+        "PTBA.JK: Volume 1.2x (Wajar)",
+        "BBNI.JK: Volume 1.2x (Wajar)",
+        "INDF.JK: Volume 0.9x (Sepi)",
+        "ASII.JK: Volume 1.3x (Wajar)",
+        "ITMG.JK: Volume 1.0x (Wajar)"
     ]
 }

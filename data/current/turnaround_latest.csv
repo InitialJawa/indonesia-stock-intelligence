@@ -12,7 +12,7 @@ rank,ticker,drawdown_252d,distance_from_high_252d,volatility_60d,rs_change_60d,v
 11,MAPI.JK,-34.83,-34.83,3.82,-54.03,0.45,0.41,True,False
 12,SSIA.JK,-43.56,-43.56,3.62,-13.67,0.88,0.0,True,False
 13,ISAT.JK,-50.18,-50.18,4.48,-12.26,1.11,0.0,True,False
-14,GOTO.JK,-66.2,-66.2,4.37,-41.63,0.26,4.35,True,False
+14,GOTO.JK,-66.2,-66.2,4.37,-41.63,0.99,4.35,True,False
 15,MBMA.JK,-67.07,-67.07,4.03,-24.88,1.16,0.0,True,False
 16,BRPT.JK,-71.66,-71.66,4.56,-13.8,0.79,0.0,True,False
 17,ENRG.JK,-71.82,-71.82,7.29,-20.84,0.52,0.0,True,False

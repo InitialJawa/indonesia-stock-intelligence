@@ -1,21 +1,21 @@
 {
-    "last_update": "2026-11-01 16:16",
-    "status": "SAFE",
-    "market_health": 70,
-    "opportunity": 68,
-    "risk": 50,
-    "confidence": 62,
-    "capital_deployment": 65,
-    "action": "ACCUMULATE",
-    "rationale": "Score gap 40.6 masih signifikan, namun perubahan 5 hari terakhir (-6) menunjukkan tren positif pelebaran divergensi pasar yang mulai berkurang, mengurangi risiko sistemik. Breadth pasar terbagi (7 di atas 60, 7 di bawah 40), mengindikasikan kekuatan tidak merata. Volume pada 4 dari 5 saham watchlist hari ini \"Sepi\", tren ini memburuk selama 5 hari terakhir, menimbulkan kekhawatiran likuiditas. Namun, tidak ada anomali lonjakan volume dan status sistem tetap \"SAFE\". Faktor \"Growth\" dominan (skor 80), menunjukkan sektor dengan momentum kuat. Perbaikan pada score_gap_5d_change adalah sinyal positif untuk stabilitas, namun penurunan volume konsisten adalah peringatan.",
-    "detail_message": "Score gap 40.6 masih signifikan, namun perubahan 5 hari terakhir (-6) menunjukkan tren positif pelebaran divergensi pasar yang mulai berkurang, mengurangi risiko sistemik. Breadth pasar terbagi (7 di atas 60, 7 di bawah 40), mengindikasikan kekuatan tidak merata. Volume pada 4 dari 5 saham watchlist hari ini \"Sepi\", tren ini memburuk selama 5 hari terakhir, menimbulkan kekhawatiran likuiditas. Namun, tidak ada anomali lonjakan volume dan status sistem tetap \"SAFE\". Faktor \"Growth\" dominan (skor 80), menunjukkan sektor dengan momentum kuat. Perbaikan pada score_gap_5d_change adalah sinyal positif untuk stabilitas, namun penurunan volume konsisten adalah peringatan.",
+    "last_update": "2026-11-02 19:43",
+    "status": "WARNING",
+    "market_health": 50,
+    "opportunity": 30,
+    "risk": 80,
+    "confidence": 20,
+    "capital_deployment": 10,
+    "action": "WAIT",
+    "rationale": "Kondisi pasar menunjukkan divergensi dengan score gap 40.6 yang menyempit 4 poin dalam 5 hari, mengindikasikan kurangnya arah yang jelas. Breadth pasar terpolarisasi, dengan 7 saham di atas skor 60 dan 7 di bawah 40. Faktor 'Growth' dominan dengan skor 80, sementara 'Quality' terlemah di 60, menandakan preferensi pasar terhadap potensi pertumbuhan yang mungkin berisiko lebih tinggi. Yang paling krusial, seluruh 5 saham dalam watchlist menunjukkan volume 'Sepi' hari ini, melanjutkan tren penurunan likuiditas selama 5 hari terakhir. Ini meningkatkan risiko eksekusi dan perlindungan modal secara signifikan. Probabilitas keuntungan yang layak dengan risiko likuiditas saat ini sangat rendah.",
+    "detail_message": "Kondisi pasar menunjukkan divergensi dengan score gap 40.6 yang menyempit 4 poin dalam 5 hari, mengindikasikan kurangnya arah yang jelas. Breadth pasar terpolarisasi, dengan 7 saham di atas skor 60 dan 7 di bawah 40. Faktor 'Growth' dominan dengan skor 80, sementara 'Quality' terlemah di 60, menandakan preferensi pasar terhadap potensi pertumbuhan yang mungkin berisiko lebih tinggi. Yang paling krusial, seluruh 5 saham dalam watchlist menunjukkan volume 'Sepi' hari ini, melanjutkan tren penurunan likuiditas selama 5 hari terakhir. Ini meningkatkan risiko eksekusi dan perlindungan modal secara signifikan. Probabilitas keuntungan yang layak dengan risiko likuiditas saat ini sangat rendah.",
     "anomalies": [],
     "radar_context": {
         "production_config": "Config F",
         "top5_avg_score": 66.8,
         "bot5_avg_score": 26.2,
         "score_gap": 40.6,
-        "score_gap_5d_change": -6,
+        "score_gap_5d_change": -4,
         "breadth_above_70": 1,
         "breadth_above_60": 7,
         "breadth_below_40": 7,
@@ -27,10 +27,10 @@
         "watchlist_count": 5
     },
     "volume_details": [
-        "PTBA.JK: Volume 1.1x (Wajar)",
-        "BBNI.JK: Volume 0.9x (Sepi)",
-        "INDF.JK: Volume 0.6x (Sepi)",
-        "ASII.JK: Volume 0.8x (Sepi)",
-        "ITMG.JK: Volume 0.6x (Sepi)"
+        "PTBA.JK: Volume 0.9x (Sepi)",
+        "BBNI.JK: Volume 0.8x (Sepi)",
+        "INDF.JK: Volume 0.3x (Sepi)",
+        "ASII.JK: Volume 0.4x (Sepi)",
+        "ITMG.JK: Volume 0.5x (Sepi)"
     ]
 }

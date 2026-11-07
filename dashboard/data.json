@@ -7,8 +7,8 @@
       "roe": 0.23995,
       "der": 26.199,
       "net_margin": 0.0,
-      "operating_margin": 0.28051,
-      "free_cash_flow": 435813888.0,
+      "operating_margin": 0.26128,
+      "free_cash_flow": 530188512.0,
       "revenue_growth": -0.07694570738828728,
       "earnings_growth": -0.37216612515052055
     },
@@ -61,8 +61,8 @@
       "roe": 0.14187999,
       "der": 32.56,
       "net_margin": 0.0,
-      "operating_margin": 0.36597002,
-      "free_cash_flow": 62667752.0,
+      "operating_margin": 0.38882,
+      "free_cash_flow": 116605504.0,
       "revenue_growth": -0.09869730392569548,
       "earnings_growth": -0.6755871140344331
     },
@@ -327,18 +327,18 @@
     "ticker": "BSDE.JK",
     "fundamentals": {
       "pe": 4.767802,
-      "pb": 0.21557656,
-      "roe": 0.041500002,
-      "der": 35.164,
+      "pb": 0.21396257,
+      "roe": 0.04552,
+      "der": 34.199,
       "net_margin": 0.0,
-      "operating_margin": 0.24543,
-      "free_cash_flow": -4839562543104.0,
+      "operating_margin": 0.27076998,
+      "free_cash_flow": -2683871952896.0,
       "revenue_growth": -0.0730703105979829,
       "earnings_growth": -0.4160716967589407
     },
-    "quality": 2.49,
+    "quality": 2.73,
     "growth": -24.46,
-    "value": 242.42,
+    "value": 244.17,
     "momentum": 0.0
   },
   {
@@ -381,24 +381,24 @@
     "ticker": "CBDK.JK",
     "fundamentals": {
       "pe": 8.199439,
-      "pb": 1.4439414,
+      "pb": 1.4353645,
       "roe": 0.14809,
       "der": 1.471,
       "net_margin": 0.0,
-      "operating_margin": 0.37581003,
-      "free_cash_flow": -918883926016.0,
+      "operating_margin": 0.13819,
+      "free_cash_flow": -851075072000.0,
       "revenue_growth": 0.1132332764714098,
       "earnings_growth": 0.47525023162727464
     },
     "quality": 8.89,
     "growth": 29.42,
-    "value": 40.73,
+    "value": 40.93,
     "momentum": 0.0
   },
   {
     "ticker": "CMRY.JK",
     "fundamentals": {
-      "pe": 15.689604,
+      "pe": 15.689024,
       "pb": 4.876465,
       "roe": 0.30537,
       "der": 0.007,
@@ -457,8 +457,8 @@
       "roe": 0.30101,
       "der": 205.075,
       "net_margin": 0.0,
-      "operating_margin": 0.25998,
-      "free_cash_flow": -622867264.0,
+      "operating_margin": 0.07581,
+      "free_cash_flow": -189720880.0,
       "revenue_growth": 0.5162568617839328,
       "earnings_growth": -0.16306247473333954
     },
@@ -525,18 +525,18 @@
     "ticker": "EMTK.JK",
     "fundamentals": {
       "pe": 191.02565,
-      "pb": 0.48388955,
+      "pb": 0.48196825,
       "roe": 0.0103400005,
       "der": 7.075,
       "net_margin": 0.0,
       "operating_margin": 0.10935,
-      "free_cash_flow": -3569102356480.0,
+      "free_cash_flow": 854160769024.0,
       "revenue_growth": 0.5629033965438247,
       "earnings_growth": 3.617557662578444
     },
     "quality": 0.62,
     "growth": 209.02,
-    "value": 103.59,
+    "value": 104.0,
     "momentum": 0.0
   },
   {
@@ -614,7 +614,7 @@
   {
     "ticker": "GGRM.JK",
     "fundamentals": {
-      "pe": 5.833978,
+      "pe": 5.833956,
       "pb": 0.44249412,
       "roe": 0.07791,
       "der": 0.0,
@@ -849,18 +849,18 @@
     "ticker": "JPFA.JK",
     "fundamentals": {
       "pe": 3.7523906,
-      "pb": 0.8455382,
+      "pb": 0.8439733,
       "roe": 0.25112,
       "der": 83.996,
       "net_margin": 0.0,
-      "operating_margin": 0.08357,
-      "free_cash_flow": -6751833817088.0,
+      "operating_margin": 0.07359,
+      "free_cash_flow": -5763662086144.0,
       "revenue_growth": 0.08808032651976316,
       "earnings_growth": 0.32631409139512113
     },
     "quality": 15.07,
     "growth": 20.72,
-    "value": 72.46,
+    "value": 72.57,
     "momentum": 0.0
   },
   {
@@ -907,8 +907,8 @@
       "roe": 0.1513,
       "der": 1.11,
       "net_margin": 0.0,
-      "operating_margin": 0.10712,
-      "free_cash_flow": 1834251845632.0,
+      "operating_margin": 0.103920005,
+      "free_cash_flow": 2602906419200.0,
       "revenue_growth": 0.08265252280756126,
       "earnings_growth": 0.13094987189247054
     },
@@ -1067,10 +1067,10 @@
       "pe": 28.945932,
       "pb": 2.296932,
       "roe": 0.08189,
-      "der": 1.183,
+      "der": 1.192,
       "net_margin": 0.0,
       "operating_margin": 0.39806998,
-      "free_cash_flow": -3300186128384.0,
+      "free_cash_flow": -3291687419904.0,
       "revenue_growth": 0.5236977552759007,
       "earnings_growth": 0.838920281331118
     },
@@ -1119,36 +1119,36 @@
     "ticker": "PNLF.JK",
     "fundamentals": {
       "pe": 2.810598,
-      "pb": 0.15649436,
+      "pb": 0.15641735,
       "roe": 0.05297,
       "der": 0.0,
       "net_margin": 0.0,
-      "operating_margin": 0.46855,
+      "operating_margin": 0.53804,
       "free_cash_flow": 0.0,
       "revenue_growth": 0.042572325317663674,
       "earnings_growth": 0.13222533785099505
     },
     "quality": 3.18,
     "growth": 8.74,
-    "value": 337.29,
+    "value": 337.45,
     "momentum": 0.0
   },
   {
     "ticker": "PTBA.JK",
     "fundamentals": {
       "pe": 5.7751937,
-      "pb": 1.2662063,
+      "pb": 1.2655138,
       "roe": 0.24898,
       "der": 17.226,
       "net_margin": 0.0,
-      "operating_margin": 0.18789,
-      "free_cash_flow": 4832368787456.0,
+      "operating_margin": 0.17219,
+      "free_cash_flow": 3444669677568.0,
       "revenue_growth": -0.002648055296101239,
       "earnings_growth": -0.42591737007516084
     },
     "quality": 14.94,
     "growth": -21.43,
-    "value": 48.15,
+    "value": 48.17,
     "momentum": 0.0
   },
   {
@@ -1195,8 +1195,8 @@
       "roe": 0.21242,
       "der": 116.016,
       "net_margin": 0.0,
-      "operating_margin": 0.20282,
-      "free_cash_flow": -24155500.0,
+      "operating_margin": 0.21728,
+      "free_cash_flow": -7288201.0,
       "revenue_growth": 0.0479024599679725,
       "earnings_growth": 0.06606017537806659
     },
@@ -1388,7 +1388,7 @@
   {
     "ticker": "UNTR.JK",
     "fundamentals": {
-      "pe": 10.489798,
+      "pe": 10.489749,
       "pb": 0.80110645,
       "roe": 0.074099995,
       "der": 26.614,

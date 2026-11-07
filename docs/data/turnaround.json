@@ -109,6 +109,18 @@
   },
   {
     "rank": "10",
+    "ticker": "GOTO.JK",
+    "drawdown_252d": "-66.2",
+    "distance_from_high_252d": "-66.2",
+    "volatility_60d": "4.37",
+    "rs_change_60d": "-38.31",
+    "volume_ratio": "2.45",
+    "recovery_from_60d_low": "4.35",
+    "context_match": "True",
+    "transition_match": "False"
+  },
+  {
+    "rank": "11",
     "ticker": "MAPI.JK",
     "drawdown_252d": "-32.72",
     "distance_from_high_252d": "-32.72",
@@ -120,7 +132,7 @@
     "transition_match": "False"
   },
   {
-    "rank": "11",
+    "rank": "12",
     "ticker": "MDKA.JK",
     "drawdown_252d": "-48.48",
     "distance_from_high_252d": "-48.48",
@@ -132,7 +144,7 @@
     "transition_match": "False"
   },
   {
-    "rank": "12",
+    "rank": "13",
     "ticker": "AMMN.JK",
     "drawdown_252d": "-55.58",
     "distance_from_high_252d": "-55.58",
@@ -144,7 +156,7 @@
     "transition_match": "False"
   },
   {
-    "rank": "13",
+    "rank": "14",
     "ticker": "HRTA.JK",
     "drawdown_252d": "-57.83",
     "distance_from_high_252d": "-57.83",
@@ -152,18 +164,6 @@
     "rs_change_60d": "-8.35",
     "volume_ratio": "0.62",
     "recovery_from_60d_low": "0.0",
-    "context_match": "True",
-    "transition_match": "False"
-  },
-  {
-    "rank": "14",
-    "ticker": "GOTO.JK",
-    "drawdown_252d": "-66.2",
-    "distance_from_high_252d": "-66.2",
-    "volatility_60d": "4.37",
-    "rs_change_60d": "-38.31",
-    "volume_ratio": "0.11",
-    "recovery_from_60d_low": "4.35",
     "context_match": "True",
     "transition_match": "False"
   },

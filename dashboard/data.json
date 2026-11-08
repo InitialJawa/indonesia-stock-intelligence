@@ -115,8 +115,8 @@
       "roe": 0.19354999,
       "der": 10.139,
       "net_margin": 0.0,
-      "operating_margin": 0.01594,
-      "free_cash_flow": 1781582004224.0,
+      "operating_margin": 0.01505,
+      "free_cash_flow": 5330528370688.0,
       "revenue_growth": 0.0719820156864127,
       "earnings_growth": 0.08347302045324381
     },
@@ -620,7 +620,7 @@
       "der": 0.0,
       "net_margin": 0.0,
       "operating_margin": 0.09986,
-      "free_cash_flow": 5483255562240.0,
+      "free_cash_flow": 7686562250752.0,
       "revenue_growth": -0.09412274632520931,
       "earnings_growth": 0.5869953762470623
     },
@@ -1263,18 +1263,18 @@
     "ticker": "SMGR.JK",
     "fundamentals": {
       "pe": 15.722222,
-      "pb": 0.21723278,
+      "pb": 0.21671811,
       "roe": 0.01023,
       "der": 15.701,
       "net_margin": 0.0,
-      "operating_margin": 0.06143,
-      "free_cash_flow": 4010148626432.0,
+      "operating_margin": 0.0517,
+      "free_cash_flow": 3925373878272.0,
       "revenue_growth": -0.02604246649551636,
       "earnings_growth": -0.734846053492608
     },
     "quality": 0.61,
     "growth": -38.04,
-    "value": 233.35,
+    "value": 233.89,
     "momentum": 0.0
   },
   {

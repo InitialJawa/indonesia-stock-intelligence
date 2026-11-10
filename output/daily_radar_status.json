@@ -1,21 +1,21 @@
 {
-    "last_update": "2026-11-09 20:00",
+    "last_update": "2026-11-10 17:15",
     "status": "WARNING",
-    "market_health": 35,
-    "opportunity": 40,
-    "risk": 75,
+    "market_health": 55,
+    "opportunity": 20,
+    "risk": 90,
     "confidence": 30,
-    "capital_deployment": 20,
-    "action": "WAIT",
-    "rationale": "Pasar menunjukkan divergensi signifikan dengan score_gap 40.6 yang terus melebar (+2 dalam 5 hari), mengindikasikan kekuatan terkonsentrasi pada segelintir saham. Breadth pasar terbagi rata antara saham kuat dan lemah, bukan indikasi kesehatan pasar yang luas. Top5_turnover nol menunjukkan tidak ada pemimpin baru yang muncul, meningkatkan risiko ketergantungan pada saham yang ada. Volume perdagangan sebagian besar sepi selama 5 hari terakhir, menandakan kurangnya keyakinan. Faktor Growth dominan, namun Quality lebih lemah, menambah potensi risiko. Probabilitas imbal hasil luas rendah, sementara risiko perlindungan modal tinggi. Oleh karena itu, menunggu adalah keputusan yang paling bijaksana.",
-    "detail_message": "Pasar menunjukkan divergensi signifikan dengan score_gap 40.6 yang terus melebar (+2 dalam 5 hari), mengindikasikan kekuatan terkonsentrasi pada segelintir saham. Breadth pasar terbagi rata antara saham kuat dan lemah, bukan indikasi kesehatan pasar yang luas. Top5_turnover nol menunjukkan tidak ada pemimpin baru yang muncul, meningkatkan risiko ketergantungan pada saham yang ada. Volume perdagangan sebagian besar sepi selama 5 hari terakhir, menandakan kurangnya keyakinan. Faktor Growth dominan, namun Quality lebih lemah, menambah potensi risiko. Probabilitas imbal hasil luas rendah, sementara risiko perlindungan modal tinggi. Oleh karena itu, menunggu adalah keputusan yang paling bijaksana.",
+    "capital_deployment": 5,
+    "action": "REDUCE",
+    "rationale": "Pasar menunjukkan divergensi signifikan dengan score_gap 40.6, didorong oleh faktor Growth yang kuat (80.0). Namun, breadth_above_60 (7 saham) diimbangi oleh breadth_below_40 (7 saham), menandakan partisipasi pasar yang terbatas. Volume perdagangan sangat sepi di seluruh saham watchlist, dan yang paling krusial, top5_turnover adalah nol. Ini menunjukkan likuiditas pasar yang sangat rendah, meningkatkan risiko eksekusi dan perlindungan modal secara drastis. Tidak ada perubahan signifikan dalam score_gap selama 5 hari terakhir, dan volume tetap sepi secara konsisten. Probabilitas keuntungan rendah, sementara risiko likuiditas sangat tinggi.",
+    "detail_message": "Pasar menunjukkan divergensi signifikan dengan score_gap 40.6, didorong oleh faktor Growth yang kuat (80.0). Namun, breadth_above_60 (7 saham) diimbangi oleh breadth_below_40 (7 saham), menandakan partisipasi pasar yang terbatas. Volume perdagangan sangat sepi di seluruh saham watchlist, dan yang paling krusial, top5_turnover adalah nol. Ini menunjukkan likuiditas pasar yang sangat rendah, meningkatkan risiko eksekusi dan perlindungan modal secara drastis. Tidak ada perubahan signifikan dalam score_gap selama 5 hari terakhir, dan volume tetap sepi secara konsisten. Probabilitas keuntungan rendah, sementara risiko likuiditas sangat tinggi.",
     "anomalies": [],
     "radar_context": {
         "production_config": "Config F",
         "top5_avg_score": 66.8,
         "bot5_avg_score": 26.2,
         "score_gap": 40.6,
-        "score_gap_5d_change": 2,
+        "score_gap_5d_change": 0,
         "breadth_above_70": 1,
         "breadth_above_60": 7,
         "breadth_below_40": 7,
@@ -28,9 +28,9 @@
     },
     "volume_details": [
         "PTBA.JK: Volume 0.3x (Sepi)",
-        "BBNI.JK: Volume 1.0x (Sepi)",
-        "INDF.JK: Volume 0.5x (Sepi)",
-        "ASII.JK: Volume 1.1x (Wajar)",
-        "ITMG.JK: Volume 0.7x (Sepi)"
+        "BBNI.JK: Volume 0.3x (Sepi)",
+        "INDF.JK: Volume 0.6x (Sepi)",
+        "ASII.JK: Volume 0.9x (Sepi)",
+        "ITMG.JK: Volume 0.8x (Sepi)"
     ]
 }

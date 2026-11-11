@@ -1,21 +1,21 @@
 {
-    "last_update": "2026-11-10 17:15",
-    "status": "WARNING",
-    "market_health": 55,
-    "opportunity": 20,
-    "risk": 90,
+    "last_update": "2026-11-11 17:24",
+    "status": "SAFE",
+    "market_health": 45,
+    "opportunity": 40,
+    "risk": 75,
     "confidence": 30,
-    "capital_deployment": 5,
-    "action": "REDUCE",
-    "rationale": "Pasar menunjukkan divergensi signifikan dengan score_gap 40.6, didorong oleh faktor Growth yang kuat (80.0). Namun, breadth_above_60 (7 saham) diimbangi oleh breadth_below_40 (7 saham), menandakan partisipasi pasar yang terbatas. Volume perdagangan sangat sepi di seluruh saham watchlist, dan yang paling krusial, top5_turnover adalah nol. Ini menunjukkan likuiditas pasar yang sangat rendah, meningkatkan risiko eksekusi dan perlindungan modal secara drastis. Tidak ada perubahan signifikan dalam score_gap selama 5 hari terakhir, dan volume tetap sepi secara konsisten. Probabilitas keuntungan rendah, sementara risiko likuiditas sangat tinggi.",
-    "detail_message": "Pasar menunjukkan divergensi signifikan dengan score_gap 40.6, didorong oleh faktor Growth yang kuat (80.0). Namun, breadth_above_60 (7 saham) diimbangi oleh breadth_below_40 (7 saham), menandakan partisipasi pasar yang terbatas. Volume perdagangan sangat sepi di seluruh saham watchlist, dan yang paling krusial, top5_turnover adalah nol. Ini menunjukkan likuiditas pasar yang sangat rendah, meningkatkan risiko eksekusi dan perlindungan modal secara drastis. Tidak ada perubahan signifikan dalam score_gap selama 5 hari terakhir, dan volume tetap sepi secara konsisten. Probabilitas keuntungan rendah, sementara risiko likuiditas sangat tinggi.",
+    "capital_deployment": 25,
+    "action": "WAIT",
+    "rationale": "Score gap 40.6 dan meningkat 2 poin dalam 5 hari menunjukkan divergensi pasar yang signifikan. Hanya sedikit saham yang kuat, sementara mayoritas melemah. Breadth di atas 70 hanya 1 dan di bawah 40 mencapai 7, mengindikasikan partisipasi pasar sangat terbatas dan kelemahan meluas. Volume perdagangan saham watchlist konsisten sepi selama 5 hari terakhir, dengan top5 turnover 0, menunjukkan kurangnya keyakinan dan risiko likuiditas tinggi. Faktor \"Growth\" kuat (80.0) namun \"Quality\" lemah (60.0), mengindikasikan preferensi pasar terhadap pertumbuhan berisiko tinggi. Tidak ada perbaikan signifikan; divergensi meningkat dan volume tetap rendah. Probabilitas keuntungan luas rendah, sementara risiko likuiditas dan kelemahan pasar meningkat. Perlindungan modal adalah prioritas.",
+    "detail_message": "Score gap 40.6 dan meningkat 2 poin dalam 5 hari menunjukkan divergensi pasar yang signifikan. Hanya sedikit saham yang kuat, sementara mayoritas melemah. Breadth di atas 70 hanya 1 dan di bawah 40 mencapai 7, mengindikasikan partisipasi pasar sangat terbatas dan kelemahan meluas. Volume perdagangan saham watchlist konsisten sepi selama 5 hari terakhir, dengan top5 turnover 0, menunjukkan kurangnya keyakinan dan risiko likuiditas tinggi. Faktor \"Growth\" kuat (80.0) namun \"Quality\" lemah (60.0), mengindikasikan preferensi pasar terhadap pertumbuhan berisiko tinggi. Tidak ada perbaikan signifikan; divergensi meningkat dan volume tetap rendah. Probabilitas keuntungan luas rendah, sementara risiko likuiditas dan kelemahan pasar meningkat. Perlindungan modal adalah prioritas.",
     "anomalies": [],
     "radar_context": {
         "production_config": "Config F",
         "top5_avg_score": 66.8,
         "bot5_avg_score": 26.2,
         "score_gap": 40.6,
-        "score_gap_5d_change": 0,
+        "score_gap_5d_change": 2,
         "breadth_above_70": 1,
         "breadth_above_60": 7,
         "breadth_below_40": 7,
@@ -27,10 +27,10 @@
         "watchlist_count": 5
     },
     "volume_details": [
-        "PTBA.JK: Volume 0.3x (Sepi)",
+        "PTBA.JK: Volume 0.4x (Sepi)",
         "BBNI.JK: Volume 0.3x (Sepi)",
-        "INDF.JK: Volume 0.6x (Sepi)",
-        "ASII.JK: Volume 0.9x (Sepi)",
-        "ITMG.JK: Volume 0.8x (Sepi)"
+        "INDF.JK: Volume 0.5x (Sepi)",
+        "ASII.JK: Volume 1.0x (Sepi)",
+        "ITMG.JK: Volume 1.0x (Wajar)"
     ]
 }

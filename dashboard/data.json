@@ -236,7 +236,7 @@
   {
     "ticker": "BBTN.JK",
     "fundamentals": {
-      "pe": 3.3557048,
+      "pe": 3.271823,
       "pb": 0.37367615,
       "roe": 0.117419995,
       "der": 0.0,
@@ -248,7 +248,7 @@
     },
     "quality": 7.05,
     "growth": 30.69,
-    "value": 148.71,
+    "value": 149.09,
     "momentum": 0.0
   },
   {
@@ -830,8 +830,8 @@
   {
     "ticker": "ITMG.JK",
     "fundamentals": {
-      "pe": 7.0584006,
-      "pb": 14494.048,
+      "pe": 7.5969825,
+      "pb": 14132.327,
       "roe": 0.1195,
       "der": 6.527,
       "net_margin": 0.0,
@@ -842,7 +842,7 @@
     },
     "quality": 7.17,
     "growth": -33.67,
-    "value": 7.09,
+    "value": 6.59,
     "momentum": 0.0
   },
   {
@@ -1334,7 +1334,7 @@
   {
     "ticker": "TLKM.JK",
     "fundamentals": {
-      "pe": 13.238539,
+      "pe": 13.054514,
       "pb": 1.7391459,
       "roe": 0.16298,
       "der": 56.278,
@@ -1346,7 +1346,7 @@
     },
     "quality": 9.78,
     "growth": -11.98,
-    "value": 32.53,
+    "value": 32.58,
     "momentum": 0.0
   },
   {

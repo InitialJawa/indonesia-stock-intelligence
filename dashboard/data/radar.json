@@ -1,21 +1,21 @@
 {
-    "last_update": "2026-11-18 18:21",
+    "last_update": "2026-11-19 18:34",
     "status": "SAFE",
     "market_health": 60,
-    "opportunity": 75,
-    "risk": 68,
-    "confidence": 65,
-    "capital_deployment": 70,
+    "opportunity": 65,
+    "risk": 60,
+    "confidence": 55,
+    "capital_deployment": 55,
     "action": "ACCUMULATE",
-    "rationale": "Diferensiasi pasar membaik dengan score_gap 40.6 dan peningkatan 4 poin dalam 5 hari, mengindikasikan peluang selektif. Faktor Growth yang kuat (80.0) mendukung ini. Namun, breadth pasar masih lemah, dengan 7 saham di bawah 40 dan hanya 1 di atas 70, menunjukkan kurangnya kekuatan luas. Volume hari ini membaik dari kemarin, namun belum solid. Faktor Quality yang terlemah (60.0) menimbulkan kekhawatiran perlindungan modal. Meskipun ada tren positif, risiko tetap moderat. Oleh karena itu, akumulasi modal secara bertahap direkomendasikan.",
-    "detail_message": "Diferensiasi pasar membaik dengan score_gap 40.6 dan peningkatan 4 poin dalam 5 hari, mengindikasikan peluang selektif. Faktor Growth yang kuat (80.0) mendukung ini. Namun, breadth pasar masih lemah, dengan 7 saham di bawah 40 dan hanya 1 di atas 70, menunjukkan kurangnya kekuatan luas. Volume hari ini membaik dari kemarin, namun belum solid. Faktor Quality yang terlemah (60.0) menimbulkan kekhawatiran perlindungan modal. Meskipun ada tren positif, risiko tetap moderat. Oleh karena itu, akumulasi modal secara bertahap direkomendasikan.",
+    "rationale": "Pasar secara sistem berstatus SAFE, didukung oleh skor rata-rata top 5 saham (66.8) dan faktor Growth yang kuat (80.0), menawarkan peluang selektif. Namun, CRO tetap skeptis. Gap skor yang lebar (40.6) dan terus melebar (+2 dalam 5 hari) menunjukkan divergensi signifikan. Breadth pasar lemah, dengan 7 saham di bawah 40. Volume perdagangan mayoritas sepi, mengindikasikan kurangnya keyakinan dan likuiditas. Risiko likuiditas dan volatilitas meningkat. Dengan fokus perlindungan modal, akumulasi selektif dapat dilakukan pada peluang berkeyakinan tinggi, namun dengan kehati-hatian ekstrem.",
+    "detail_message": "Pasar secara sistem berstatus SAFE, didukung oleh skor rata-rata top 5 saham (66.8) dan faktor Growth yang kuat (80.0), menawarkan peluang selektif. Namun, CRO tetap skeptis. Gap skor yang lebar (40.6) dan terus melebar (+2 dalam 5 hari) menunjukkan divergensi signifikan. Breadth pasar lemah, dengan 7 saham di bawah 40. Volume perdagangan mayoritas sepi, mengindikasikan kurangnya keyakinan dan likuiditas. Risiko likuiditas dan volatilitas meningkat. Dengan fokus perlindungan modal, akumulasi selektif dapat dilakukan pada peluang berkeyakinan tinggi, namun dengan kehati-hatian ekstrem.",
     "anomalies": [],
     "radar_context": {
         "production_config": "Config F",
         "top5_avg_score": 66.8,
         "bot5_avg_score": 26.2,
         "score_gap": 40.6,
-        "score_gap_5d_change": 4,
+        "score_gap_5d_change": 2,
         "breadth_above_70": 1,
         "breadth_above_60": 7,
         "breadth_below_40": 7,
@@ -28,9 +28,9 @@
     },
     "volume_details": [
         "PTBA.JK: Volume 0.4x (Sepi)",
-        "BBNI.JK: Volume 1.3x (Wajar)",
-        "INDF.JK: Volume 1.0x (Wajar)",
+        "BBNI.JK: Volume 0.6x (Sepi)",
+        "INDF.JK: Volume 1.4x (Wajar)",
         "ASII.JK: Volume 1.0x (Wajar)",
-        "ITMG.JK: Volume 0.6x (Sepi)"
+        "ITMG.JK: Volume 0.9x (Sepi)"
     ]
 }

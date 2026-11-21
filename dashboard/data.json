@@ -524,7 +524,7 @@
   {
     "ticker": "EMTK.JK",
     "fundamentals": {
-      "pe": 176.15894,
+      "pe": 170.51283,
       "pb": 0.43021327,
       "roe": 0.0103400005,
       "der": 7.075,
@@ -597,16 +597,16 @@
     "ticker": "EXCL.JK",
     "fundamentals": {
       "pe": 0.0,
-      "pb": 1.0523072,
-      "roe": -0.13436,
-      "der": 204.323,
+      "pb": 1.1108706,
+      "roe": -0.11328,
+      "der": 220.251,
       "net_margin": 0.0,
-      "operating_margin": -0.02631,
-      "free_cash_flow": 14058289889280.0,
+      "operating_margin": -0.0130900005,
+      "free_cash_flow": 7839417368576.0,
       "revenue_growth": 0.23419566704041106,
       "earnings_growth": -3.433519385998717
     },
-    "quality": -8.06,
+    "quality": -6.8,
     "growth": -159.97,
     "value": 0.0,
     "momentum": 0.0
@@ -740,7 +740,7 @@
   {
     "ticker": "INDF.JK",
     "fundamentals": {
-      "pe": 5.9259257,
+      "pe": 5.9053664,
       "pb": 0.79161936,
       "roe": 0.13095,
       "der": 60.341,
@@ -752,7 +752,7 @@
     },
     "quality": 7.86,
     "growth": 15.15,
-    "value": 71.6,
+    "value": 71.63,
     "momentum": 0.0
   },
   {
@@ -776,7 +776,7 @@
   {
     "ticker": "INKP.JK",
     "fundamentals": {
-      "pe": 3.5380542,
+      "pe": 3.5380733,
       "pb": 4921.112,
       "roe": 0.083900005,
       "der": 72.964,
@@ -975,16 +975,16 @@
     "ticker": "MBMA.JK",
     "fundamentals": {
       "pe": 28.312757,
-      "pb": 22933.334,
-      "roe": 0.09239,
-      "der": 52.775,
+      "pb": 21499.998,
+      "roe": 0.13987,
+      "der": 45.852,
       "net_margin": 0.0,
-      "operating_margin": 0.18684,
-      "free_cash_flow": -63648596.0,
+      "operating_margin": 0.22614999,
+      "free_cash_flow": -83930648.0,
       "revenue_growth": -0.22235466729352912,
       "earnings_growth": 0.297712167986505
     },
-    "quality": 5.54,
+    "quality": 8.39,
     "growth": 3.77,
     "value": 1.77,
     "momentum": 0.0
@@ -1298,7 +1298,7 @@
   {
     "ticker": "SSIA.JK",
     "fundamentals": {
-      "pe": 19.475584,
+      "pe": 20.046938,
       "pb": 0.8220545,
       "roe": 0.060599998,
       "der": 28.441,
@@ -1310,7 +1310,7 @@
     },
     "quality": 3.64,
     "growth": -84.0,
-    "value": 63.39,
+    "value": 63.32,
     "momentum": 0.0
   },
   {
@@ -1388,7 +1388,7 @@
   {
     "ticker": "UNTR.JK",
     "fundamentals": {
-      "pe": 10.8884325,
+      "pe": 10.888383,
       "pb": 0.83155024,
       "roe": 0.074099995,
       "der": 26.614,

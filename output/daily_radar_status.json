@@ -1,14 +1,14 @@
 {
-    "last_update": "2026-11-23 21:39",
-    "status": "WARNING",
-    "market_health": 40,
-    "opportunity": 45,
-    "risk": 80,
-    "confidence": 30,
-    "capital_deployment": 25,
-    "action": "WAIT",
-    "rationale": "Kesehatan pasar menunjukkan divergensi signifikan dengan score gap 40.6 yang melebar 2 poin dalam 5 hari, mengindikasikan ketidakstabilan. Breadth sangat lemah; hanya 1 saham di atas 70, sementara 7 saham di bawah 40, menunjukkan kelemahan pasar yang meluas. Volume perdagangan umumnya sepi, dengan 2 saham watchlist hari ini dan mayoritas hari sebelumnya menunjukkan volume di bawah rata-rata, serta top5_turnover nol, menimbulkan kekhawatiran likuiditas. Meskipun faktor Growth kuat (80.0), peluang sangat sempit. Risiko tinggi karena kelemahan pasar yang mendalam dan likuiditas rendah. Prioritas adalah perlindungan modal.",
-    "detail_message": "Kesehatan pasar menunjukkan divergensi signifikan dengan score gap 40.6 yang melebar 2 poin dalam 5 hari, mengindikasikan ketidakstabilan. Breadth sangat lemah; hanya 1 saham di atas 70, sementara 7 saham di bawah 40, menunjukkan kelemahan pasar yang meluas. Volume perdagangan umumnya sepi, dengan 2 saham watchlist hari ini dan mayoritas hari sebelumnya menunjukkan volume di bawah rata-rata, serta top5_turnover nol, menimbulkan kekhawatiran likuiditas. Meskipun faktor Growth kuat (80.0), peluang sangat sempit. Risiko tinggi karena kelemahan pasar yang mendalam dan likuiditas rendah. Prioritas adalah perlindungan modal.",
+    "last_update": "2026-11-24 20:19",
+    "status": "SAFE",
+    "market_health": 69,
+    "opportunity": 72,
+    "risk": 39,
+    "confidence": 68,
+    "capital_deployment": 62,
+    "action": "ACCUMULATE",
+    "rationale": "Pasar menunjukkan divergensi signifikan dengan score_gap 40.6, yang sedikit melebar dalam 5 hari terakhir (+2). Hanya satu saham di atas skor 70, mengindikasikan kurangnya kekuatan pasar yang luas. Faktor Growth dominan (80.0), sementara Quality terlemah (60.0), menyiratkan potensi pengejaran pertumbuhan tanpa fundamental kuat. Volume perdagangan hari ini menunjukkan INDF.JK mengalami lonjakan signifikan (2.3x), anomali yang tidak terlihat dalam 5 hari sebelumnya, sementara saham lain cenderung sepi. Meskipun sistem berstatus 'SAFE', perlindungan modal menyarankan akumulasi selektif pada peluang yang jelas, bukan ekspansi modal secara luas.",
+    "detail_message": "Pasar menunjukkan divergensi signifikan dengan score_gap 40.6, yang sedikit melebar dalam 5 hari terakhir (+2). Hanya satu saham di atas skor 70, mengindikasikan kurangnya kekuatan pasar yang luas. Faktor Growth dominan (80.0), sementara Quality terlemah (60.0), menyiratkan potensi pengejaran pertumbuhan tanpa fundamental kuat. Volume perdagangan hari ini menunjukkan INDF.JK mengalami lonjakan signifikan (2.3x), anomali yang tidak terlihat dalam 5 hari sebelumnya, sementara saham lain cenderung sepi. Meskipun sistem berstatus 'SAFE', perlindungan modal menyarankan akumulasi selektif pada peluang yang jelas, bukan ekspansi modal secara luas.",
     "anomalies": [],
     "radar_context": {
         "production_config": "Config F",
@@ -27,10 +27,10 @@
         "watchlist_count": 5
     },
     "volume_details": [
-        "PTBA.JK: Volume 0.5x (Sepi)",
-        "BBNI.JK: Volume 1.0x (Wajar)",
-        "INDF.JK: Volume 1.5x (Wajar)",
-        "ASII.JK: Volume 1.0x (Wajar)",
-        "ITMG.JK: Volume 0.5x (Sepi)"
+        "PTBA.JK: Volume 0.9x (Sepi)",
+        "BBNI.JK: Volume 1.4x (Wajar)",
+        "INDF.JK: Volume 2.3x (Volume Lonjakan)",
+        "ASII.JK: Volume 1.1x (Wajar)",
+        "ITMG.JK: Volume 0.6x (Sepi)"
     ]
 }

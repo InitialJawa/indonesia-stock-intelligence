@@ -2,8 +2,8 @@
   {
     "ticker": "AADI.JK",
     "fundamentals": {
-      "pe": 5.193723,
-      "pb": 20184.426,
+      "pe": 5.220087,
+      "pb": 20286.885,
       "roe": 0.23995,
       "der": 26.199,
       "net_margin": 0.0,
@@ -14,14 +14,14 @@
     },
     "quality": 14.4,
     "growth": -22.46,
-    "value": 9.63,
+    "value": 9.58,
     "momentum": 0.0
   },
   {
     "ticker": "ACES.JK",
     "fundamentals": {
-      "pe": 7.5823226,
-      "pb": 0.9108677,
+      "pe": 7.712305,
+      "pb": 0.92648256,
       "roe": 0.12173,
       "der": 14.092,
       "net_margin": 0.0,
@@ -32,14 +32,14 @@
     },
     "quality": 7.3,
     "growth": -12.19,
-    "value": 61.49,
+    "value": 60.45,
     "momentum": 0.0
   },
   {
     "ticker": "ADMR.JK",
     "fundamentals": {
-      "pe": 7.0617986,
-      "pb": 26627.906,
+      "pe": 7.0001235,
+      "pb": 26395.348,
       "roe": 0.2307,
       "der": 88.736,
       "net_margin": 0.0,
@@ -50,14 +50,14 @@
     },
     "quality": 13.84,
     "growth": -26.8,
-    "value": 7.08,
+    "value": 7.14,
     "momentum": 0.0
   },
   {
     "ticker": "ADRO.JK",
     "fundamentals": {
-      "pe": 5.8781977,
-      "pb": 13314.286,
+      "pe": 5.903426,
+      "pb": 13371.429,
       "roe": 0.14187999,
       "der": 32.56,
       "net_margin": 0.0,
@@ -68,14 +68,14 @@
     },
     "quality": 8.51,
     "growth": -38.71,
-    "value": 8.51,
+    "value": 8.47,
     "momentum": 0.0
   },
   {
     "ticker": "AKRA.JK",
     "fundamentals": {
-      "pe": 8.118683,
-      "pb": 1.9618194,
+      "pe": 8.346918,
+      "pb": 2.0169709,
       "roe": 0.22207001,
       "der": 29.874,
       "net_margin": 0.0,
@@ -86,14 +86,14 @@
     },
     "quality": 13.32,
     "growth": 14.97,
-    "value": 31.65,
+    "value": 30.78,
     "momentum": 0.0
   },
   {
     "ticker": "AMMN.JK",
     "fundamentals": {
-      "pe": 10.478993,
-      "pb": 38117.65,
+      "pe": 10.673049,
+      "pb": 38823.527,
       "roe": 0.23271,
       "der": 88.94,
       "net_margin": 0.0,
@@ -104,14 +104,14 @@
     },
     "quality": 13.96,
     "growth": -45.79,
-    "value": 4.77,
+    "value": 4.69,
     "momentum": 0.0
   },
   {
     "ticker": "AMRT.JK",
     "fundamentals": {
-      "pe": 13.038348,
-      "pb": 2.498389,
+      "pe": 12.154827,
+      "pb": 2.3288152,
       "roe": 0.19354999,
       "der": 10.139,
       "net_margin": 0.0,
@@ -122,7 +122,7 @@
     },
     "quality": 11.61,
     "growth": 7.77,
-    "value": 23.85,
+    "value": 25.58,
     "momentum": 0.0
   },
   {
@@ -146,8 +146,8 @@
   {
     "ticker": "ARTO.JK",
     "fundamentals": {
-      "pe": 20.400454,
-      "pb": 0.81904924,
+      "pe": 21.34492,
+      "pb": 0.85696816,
       "roe": 0.04196,
       "der": 0.0,
       "net_margin": 0.0,
@@ -158,14 +158,14 @@
     },
     "quality": 2.52,
     "growth": 89.94,
-    "value": 63.5,
+    "value": 60.69,
     "momentum": 0.0
   },
   {
     "ticker": "ASII.JK",
     "fundamentals": {
-      "pe": 7.238606,
-      "pb": 0.90008533,
+      "pe": 7.30563,
+      "pb": 0.90841943,
       "roe": 0.11630999,
       "der": 39.482,
       "net_margin": 0.0,
@@ -176,14 +176,14 @@
     },
     "quality": 6.98,
     "growth": -2.44,
-    "value": 62.46,
+    "value": 61.88,
     "momentum": 0.0
   },
   {
     "ticker": "BBCA.JK",
     "fundamentals": {
-      "pe": 11.749482,
-      "pb": 2.459701,
+      "pe": 12.008282,
+      "pb": 2.5138795,
       "roe": 0.21199,
       "der": 0.0,
       "net_margin": 0.0,
@@ -194,14 +194,14 @@
     },
     "quality": 12.72,
     "growth": 5.0,
-    "value": 24.58,
+    "value": 24.05,
     "momentum": 0.0
   },
   {
     "ticker": "BBNI.JK",
     "fundamentals": {
-      "pe": 6.2765956,
-      "pb": 0.7766508,
+      "pe": 6.3297873,
+      "pb": 0.78323257,
       "roe": 0.1216,
       "der": 0.0,
       "net_margin": 0.0,
@@ -212,14 +212,14 @@
     },
     "quality": 7.3,
     "growth": -1.93,
-    "value": 72.35,
+    "value": 71.74,
     "momentum": 0.0
   },
   {
     "ticker": "BBRI.JK",
     "fundamentals": {
-      "pe": 7.2748814,
-      "pb": 1.3650773,
+      "pe": 7.3459716,
+      "pb": 1.3784168,
       "roe": 0.18742001,
       "der": 0.0,
       "net_margin": 0.0,
@@ -230,14 +230,14 @@
     },
     "quality": 11.25,
     "growth": 1.27,
-    "value": 43.5,
+    "value": 43.08,
     "momentum": 0.0
   },
   {
     "ticker": "BBTN.JK",
     "fundamentals": {
-      "pe": 3.3892617,
-      "pb": 0.37741292,
+      "pe": 3.422819,
+      "pb": 0.38114968,
       "roe": 0.117419995,
       "der": 0.0,
       "net_margin": 0.0,
@@ -248,7 +248,7 @@
     },
     "quality": 7.05,
     "growth": 30.69,
-    "value": 147.23,
+    "value": 145.79,
     "momentum": 0.0
   },
   {
@@ -272,8 +272,8 @@
   {
     "ticker": "BMRI.JK",
     "fundamentals": {
-      "pe": 5.6468396,
-      "pb": 1.2315724,
+      "pe": 5.8069305,
+      "pb": 1.2664881,
       "roe": 0.21757999,
       "der": 0.0,
       "net_margin": 0.0,
@@ -284,14 +284,14 @@
     },
     "quality": 13.05,
     "growth": 2.45,
-    "value": 49.45,
+    "value": 48.09,
     "momentum": 0.0
   },
   {
     "ticker": "BRMS.JK",
     "fundamentals": {
-      "pe": 70.99768,
-      "pb": 34000.0,
+      "pe": 67.285385,
+      "pb": 32222.223,
       "roe": 0.035150003,
       "der": 29.049,
       "net_margin": 0.0,
@@ -302,14 +302,14 @@
     },
     "quality": 2.11,
     "growth": 79.25,
-    "value": 0.71,
+    "value": 0.74,
     "momentum": 0.0
   },
   {
     "ticker": "BRPT.JK",
     "fundamentals": {
-      "pe": 29.072083,
-      "pb": 27037.037,
+      "pe": 27.080843,
+      "pb": 25185.184,
       "roe": 0.06345,
       "der": 134.329,
       "net_margin": 0.0,
@@ -320,14 +320,14 @@
     },
     "quality": 3.81,
     "growth": 493.42,
-    "value": 1.72,
+    "value": 1.85,
     "momentum": 0.0
   },
   {
     "ticker": "BSDE.JK",
     "fundamentals": {
-      "pe": 4.767802,
-      "pb": 0.21396257,
+      "pe": 4.8916407,
+      "pb": 0.21952005,
       "roe": 0.04552,
       "der": 34.199,
       "net_margin": 0.0,
@@ -338,14 +338,14 @@
     },
     "quality": 2.73,
     "growth": -24.46,
-    "value": 244.17,
+    "value": 237.99,
     "momentum": 0.0
   },
   {
     "ticker": "BUKA.JK",
     "fundamentals": {
       "pe": 0.0,
-      "pb": 0.43198347,
+      "pb": 0.44714078,
       "roe": -0.02607,
       "der": 0.417,
       "net_margin": 0.0,
@@ -362,8 +362,8 @@
   {
     "ticker": "BUMI.JK",
     "fundamentals": {
-      "pe": 23.146473,
-      "pb": 31999.998,
+      "pe": 23.327305,
+      "pb": 32249.998,
       "roe": 0.05421,
       "der": 24.84,
       "net_margin": 0.0,
@@ -374,14 +374,14 @@
     },
     "quality": 3.25,
     "growth": 11.7,
-    "value": 2.16,
+    "value": 2.14,
     "momentum": 0.0
   },
   {
     "ticker": "CBDK.JK",
     "fundamentals": {
-      "pe": 7.536249,
-      "pb": 1.3192688,
+      "pe": 7.204654,
+      "pb": 1.261221,
       "roe": 0.14809,
       "der": 1.471,
       "net_margin": 0.0,
@@ -392,7 +392,7 @@
     },
     "quality": 8.89,
     "growth": 29.42,
-    "value": 44.53,
+    "value": 46.58,
     "momentum": 0.0
   },
   {
@@ -416,8 +416,8 @@
   {
     "ticker": "CPIN.JK",
     "fundamentals": {
-      "pe": 5.032967,
-      "pb": 1.032396,
+      "pe": 5.230769,
+      "pb": 1.0729705,
       "roe": 0.21837,
       "der": 31.865,
       "net_margin": 0.0,
@@ -428,14 +428,14 @@
     },
     "quality": 13.1,
     "growth": 28.39,
-    "value": 58.37,
+    "value": 56.16,
     "momentum": 0.0
   },
   {
     "ticker": "CTRA.JK",
     "fundamentals": {
-      "pe": 3.8425198,
-      "pb": 0.36586455,
+      "pe": 3.8740158,
+      "pb": 0.36886343,
       "roe": 0.09352,
       "der": 29.262,
       "net_margin": 0.0,
@@ -446,14 +446,14 @@
     },
     "quality": 5.61,
     "growth": 19.01,
-    "value": 149.67,
+    "value": 148.46,
     "momentum": 0.0
   },
   {
     "ticker": "CUAN.JK",
     "fundamentals": {
-      "pe": 27.972027,
-      "pb": 133333.33,
+      "pe": 26.013987,
+      "pb": 124000.0,
       "roe": 0.30101,
       "der": 205.075,
       "net_margin": 0.0,
@@ -464,14 +464,14 @@
     },
     "quality": 18.06,
     "growth": 17.66,
-    "value": 1.79,
+    "value": 1.92,
     "momentum": 0.0
   },
   {
     "ticker": "DEWA.JK",
     "fundamentals": {
-      "pe": 2.1946902,
-      "pb": 1.1731482,
+      "pe": 2.141593,
+      "pb": 1.1447655,
       "roe": 0.70732003,
       "der": 75.857,
       "net_margin": 0.0,
@@ -482,14 +482,14 @@
     },
     "quality": 42.44,
     "growth": 3851.84,
-    "value": 65.4,
+    "value": 67.02,
     "momentum": 0.0
   },
   {
     "ticker": "DSNG.JK",
     "fundamentals": {
-      "pe": 6.84968,
-      "pb": 1.0942466,
+      "pe": 6.7963753,
+      "pb": 1.085731,
       "roe": 0.16632,
       "der": 25.797,
       "net_margin": 0.0,
@@ -500,7 +500,7 @@
     },
     "quality": 9.98,
     "growth": 41.4,
-    "value": 52.99,
+    "value": 53.41,
     "momentum": 0.0
   },
   {
@@ -560,8 +560,8 @@
   {
     "ticker": "ERAA.JK",
     "fundamentals": {
-      "pe": 5.5789475,
-      "pb": 0.8384723,
+      "pe": 5.4210525,
+      "pb": 0.8147419,
       "roe": 0.16479,
       "der": 73.726,
       "net_margin": 0.0,
@@ -572,14 +572,14 @@
     },
     "quality": 9.89,
     "growth": 16.59,
-    "value": 68.59,
+    "value": 70.59,
     "momentum": 0.0
   },
   {
     "ticker": "ESSA.JK",
     "fundamentals": {
-      "pe": 7.265992,
-      "pb": 19615.385,
+      "pe": 7.194757,
+      "pb": 19423.076,
       "roe": 0.17152001,
       "der": 0.013,
       "net_margin": 0.0,
@@ -590,14 +590,14 @@
     },
     "quality": 10.29,
     "growth": -6.47,
-    "value": 6.88,
+    "value": 6.95,
     "momentum": 0.0
   },
   {
     "ticker": "EXCL.JK",
     "fundamentals": {
       "pe": 0.0,
-      "pb": 1.1076508,
+      "pb": 1.101211,
       "roe": -0.11328,
       "der": 220.251,
       "net_margin": 0.0,
@@ -614,8 +614,8 @@
   {
     "ticker": "GGRM.JK",
     "fundamentals": {
-      "pe": 6.114551,
-      "pb": 0.46377492,
+      "pe": 6.133901,
+      "pb": 0.46524256,
       "roe": 0.07791,
       "der": 0.0,
       "net_margin": 0.0,
@@ -626,14 +626,14 @@
     },
     "quality": 4.67,
     "growth": 24.64,
-    "value": 115.99,
+    "value": 115.62,
     "momentum": 0.0
   },
   {
     "ticker": "GOTO.JK",
     "fundamentals": {
-      "pe": 40.298508,
-      "pb": 0.87226206,
+      "pe": 38.80597,
+      "pb": 0.83995605,
       "roe": 0.01228,
       "der": 28.533,
       "net_margin": 0.0,
@@ -644,14 +644,14 @@
     },
     "quality": 0.74,
     "growth": -30.86,
-    "value": 58.56,
+    "value": 60.82,
     "momentum": 0.0
   },
   {
     "ticker": "HEAL.JK",
     "fundamentals": {
-      "pe": 20.211899,
-      "pb": 1.3521618,
+      "pe": 19.727345,
+      "pb": 1.3412572,
       "roe": 0.0682,
       "der": 50.444,
       "net_margin": 0.0,
@@ -662,14 +662,14 @@
     },
     "quality": 4.09,
     "growth": -6.83,
-    "value": 39.45,
+    "value": 39.81,
     "momentum": 0.0
   },
   {
     "ticker": "HRTA.JK",
     "fundamentals": {
-      "pe": 4.5996532,
-      "pb": 1.5217261,
+      "pe": 4.5642715,
+      "pb": 1.5100205,
       "roe": 0.3847,
       "der": 104.937,
       "net_margin": 0.0,
@@ -680,14 +680,14 @@
     },
     "quality": 23.08,
     "growth": 132.84,
-    "value": 43.73,
+    "value": 44.07,
     "momentum": 0.0
   },
   {
     "ticker": "HRUM.JK",
     "fundamentals": {
-      "pe": 7.100592,
-      "pb": 8684.211,
+      "pe": 7.0467997,
+      "pb": 8618.421,
       "roe": 0.08968,
       "der": 29.009,
       "net_margin": 0.0,
@@ -698,14 +698,14 @@
     },
     "quality": 5.38,
     "growth": -13.72,
-    "value": 7.05,
+    "value": 7.1,
     "momentum": 0.0
   },
   {
     "ticker": "ICBP.JK",
     "fundamentals": {
-      "pe": 9.718309,
-      "pb": 1.4542947,
+      "pe": 10.070422,
+      "pb": 1.5069865,
       "roe": 0.13506,
       "der": 64.968,
       "net_margin": 0.0,
@@ -716,14 +716,14 @@
     },
     "quality": 8.1,
     "growth": 16.71,
-    "value": 39.53,
+    "value": 38.14,
     "momentum": 0.0
   },
   {
     "ticker": "INCO.JK",
     "fundamentals": {
-      "pe": 12.274989,
-      "pb": 12564.103,
+      "pe": 12.096053,
+      "pb": 12380.952,
       "roe": 0.06067,
       "der": 6.607,
       "net_margin": 0.0,
@@ -734,14 +734,14 @@
     },
     "quality": 3.64,
     "growth": 17.94,
-    "value": 4.08,
+    "value": 4.14,
     "momentum": 0.0
   },
   {
     "ticker": "INDF.JK",
     "fundamentals": {
-      "pe": 5.720165,
-      "pb": 0.76413256,
+      "pe": 5.9053497,
+      "pb": 0.7888707,
       "roe": 0.13095,
       "der": 60.341,
       "net_margin": 0.0,
@@ -752,14 +752,14 @@
     },
     "quality": 7.86,
     "growth": 15.15,
-    "value": 74.17,
+    "value": 71.85,
     "momentum": 0.0
   },
   {
     "ticker": "INDY.JK",
     "fundamentals": {
-      "pe": 18.516348,
-      "pb": 6752.1367,
+      "pe": 17.930387,
+      "pb": 6538.4614,
       "roe": 0.04053,
       "der": 93.194,
       "net_margin": 0.0,
@@ -770,14 +770,14 @@
     },
     "quality": 2.43,
     "growth": -28.61,
-    "value": 2.71,
+    "value": 2.8,
     "momentum": 0.0
   },
   {
     "ticker": "INKP.JK",
     "fundamentals": {
-      "pe": 3.470553,
-      "pb": 4827.1978,
+      "pe": 3.484057,
+      "pb": 4845.9805,
       "roe": 0.083900005,
       "der": 72.964,
       "net_margin": 0.0,
@@ -788,14 +788,14 @@
     },
     "quality": 5.03,
     "growth": 3.04,
-    "value": 14.42,
+    "value": 14.36,
     "momentum": 0.0
   },
   {
     "ticker": "INTP.JK",
     "fundamentals": {
-      "pe": 8.102436,
-      "pb": 0.87772244,
+      "pe": 8.069229,
+      "pb": 0.87412524,
       "roe": 0.11088,
       "der": 11.325,
       "net_margin": 0.0,
@@ -806,14 +806,14 @@
     },
     "quality": 6.65,
     "growth": 3.79,
-    "value": 63.14,
+    "value": 63.4,
     "momentum": 0.0
   },
   {
     "ticker": "ISAT.JK",
     "fundamentals": {
-      "pe": 6.408444,
-      "pb": 1.164546,
+      "pe": 7.1152577,
+      "pb": 1.2929887,
       "roe": 0.18090999,
       "der": 172.143,
       "net_margin": 0.0,
@@ -824,14 +824,14 @@
     },
     "quality": 10.85,
     "growth": 6.66,
-    "value": 50.74,
+    "value": 45.7,
     "momentum": 0.0
   },
   {
     "ticker": "ITMG.JK",
     "fundamentals": {
-      "pe": 7.1018815,
-      "pb": 13802.817,
+      "pe": 7.087388,
+      "pb": 13774.648,
       "roe": 0.1195,
       "der": 6.527,
       "net_margin": 0.0,
@@ -842,14 +842,14 @@
     },
     "quality": 7.17,
     "growth": -33.67,
-    "value": 7.04,
+    "value": 7.06,
     "momentum": 0.0
   },
   {
     "ticker": "JPFA.JK",
     "fundamentals": {
-      "pe": 3.413465,
-      "pb": 0.76774347,
+      "pe": 3.4860919,
+      "pb": 0.7840784,
       "roe": 0.25112,
       "der": 83.996,
       "net_margin": 0.0,
@@ -860,7 +860,7 @@
     },
     "quality": 15.07,
     "growth": 20.72,
-    "value": 79.77,
+    "value": 78.11,
     "momentum": 0.0
   },
   {
@@ -884,8 +884,8 @@
   {
     "ticker": "KIJA.JK",
     "fundamentals": {
-      "pe": 10.843373,
-      "pb": 0.35727754,
+      "pe": 11.144578,
+      "pb": 0.3672019,
       "roe": 0.07685,
       "der": 60.009,
       "net_margin": 0.0,
@@ -896,14 +896,14 @@
     },
     "quality": 4.61,
     "growth": 14.18,
-    "value": 144.56,
+    "value": 140.65,
     "momentum": 0.0
   },
   {
     "ticker": "KLBF.JK",
     "fundamentals": {
-      "pe": 9.324991,
-      "pb": 1.3949085,
+      "pe": 9.565636,
+      "pb": 1.4309062,
       "roe": 0.1513,
       "der": 1.11,
       "net_margin": 0.0,
@@ -914,7 +914,7 @@
     },
     "quality": 9.08,
     "growth": 10.68,
-    "value": 41.21,
+    "value": 40.17,
     "momentum": 0.0
   },
   {
@@ -938,8 +938,8 @@
   {
     "ticker": "MAPA.JK",
     "fundamentals": {
-      "pe": 8.805842,
-      "pb": 1.729914,
+      "pe": 8.877435,
+      "pb": 1.7439784,
       "roe": 0.2155,
       "der": 28.145,
       "net_margin": 0.0,
@@ -950,7 +950,7 @@
     },
     "quality": 12.93,
     "growth": 19.65,
-    "value": 34.58,
+    "value": 34.3,
     "momentum": 0.0
   },
   {
@@ -974,8 +974,8 @@
   {
     "ticker": "MBMA.JK",
     "fundamentals": {
-      "pe": 29.629631,
-      "pb": 22499.998,
+      "pe": 28.477367,
+      "pb": 21624.998,
       "roe": 0.13987,
       "der": 45.852,
       "net_margin": 0.0,
@@ -986,32 +986,32 @@
     },
     "quality": 8.39,
     "growth": 3.77,
-    "value": 1.69,
+    "value": 1.76,
     "momentum": 0.0
   },
   {
     "ticker": "MDKA.JK",
     "fundamentals": {
-      "pe": 48.281292,
-      "pb": 51111.113,
-      "roe": 0.07467,
-      "der": 86.028,
+      "pe": 47.1005,
+      "pb": 49861.113,
+      "roe": 0.12639,
+      "der": 91.617,
       "net_margin": 0.0,
-      "operating_margin": 0.19015,
-      "free_cash_flow": -348622976.0,
+      "operating_margin": 0.23582001,
+      "free_cash_flow": -290357792.0,
       "revenue_growth": -0.1537573034555142,
       "earnings_growth": 0.11297055387398747
     },
-    "quality": 4.48,
+    "quality": 7.58,
     "growth": -2.04,
-    "value": 1.04,
+    "value": 1.06,
     "momentum": 0.0
   },
   {
     "ticker": "MEDC.JK",
     "fundamentals": {
-      "pe": 5.045693,
-      "pb": 12393.617,
+      "pe": 5.067348,
+      "pb": 12446.809,
       "roe": 0.15089,
       "der": 171.735,
       "net_margin": 0.0,
@@ -1022,7 +1022,7 @@
     },
     "quality": 9.05,
     "growth": -36.35,
-    "value": 9.91,
+    "value": 9.87,
     "momentum": 0.0
   },
   {
@@ -1046,8 +1046,8 @@
   {
     "ticker": "MYOR.JK",
     "fundamentals": {
-      "pe": 9.823628,
-      "pb": 1.7673491,
+      "pe": 9.953314,
+      "pb": 1.7906805,
       "roe": 0.19018,
       "der": 24.796,
       "net_margin": 0.0,
@@ -1058,14 +1058,14 @@
     },
     "quality": 11.41,
     "growth": 1.36,
-    "value": 33.38,
+    "value": 32.95,
     "momentum": 0.0
   },
   {
     "ticker": "PANI.JK",
     "fundamentals": {
-      "pe": 27.619568,
-      "pb": 2.1916819,
+      "pe": 26.293205,
+      "pb": 2.0864315,
       "roe": 0.08189,
       "der": 1.192,
       "net_margin": 0.0,
@@ -1076,14 +1076,14 @@
     },
     "quality": 4.91,
     "growth": 68.13,
-    "value": 24.62,
+    "value": 25.87,
     "momentum": 0.0
   },
   {
     "ticker": "PGAS.JK",
     "fundamentals": {
-      "pe": 7.867902,
-      "pb": 12991.453,
+      "pe": 7.9196644,
+      "pb": 13076.923,
       "roe": 0.11188,
       "der": 27.512,
       "net_margin": 0.0,
@@ -1094,14 +1094,14 @@
     },
     "quality": 6.71,
     "growth": -15.8,
-    "value": 6.36,
+    "value": 6.32,
     "momentum": 0.0
   },
   {
     "ticker": "PGEO.JK",
     "fundamentals": {
-      "pe": 13.653699,
-      "pb": 18265.307,
+      "pe": 13.501143,
+      "pb": 18061.225,
       "roe": 0.078839995,
       "der": 36.443,
       "net_margin": 0.0,
@@ -1112,14 +1112,14 @@
     },
     "quality": 4.73,
     "growth": -3.96,
-    "value": 3.66,
+    "value": 3.71,
     "momentum": 0.0
   },
   {
     "ticker": "PNLF.JK",
     "fundamentals": {
-      "pe": 2.9896169,
-      "pb": 0.16638024,
+      "pe": 3.0254207,
+      "pb": 0.16837281,
       "roe": 0.05297,
       "der": 0.0,
       "net_margin": 0.0,
@@ -1130,14 +1130,14 @@
     },
     "quality": 3.18,
     "growth": 8.74,
-    "value": 317.24,
+    "value": 313.49,
     "momentum": 0.0
   },
   {
     "ticker": "PTBA.JK",
     "fundamentals": {
-      "pe": 5.755814,
-      "pb": 1.2612671,
+      "pe": 5.6589146,
+      "pb": 1.2400336,
       "roe": 0.24898,
       "der": 17.226,
       "net_margin": 0.0,
@@ -1148,14 +1148,14 @@
     },
     "quality": 14.94,
     "growth": -21.43,
-    "value": 48.33,
+    "value": 49.16,
     "momentum": 0.0
   },
   {
     "ticker": "PTRO.JK",
     "fundamentals": {
-      "pe": 47.03633,
-      "pb": 91111.11,
+      "pe": 38.98536,
+      "pb": 84814.81,
       "roe": 0.11533,
       "der": 258.845,
       "net_margin": 0.0,
@@ -1166,14 +1166,14 @@
     },
     "quality": 6.92,
     "growth": 112.67,
-    "value": 1.06,
+    "value": 1.28,
     "momentum": 0.0
   },
   {
     "ticker": "PWON.JK",
     "fundamentals": {
-      "pe": 6.9856462,
-      "pb": 0.6065894,
+      "pe": 7.2248807,
+      "pb": 0.62736297,
       "roe": 0.090129994,
       "der": 21.846,
       "net_margin": 0.0,
@@ -1184,14 +1184,14 @@
     },
     "quality": 5.41,
     "growth": 9.84,
-    "value": 89.59,
+    "value": 86.62,
     "momentum": 0.0
   },
   {
     "ticker": "RAJA.JK",
     "fundamentals": {
-      "pe": 13.542926,
-      "pb": 40727.273,
+      "pe": 13.482466,
+      "pb": 40545.453,
       "roe": 0.21242,
       "der": 116.016,
       "net_margin": 0.0,
@@ -1202,14 +1202,14 @@
     },
     "quality": 12.75,
     "growth": 5.7,
-    "value": 3.69,
+    "value": 3.71,
     "momentum": 0.0
   },
   {
     "ticker": "RATU.JK",
     "fundamentals": {
-      "pe": 11.760808,
-      "pb": 85200.0,
+      "pe": 11.153442,
+      "pb": 80800.0,
       "roe": 0.55656,
       "der": 183.501,
       "net_margin": 0.0,
@@ -1220,14 +1220,14 @@
     },
     "quality": 33.39,
     "growth": -2.27,
-    "value": 4.25,
+    "value": 4.48,
     "momentum": 0.0
   },
   {
     "ticker": "SCMA.JK",
     "fundamentals": {
-      "pe": 8.2116785,
-      "pb": 1.2904583,
+      "pe": 8.150851,
+      "pb": 1.2808993,
       "roe": 0.14039999,
       "der": 5.311,
       "net_margin": 0.0,
@@ -1238,7 +1238,7 @@
     },
     "quality": 8.42,
     "growth": 13.6,
-    "value": 44.83,
+    "value": 45.17,
     "momentum": 0.0
   },
   {
@@ -1262,8 +1262,8 @@
   {
     "ticker": "SMGR.JK",
     "fundamentals": {
-      "pe": 17.833334,
-      "pb": 0.24581806,
+      "pe": 17.5,
+      "pb": 0.24122334,
       "roe": 0.01023,
       "der": 15.701,
       "net_margin": 0.0,
@@ -1274,14 +1274,14 @@
     },
     "quality": 0.61,
     "growth": -38.04,
-    "value": 206.21,
+    "value": 210.13,
     "momentum": 0.0
   },
   {
     "ticker": "SMRA.JK",
     "fundamentals": {
-      "pe": 7.488051,
-      "pb": 0.3892302,
+      "pe": 7.753585,
+      "pb": 0.40303266,
       "roe": 0.0657,
       "der": 96.147,
       "net_margin": 0.0,
@@ -1292,14 +1292,14 @@
     },
     "quality": 3.94,
     "growth": -30.83,
-    "value": 135.14,
+    "value": 130.51,
     "momentum": 0.0
   },
   {
     "ticker": "SSIA.JK",
     "fundamentals": {
-      "pe": 19.950598,
-      "pb": 0.8421046,
+      "pe": 20.520615,
+      "pb": 0.86616474,
       "roe": 0.060599998,
       "der": 28.441,
       "net_margin": 0.0,
@@ -1310,7 +1310,7 @@
     },
     "quality": 3.64,
     "growth": -84.0,
-    "value": 61.88,
+    "value": 60.16,
     "momentum": 0.0
   },
   {
@@ -1334,8 +1334,8 @@
   {
     "ticker": "TLKM.JK",
     "fundamentals": {
-      "pe": 12.503064,
-      "pb": 1.6425266,
+      "pe": 12.748222,
+      "pb": 1.674733,
       "roe": 0.16298,
       "der": 56.278,
       "net_margin": 0.0,
@@ -1346,7 +1346,7 @@
     },
     "quality": 9.78,
     "growth": -11.98,
-    "value": 34.44,
+    "value": 33.78,
     "momentum": 0.0
   },
   {
@@ -1370,8 +1370,8 @@
   {
     "ticker": "TPIA.JK",
     "fundamentals": {
-      "pe": 375.3623,
-      "pb": 28152.174,
+      "pe": 355.07245,
+      "pb": 26630.436,
       "roe": 0.03797,
       "der": 121.838,
       "net_margin": 0.0,
@@ -1382,14 +1382,14 @@
     },
     "quality": 2.28,
     "growth": -697.81,
-    "value": 0.13,
+    "value": 0.14,
     "momentum": 0.0
   },
   {
     "ticker": "UNTR.JK",
     "fundamentals": {
-      "pe": 10.523918,
-      "pb": 0.80371594,
+      "pe": 10.614985,
+      "pb": 0.8106745,
       "roe": 0.074099995,
       "der": 26.614,
       "net_margin": 0.0,
@@ -1400,14 +1400,14 @@
     },
     "quality": 4.45,
     "growth": -13.25,
-    "value": 66.96,
+    "value": 66.39,
     "momentum": 0.0
   },
   {
     "ticker": "WIFI.JK",
     "fundamentals": {
-      "pe": 9.5049095,
-      "pb": 0.6223329,
+      "pe": 9.087111,
+      "pb": 0.59497756,
       "roe": 0.109680004,
       "der": 127.438,
       "net_margin": 0.0,
@@ -1418,7 +1418,7 @@
     },
     "quality": 6.58,
     "growth": 111.97,
-    "value": 85.6,
+    "value": 89.54,
     "momentum": 0.0
   }
 ]
